@@ -99,7 +99,7 @@
 
   ;; open shell inside yazi
   2 2
-  sh (macro S-; s h spc - c spc ' p o w e r s h e l l spc - n o l o g o spc @2 S-. / d e v / n u l l spc S-\ S-\ spc S-4 S-(s h e l l) ' ret)
+  sh (macro S-; s h spc - c spc ' S-4 S-(s h e l l) ' ret)
 
   ;; open neovim inside yazi
   1 1
