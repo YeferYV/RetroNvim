@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.0.2 (16-02-2024)
+**changed**
+- remapping hjkl as cursor left/down/up/down on Windows for performance but doesn't restore vertical cursor position
+
 ## v0.0.1 (12-02-2024)
 **Added**
 - Neovim A-Z text objects
