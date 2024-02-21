@@ -382,7 +382,8 @@
           "bindings": [
             { "key": "d", "name": "Directory", "command": "workbench.action.files.openFolder" },
             { "key": "r", "name": "Recent", "command": "workbench.action.openRecent" },
-            { "key": "f", "name": "File", "command": "workbench.action.files.openFile" }
+            { "key": "f", "name": "File", "command": "workbench.action.files.openFile" },
+            { "key": "m", "name": "Markdown previewer", "command": "markdown.showPreview" }
           ]
         },
         {
@@ -485,6 +486,7 @@
             { "key": "T", "name": "Toggle tab visibility", "command": "workbench.action.toggleTabsVisibility" },
             { "key": "u", "name": "Go to Parent Fold", "commands": [ "editor.gotoParentFold", "cursorHome" ] },
             { "key": "U", "name": "Go to Bracket", "command": "editor.action.jumpToBracket" },
+            { "key": "w", "name": "Toggle Wrap", "command": "editor.action.toggleWordWrap" },
             { "key": "x", "name": "Extensions", "command": "workbench.view.extensions" },
             { "key": "z", "name": "Toggle zen mode", "command": "workbench.action.toggleZenMode" },
             { "key": "Z", "name": "Zoom reset", "command": "editor.action.fontZoomReset" }
@@ -587,6 +589,12 @@
             },
             {
               "key": "v",
+              "name": "print sequence to open file with vscode (when inside yazi)",
+              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
+              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && code '%1' || code $*\"\n" } ]
+            },
+            {
+              "key": "i",
               "name": "print sequence to open file with vi (when inside yazi)",
               "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
               "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && $EDITOR '%1' || $EDITOR $*\"\n" } ]

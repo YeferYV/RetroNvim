@@ -53,11 +53,11 @@
   lctl lmet lalt           spc            ralt rmet rctl
 )
 
-(deflayer arrows
+(deflayer touchcursor
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-  _    _    @sh  @vim _    _    _    _    _    _    _    _    _    _
+  _    _    @sh  @vim _    _    _    _    @vi  _    _    _    _    _
   _    @mw↑ spc  bspc @yaz @laz left down up   rght @mw↓ _    _
-  _    @za  @zr  caps _    _    @ñ   _    _    _    _    _
+  _    @za  @zr  caps @cod _    @ñ   _    _    _    _    _
   _    _    _              _              _    _    _
 )
 
@@ -91,8 +91,8 @@
   ;; tap for middle click, hold for lalt
   alt (tap-hold 200 200 mmid lalt)
 
-  ;; tap for space, hold for oneshot in arrow layout
-  spc (tap-hold 200 200 spc (one-shot 500 (layer-while-held arrows)))
+  ;; tap for space, hold for oneshot in touchcursor layout
+  spc (tap-hold 200 200 spc (one-shot 500 (layer-while-held touchcursor)))
 
   ;; press one key in yazi layout
   yaz (one-shot 500 (layer-while-held yazi-find))
@@ -101,9 +101,15 @@
   2 2
   sh (macro S-; s h spc - c spc ' S-4 S-(s h e l l) ' ret)
 
-  ;; open neovim inside yazi
+  ;; open with neovim inside yazi
   1 1
   vim (macro S-; s h spc - c spc S-' t e s t spc S-4 S-(a p p d a t a) spc S-7 S-7 spc n v i m spc ' S-5 @1 ' spc S-\ S-\ spc n v i m spc S-4 S-8 S-' ret)
+
+  ;; open with $EDITOR inside yazi
+  vi (macro S-; s h spc - c spc S-' t e s t spc S-4 S-(a p p d a t a) spc S-7 S-7 spc S-4 S-(e d i t o r) spc ' S-5 @1 ' spc S-\ S-\ spc S-4 S-(e d i t o r) spc S-4 S-8 S-' ret)
+
+  ;; open with code inside yazi
+  cod (macro ; s h spc - c spc S-' t e s t spc S-4 S-(a p p d a t a) spc S-7 S-7 spc c o d e spc ' S-5 @1 ' spc S-\ S-\ spc c o d e spc S-4 S-8 S-' ret)
 
   ;; open lazygit inside yazi
   laz (macro S-; l a z y g i t ret)
