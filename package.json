@@ -217,7 +217,13 @@
             { "key": "v", "name": "View Source Control", "command": "workbench.view.scm" },
             { "key": "V", "name": "View All Changes", "command": "git.viewChanges" },
             { "key": "<", "name": "Pull", "command": "git.pull" },
-            { "key": ">", "name": "Push", "command": "git.push" }
+            { "key": ">", "name": "Push", "command": "git.push" },
+            {
+              "key": "?",
+              "name": "show lazygit keybindings (when inside lazygit)",
+              "command": "workbench.action.terminal.sendSequence",
+              "args": { "text": "?" }
+            }
           ]
         },
         {
@@ -530,37 +536,55 @@
               "key": "y",
               "name": "open and export `y` command (on new terminal)",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "function y() { yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }; y; clear\n" } ]
+              "args": [ null, { "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }; y; clear\n" } ]
             },
             {
-              "key": "o",
-              "name": "open y='cd when yazi exits' (on same terminal)",
+              "key": "O",
+              "name": "open y='cd when yazi exits, press q to exit yazi' (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
               "args": { "text": "y\n" }
             },
             {
-              "key": "n",
-              "name": "open vi = textobj + mini.File(Explorer) + mini.Clue(Whichkey) + mini.Pick(Telescope)",
+              "key": "Y",
+              "name": "print sequence to export `y` command (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "sh -c '$EDITOR' # ($EDITOR) # eval $EDITOR # iex $env:EDITOR \n" }
+              "args": { "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }" }
             },
             {
-              "key": "X",
-              "name": "print sequence to export `y` command",
+              "key": "V",
+              "name": "print sequence to export vi = textobj + mini.File(Explorer) + mini.Clue(Whichkey) + mini.Pick(Telescope)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "function y() { yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }; printf '\\x1b[A\\x1b[K'\n" }
+              "args": { "text": "function vi() { sh -c \"$EDITOR $@\"; } # ($EDITOR) # eval $EDITOR # iex $env:EDITOR \n" }
             },
             {
-              "key": "c",
-              "name": "print sequence to clear_previous_line",
+              "key": "C",
+              "name": "print sequence to clear_previous_line (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
               "args": { "text": "printf '\\x1b[2A\\x1b[K'\n" }
+            },
+            {
+              "key": "e",
+              "name": "print sequence to open file with neovim (when inside yazi)",
+              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
+              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && nvim '%1' || nvim $*\"\n" } ]
+            },
+            {
+              "key": "i",
+              "name": "print sequence to open file with vi (when inside yazi)",
+              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
+              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && $EDITOR '%1' || $EDITOR $*\"\n" } ]
             },
             {
               "key": "g",
               "name": "print sequence to open lazygit in current working directory (when inside yazi)",
               "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
               "args": [ { "text": ":" }, { "text": "lazygit\n" } ]
+            },
+            {
+              "key": "v",
+              "name": "print sequence to open file with vscode (when inside yazi)",
+              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
+              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && code '%1' || code $*\"\n" } ]
             },
             {
               "key": "w",
@@ -570,34 +594,22 @@
               "args": [ { "text": ":" }, { "text": "sh -c '$SHELL'\n" } ]
             },
             {
-              "key": "z",
-              "name": "print sequence to zoxide add current working directory (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "zoxide add .\n" } ]
-            },
-            {
               "key": "x",
               "name": "print sequence to zoxide remove current working directory (when inside yazi)",
               "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
               "args": [ { "text": ":" }, { "text": "zoxide remove .\n" } ]
             },
             {
-              "key": "e",
-              "name": "print sequence to open file with neovim (when inside yazi)",
+              "key": "z",
+              "name": "print sequence to zoxide add current working directory (when inside yazi)",
               "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && nvim '%1' || nvim $*\"\n" } ]
+              "args": [ { "text": ":" }, { "text": "zoxide add .\n" } ]
             },
             {
-              "key": "v",
-              "name": "print sequence to open file with vscode (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && code '%1' || code $*\"\n" } ]
-            },
-            {
-              "key": "i",
-              "name": "print sequence to open file with vi (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && $EDITOR '%1' || $EDITOR $*\"\n" } ]
+              "key": "?",
+              "name": "print sequence to show yazi keybindings menu (when inside yazi)",
+              "command": "workbench.action.terminal.sendSequence",
+              "args": { "text": "~" }
             }
           ]
         },

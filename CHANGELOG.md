@@ -7,6 +7,7 @@
 
 **Added**
 - kanata open with vscode or $EDITOR inside yazi
+- whichkey entries to show keybindings for yazi and lazygit
 
 ## v0.0.1 (12-02-2024)
 **Added**

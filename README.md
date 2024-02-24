@@ -794,7 +794,7 @@ example: in normal mode type `:` to open vim-command-line then type `TSInstall c
 <details open><summary></summary>
 
 - [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) neovim with text objects from A-Z, based on [lazyvim](https://github.com/LazyVim/LazyVim)
-- [yeferyv/archrice](https://github.com/yeferyv/sixelrice) arch linux rice with neovim with text object from A-Z, based on [neovim-from-scratch](https://github.com/LunarVim/Neovim-from-scratch)
+- [yeferyv/archrice](https://github.com/yeferyv/archrice) arch linux rice with neovim with text object from A-Z, based on [neovim-from-scratch](https://github.com/LunarVim/Neovim-from-scratch)
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) vim extension with some text objects
 
 </details>
