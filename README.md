@@ -87,7 +87,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |             `iQ`, `aQ`             |     `.`      |         yes          | @Class                 | inside of a class                                                                         | outer includes class declaration                                              |
 |             `ir`, `ar`             |     `.`      |                      | restOfIndentation      | lines down with same or higher indentation                                                | outer: restOfParagraph                                                        |
 |             `iR`, `aR`             |     `.`      |         yes          | @Return                | inside of a Return clause                                                                 | outer includes the `return                                                    |
-|             `is`, `as`             |     `.`      |                      | _sentence              | inside mini.ai text object (todo: overwrite it with the original sentence textobj)        | outer line wise                                                               |
+|             `is`, `as`             |     `.`      |                      | _inside_mini_ai        | inside mini.ai text object                                                                | outer line wise                                                               |
 |             `iS`, `aS`             |     `.`      |                      | subword                | like `iw`, but treating `-`, `_`, and `.` as word delimiters *and* only part of camelCase | outer includes trailing `_`,`-`, or space                                     |
 |             `it`, `at`             |     `.`      |         yes          | _tag                   | inside of a html/jsx tag                                                                  | outer includes openning and closing tags                                      |
 |             `iu`, `au`             |     `.`      |         yes          | _quotes                | inside of `` '' ""                                                                        | outer includes openning and closing quotes                                    |
@@ -156,7 +156,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |     `go`     | `n`,`x` |          `.`           | add virtual cursor down                                               | selects word under cursor         |                          | uses selected word           | `gogo` will select word and go down then select word and go down                 |
 |     `gO`     | `n`,`x` |          `.`           | add virtual cursor up                                                 | selects word under cursor         |                          | uses selected word           | `gOgO` will select word and go up then select word and go up                     |
 |     `gp`     | `o`,`x` | `;`forward `,`backward | +goto previous (only textobj with `@`,`_`)                            |                                   | followed by operator     | uses selection               | `vgpiu` will select from cursor position until previous quotation                |
-|     `gq`     | `n`,`x` |          `.`           | Split/Join comments/lines 80chars(todo: not working)                  | requires a operator               |                          | applies to selection         | `vipgq` will split/join a paragraph limited by 80 characters                     |
+|     `gq`     | `n`,`x` |          `.`           | Split/Join comments/lines 80chars(only in neovim)(LSP overrides it)   | requires a operator               |                          | applies to selection         | `vipgq` will split/join a paragraph limited by 80 characters                     |
 |     `gr`     | `o`,`x` |          `.`           | RestOfWindow                                                          |                                   | uses cursor position     | uses selection               | `vgr` will select from the cursorline to the last line in the window             |
 |     `gR`     | `o`,`x` |          `.`           | VisibleWindow (todo: not working fix conflicts with keybindings.json) |                                   | uses cursor position     | uses selection               | `vgR` will select all lines visible in the current window                        |
 |     `gs`     | `n`,`x` |          `.`           | Surround (followed by a=add, d=delete, r=replace)                     | followed by operator (only add)   |                          | uses selection (only add)    | `viwgsa"` will add `"` to word, `gsd"` will delete `"`, `gsr"'` will replace `"` |
@@ -218,7 +218,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |  `go`  | `n`,`x` | add virtual cursor down (tab to extend/cursor mode)      |          `.`           |                    |                                                          |
 |  `gO`  | `n`,`x` | add virtual cursor up (tab to extend/cursor mode)        |          `.`           |                    |                                                          |
 |  `gp`  | `n`,`x` | +goto previous (only textobj with `@`,`_`)               | `;`forward `,`backward |        yes         | `gpiu` go to previous quotation                          |
-|  `gq`  | `n`,`x` | +SplitJoin comment/lines 80chars (todo: not working)     |          `.`           |        yes         | `gqip` split/join a paragraph by 80 characters           |
+|  `gq`  | `n`,`x` | +SplitJoin comment/lines 80chars (only inside neovim)    |          `.`           |        yes         | `gqip` split/join a paragraph by 80 characters           |
 |  `gr`  |   `n`   | Redo register (dot to paste forward)                     |          `.`           |                    |                                                          |
 |  `gR`  |   `n`   | Redo register (dot to paste backward)                    |          `.`           |                    |                                                          |
 |  `gs`  | `n`,`x` | +Surround (followed by a=add, d=delete, r=replace)       |          `.`           |        yes         | `gsaiw"` add `"`, `gsd"` delete `"`, `gsr"'` replace `"` |
@@ -270,15 +270,15 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description                  |      repeater key      |
-| :----: | :---------: | :--------------------------- | :--------------------: |
-| `gpc`  | `n`,`o`,`x` | go to previous comment       | `;`forward `,`backward |
-| `gpd`  | `n`,`o`,`x` | go to previous diagnostic    | `;`forward `,`backward |
-| `gph`  | `n`,`o`,`x` | go to previous git hunk      | `;`forward `,`backward |
-| `gpiy` | `n`,`o`,`x` | go to previous same_indent   | `;`forward `,`backward |
-| `gpr`  | `n`,`o`,`x` | go to previous reference     | `;`forward `,`backward |
-| `gpz`  | `n`,`o`,`x` | go to previous start of fold | `;`forward `,`backward |
-| `gpZ`  | `n`,`o`,`x` | go to previous start scope   | `;`forward `,`backward |
+| Keymap |    Mode     | Description                                        |      repeater key      |
+| :----: | :---------: | :------------------------------------------------- | :--------------------: |
+| `gpc`  | `n`,`o`,`x` | go to previous comment                             | `;`forward `,`backward |
+| `gpd`  | `n`,`o`,`x` | go to previous diagnostic                          | `;`forward `,`backward |
+| `gph`  | `n`,`o`,`x` | go to previous git hunk (not working on Windows10) | `;`forward `,`backward |
+| `gpiy` | `n`,`o`,`x` | go to previous same_indent                         | `;`forward `,`backward |
+| `gpr`  | `n`,`o`,`x` | go to previous reference                           | `;`forward `,`backward |
+| `gpz`  | `n`,`o`,`x` | go to previous start of fold                       | `;`forward `,`backward |
+| `gpZ`  | `n`,`o`,`x` | go to previous start scope                         | `;`forward `,`backward |
 
 </details>
 
@@ -286,15 +286,15 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description              |      repeater key      |
-| :----: | :---------: | :----------------------- | :--------------------: |
-| `gnc`  | `n`,`o`,`x` | go to next comment       | `;`forward `,`backward |
-| `gnd`  | `n`,`o`,`x` | go to next diagnostic    | `;`forward `,`backward |
-| `gnh`  | `n`,`o`,`x` | go to next git hunk      | `;`forward `,`backward |
-| `gniy` | `n`,`o`,`x` | go to next same_indent   | `;`forward `,`backward |
-| `gnr`  | `n`,`o`,`x` | go to next reference     | `;`forward `,`backward |
-| `gnz`  | `n`,`o`,`x` | go to next start of fold | `;`forward `,`backward |
-| `gnZ`  | `n`,`o`,`x` | go to next start scope   | `;`forward `,`backward |
+| Keymap |    Mode     | Description                                     |      repeater key      |
+| :----: | :---------: | :---------------------------------------------- | :--------------------: |
+| `gnc`  | `n`,`o`,`x` | go to next comment                              | `;`forward `,`backward |
+| `gnd`  | `n`,`o`,`x` | go to next diagnostic                           | `;`forward `,`backward |
+| `gnh`  | `n`,`o`,`x` | go to next git hunk  (not working on Windows10) | `;`forward `,`backward |
+| `gniy` | `n`,`o`,`x` | go to next same_indent                          | `;`forward `,`backward |
+| `gnr`  | `n`,`o`,`x` | go to next reference                            | `;`forward `,`backward |
+| `gnz`  | `n`,`o`,`x` | go to next start of fold                        | `;`forward `,`backward |
+| `gnZ`  | `n`,`o`,`x` | go to next start scope                          | `;`forward `,`backward |
 
 </details>
 
@@ -634,38 +634,38 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 
 <details open><summary></summary>
 
-|     Key Combination      |  mode   | Description                                            |
-| :----------------------: | :-----: | :----------------------------------------------------- |
-|         `ctrl+\`         |   `n`   | Toggle panel (terminal) visibility                     |
-|      `shift+space`       |   `n`   | Show whichkey menu (Windows, Linux, Mac)               |
-|       `alt+space`        |   `n`   | Show whichkey menu (Linux, Mac)                        |
-|         `alt+.`          |   `n`   | Repeat most recent Whichkey action                     |
-|         `alt+c`          |   `i`   | Copy                                                   |
-|         `alt+v`          |   `i`   | Paste                                                  |
-|           `jk`           |   `i`   | send Escape                                            |
-|         `alt+h`          | `i`,`x` | Send Escape                                            |
-|         `alt+j`          |   `n`   | Quick-open-menu select next                            |
-|         `alt+k`          |   `n`   | Quick-open-menu select previous                        |
-|         `alt+h`          |   `n`   | Type `10h`                                             |
-|         `alt+j`          |   `n`   | Type `10gj`                                            |
-|         `alt+k`          |   `n`   | Type `10gk`                                            |
-|         `alt+l`          |   `n`   | Type `10l`                                             |
-|         `alt+v`          |   `n`   | Type `V`                                               |
-|    `alt+s` or `left`     |   `n`   | Go to previous editor                                  |
-|    `alt+f` or `right`    |   `n`   | Go to next editor                                      |
-| `alt+left` or `alt+down` |   `n`   | Decrease view size                                     |
-| `alt+right` or `alt+up`  |   `n`   | Increase view size                                     |
-|         `ctrl+h`         |   `n`   | Navigate to left window                                |
-|         `ctrl+j`         |   `n`   | Navigate to down window                                |
-|         `ctrl+k`         |   `n`   | Navigate to up window                                  |
-|         `ctrl+l`         |   `n`   | Navigate to right window                               |
-|   `alt+q` or `shift+q`   |   `n`   | Close active editor                                    |
-|   `alt+r` or `shift+r`   |   `n`   | Format and save                                        |
-|     `ctrl+alt+right`     |   `n`   | select right word (on multi cursor)                    |
-|           `h`            |   `n`   | Move cursor left  (on Windows10 <number>h unsupported) |
-|           `j`            |   `n`   | Move cursor down (on Windows10 not restoring position) |
-|           `k`            |   `n`   | Move cursor up   (on Windows10 not restoring position) |
-|           `l`            |   `n`   | Move cursor right (on Windows10 <number>l unsupported) |
+|     Key Combination      |  mode   | Description                                              |
+| :----------------------: | :-----: | :------------------------------------------------------- |
+|         `ctrl+\`         |   `n`   | Toggle panel (terminal) visibility                       |
+|      `shift+space`       |   `n`   | Show whichkey menu (Windows, Linux, Mac)                 |
+|       `alt+space`        |   `n`   | Show whichkey menu (Linux, Mac)                          |
+|         `alt+.`          |   `n`   | Repeat most recent Whichkey action                       |
+|         `alt+c`          |   `i`   | Copy                                                     |
+|         `alt+v`          |   `i`   | Paste                                                    |
+|           `jk`           |   `i`   | send Escape                                              |
+|         `alt+h`          | `i`,`x` | Send Escape                                              |
+|         `alt+j`          |   `n`   | Quick-open-menu select next                              |
+|         `alt+k`          |   `n`   | Quick-open-menu select previous                          |
+|         `alt+h`          |   `n`   | Type `10h`                                               |
+|         `alt+j`          |   `n`   | Type `10gj`                                              |
+|         `alt+k`          |   `n`   | Type `10gk`                                              |
+|         `alt+l`          |   `n`   | Type `10l`                                               |
+|         `alt+v`          |   `n`   | Type `V`                                                 |
+|    `alt+s` or `left`     |   `n`   | Go to previous editor                                    |
+|    `alt+f` or `right`    |   `n`   | Go to next editor                                        |
+| `alt+left` or `alt+down` |   `n`   | Decrease view size                                       |
+| `alt+right` or `alt+up`  |   `n`   | Increase view size                                       |
+|         `ctrl+h`         |   `n`   | Navigate to left window                                  |
+|         `ctrl+j`         |   `n`   | Navigate to down window                                  |
+|         `ctrl+k`         |   `n`   | Navigate to up window                                    |
+|         `ctrl+l`         |   `n`   | Navigate to right window                                 |
+|   `alt+q` or `shift+q`   |   `n`   | Close active editor                                      |
+|   `alt+r` or `shift+r`   |   `n`   | Format and save                                          |
+|     `ctrl+alt+right`     |   `n`   | select right word (on multi cursor)                      |
+|           `h`            |   `n`   | Move cursor left  (on Windows10 `<number>h` unsupported) |
+|           `j`            |   `n`   | Move cursor down  (on Windows10 not restoring position)  |
+|           `k`            |   `n`   | Move cursor up    (on Windows10 not restoring position)  |
+|           `l`            |   `n`   | Move cursor right (on Windows10 `<number>l` unsupported) |
 
 </details>
 
@@ -786,6 +786,7 @@ example: in normal mode type `:` to open vim-command-line then type `TSInstall c
 
 - [devhints.io/vim](https://devhints.io/vim)
 - [viemu.com](http://www.viemu.com/a_vi_vim_graphical_cheat_sheet_tutorial.html)
+- [vscode with embedded neovim](https://www.youtube.com/watch?v=g4dXZ0RQWdw) related tutorial most of the keybindings are similar to retronvim
 
 </details>
 
