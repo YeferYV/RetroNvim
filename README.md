@@ -106,7 +106,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |       `i[`, `i]`, `a[`, `a]`       |     `.`      |         yes          | `[` or `]`             | inside `[]`                                                                               | outer includes surroundings                                                   |
 |       `i{`, `i}`, `a{`, `a}`       |     `.`      |         yes          | `{` or `}`             | inside `{}`                                                                               | outer includes surroundings                                                   |
 |       `i<`, `i>`, `a<`, `a>`       |     `.`      |         yes          | `<` or `>`             | inside `<>`                                                                               | outer includes surroundings                                                   |
-|             i\`,  a\`              |     `.`      |         yes          | apostrophe             | inside ``                                                                                 | outer includes surroundings                                                   |
+|         `` i` ``, `` a` ``         |     `.`      |         yes          | apostrophe             | inside `` ` ` ``                                                                          | outer includes surroundings                                                   |
 |             `i'`, `a'`             |     `.`      |         yes          | `'`                    | inside `''`                                                                               | outer includes surroundings                                                   |
 |             `i"`, `a"`             |     `.`      |         yes          | `"`                    | inside `""`                                                                               | outer includes surroundings                                                   |
 |             `i.`, `a.`             |     `.`      |         yes          | `.`                    | inside `..`                                                                               | outer includes surroundings                                                   |
@@ -149,7 +149,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |     `gj`     | `o`,`x` |          `.`           | GoDown when wrapped                                                   |                                   | uses cursor position     | uses selection               | `vgj` will select one line down                                                  |
 |     `gk`     | `o`,`x` |          `.`           | GoUp when wrapped                                                     |                                   | uses cursor position     | uses selection               | `vgj` will select one line up                                                    |
 |     `gK`     | `o`,`x` |          `.`           | column down until indent or shorter line                              |                                   | won't jump               | uses selection               | `vgK` will select column from cursor position until indent or shorter line       |
-|     `gl`     | `o`,`x` |                        | Jump toLastChange                                                     |                                   | won't jump               | uses selection               | `vgl` will select from cursor position until last change                         |
+|     `gl`     | `o`,`x` |                        | Jump toLastChange (not working on Windows10)                          |                                   | won't jump               | uses selection               | `vgl` will select from cursor position until last change                         |
 |     `gL`     | `o`,`x` |          `.`           | Url                                                                   |                                   | will find and jump       | relesects                    | `vgL` will select url                                                            |
 |     `gm`     | `o`,`x` |                        | Last change                                                           |                                   | won't jump               | reselects                    | `vgm` will select last change                                                    |
 |     `gn`     | `o`,`x` | `;`forward `,`backward | +goto next (only textobj with `@`,`_`)                                |                                   | followed by operator     | uses selection               | `vgniu` will select from cursor position until next quotation                    |
@@ -205,13 +205,13 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |  `gE`  | `n`,`x` | goto previous endOfWord                                  |                        |                    |                                                          |
 |  `gf`  |   `n`   | goto file under cursor                                   |                        |                    |                                                          |
 |  `gg`  | `n`,`x` | goto first line                                          |                        |                    |                                                          |
-|  `gh`  |   `n`   | paste LastSearch register                                |          `.`           |                    |                                                          |
+|  `gh`  |   `n`   | paste LastSearch register (not working on Windows10)     |          `.`           |                    |                                                          |
 |  `gi`  | `n`,`x` | goto insert                                              |                        |                    |                                                          |
 |  `gI`  | `n`,`x` | select reference (under cursor)                          |                        |                    |                                                          |
 |  `gj`  | `n`,`x` | goto Down (when wrapped)                                 |                        |                    |                                                          |
 |  `gJ`  | `n`,`x` | Join below Line                                          |          `.`           |                    |                                                          |
 |  `gk`  | `n`,`x` | goto Up (when wrapped)                                   |                        |                    |                                                          |
-|  `gl`  | `n`,`x` | goto last change                                         |                        |                    |                                                          |
+|  `gl`  | `n`,`x` | goto last change (not working on Windows10)              |                        |                    |                                                          |
 |  `gm`  |   `n`   | goto mid window                                          |                        |                    |                                                          |
 |  `gM`  | `n`,`x` | goto mid line                                            |                        |                    |                                                          |
 |  `gn`  | `n`,`x` | +goto next (only textobj with `@`,`_`)                   | `;`forward `,`backward |        yes         | `gniu` go to next quotation                              |
@@ -270,15 +270,15 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description                                        |      repeater key      |
-| :----: | :---------: | :------------------------------------------------- | :--------------------: |
-| `gpc`  | `n`,`o`,`x` | go to previous comment                             | `;`forward `,`backward |
-| `gpd`  | `n`,`o`,`x` | go to previous diagnostic                          | `;`forward `,`backward |
-| `gph`  | `n`,`o`,`x` | go to previous git hunk (not working on Windows10) | `;`forward `,`backward |
-| `gpiy` | `n`,`o`,`x` | go to previous same_indent                         | `;`forward `,`backward |
-| `gpr`  | `n`,`o`,`x` | go to previous reference                           | `;`forward `,`backward |
-| `gpz`  | `n`,`o`,`x` | go to previous start of fold                       | `;`forward `,`backward |
-| `gpZ`  | `n`,`o`,`x` | go to previous start scope                         | `;`forward `,`backward |
+| Keymap |    Mode     | Description                                                                                                                                           |      repeater key      |
+| :----: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
+| `gpc`  | `n`,`o`,`x` | go to previous comment                                                                                                                                | `;`forward `,`backward |
+| `gpd`  | `n`,`o`,`x` | go to previous diagnostic                                                                                                                             | `;`forward `,`backward |
+| `gph`  | `n`,`o`,`x` | go to previous git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/_edit#gl-gh-gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
+| `gpiy` | `n`,`o`,`x` | go to previous same_indent                                                                                                                            | `;`forward `,`backward |
+| `gpr`  | `n`,`o`,`x` | go to previous reference                                                                                                                              | `;`forward `,`backward |
+| `gpz`  | `n`,`o`,`x` | go to previous start of fold                                                                                                                          | `;`forward `,`backward |
+| `gpZ`  | `n`,`o`,`x` | go to previous start scope                                                                                                                            | `;`forward `,`backward |
 
 </details>
 
@@ -286,15 +286,15 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description                                     |      repeater key      |
-| :----: | :---------: | :---------------------------------------------- | :--------------------: |
-| `gnc`  | `n`,`o`,`x` | go to next comment                              | `;`forward `,`backward |
-| `gnd`  | `n`,`o`,`x` | go to next diagnostic                           | `;`forward `,`backward |
-| `gnh`  | `n`,`o`,`x` | go to next git hunk  (not working on Windows10) | `;`forward `,`backward |
-| `gniy` | `n`,`o`,`x` | go to next same_indent                          | `;`forward `,`backward |
-| `gnr`  | `n`,`o`,`x` | go to next reference                            | `;`forward `,`backward |
-| `gnz`  | `n`,`o`,`x` | go to next start of fold                        | `;`forward `,`backward |
-| `gnZ`  | `n`,`o`,`x` | go to next start scope                          | `;`forward `,`backward |
+| Keymap |    Mode     | Description                                                                                                                                        |      repeater key      |
+| :----: | :---------: | :------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
+| `gnc`  | `n`,`o`,`x` | go to next comment                                                                                                                                 | `;`forward `,`backward |
+| `gnd`  | `n`,`o`,`x` | go to next diagnostic                                                                                                                              | `;`forward `,`backward |
+| `gnh`  | `n`,`o`,`x` | go to next git hunk  ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/_edit#gl-gh-gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
+| `gniy` | `n`,`o`,`x` | go to next same_indent                                                                                                                             | `;`forward `,`backward |
+| `gnr`  | `n`,`o`,`x` | go to next reference                                                                                                                               | `;`forward `,`backward |
+| `gnz`  | `n`,`o`,`x` | go to next start of fold                                                                                                                           | `;`forward `,`backward |
+| `gnZ`  | `n`,`o`,`x` | go to next start scope                                                                                                                             | `;`forward `,`backward |
 
 </details>
 
@@ -673,22 +673,22 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 
 <details open><summary></summary>
 
-| Key Combination | mode  | Description                                                                                                     |
-| :-------------: | :---: | :-------------------------------------------------------------------------------------------------------------- |
-|    `ctrl+a`     |  `n`  | increase number under cursor                                                                                    |
-|    `ctrl+b`     |  `n`  | scroll down by page                                                                                             |
-|    `ctrl+e`     |  `n`  | scroll down by line                                                                                             |
-|    `ctrl+d`     |  `n`  | scroll down by half page                                                                                        |
-|    `ctrl+f`     |  `n`  | scroll up by page                                                                                               |
-|    `ctrl+i`     |  `n`  | jump to next in `:jumps`                                                                                        |
-|    `ctrl+o`     |  `n`  | jump to previous in `:jumps`                                                                                    |
-|    `ctrl+r`     |  `n`  | redo (`u` to undo)                                                                                              |
-|    `ctrl+u`     |  `n`  | scroll up by half page                                                                                          |
-|    `ctrl+v`     |  `n`  | visual block mode                                                                                               |
-|    `ctrl+w`     |  `n`  | See [vscode-window-commands.vim](https://github.com/vscode-neovim/vscode-neovim/vim/vscode-window-commands.vim) |
-|    `ctrl+x`     |  `n`  | decrease number under cursor                                                                                    |
-|    `ctrl+y`     |  `n`  | scroll up by line                                                                                               |
-|    `ctrl+/`     |  `n`  | comment line                                                                                                    |
+| Key Combination |  mode   | Description                                                                                                     |
+| :-------------: | :-----: | :-------------------------------------------------------------------------------------------------------------- |
+|    `ctrl+a`     | `n`,`v` | increase number under cursor                                                                                    |
+|    `ctrl+b`     | `n`,`v` | scroll down by page                                                                                             |
+|    `ctrl+e`     | `n`,`v` | scroll down by line                                                                                             |
+|    `ctrl+d`     | `n`,`v` | scroll down by half page                                                                                        |
+|    `ctrl+f`     | `n`,`v` | scroll up by page                                                                                               |
+|    `ctrl+i`     |   `n`   | jump to next in `:jumps`                                                                                        |
+|    `ctrl+o`     |   `n`   | jump to previous in `:jumps`                                                                                    |
+|    `ctrl+r`     |   `n`   | redo (`u` to undo)                                                                                              |
+|    `ctrl+u`     | `n`,`v` | scroll up by half page                                                                                          |
+|    `ctrl+v`     | `n`,`v` | visual block mode                                                                                               |
+|    `ctrl+w`     | `n`,`v` | See [vscode-window-commands.vim](https://github.com/vscode-neovim/vscode-neovim/vim/vscode-window-commands.vim) |
+|    `ctrl+x`     | `n`,`v` | decrease number under cursor                                                                                    |
+|    `ctrl+y`     | `n`,`v` | scroll up by line                                                                                               |
+|    `ctrl+/`     | `n`,`v` | comment line                                                                                                    |
 
 </details>
 
