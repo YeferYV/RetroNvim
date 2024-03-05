@@ -208,7 +208,7 @@ end
 
 -- https://thevaluable.dev/vim-create-text-objects
 -- select indent by the same level:
-M.select_same_indent = function(skip_blank_line)
+_G.select_same_indent = function(skip_blank_line)
   local start_indent = vim.fn.indent(vim.fn.line('.'))
 
   function is_blank_line(line) return string.match(vim.fn.getline(line), '^%s*$') end
@@ -734,6 +734,12 @@ keymap("v", "p", '"_c<c-r>+<esc>', { noremap = true, silent = true, desc = "Past
 if not vim.g.vscode then
   keymap("n", "<S-q>", "<cmd>quit<CR>", opts)
   keymap("n", "<S-r>", "<cmd>write<cr>", opts)
+else
+  map("n", "<S-q>", function() require('vscode-neovim').call('workbench.action.closeActiveEditor') end, opts)
+  map("n", "<S-r>", function()
+    require('vscode-neovim').call('editor.action.format')
+    require('vscode-neovim').call('workbench.action.files.save')
+  end, opts)
 end
 
 -- Macros and :normal <keys> repeatable
@@ -887,6 +893,7 @@ map(
 )
 
 -- goto changes:
+map({ "n", "o", "x" }, "g.", "`.", { silent = true, desc = "go to last change" })
 keymap("n", "g,", "g,", { noremap = true, silent = true, desc = "go forward in :changes" })  -- Formatting will lose track of changes
 keymap("n", "g;", "g;", { noremap = true, silent = true, desc = "go backward in :changes" }) -- Formatting will lose track of changes
 
@@ -901,7 +908,7 @@ map('x', 'go', 'omcj<cmd>nohl<cr>', { remap = true, desc = "visual selected to v
 map('x', 'gO', 'omck<cmd>nohl<cr>', { remap = true, desc = "visual selected to virtual cursor (ctrl+right=nextword)" })
 
 -- paste LastSearch Register:
-keymap("n", "gh", '"/p', { silent = true, desc = "paste lastSearch register" })
+keymap("n", "gH", '"/p', { silent = true, desc = "paste lastSearch register" })
 
 -- Redo Register:
 keymap("n", "gr", '"1p', { silent = true, desc = "Redo register (dot to Paste forward the rest of register)" })
@@ -982,9 +989,6 @@ map(
 
 -- _git_hunk_(next/prev_autojump_unsupported)
 map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>", { silent = true, desc = "Git hunk textobj" })
-
--- _jump_to_last_change
-map({ "n", "o", "x" }, "gl", "`.", { silent = true, desc = "Jump to last change" })
 
 -- https://www.reddit.com/r/vim/comments/xnuaxs/last_change_text_object
 map("o", "gm", "<cmd>normal! `[v`]<cr>", { silent = true, desc = "Last change textobj" })
@@ -1185,13 +1189,13 @@ map(
 map(
   { "x", "o" },
   "iy",
-  ":<c-u> lua M.select_same_indent(true)<cr>",
+  ":<c-u> lua select_same_indent(true)<cr>",
   { silent = true, desc = "same_indent skip_blankline textobj" }
 )
 map(
   { "x", "o" },
   "ay",
-  ":<c-u> lua M.select_same_indent(false)<cr>",
+  ":<c-u> lua select_same_indent(false)<cr>",
   { silent = true, desc = "same_indent with_blankline textobj" }
 )
 
@@ -1321,6 +1325,8 @@ local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_p
 )
 map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk (vscode only)" })
 map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk (vscode only)" })
+map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "Next GitHunk (vscode only)" })
+map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "Prev GitHunk (vscode only)" })
 
 -- _references_repeatable
 local next_reference, prev_reference = ts_repeat_move.make_repeatable_move_pair(

@@ -736,13 +736,6 @@
         "args": "<cmd>lua require('vscode-neovim').call('editor.action.format') require('vscode-neovim').call('workbench.action.files.save')<cr>",
         "when": "editorTextFocus && neovim.mode == normal"
       },
-      { "key": "shift+q", "command": "workbench.action.closeActiveEditor", "when": "editorTextFocus && neovim.mode == normal" },
-      {
-        "key": "shift+r",
-        "command": "vscode-neovim.send",
-        "args": "<cmd>lua require('vscode-neovim').call('editor.action.format') require('vscode-neovim').call('workbench.action.files.save')<cr>",
-        "when": "editorTextFocus && neovim.mode == normal"
-      },
 
       { "key": "ctrl+alt+right", "command": "cursorWordPartRightSelect" },
 
