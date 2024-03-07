@@ -750,7 +750,5 @@
     "VSpaceCode.whichkey"
   ],
   "extensionDependencies": [
-    "asvetliakov.vscode-neovim",
-    "VSpaceCode.whichkey"
   ]
 }
