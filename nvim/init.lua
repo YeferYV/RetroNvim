@@ -54,12 +54,9 @@ local plugins = {
   -- Text-Objects
   { "echasnovski/mini.nvim",    commit = "e8a413b1a29f05bb556a804ebee990eb54479586" },
   {
-    "kana/vim-textobj-user",
-    commit = "41a675ddbeefd6a93664a4dc52f302fe3086a933",
+    "coderifous/textobj-word-column.vim",  -- delimited by comments or indentation
+    commit = "cb40e1459817a7fa23741ff6df05e4481bde5a33",
     event = "VeryLazy",
-    dependencies = {
-      { "coderifous/textobj-word-column.vim", commit = "cb40e1459817a7fa23741ff6df05e4481bde5a33" }, -- delimited by comments or indentation
-    }
   },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -76,7 +73,21 @@ local plugins = {
 
   -- UI
   { 'olivercederborg/poimandres.nvim' },
-
+  {
+    "lewis6991/gitsigns.nvim",
+    commit = "372d5cb485f2062ac74abc5b33054abac21d8b58",
+    event = "VeryLazy",
+    opts = {
+      signs = {
+        add          = { text = "│" },
+        change       = { text = "│" },
+        delete       = { text = "│" },
+        topdelete    = { text = "" },
+        changedelete = { text = "~" },
+        untracked    = { text = '┆' },
+      },
+    }
+  },
 }
 
 lazy.setup(plugins, opts)
@@ -1327,6 +1338,15 @@ map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk (vscode o
 map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk (vscode only)" })
 map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "Next GitHunk (vscode only)" })
 map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "Prev GitHunk (vscode only)" })
+
+if not vim.g.vscode then
+  local gs = require("gitsigns")
+  local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
+  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { silent = true, desc = "Next GitHunk" })
+  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { silent = true, desc = "Prev GitHunk" })
+  map({ "n", "x", "o" }, "<leader>gp", function() gs.preview_hunk() end, { silent = true, desc = "Preview GitHunk" })
+  map({ "n", "x", "o" }, "<leader>gr", function() gs.reset_hunk() end, { silent = true, desc = "Reset GitHunk" })
+end
 
 -- _references_repeatable
 local next_reference, prev_reference = ts_repeat_move.make_repeatable_move_pair(
