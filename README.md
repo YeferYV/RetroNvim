@@ -1,6 +1,10 @@
+<video controls autoplay loop muted playsinline src="https://github.com/yeferyv/retronvim/blob/main/assets/demo.mp4?raw=true" title="Demo"></video>
+
 <div align="center"><p>
 
-Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
+Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + minimal zsh/bash/git-bash setup
+
+<!-- <img src="https://github.com/yeferyv/retronvim/blob/main/assets/demo.gif?raw=true"> -->
 
 ---
 
@@ -39,12 +43,13 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
    - [Suggestion keymaps](#suggestion-keymaps)
    - [Editor keymaps (keybindings.json)](#editor-keymaps-keybindingsjson)
    - [Native neovim ctrl keys](#native-neovim-ctrl-keys)
-4. [Touchcursor-like Keyboard Layout](#touchcursor-like-keyboard-layout)
-5. Installation
+4. [If zsh/bash/git-bash Setup Enabled](#if-zsh/bash/git-bash-setup-enabled)
+5. [If Touchcursor Keyboard Layout Started](#if-touchcursor-keyboard-layout-started)
+6. Installation
    - [Dependencies Installation](#dependencies-installation)
    - [Treesitter Installation](#treesitter-installation)
-6. [Vim Cheatsheets](#vim-cheatsheets)
-7. [Related projects](#related-projects)
+7. [Vim Cheatsheets](#vim-cheatsheets)
+8. [Related projects](#related-projects)
 
 </details>
 
@@ -96,8 +101,8 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |             `iW`, `aW`             |     `.`      |                      | \_WORD                 | from cursor to end of WORD (includes punctuation)                                         | outer includes start of word                                                  |
 |             `ix`, `ax`             |     `.`      |         yes          | \_Hex                  | hexadecimal number or color                                                               | outer includes hash `#`                                                       |
 |             `iy`, `ay`             |     `.`      |                      | same_indent            | surrounding lines with only same indentation (delimited by blankspaces)                   | outer includes blankspaces                                                    |
-|             `iz`, `az`             |     `.`      |                      | fold                   | inside folds without line above neither below                                             | outer includes line above andd below                                          |
-|             `iZ`, `aZ`             |     `.`      |         yes          | closedFold             | closed fold                                                                               | outer includes one line after the last folded line                            |
+|             `iz`, `az`             |     `.`      |                      | @fold                  | inside folds without line above neither below (supported only inside neovim)              | outer includes line above andd below                                          |
+|             `iZ`, `aZ`             |     `.`      |         yes          | closedFold             | closed fold (supported only inside neovim)                                                | outer includes one line after the last folded line                            |
 |             `i=`, `a=`             |     `.`      |         yes          | @Assignment.rhs-lhs    | assignmentt right and left without type keyword neither semicolons                        | inner: left assignment, outer: right assignment                               |
 |             `i#`, `a#`             |     `.`      |         yes          | @Number                | like `_number` but treesitter aware                                                       | inner and outer are the same (only pure digits)                               |
 |             `i?`, `a?`             |     `.`      |         yes          | \_Prompt               | will ask you for enter the delimiters of a text object (useful for dot repeteability)     | outer includes surroundings                                                   |
@@ -143,7 +148,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 |        `gf`        | `o`,`x` |     `.`      | Next find                                                     |                                          | will find and jump       | uses selection               | `cgf???` will replace last search with `???` forwardly                           |
 |        `gF`        | `o`,`x` |     `.`      | Prev find                                                     |                                          | will find and jump       | uses selection               | `cgF???` will replace last search with `???` backwardly                          |
 |        `gg`        | `o`,`x` |     `.`      | First line                                                    |                                          | uses cursor position     | uses selection               | `vgg` will select until first line                                               |
-|        `gh`        | `o`,`x` |     `.`      | Git hunk (requires gitsigns so only works inside neovim)      |                                          | won't jump               | relesects                    | `vgh` will select modified code                                                  |
+|        `gh`        | `x`     |     `.`      | Git hunk (workaround in vscode but race condition may happen) |                                          | won't jump               | relesects                    | `vgh` will select modified code                                                  |
 |        `gi`        | `n`,`x` |              | Last position of cursor in insert mode                        | will find and jump                       |                          | uses selection               | `vgi` will select until last insertion                                           |
 |        `gI`        | `o`,`x` |              | select reference (under cursor)                               |                                          | select word under cursor | reselects                    | `vgI` will select word undercursor                                               |
 |        `gj`        | `o`,`x` |     `.`      | GoDown when wrapped                                           |                                          | uses cursor position     | uses selection               | `vgj` will select one line down                                                  |
@@ -318,11 +323,11 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 | `<space><space>{`  | `n`,`x`,`o` | Prev Blankline                             | `;`forward `,`backward |
 | `<space><space>)`  | `n`,`x`,`o` | Next Paragraph                             | `;`forward `,`backward |
 | `<space><space>(`  | `n`,`x`,`o` | Prev Paragraph                             | `;`forward `,`backward |
-| `<space><space>]`  | `n`,`x`,`o` | End Fold                                   | `;`forward `,`backward |
-| `<space><space>[`  | `n`,`x`,`o` | Start Fold                                 | `;`forward `,`backward |
+| `<space><space>]`  | `n`,`x`,`o` | @End_of_fold (only inside neovim)          | `;`forward `,`backward |
+| `<space><space>[`  | `n`,`x`,`o` | @Start_of_fold (only inside neovim)        | `;`forward `,`backward |
 | `<space><space>+`  | `n`,`x`,`o` | next startline                             | `;`forward `,`backward |
 | `<space><space>-`  | `n`,`x`,`o` | Prev StartLine                             | `;`forward `,`backward |
-|    `<leader>uu`    |     `n`     | Go to parent fold (VSCode only)            |          `.`           |
+|    `<leader>uu`    |     `n`     | Go to parent fold (only inside VSCode)     |          `.`           |
 | `<space><space>p`  |   `n`,`x`   | Paste after (secondary clipboard)          |          `.`           |
 | `<space><space>P`  |   `n`,`x`   | Paste before (secondary clipboard)         |          `.`           |
 | `<space><space>y`  |   `n`,`x`   | Yank (secondary clipboard)                 |                        |
@@ -411,8 +416,6 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 | `gpan` | `n`,`o`,`x` | outer \_number        | `;`forward `,`backward |
 | `gpau` | `n`,`o`,`x` | outer \_quote         | `;`forward `,`backward |
 | `gpax` | `n`,`o`,`x` | outer \_Hex           | `;`forward `,`backward |
-| `gpz`  | `n`,`o`,`x` | Previous Start Fold   | `;`forward `,`backward |
-| `gpZ`  | `n`,`o`,`x` | Prev scope            | `;`forward `,`backward |
 | `gpiB` | `n`,`o`,`x` | @block.inner          | `;`forward `,`backward |
 | `gpiq` | `n`,`o`,`x` | @call.inner           | `;`forward `,`backward |
 | `gpiQ` | `n`,`o`,`x` | @class.inner          | `;`forward `,`backward |
@@ -458,8 +461,6 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 | `gnan` | `n`,`o`,`x` | outer \_number        | `;`forward `,`backward |
 | `gnau` | `n`,`o`,`x` | outer \_quote         | `;`forward `,`backward |
 | `gnax` | `n`,`o`,`x` | outer \_Hex           | `;`forward `,`backward |
-| `gnz`  | `n`,`o`,`x` | Next Start Fold       | `;`forward `,`backward |
-| `gnZ`  | `n`,`o`,`x` | Next scope            | `;`forward `,`backward |
 | `gniB` | `n`,`o`,`x` | @block.inner          | `;`forward `,`backward |
 | `gniq` | `n`,`o`,`x` | @call.inner           | `;`forward `,`backward |
 | `gniQ` | `n`,`o`,`x` | @class.inner          | `;`forward `,`backward |
@@ -583,21 +584,24 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 | :------------------: | :------------------------------------------------------------ |
 |         `a`          | Create new file (`path/to/file` creates 2 folders and 1 file) |
 |         `A`          | Create new folder (`path/to/somewhere` creates 3 folders)     |
+|         `d`          | delete file                                                   |
+|         `gg`         | focus first file                                              |
+|         `G`          | focus last file                                               |
 |         `h`          | Collapse list                                                 |
 |         `j`          | Move down                                                     |
 |         `k`          | Move up                                                       |
 |         `l`          | Expand list                                                   |
-|         `o`          | open without passing focus                                    |
-|         `r`          | Rename file                                                   |
-|         `d`          | delete file                                                   |
-|         `y`          | copy file                                                     |
-|         `x`          | cut file                                                      |
+|         `o`          | open without passing focus replacing current tab              |
+|         `O`          | open without passing focus in a new tab                       |
 |         `p`          | paste file                                                    |
+|         `q`          | close sidebar visibility                                      |
+|         `r`          | Rename file                                                   |
 |         `R`          | refresh file explorer                                         |
-|       `enter`        | Open file                                                     |
-|         `gg`         | focus first file                                              |
-|         `G`          | focus last file                                               |
+|         `v`          | Open selected file to the side and toggle sidebar visibility  |
+|         `x`          | cut file                                                      |
+|         `y`          | copy file                                                     |
 |         `za`         | toggle expand                                                 |
+|       `enter`        | Open file                                                     |
 |         `/`          | search                                                        |
 |        `Down`        | Focus down and preview file in the files explorer             |
 |         `Up`         | Focus up and preview file in the files explorer               |
@@ -605,8 +609,6 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 | `alt+j` or `shift+j` | Move focus down 10 times in list view                         |
 | `alt+k` or `shift+k` | Move focus up 10 times in list view                           |
 | `alt+l` or `shift+l` | Select and toggle sidebar visibility                          |
-|         `v`          | Open selected file to the side and toggle sidebar visibility  |
-|         `q`          | close sidebar visibility                                      |
 | `<unmapped letter>`  | find (by first `<unmapped letter>` of file/folder) and jump   |
 
 </details>
@@ -720,7 +722,26 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout
 
 ---
 
-## Touchcursor-like Keyboard Layout
+## If zsh/bash/git-bash Setup Enabled
+
+<details><summary></summary>
+
+|   keymap    | description                            |
+| :---------: | :------------------------------------- |
+| `vi<enter>` | open retronvim's neovim                |
+| `y<enter>`  | open yazi (changes directory on exit)  |
+|   `alt+h`   | enter vim mode                         |
+|   `alt+j`   | previous history and enter vim-mode    |
+|   `alt+k`   | next history and enter vim-mode        |
+|   `alt+l`   | complete suggestion and enter vim-mode |
+|  `ctrl+r`   | search history with fzf                |
+|  `ctrl+l`   | clear screen                           |
+
+</details>
+
+---
+
+## If Touchcursor Keyboard Layout Started
 
 <details open><summary></summary>
 
@@ -797,11 +818,16 @@ After installing retronvim extension, open
 
 <details open><summary></summary>
 
-Text objects that has `@` requires treesitter, retronvim installs by default treesitters for
+Text objects that has a `@` prefix requires a treesitter-grammar, retronvim installs by default treesitter-grammars for
 `python`, `bash`, `javascript`, `json`, `html`, `css`, `c`, `lua`.
-Install treesitter for your programming language with `:TSInstall <your programming language>`.
+Install treesitter-grammar for your programming language with `:TSInstall <your programming language>`.
 
-example: in normal mode type `:` to open vim-command-line then type `TSInstall cpp` (cpp requires a cpp compiler)
+example: in normal mode type `:` to open vim-command-line then type `TSInstall cpp` (cpp treesitter-grammar requires a cpp compiler)
+
+recommended: for new retronvim releases update neovim extensions with `:Lazy update` then update all the treesitter-grammars with `:TSUpdate` then relaunch vscode
+(just in case you find warnings or text-object not working as previous release)
+
+tip: to make a clean neovim-extensions/tressitter-grammar installation remove the folder `rm -r -force ~/.local/share/nvim` (on linux and mac), `rm -rf ~/AppData/Local/nvim-data` (on Windows 10/11) and relaunch vscode
 
 </details>
 
@@ -811,7 +837,11 @@ example: in normal mode type `:` to open vim-command-line then type `TSInstall c
 
 - [devhints.io/vim](https://devhints.io/vim)
 - [viemu.com](http://www.viemu.com/a_vi_vim_graphical_cheat_sheet_tutorial.html)
-- [vscode with embedded neovim](https://www.youtube.com/watch?v=g4dXZ0RQWdw) related tutorial most of the keybindings are the same as to RetroNvim
+- [vscode with embedded neovim](https://www.youtube.com/watch?v=g4dXZ0RQWdw) youtube tutorial most of the keybindings are similar to RetroNvim
+- [treesitter text-objects demo](https://www.youtube.com/watch?v=FuYQ7M73bC0) youtube tutorial the keybindings are similar to RetroNvim
+- [treesitter text-objects extended](https://www.youtube.com/watch?v=CEMPq_r8UYQ) youtube tutorial the keybindings are similar to RetroNvim
+- [text-objects from A-Z](https://www.youtube.com/watch?v=JnD9Uro_oqc) youtube tutorial the keybindings are similar to RetroNvim
+- [motion-operators from A-Z](https://www.youtube.com/watch?v=HhZJ1kbzkj0) youtube tutorial the keybindings are the same as to RetroNvim
 
 </details>
 
@@ -819,7 +849,7 @@ example: in normal mode type `:` to open vim-command-line then type `TSInstall c
 
 <details open><summary></summary>
 
-- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) neovim with text objects from A-Z, based on [lazyvim](https://github.com/LazyVim/LazyVim)
+- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) (terminal version of retronvim) neovim with text objects from A-Z, based on [lazyvim](https://github.com/LazyVim/LazyVim)
 - [yeferyv/archrice](https://github.com/yeferyv/archrice) arch linux rice with neovim with text object from A-Z, based on [neovim-from-scratch](https://github.com/LunarVim/Neovim-from-scratch)
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) vscode vim extension with some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
 - [vspacecode](https://github.com/vspacecode/vspacecode) vscode vim extension with some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
