@@ -2,6 +2,8 @@
 -- │ Plugins │
 -- ╰─────────╯
 
+local _, vscode = pcall(require, "vscode-neovim")
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -12,6 +14,9 @@ if not vim.loop.fs_stat(lazypath) then
     "--branch=stable", -- latest stable release
     lazypath,
   })
+  if vim.g.vscode then
+    vscode.notify("Please wait until neovim finishes downloading extensions (view status bar) and close if any log window appears")
+  end
 end
 
 vim.opt.rtp:prepend(lazypath)
@@ -52,7 +57,7 @@ local plugins = {
   { "machakann/vim-columnmove", commit = "21a43d809a03ff9bf9946d983d17b3a316bf7a64", event = "VeryLazy" },
 
   -- Text-Objects
-  { "echasnovski/mini.nvim",    commit = "e8a413b1a29f05bb556a804ebee990eb54479586" },
+  { "echasnovski/mini.nvim",    commit = "5d841fcca666bc27ca777807a63381ce2cf6e2f9" },
   {
     "coderifous/textobj-word-column.vim",  -- delimited by comments or indentation
     commit = "cb40e1459817a7fa23741ff6df05e4481bde5a33",
@@ -60,22 +65,23 @@ local plugins = {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    commit = "c36681bb496ebce2946867459ed08774cb61788c",
+    commit = "567a76780cd4f982dae1ec57e3dad6174bef3680",
+    build = ":TSUpdate", -- treesitter works with specific versions of language parsers
     dependencies = {
-      { "nvim-treesitter/nvim-treesitter-textobjects", commit = "e69a504baf2951d52e1f1fbb05145d43f236cbf1" },
+      { "nvim-treesitter/nvim-treesitter-textobjects", commit = "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" },
     }
   },
   {
     "chrisgrieser/nvim-various-textobjs",
-    commit = "c0aa3ff33eaf9e7bc827ea918f92ac47d6037118",
-    config = { useDefaultKeymaps = false, lookForwardSmall = 30, lookForwardBig = 30 },
+    commit = "6cefba253d69306004a641a11c395381ae428903",
+    opts = { useDefaultKeymaps = false, lookForwardSmall = 30, lookForwardBig = 30 },
   },
 
   -- UI
   { 'olivercederborg/poimandres.nvim' },
   {
     "lewis6991/gitsigns.nvim",
-    commit = "372d5cb485f2062ac74abc5b33054abac21d8b58",
+    commit = "b45ff86f5618d1421a88c12d4feb286b80a1e2d3",
     event = "VeryLazy",
     opts = {
       signs = {
@@ -96,29 +102,31 @@ lazy.setup(plugins, opts)
 -- │ Opts │
 -- ╰──────╯
 
-vim.opt.autoindent = true         -- auto indent new lines
-vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
-vim.opt.copyindent = true         -- Copy the previous indentation on autoindenting
-vim.opt.expandtab = true          -- convert tabs to spaces
-vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
-vim.opt.ignorecase = true         -- ignore case in search patterns
-vim.opt.laststatus = 3            -- laststatus=3 global status line (line between splits)
-vim.opt.number = true             -- set numbered lines
-vim.opt.numberwidth = 4           -- set number column width to 2 {default 4}
-vim.opt.preserveindent = true     -- Preserve indent structure as much as possible
-vim.opt.shiftwidth = 2            -- the number of spaces inserted for each indentation
-vim.opt.showmode = false          -- we don't need to see things like -- INSERT -- anymore
-vim.opt.smartcase = true          -- smart case
-vim.opt.smartindent = true        -- make indenting smarter again
-vim.opt.splitbelow = true         -- force all horizontal splits to go below current window
-vim.opt.splitright = true         -- force all vertical splits to go to the right of current window
-vim.opt.tabstop = 2               -- insert 2 spaces for a tab
-vim.opt.termguicolors = true      -- set term gui colors (most terminals support this)
-vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to complete (in milliseconds)
-vim.opt.wrap = false              -- display lines as one long line
-vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
-vim.opt.iskeyword:append "-"      -- hyphenated words recognized by searches
-vim.g.indent_object_ignore_blank_line = false
+vim.opt.autoindent = true                      -- auto indent new lines
+vim.opt.clipboard = "unnamedplus"              -- allows neovim to access the system clipboard
+vim.opt.copyindent = true                      -- Copy the previous indentation on autoindenting
+vim.opt.expandtab = true                       -- convert tabs to spaces
+vim.opt.hlsearch = true                        -- highlight all matches on previous search pattern
+vim.opt.ignorecase = true                      -- ignore case in search patterns
+vim.opt.laststatus = 3                         -- laststatus=3 global status line (line between splits)
+vim.opt.number = true                          -- set numbered lines
+vim.opt.numberwidth = 4                        -- set number column width to 2 {default 4}
+vim.opt.preserveindent = true                  -- Preserve indent structure as much as possible
+vim.opt.shiftwidth = 2                         -- the number of spaces inserted for each indentation
+vim.opt.showmode = false                       -- we don't need to see things like -- INSERT -- anymore
+vim.opt.smartcase = true                       -- smart case
+vim.opt.smartindent = true                     -- make indenting smarter again
+vim.opt.splitbelow = true                      -- force all horizontal splits to go below current window
+vim.opt.splitright = true                      -- force all vertical splits to go to the right of current window
+vim.opt.tabstop = 2                            -- insert 2 spaces for a tab
+vim.opt.termguicolors = true                   -- set term gui colors (most terminals support this)
+vim.opt.timeoutlen = 500                       -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.wrap = false                           -- display lines as one long line
+vim.opt.shortmess:append "c"                   -- don't give |ins-completion-menu| messages
+vim.opt.iskeyword:append "-"                   -- hyphenated words recognized by searches
+vim.o.foldlevel = 99                           -- Disable folding at startup
+vim.o.foldmethod = "expr"                      -- expr = specify an expression to define folds
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"  -- folding using treesitter (grammar required)
 
 -- ╭──────────────╮
 -- │ Autocommands │
@@ -157,6 +165,28 @@ vim.cmd [[
   augroup end
 
 ]]
+
+------------------------------------------------------------------------------------------------------------------------
+
+local function vscode_select_git_hunk()
+  vim.defer_fn(function ()
+    vscode.action("workbench.action.editor.previousChange")
+    vscode.action("workbench.action.editor.nextChange")
+  end, 1)
+
+  vim.defer_fn(function ()
+    vim.cmd([[ execute "normal! \<esc>V" ]])
+  end, 150)
+
+  vim.defer_fn(function ()
+    vscode.action("editor.action.dirtydiff.next")
+    vscode.action("closeDirtyDiff")
+  end, 300)
+
+  vim.defer_fn(function ()
+    vim.cmd([[ execute "normal zz" ]])
+  end, 450)
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -675,8 +705,8 @@ configs.setup {
         ['gneaA'] = '@assignment.outer',
         ['gnea='] = '@assignment.lhs',
         ['gnea#'] = '@number.outer',
-        ["gnez"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-        ["gneZ"] = { query = "@fold", query_group = "folds", desc = "Next End Fold" },
+        ["gnez"] = { query = "@fold", query_group = "folds", desc = "Next End Fold" },
+        ["gneZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
 
         ['gneiB'] = '@block.inner',
         ['gneiq'] = '@call.inner',
@@ -831,8 +861,8 @@ map(
   "n",
   "<leader>uu",
   function()
-    require("vscode-neovim").action("editor.gotoParentFold")
-    require("vscode-neovim").action("cursorHome")
+    vscode.action("editor.gotoParentFold")
+    vscode.action("cursorHome")
   end,
   { desc = "goto parent fold (vscode only)" }
 )
@@ -999,7 +1029,11 @@ map(
 )
 
 -- _git_hunk_(next/prev_autojump_unsupported)
-map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>", { silent = true, desc = "Git hunk textobj" })
+if not vim.g.vscode then
+  map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>", { silent = true, desc = "Git hunk textobj" })
+else
+  map({ "x" }, "gh", vscode_select_git_hunk, opts)
+end
 
 -- https://www.reddit.com/r/vim/comments/xnuaxs/last_change_text_object
 map("o", "gm", "<cmd>normal! `[v`]<cr>", { silent = true, desc = "Last change textobj" })
@@ -1323,16 +1357,16 @@ map({ "n", "x", "o" }, "gpc", prev_comment, { silent = true, desc = "Prev Commen
 
 -- _goto_diagnostic_repeatable
 local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(
-  function() require("vscode-neovim").call("editor.action.marker.next") end,
-  function() require("vscode-neovim").call("editor.action.marker.prev") end
+  function() vscode.call("editor.action.marker.next") end,
+  function() vscode.call("editor.action.marker.prev") end
 )
 map({ "n", "x", "o" }, "gnd", next_diagnostic, { silent = true, desc = "Next Diagnostic (vscode only)" })
 map({ "n", "x", "o" }, "gpd", prev_diagnostic, { silent = true, desc = "Prev Diagnostic (vscode only)" })
 
 -- _gitsigns_chunck_repeatable
 local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(
-  function() require("vscode-neovim").call("workbench.action.editor.nextChange") end,
-  function() require("vscode-neovim").call("workbench.action.editor.previousChange") end
+  function() vscode.call("workbench.action.editor.nextChange") end,
+  function() vscode.call("workbench.action.editor.previousChange") end
 )
 map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk (vscode only)" })
 map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk (vscode only)" })

@@ -1,4 +1,4 @@
-<video controls autoplay loop muted playsinline src="https://github.com/yeferyv/retronvim/blob/main/assets/demo.mp4?raw=true" title="Demo"></video>
+<video controls autoplay loop muted playsinline src="https://github.com/YeferYV/RetroNvim/assets/37911404/4f7002a2-324e-4597-9644-5ab0cd7c5831" title="Demo"></video>
 
 <div align="center"><p>
 
@@ -724,7 +724,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 ## If zsh/bash/git-bash Setup Enabled
 
-<details><summary></summary>
+<details open><summary></summary>
 
 |   keymap    | description                            |
 | :---------: | :------------------------------------- |
