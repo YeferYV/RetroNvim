@@ -14,7 +14,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 **[<kbd> <br> Dependencies <br> </kbd>][Dependencies]**
 
 [Install]: #dependencies-installation
-[Keyboard-Layout]: #touchcursor-like-keyboard-layout
+[Keyboard-Layout]: #if-touchcursor-keyboard-layout-started
 [Wiki]: https://github.com/YeferYV/RetroNvim/wiki
 [Dependencies]: https://github.com/YeferYV/RetroNvim/wiki/dependencies
 
@@ -28,7 +28,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
    - [Neovim text object that starts with a/i](#neovim-text-object-that-starts-with-ai)
    - [Neovim text object that starts with g](#neovim-text-object-that-starts-with-g)
    - [Neovim Motions and Operators](#neovim-motions-and-operators)
-   - [Neovim Space TextObjects/Motions](#neovim-textobject-motions)
+   - [Neovim Space TextObjects/Motions](#neovim-space-textobject-motions)
    - [Neovim Mini.brackets](#neovim-minibrackets)
 2. Neovim Goto
    - [Neovim Go to Previous](#neovim-go-to-previous)
@@ -43,7 +43,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
    - [Suggestion keymaps](#suggestion-keymaps)
    - [Editor keymaps (keybindings.json)](#editor-keymaps-keybindingsjson)
    - [Native neovim ctrl keys](#native-neovim-ctrl-keys)
-4. [If zsh/bash/git-bash Setup Enabled](#if-zsh/bash/git-bash-setup-enabled)
+4. [If zsh/bash/git-bash Setup Enabled](#if-zsh-bash-git-bash-setup-enabled)
 5. [If Touchcursor Keyboard Layout Started](#if-touchcursor-keyboard-layout-started)
 6. Installation
    - [Dependencies Installation](#dependencies-installation)
@@ -148,7 +148,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |        `gf`        | `o`,`x` |     `.`      | Next find                                                     |                                          | will find and jump       | uses selection               | `cgf???` will replace last search with `???` forwardly                           |
 |        `gF`        | `o`,`x` |     `.`      | Prev find                                                     |                                          | will find and jump       | uses selection               | `cgF???` will replace last search with `???` backwardly                          |
 |        `gg`        | `o`,`x` |     `.`      | First line                                                    |                                          | uses cursor position     | uses selection               | `vgg` will select until first line                                               |
-|        `gh`        | `x`     |     `.`      | Git hunk (workaround in vscode but race condition may happen) |                                          | won't jump               | relesects                    | `vgh` will select modified code                                                  |
+|        `gh`        |   `x`   |     `.`      | Git hunk (workaround in vscode but race condition may happen) |                                          | won't jump               | relesects                    | `vgh` will select modified code                                                  |
 |        `gi`        | `n`,`x` |              | Last position of cursor in insert mode                        | will find and jump                       |                          | uses selection               | `vgi` will select until last insertion                                           |
 |        `gI`        | `o`,`x` |              | select reference (under cursor)                               |                                          | select word under cursor | reselects                    | `vgI` will select word undercursor                                               |
 |        `gj`        | `o`,`x` |     `.`      | GoDown when wrapped                                           |                                          | uses cursor position     | uses selection               | `vgj` will select one line down                                                  |
@@ -362,16 +362,16 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description                                                                                                                                           |      repeater key      |
-| :----: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
-| `gpc`  | `n`,`o`,`x` | go to previous comment                                                                                                                                | `;`forward `,`backward |
-| `gpd`  | `n`,`o`,`x` | go to previous diagnostic                                                                                                                             | `;`forward `,`backward |
-| `gph`  | `n`,`o`,`x` | go to previous git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/_edit#gl-gh-gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
-| `gpH`  | `n`,`o`,`x` | go to previous git hunk (working on Windows10)                                                                                                        | `;`forward `,`backward |
-| `gpiy` | `n`,`o`,`x` | go to previous same_indent                                                                                                                            | `;`forward `,`backward |
-| `gpr`  | `n`,`o`,`x` | go to previous reference                                                                                                                              | `;`forward `,`backward |
-| `gpz`  | `n`,`o`,`x` | go to previous start of fold                                                                                                                          | `;`forward `,`backward |
-| `gpZ`  | `n`,`o`,`x` | go to previous start scope                                                                                                                            | `;`forward `,`backward |
+| Keymap |    Mode     | Description                                                                                                                                |      repeater key      |
+| :----: | :---------: | :----------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
+| `gpc`  | `n`,`o`,`x` | go to previous comment                                                                                                                     | `;`forward `,`backward |
+| `gpd`  | `n`,`o`,`x` | go to previous diagnostic                                                                                                                  | `;`forward `,`backward |
+| `gph`  | `n`,`o`,`x` | go to previous git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/#gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
+| `gpH`  | `n`,`o`,`x` | go to previous git hunk (working on Windows10)                                                                                             | `;`forward `,`backward |
+| `gpiy` | `n`,`o`,`x` | go to previous same_indent                                                                                                                 | `;`forward `,`backward |
+| `gpr`  | `n`,`o`,`x` | go to previous reference                                                                                                                   | `;`forward `,`backward |
+| `gpz`  | `n`,`o`,`x` | go to previous start of fold                                                                                                               | `;`forward `,`backward |
+| `gpZ`  | `n`,`o`,`x` | go to previous start scope                                                                                                                 | `;`forward `,`backward |
 
 </details>
 
@@ -379,16 +379,16 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description                                                                                                                                       |      repeater key      |
-| :----: | :---------: | :------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------: |
-| `gnc`  | `n`,`o`,`x` | go to next comment                                                                                                                                | `;`forward `,`backward |
-| `gnd`  | `n`,`o`,`x` | go to next diagnostic                                                                                                                             | `;`forward `,`backward |
-| `gnh`  | `n`,`o`,`x` | go to next git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/_edit#gl-gh-gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
-| `gnH`  | `n`,`o`,`x` | go to next git hunk (working on Windows10)                                                                                                        | `;`forward `,`backward |
-| `gniy` | `n`,`o`,`x` | go to next same_indent                                                                                                                            | `;`forward `,`backward |
-| `gnr`  | `n`,`o`,`x` | go to next reference                                                                                                                              | `;`forward `,`backward |
-| `gnz`  | `n`,`o`,`x` | go to next start of fold                                                                                                                          | `;`forward `,`backward |
-| `gnZ`  | `n`,`o`,`x` | go to next start scope                                                                                                                            | `;`forward `,`backward |
+| Keymap |    Mode     | Description                                                                                                                            |      repeater key      |
+| :----: | :---------: | :------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
+| `gnc`  | `n`,`o`,`x` | go to next comment                                                                                                                     | `;`forward `,`backward |
+| `gnd`  | `n`,`o`,`x` | go to next diagnostic                                                                                                                  | `;`forward `,`backward |
+| `gnh`  | `n`,`o`,`x` | go to next git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/#gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
+| `gnH`  | `n`,`o`,`x` | go to next git hunk (working on Windows10)                                                                                             | `;`forward `,`backward |
+| `gniy` | `n`,`o`,`x` | go to next same_indent                                                                                                                 | `;`forward `,`backward |
+| `gnr`  | `n`,`o`,`x` | go to next reference                                                                                                                   | `;`forward `,`backward |
+| `gnz`  | `n`,`o`,`x` | go to next start of fold                                                                                                               | `;`forward `,`backward |
+| `gnZ`  | `n`,`o`,`x` | go to next start scope                                                                                                                 | `;`forward `,`backward |
 
 </details>
 
@@ -590,8 +590,8 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |         `h`          | Collapse list                                                 |
 |         `j`          | Move down                                                     |
 |         `k`          | Move up                                                       |
-|         `l`          | Expand list                                                   |
-|         `o`          | open without passing focus replacing current tab              |
+|    `l` or `enter`    | open directory/file passing focus                             |
+|    `o` or `space`    | open without passing focus replacing current tab              |
 |         `O`          | open without passing focus in a new tab                       |
 |         `p`          | paste file                                                    |
 |         `q`          | close sidebar visibility                                      |
@@ -601,14 +601,12 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |         `x`          | cut file                                                      |
 |         `y`          | copy file                                                     |
 |         `za`         | toggle expand                                                 |
-|       `enter`        | Open file                                                     |
 |         `/`          | search                                                        |
-|        `Down`        | Focus down and preview file in the files explorer             |
-|         `Up`         | Focus up and preview file in the files explorer               |
-| `alt+h` or `shift+h` | Open and pass focus to explorer                               |
+|        `Down`        | Focus down and preview file                                   |
+|         `Up`         | Focus up and preview file                                     |
 | `alt+j` or `shift+j` | Move focus down 10 times in list view                         |
 | `alt+k` or `shift+k` | Move focus up 10 times in list view                           |
-| `alt+l` or `shift+l` | Select and toggle sidebar visibility                          |
+| `alt+l` or `shift+l` | Open and toggle sidebar visibility                            |
 | `<unmapped letter>`  | find (by first `<unmapped letter>` of file/folder) and jump   |
 
 </details>
@@ -701,22 +699,22 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 <details open><summary></summary>
 
-| Key Combination |  mode   | Description                                                                                                     |
-| :-------------: | :-----: | :-------------------------------------------------------------------------------------------------------------- |
-|    `ctrl+a`     | `n`,`v` | increase number under cursor                                                                                    |
-|    `ctrl+b`     | `n`,`v` | scroll down by page                                                                                             |
-|    `ctrl+e`     | `n`,`v` | scroll down by line                                                                                             |
-|    `ctrl+d`     | `n`,`v` | scroll down by half page                                                                                        |
-|    `ctrl+f`     | `n`,`v` | scroll up by page                                                                                               |
-|    `ctrl+i`     |   `n`   | jump to next in `:jumps`                                                                                        |
-|    `ctrl+o`     |   `n`   | jump to previous in `:jumps`                                                                                    |
-|    `ctrl+r`     |   `n`   | redo (`u` to undo)                                                                                              |
-|    `ctrl+u`     | `n`,`v` | scroll up by half page                                                                                          |
-|    `ctrl+v`     | `n`,`v` | visual block mode                                                                                               |
-|    `ctrl+w`     | `n`,`v` | See [vscode-window-commands.vim](https://github.com/vscode-neovim/vscode-neovim/vim/vscode-window-commands.vim) |
-|    `ctrl+x`     | `n`,`v` | decrease number under cursor                                                                                    |
-|    `ctrl+y`     | `n`,`v` | scroll up by line                                                                                               |
-|    `ctrl+/`     | `n`,`v` | comment line                                                                                                    |
+| Key Combination |  mode   | Description                                                                                                                 |
+| :-------------: | :-----: | :-------------------------------------------------------------------------------------------------------------------------- |
+|    `ctrl+a`     | `n`,`v` | increase number under cursor                                                                                                |
+|    `ctrl+b`     | `n`,`v` | scroll down by page                                                                                                         |
+|    `ctrl+e`     | `n`,`v` | scroll down by line                                                                                                         |
+|    `ctrl+d`     | `n`,`v` | scroll down by half page                                                                                                    |
+|    `ctrl+f`     | `n`,`v` | scroll up by page                                                                                                           |
+|    `ctrl+i`     |   `n`   | jump to next in `:jumps`                                                                                                    |
+|    `ctrl+o`     |   `n`   | jump to previous in `:jumps`                                                                                                |
+|    `ctrl+r`     |   `n`   | redo (`u` to undo)                                                                                                          |
+|    `ctrl+u`     | `n`,`v` | scroll up by half page                                                                                                      |
+|    `ctrl+v`     | `n`,`v` | visual block mode                                                                                                           |
+|    `ctrl+w`     | `n`,`v` | See [vscode-window-commands.vim](https://github.com/vscode-neovim/vscode-neovim/blob/master/vim/vscode-window-commands.vim) |
+|    `ctrl+x`     | `n`,`v` | decrease number under cursor                                                                                                |
+|    `ctrl+y`     | `n`,`v` | scroll up by line                                                                                                           |
+|    `ctrl+/`     | `n`,`v` | comment line                                                                                                                |
 
 </details>
 
@@ -827,7 +825,7 @@ example: in normal mode type `:` to open vim-command-line then type `TSInstall c
 recommended: for new retronvim releases update neovim extensions with `:Lazy update` then update all the treesitter-grammars with `:TSUpdate` then relaunch vscode
 (just in case you find warnings or text-object not working as previous release)
 
-tip: to make a clean neovim-extensions/tressitter-grammar installation remove the folder `rm -r -force ~/.local/share/nvim` (on linux and mac), `rm -rf ~/AppData/Local/nvim-data` (on Windows 10/11) and relaunch vscode
+tip: to make a clean neovim-extensions/tressitter-grammar installation remove the folder `rm -rf ~/AppData/Local/nvim-data` (on linux and mac), `rm -r -force ~/.local/share/nvim` (on Windows 10/11) and relaunch vscode
 
 </details>
 

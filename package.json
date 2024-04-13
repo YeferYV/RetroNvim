@@ -47,6 +47,7 @@
       "editor.accessibilitySupport": "off",
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
+      "editor.renderWhitespace": "none",
       "editor.stickyScroll.enabled": false,
       "emmet.includeLanguages": { "javascript": "javascriptreact", "typescript": "typescriptreact" },
       "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
@@ -57,6 +58,7 @@
       "json.format.keepLines": true,
       "multiDiffEditor.experimental.enabled": true,
       "scm.defaultViewMode": "tree",
+      "telemetry.telemetryLevel": "off",
       "terminal.integrated.commandsToSkipShell": [
         "whichkey.show",
         "workbench.action.openEditorAtIndex1",
@@ -659,15 +661,12 @@
         "command": "workbench.action.terminal.sendSequence",
         "args": { "text": "yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); printf '\\x1b[F\\x1b[K'\n" }
       },
-
       { "key": "e", "command": "whichkey.triggerKey", "args": { "key": "e", "when": "sideBarVisible && explorerViewletVisible" }, "when": "whichkeyVisible && sideBarVisible && explorerViewletVisible" },
       { "key": "Down", "command": "runCommands", "args": { "commands": [ "list.focusDown", "filesExplorer.openFilePreserveFocus" ] }, "when": "listFocus && !inputFocus" },
       { "key": "Up", "command": "runCommands", "args": { "commands": [ "list.focusUp", "filesExplorer.openFilePreserveFocus" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "alt+h", "command": "runCommands", "args": { "commands": [ "explorer.openAndPassFocus", "workbench.view.explorer" ] }, "when": "listFocus && !inputFocus" },
       { "key": "alt+j", "command": "runCommands", "args": { "commands": [ "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown" ] }, "when": "listFocus && !inputFocus" },
       { "key": "alt+k", "command": "runCommands", "args": { "commands": [ "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp" ] }, "when": "listFocus && !inputFocus" },
       { "key": "alt+l", "command": "runCommands", "args": { "commands": [ "list.select", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "shift+h", "command": "runCommands", "args": { "commands": [ "explorer.openAndPassFocus", "workbench.view.explorer" ] }, "when": "listFocus && !inputFocus" },
       { "key": "shift+j", "command": "runCommands", "args": { "commands": [ "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown" ] }, "when": "listFocus && !inputFocus" },
       { "key": "shift+k", "command": "runCommands", "args": { "commands": [ "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp" ] }, "when": "listFocus && !inputFocus" },
       { "key": "shift+l", "command": "runCommands", "args": { "commands": [ "list.select", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
@@ -762,6 +761,5 @@
     "asvetliakov.vscode-neovim",
     "VSpaceCode.whichkey"
   ],
-  "extensionDependencies": [
-  ]
+  "extensionDependencies": []
 }
