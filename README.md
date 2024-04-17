@@ -810,6 +810,9 @@ _    _    _              _              _    _    _
 After installing retronvim extension, open
 `whichkey` > `+Install Dependencies` > `install <your package manager>` > `<your package manager> install neovim gcc make ...` > relaunch vscode
 
+Important: for new retronvim releases if zsh/bash/git-bash setup is enable then you need to update the hardcode `$EDITOR` variable with `whichkey` > `+Install Dependencies` > `Enable Zsh/Bash/Git-Bash ...`
+(just in case you want to use `$EDITOR` inside other terminals otherwise skip this step)
+
 </details>
 
 ## Treesitter Installation
@@ -820,12 +823,12 @@ Text objects that has a `@` prefix requires a treesitter-grammar, retronvim inst
 `python`, `bash`, `javascript`, `json`, `html`, `css`, `c`, `lua`.
 Install treesitter-grammar for your programming language with `:TSInstall <your programming language>`.
 
-example: in normal mode type `:` to open vim-command-line then type `TSInstall cpp` (cpp treesitter-grammar requires a cpp compiler)
+Example: in normal mode type `:` to open vim-command-line then type `TSInstall cpp` (cpp treesitter-grammar requires a cpp compiler)
 
-recommended: for new retronvim releases update neovim extensions with `:Lazy update` then update all the treesitter-grammars with `:TSUpdate` then relaunch vscode
+Recommended: for new retronvim releases update neovim extensions with `:Lazy update` then update all the treesitter-grammars with `:TSUpdate` then relaunch vscode
 (just in case you find warnings or text-object not working as previous release)
 
-tip: to make a clean neovim-extensions/tressitter-grammar installation remove the folder `rm -rf ~/AppData/Local/nvim-data` (on linux and mac), `rm -r -force ~/.local/share/nvim` (on Windows 10/11) and relaunch vscode
+Tip: to make a clean neovim-extensions/tressitter-grammar installation remove the folder `rm -rf ~/AppData/Local/nvim-data` (on linux and mac), `rm -r -force ~/.local/share/nvim` (on Windows 10/11) and relaunch vscode
 
 </details>
 

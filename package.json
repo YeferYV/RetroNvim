@@ -8,7 +8,7 @@
     "name": "YeferYV",
     "url": "https://github.com/YeferYV"
   },
-  "version": "0.0.3",
+  "version": "0.0.20240416",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -72,14 +72,14 @@
         "workbench.action.openEditorAtIndex9"
       ],
       "terminal.integrated.enableImages": true,
-      "terminal.integrated.env.linux": { "EDITOR": "nvim -u $HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua", "VISUAL": "code" },
-      "terminal.integrated.env.osx": { "EDITOR": "nvim -u $HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua", "VISUAL": "code" },
-      "terminal.integrated.env.windows": { "EDITOR": "nvim -u $HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua", "WEZTERM_EXECUTABLE": "yazi needs this env for images", "VISUAL": "code" },
+      "terminal.integrated.env.linux": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
+      "terminal.integrated.env.osx": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
+      "terminal.integrated.env.windows": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "WEZTERM_EXECUTABLE": "yazi needs this env for images", "VISUAL": "code" },
       "terminal.integrated.defaultProfile.windows": "Git Bash",
       "terminal.integrated.scrollback": 10000,
-      "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
       "vscode-neovim.ctrlKeysForInsertMode": [ ],
       "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "o", "r", "u", "v", "w", "x", "y", "/" ],
       "window.titleBarStyle": "custom",
@@ -298,7 +298,7 @@
               "args":
               [
                 null,
-                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; set -o vi; (xset b off r rate 210 70 2>/dev/null); export EDITOR=\"nvim -u ~/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua\"; function vi() { $EDITOR $@; }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; source ~/.nix-profile/share/fzf/key-bindings.bash; source ~/.nix-profile/share/blesh/ble.sh; ble-face -s auto_complete fg=238; ble-face -s syntax_error fg=red; ble-face -s command_builtin fg=green; function ble/widget/normal_completion { ble/widget/auto_complete/insert; ble/widget/vi_imap/normal-mode; }; ble-bind -m auto_complete -f M-l normal_completion; ble-bind -m vi_imap -f C-n newline; ble-bind -m vi_imap -f C-m accept-line; ble-bind -m vi_imap -f C-c discard-line; ble-bind -m vi_nmap --cursor 2; ble-bind -m vi_imap --cursor 6; bleopt exec_errexit_mark=; function blerc/vim-load-hook { bleopt prompt_vi_mode_indicator= ; }; blehook/eval-after-load keymap_vi blerc/vim-load-hook; eval \"$(starship init bash)\"' >> ~/.bashrc; \n" },
+                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; set -o vi; (xset b off r rate 210 70 2>/dev/null); export EDITOR=$EDITOR; function vi() { $EDITOR $@; }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; source ~/.nix-profile/share/fzf/key-bindings.bash; source ~/.nix-profile/share/blesh/ble.sh; ble-face -s auto_complete fg=238; ble-face -s syntax_error fg=red; ble-face -s command_builtin fg=green; function ble/widget/normal_completion { ble/widget/auto_complete/insert; ble/widget/vi_imap/normal-mode; }; ble-bind -m auto_complete -f M-l normal_completion; ble-bind -m vi_imap -f C-n newline; ble-bind -m vi_imap -f C-m accept-line; ble-bind -m vi_imap -f C-c discard-line; ble-bind -m vi_nmap --cursor 2; ble-bind -m vi_imap --cursor 6; bleopt exec_errexit_mark=; function blerc/vim-load-hook { bleopt prompt_vi_mode_indicator= ; }; blehook/eval-after-load keymap_vi blerc/vim-load-hook; eval \"$(starship init bash)\"' | sed \"s|\\$EDITOR|$EDITOR|\"  >> ~/.bashrc; \n" },
                 { "text": "starship config format \"(\\$battery)(\\$sudo)(\\$username)(\\$directory)(\\$git_branch)(\\$git_status)(\\$cmd_duration)(\\$status)(\\$character)\"; starship config add_newline false; starship config command_timeout 60000; starship config cmd_duration.min_time 60000; (xset b off r rate 210 70 2>/dev/null) \n" },
                 "<cmd>lua require('vscode-neovim').notify('Relaunch terminal to see the changes')<cr>"
               ]
@@ -310,8 +310,8 @@
               "args":
               [
                 null,
-                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; SAVEHIST=10000; autoload -U compinit; compinit -d ~/.cache; zstyle \":completion:*\" menu select; bindkey -v; setopt interactive_comments; (xset b off r rate 210 70 2>/dev/null); export EDITOR=\"nvim -u ~/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua\"; function vi() { eval $EDITOR $@ }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; test $NIX_PROFILES && { source ~/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh; source ~/.nix-profile/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; source ~/.nix-profile/share/fzf/key-bindings.zsh } || { source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh; source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; source /usr/local/opt/fzf/shell/key-bindings.zsh }; eval \"$(starship init zsh)\"' >> ~/.zshrc; \n" },
-                { "text": "starship config format \"(\\$battery)(\\$sudo)(\\$username)(\\$directory)(\\$git_branch)(\\$git_status)(\\$cmd_duration)(\\$status)(\\$character)\"; starship config add_newline false; starship config command_timeout 60000; starship config cmd_duration.min_time 60000; (xset b off r rate 210 70 2>/dev/null); (brew --version 2>/dev/null && defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1) \n" },
+                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; SAVEHIST=10000; autoload -U compinit; compinit -d ~/.cache; zstyle \":completion:*\" menu select; bindkey -v; setopt interactive_comments; (xset b off r rate 210 70 2>/dev/null); export EDITOR=$EDITOR; function vi() { eval $EDITOR $@ }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; test $NIX_PROFILES && { source ~/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh; source ~/.nix-profile/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; source ~/.nix-profile/share/fzf/key-bindings.zsh } || { source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh; source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; source /usr/local/opt/fzf/shell/key-bindings.zsh }; eval \"$(starship init zsh)\"' | sed \"s|\\$EDITOR|$EDITOR|\" >> ~/.zshrc; \n" },
+                { "text": "starship config format \"(\\$battery)(\\$sudo)(\\$username)(\\$directory)(\\$git_branch)(\\$git_status)(\\$cmd_duration)(\\$status)(\\$character)\"; starship config add_newline false; starship config command_timeout 60000; starship config cmd_duration.min_time 60000; (xset b off r rate 210 70 2>/dev/null) || (brew --version 2>/dev/null && defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1) \n" },
                 "<cmd>lua require('vscode-neovim').notify('Relogin if using MacOS to update keyboard repeat rate')<cr>"
               ]
             },
@@ -322,7 +322,7 @@
               "args":
               [
                 null,
-                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; set -o vi; export EDITOR=\"nvim -u ~/.vscode/extensions/yeferyv.retronvim-0.0.3/nvim/init.lua\"; export LANG=\"en_US.UTF-8\"; export USER=$USERNAME; function vi() { $EDITOR $@; }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; export PROMPT_COMMAND=\"history -a\"; source ~/.config/fzf/key-bindings.bash; source ~/.config/ble-0.4.0-devel3/ble.sh; ble-face -s auto_complete fg=238; ble-face -s syntax_error fg=red; ble-face -s command_builtin fg=green; function ble/widget/normal_completion { ble/widget/auto_complete/insert; ble/widget/vi_imap/normal-mode; }; ble-bind -m auto_complete -f M-l normal_completion; ble-bind -m vi_imap -f @ESC vi_imap/normal-mode; ble-bind -m vi_imap -f C-n newline; ble-bind -m vi_imap -f C-m accept-line; ble-bind -m vi_imap -f C-s discard-line; ble-bind -m vi_nmap --cursor 2; ble-bind -m vi_imap --cursor 6; bleopt exec_errexit_mark=; function blerc/vim-load-hook { bleopt prompt_vi_mode_indicator= ; }; blehook/eval-after-load keymap_vi blerc/vim-load-hook; eval \"$(starship init bash)\"' >> ~/.bashrc; \n" },
+                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; set -o vi; export EDITOR=$EDITOR; export LANG=\"en_US.UTF-8\"; export USER=$USERNAME; function vi() { $EDITOR $@; }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; export PROMPT_COMMAND=\"history -a\"; source ~/.config/fzf/key-bindings.bash; source ~/.config/ble-0.4.0-devel3/ble.sh; ble-face -s auto_complete fg=238; ble-face -s syntax_error fg=red; ble-face -s command_builtin fg=green; function ble/widget/normal_completion { ble/widget/auto_complete/insert; ble/widget/vi_imap/normal-mode; }; ble-bind -m auto_complete -f M-l normal_completion; ble-bind -m vi_imap -f @ESC vi_imap/normal-mode; ble-bind -m vi_imap -f C-n newline; ble-bind -m vi_imap -f C-m accept-line; ble-bind -m vi_imap -f C-s discard-line; ble-bind -m vi_nmap --cursor 2; ble-bind -m vi_imap --cursor 6; bleopt exec_errexit_mark=; function blerc/vim-load-hook { bleopt prompt_vi_mode_indicator= ; }; blehook/eval-after-load keymap_vi blerc/vim-load-hook; eval \"$(starship init bash)\"' | sed \"s|\\$EDITOR|$EDITOR|\" >> ~/.bashrc; \n" },
                 { "text": "starship config format \"(\\$battery)(\\$sudo)(\\$username)(\\$directory)(\\$git_branch)(\\$git_status)(\\$cmd_duration)(\\$status)(\\$character)\"; starship config add_newline false; starship config command_timeout 60000; starship config cmd_duration.min_time 60000; curl -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash --create-dirs --output $HOME/.config/fzf/key-bindings.bash; curl -L https://github.com/akinomyoga/ble.sh/releases/download/v0.4.0-devel3/ble-0.4.0-devel3.tar.xz | tar -xJf- --directory=$HOME/.config; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatDelay  -Value 210; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatRate -Value 7; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name DelayBeforeAcceptance -Value 0; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name Flags -Value 27 \n" },
                 "<cmd>lua require('vscode-neovim').notify('Relogin to Windows 10/11 to update keyboard repeat rate')<cr>"
               ]
@@ -331,7 +331,7 @@
               "key": "K",
               "name": "start touchcursor keyboard layout (`sudo pkill kanata` or LeftCtrl+Space+Escape to stop)",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "sh -c \"(which scoop 2>/dev/null) && (conhost.exe --headless kanata --cfg '$HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/kanata/simple.kbd' &) || { sudo --preserve-env bash --login -c 'kanata --cfg $HOME/.vscode/extensions/yeferyv.retronvim-0.0.3/kanata/simple.kbd &'; } \"; sleep 5; exit;\r" } ]
+              "args": [ null, { "text": "sh -c \"(which scoop 2>/dev/null) && (conhost.exe --headless kanata --cfg '$RETRONVIM_PATH/kanata/simple.kbd' &) || { sudo --preserve-env bash --login -c 'kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; } \"; sleep 5; exit;\r" } ]
             },
             {
               "key": "T",
@@ -761,5 +761,5 @@
     "asvetliakov.vscode-neovim",
     "VSpaceCode.whichkey"
   ],
-  "extensionDependencies": []
+  "extensionDependencies": [ ]
 }
