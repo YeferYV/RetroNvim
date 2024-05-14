@@ -684,8 +684,6 @@
       { "key": "alt+c", "command": "workbench.action.terminal.copySelection", "when": "terminalFocus" },
       { "key": "alt+v", "command": "workbench.action.terminal.paste", "when": "terminalFocus" },
 
-      { "key": "j", "command": "vscode-neovim.compositeEscape1", "when": "neovim.mode == insert && editorTextFocus", "args": "j" },
-      { "key": "k", "command": "vscode-neovim.compositeEscape2", "when": "neovim.mode == insert && editorTextFocus", "args": "k" },
       { "key": "alt+h", "command": "vscode-neovim.send", "args": "<esc><cmd>noh<cr>", "when": "inputFocus && neovim.mode == 'insert' || neovim.mode == 'visual'" },
 
       { "key": "alt+j", "command": "workbench.action.quickOpenSelectNext", "when": "inQuickOpen" },
