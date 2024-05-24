@@ -57,6 +57,7 @@
       "git.mergeEditor": true,
       "json.format.keepLines": true,
       "multiDiffEditor.experimental.enabled": true,
+      "python.defaultInterpreterPath": ".\\.pixi\\envs\\default\\python.exe",
       "scm.defaultViewMode": "tree",
       "telemetry.telemetryLevel": "off",
       "terminal.integrated.commandsToSkipShell": [
@@ -72,9 +73,9 @@
         "workbench.action.openEditorAtIndex9"
       ],
       "terminal.integrated.enableImages": true,
-      "terminal.integrated.env.linux": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
+      "terminal.integrated.env.linux": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "PATH": "$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}", "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
       "terminal.integrated.env.osx": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
-      "terminal.integrated.env.windows": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "WEZTERM_EXECUTABLE": "yazi needs this env for images", "VISUAL": "code" },
+      "terminal.integrated.env.windows": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "PATH": "$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}", "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
       "terminal.integrated.defaultProfile.windows": "Git Bash",
       "terminal.integrated.scrollback": 10000,
       "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
@@ -338,6 +339,32 @@
               "name": "Install SixelRice (terminal version of RetroNvim based on Lazyvim)",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
               "args": [ null, { "text": "git clone --depth=1 https://github.com/yeferyv/sixelrice $(sh -c 'test $LOCALAPPDATA && echo \"$LOCALAPPDATA/sixelrice\" || echo \"$HOME/.config/nvim\"'); sh -c 'test $LOCALAPPDATA && mkdir -p $LOCALAPPDATA/nvim && cp -r $LOCALAPPDATA/sixelrice/nvim/{lua,init.lua} $LOCALAPPDATA/nvim || exit 0' \n" } ]
+            },
+            {
+              "key": "J",
+              "name": "Install javascript vscode-extensions pack + fnm (node version manager)",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "args":
+              [
+                null,
+                { "text": "code --install-extension alefragnani.Bookmarks; code --install-extension MarsCode.marscode-extension; code --install-extension WallabyJs.console-ninja; code --install-extension usernamehw.errorlens; code --install-extension dsznajder.es7-react-js-snippets; code --install-extension lamartire.git-indicators; code --install-extension PKief.material-icon-theme; code --install-extension christian-kohler.path-intellisense; code --install-extension drewxs.tokyo-night-dark; code --install-extension esbenp.prettier-vscode code --install-extension yeferyv.retronvim; code --install-extension bradlc.vscode-tailwindcss; code --install-extension rangav.vscode-thunder-client; \n" },
+                { "text": "sh -c 'if [[ $NIX_PROFILES ]]; then nix-env -iA nixpkgs.fnm; elif [[ $APPDATA ]]; then winget install fnm; else brew install fnm; fi;' \n" },
+                "require('vscode-neovim').notify('extensions are installed for the default vscode profile')",
+                "require('vscode-neovim').notify('cheatsheet: https://cht.sh/fnm. choose your node version with `fnm use v20.10.0` (run the command inside a new terminal) (relaunch vscode on Windows10)')"
+              ]
+            },
+            {
+              "key": "P",
+              "name": "Install python vscode-extensions pack + pixi (python package manager)",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "args":
+              [
+                null,
+                { "text": "code --install-extension ms-python.black-formatter; code --install-extension alefragnani.Bookmarks; code --install-extension MarsCode.marscode-extension; code --install-extension lamartire.git-indicators; code --install-extension PKief.material-icon-theme; code --install-extension christian-kohler.path-intellisense; code --install-extension drewxs.tokyo-night-dark; code --install-extension ms-python.python; code --install-extension yeferyv.retronvim; code --install-extension traBpUkciP.wolf; \n" },
+                { "text": "sh -c 'if [[ $NIX_PROFILES ]]; then nix-env -iA nixpkgs.pixi; elif [[ $APPDATA ]]; then winget install prefix-dev.pixi; else brew install pixi; fi;' \n" },
+                "require('vscode-neovim').notify('extensions are installed for the default vscode profile')",
+                "require('vscode-neovim').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')"
+              ]
             }
           ]
         },
