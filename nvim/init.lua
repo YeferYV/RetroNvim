@@ -15,7 +15,7 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
   if vim.g.vscode then
-    vscode.notify("Please wait until neovim finishes downloading extensions (view status bar) and close if any log window appears")
+    vscode.notify("Please wait until neovim finishes downloading extensions (view status bar) and close if any log window appears (ignore nvim_set_current_win/nvim_win_set_cursor error which is because log window is not editable)")
   end
 end
 
@@ -53,7 +53,6 @@ local plugins = {
     event = "VeryLazy",
     opts = {},
   },
-  { "RRethy/vim-illuminate",    commit = "a2907275a6899c570d16e95b9db5fd921c167502" },
   { "machakann/vim-columnmove", commit = "21a43d809a03ff9bf9946d983d17b3a316bf7a64", event = "VeryLazy" },
 
   -- Text-Objects
@@ -67,9 +66,7 @@ local plugins = {
     "nvim-treesitter/nvim-treesitter",
     commit = "567a76780cd4f982dae1ec57e3dad6174bef3680",
     build = ":TSUpdate", -- treesitter works with specific versions of language parsers
-    dependencies = {
-      { "nvim-treesitter/nvim-treesitter-textobjects", commit = "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" },
-    }
+    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", commit = "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" }
   },
   {
     "chrisgrieser/nvim-various-textobjs",
@@ -94,6 +91,20 @@ local plugins = {
       },
     }
   },
+
+	-- LSP/Completion
+	{ "Exafunction/codeium.vim", commit = "31dd2962c81759be007895db6ce089feec397c86", event = function() if not vim.g.vscode then return "InsertEnter" end end }, -- AI completion
+	{ "williamboman/mason.nvim", -- LSP/linter/formatter binary installer
+	  commit = "751b1fcbf3d3b783fcf8d48865264a9bcd8f9b10",
+    dependencies = {
+	    { "neovim/nvim-lspconfig",             commit = "cfa386fc4027e847156ee16141ea1f4c0bc2f0a4" }, -- default configurations for LSP
+	    { "nvimtools/none-ls.nvim",            commit = "88821b67e6007041f43b802f58e3d9fa9bfce684" }, -- default configurations formatters and linters
+	    { "williamboman/mason-lspconfig.nvim", commit = "1a14770dc8c7cb29643870ac79788eec6f7ce1f8" }, -- compatibility between mason and nvim-lspconfig
+	    { "jay-babu/mason-null-ls.nvim",       commit = "de19726de7260c68d94691afb057fa73d3cc53e7" }, -- compatibility between mason and none-ls
+	    { "nvim-lua/plenary.nvim",             commit = "5129a3693c482fcbc5ab99a7706ffc4360b995a0" }, -- lua modules required by none-ls
+    },
+  }
+
 }
 
 lazy.setup(plugins, opts)
@@ -142,16 +153,8 @@ if not vim.g.vscode then
   vim.cmd [[ color poimandres ]]
   vim.api.nvim_set_hl(0, "Comment", { fg = "#444444", bg = "NONE" })
   vim.api.nvim_set_hl(0, "Visual", { fg = "NONE", bg = "#1c1c1c" })
+  vim.api.nvim_set_hl(0, "MiniCursorword", { fg = "NONE", bg = "#1c1c2c" })
 end
-
-------------------------------------------------------------------------------------------------------------------------
-
--- Illuminate disable underline
-vim.cmd [[
-  hi   def IlluminatedWordText               guifg=none     guibg=#080811  gui=none
-  hi   def IlluminatedWordRead               guifg=none     guibg=#080811  gui=none
-  hi   def IlluminatedWordWrite              guifg=none     guibg=#080811  gui=none
-]]
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -162,6 +165,15 @@ vim.cmd [[
     autocmd TextYankPost * silent!lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 200})
     autocmd BufEnter * :set formatoptions-=cro
     autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+  augroup end
+
+  augroup _hightlight_whitespaces
+    autocmd!
+    autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+    highlight ExtraWhitespace ctermbg=red guibg=red
+    autocmd InsertLeave * redraw!
+    match ExtraWhitespace /\s\+$\| \+\ze\t/
+    autocmd BufWritePre * :%s/\s\+$//e
   augroup end
 
 ]]
@@ -404,26 +416,8 @@ require("mini.ai").setup({
 })
 
 require('mini.align').setup()
-
-require('mini.bracketed').setup({
-  buffer     = { suffix = 'b', options = {} },
-  comment    = { suffix = 'c', options = {} },
-  conflict   = { suffix = 'x', options = {} },
-  diagnostic = { suffix = 'd', options = {} },
-  file       = { suffix = 'f', options = {} },
-  indent     = { suffix = 'i', options = {} },
-  jump       = { suffix = 'j', options = {} },
-  location   = { suffix = 'l', options = {} },
-  oldfile    = { suffix = 'o', options = {} },
-  quickfix   = { suffix = 'q', options = {} },
-  treesitter = { suffix = 't', options = {} },
-  undo       = { suffix = 'u', options = {} },
-  window     = { suffix = 'w', options = {} },
-  yank       = { suffix = 'y', options = {} },
-})
-
+require('mini.bracketed').setup()
 require('mini.comment').setup()
-
 require('mini.indentscope').setup()
 
 require('mini.operators').setup({
@@ -471,9 +465,8 @@ require('mini.surround').setup({
   search_method = 'cover',
 })
 
-require('mini.trailspace').setup()
-
 if not vim.g.vscode then
+
   require('mini.clue').setup({
     triggers = {
       -- Leader triggers
@@ -506,7 +499,6 @@ if not vim.g.vscode then
       { mode = 'n', keys = 'z' },
       { mode = 'x', keys = 'z' },
     },
-
     clues = {
       -- Enhance this by adding descriptions for <Leader> mapping groups
       mini_clue.gen_clues.builtin_completion(),
@@ -516,48 +508,13 @@ if not vim.g.vscode then
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
     },
-
-    -- Clue window settings
-    window = {
-      -- Floating window config
-      config = {},
-
-      -- Delay before showing clue window
-      delay = 1,
-
-      -- Keys to scroll inside the clue window
-      scroll_down = '<C-d>',
-      scroll_up = '<C-u>',
-    }
   })
 
   require('mini.completion').setup()
-
+  require('mini.cursorword').setup()
   require('mini.extra').setup()
 
   require("mini.files").setup({
-    content = {
-      filter = nil,
-      prefix = nil,
-      sort = nil,
-    },
-    mappings = {
-      close       = 'q',
-      go_in       = 'l',
-      go_in_plus  = 'L',
-      go_out      = 'h',
-      go_out_plus = 'H',
-      reset       = '<BS>',
-      reveal_cwd  = '@',
-      show_help   = 'g?',
-      synchronize = '=',
-      trim_left   = '<',
-      trim_right  = '>',
-    },
-    options = {
-      permanent_delete = true,
-      use_as_default_explorer = true,
-    },
     windows = {
       max_number = math.huge,
       preview = true,
@@ -568,19 +525,10 @@ if not vim.g.vscode then
   })
 
   require('mini.pairs').setup()
-
   require('mini.pick').setup()
-
-  require('mini.statusline').setup({
-    content = {
-      active = nil,
-      inactive = nil,
-    },
-    use_icons = true,
-    set_vim_settings = false,
-  })
-
+  require('mini.statusline').setup()
   require('mini.tabline').setup()
+
 end
 
 -- ╭────────────╮
@@ -784,7 +732,7 @@ else
 end
 
 -- Macros and :normal <keys> repeatable
-keymap("n", "U", "@:", opts)
+keymap("n", "U", "@:", { silent = true, desc = "repeat `:command`" })
 
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
@@ -796,13 +744,18 @@ if not vim.g.vscode then
   keymap("n", "<M-Down>", ":resize +2<cr>", { noremap = true, silent = true, desc = "Resize Down" })
   keymap("n", "<M-Up>", ":resize -2<cr>", { noremap = true, silent = true, desc = "Resize Up" })
   keymap("n", "<M-Right>", ":vertical resize -2<cr>", { noremap = true, silent = true, desc = "Resize Right" })
+  keymap("n", "<C-s>", ":%s//g<Left><Left>", { noremap = true, silent = false, desc = "Replace in Buffer" })
   keymap("n", "<C-h>", ":wincmd h<cr>", { noremap = true, silent = true, desc = "Window Left" })
   keymap("n", "<C-j>", ":wincmd j<cr>", { noremap = true, silent = true, desc = "Window Down" })
   keymap("n", "<C-k>", ":wincmd k<cr>", { noremap = true, silent = true, desc = "Window Up" })
   keymap("n", "<C-l>", ":wincmd l<cr>", { noremap = true, silent = true, desc = "Window Right" })
   keymap("n", "<Left>", ":bprevious<cr>", { noremap = true, silent = true, desc = "Buffer prev" })
   keymap("n", "<Right>", ":bnext<cr>", { noremap = true, silent = true, desc = "Buffer next" })
-  keymap("n", "<leader>x", ":bdelete<cr>", { noremap = true, silent = true, desc = "Buffer delete" })
+  keymap("n", "<leader>x", ":bdelete<cr>", { noremap = true, silent = true, desc = "Buffer close" })
+  -- Intellisense
+  map("i", "<A-j>", function() return vim.fn["codeium#CycleCompletions"](1) end, { expr = true, silent = true })
+  map("i", "<A-k>", function() return vim.fn["codeium#CycleCompletions"](-1) end, { expr = true, silent = true })
+  map("i", "<A-l>", function() return vim.fn["codeium#Accept"]() end, { expr = true, silent = true })
 end
 
 -- ╭────────────────╮
@@ -810,6 +763,48 @@ end
 -- ╰────────────────╯
 
 if not vim.g.vscode then
+
+  -- LSP
+  require("mason").setup()
+  require("mason-null-ls").setup({ handlers = {}, })
+  require("mason-lspconfig").setup_handlers {
+    function (server_name)
+      require("lspconfig")[server_name].setup {}
+    end,
+  }
+
+  map("n","<leader>l","", { desc ="+LSP" })
+  map("n","<leader>lA",function() vim.lsp.buf.code_action() end, { desc ="Code Action" })
+  map("n","<leader>lc",function() vim.lsp.buf.incoming_calls() end, { desc ="Incoming Calls" })
+  map("n","<leader>lC",function() vim.lsp.buf.outcoming_calls() end, { desc ="Outcoming Calls" })
+  map("n","<leader>ld",":Pick lsp scope='definition'<cr>", { desc ="Goto Definition" })
+  map("n","<leader>lD",":Pick lsp scope='declaration'<cr>", { desc ="Goto Declaration" })
+  map("n","<leader>lF",function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc ="Format (none-ls > lsp)" })
+  map("n","<leader>lh",function() vim.lsp.buf.signature_help() end, { desc ="Signature" })
+  map("n","<leader>lH",function() vim.lsp.buf.hover() end, { desc ="Hover" })
+  map("n","<leader>lI",":Pick lsp scope='implementation'<cr>", { desc ="Goto Implementation" })
+  map("n","<leader>ln",function() vim.diagnostic.goto_next() end, { desc ="Next Diagnostic" })
+  map("n","<leader>lo",function() vim.diagnostic.open_float() end, { desc ="Open Diagnostic" })
+  map("n","<leader>lp",function() vim.diagnostic.goto_prev() end, { desc ="Prev Diagnostic" })
+  map("n","<leader>lq",":Pick diagnostic<cr>", { desc ="Diagnostic List" })
+  map("n","<leader>lr",":Pick lsp scope='references'<cr>", { desc ="References" })
+  map("n","<leader>lR",function() vim.lsp.buf.rename() end, { desc ="Rename" })
+  map("n","<leader>ls",":Pick lsp scope='document_symbol'<cr>", { desc ="Document symbols" })
+  map("n","<leader>ls",":Pick lsp scope='workspace_symbol'<cr>", { desc ="Workspace symbol" })
+  map("n","<leader>lt",":Pick lsp scope='type_definition'<cr>", { desc ="Goto TypeDefinition" })
+  map("n","<leader>l0",":LspStop<cr>", { desc ="lsp stop"})
+  map(
+    "n",
+    "<leader>l1",
+    function()
+      vim.defer_fn(function () vim.cmd("LspStop") end, 1)
+      vim.defer_fn(function () vim.cmd("LspRestart") end, 300)
+      vim.defer_fn(function () vim.cmd("LspStart") end, 600)
+    end,
+    { desc ="lsp start (none-ls < lsp)"}
+  )
+  map("n","<leader>lm",":Mason<cr>", { desc ="Mason"})
+
   -- Explorer
   keymap(
     "n",
@@ -819,6 +814,7 @@ if not vim.g.vscode then
   )
 
   -- Pick
+  map("n","<leader>f","", { desc ="+Find" })
   keymap(
     "n",
     "<leader>f/",
@@ -844,7 +840,15 @@ if not vim.g.vscode then
     { noremap = true, silent = true, desc = "Pick register" }
   )
 
+  -- Terminal
+  map("n","<leader>t","", { desc ="+Terminal" })
+  map("n","<leader>tt",":lua vim.cmd [[          terminal ]] vim.cmd [[ setlocal nonumber laststatus=3 | startinsert ]] <cr>", { silent = true, desc ="buffer terminal" })
+  map("n","<leader>tv",":lua vim.cmd [[ split  | terminal ]] vim.cmd [[ setlocal nonumber laststatus=3 | startinsert ]] <cr>", { silent = true, desc ="vertical terminal" })
+  map("n","<leader>th",":lua vim.cmd [[ vsplit | terminal ]] vim.cmd [[ setlocal nonumber laststatus=3 | startinsert ]] <cr>", { silent = true, desc ="horizontal terminal" })
+  map("t","<esc><esc>", [[<C-\><C-n>]], { silent = true , desc = "terminal normal mode" })
+
   -- Toggle
+  keymap("n", "<leader>u","", { desc ="+UI toggle" })
   keymap("n", "<leader>u0", ":set showtabline=0<cr>", { noremap = true, silent = true, desc = "Buffer Hide" })
   keymap("n", "<leader>u2", ":set showtabline=2<cr>", { noremap = true, silent = true, desc = "Buffer Show" })
   keymap("n", "<leader>us", ":set laststatus=0<cr>", { noremap = true, silent = true, desc = "StatusBar Hide" })
@@ -938,7 +942,7 @@ map({ "n", "o", "x" }, "g.", "`.", { silent = true, desc = "go to last change" }
 keymap("n", "g,", "g,", { noremap = true, silent = true, desc = "go forward in :changes" })  -- Formatting will lose track of changes
 keymap("n", "g;", "g;", { noremap = true, silent = true, desc = "go backward in :changes" }) -- Formatting will lose track of changes
 
--- Multi Cursors:
+-- Multi Cursors (vscode-only):
 map('n', 'gb', 'mciw*<cmd>nohl<cr>', { remap = true, desc = "add virtual cursor (select and find)" })
 map('n', 'gB', 'mcgfn<cmd>nohl<cr>', { remap = true, desc = "add virtual cursor (find selected)" })
 map('n', 'go', 'mciwj<cmd>nohl<cr>', { remap = true, desc = "add virtual cursor down" })
@@ -965,7 +969,7 @@ map(
     require('vscode-multi-cursor').start_left { no_selection = mode == '\x16' }
     require('vscode-neovim').action("cursorWordEndRightSelect")
   end,
-  { silent = true, desc = "word-column multicursor" }
+  { silent = true, desc = "word-column multicursor (vscode only)" }
 )
 
 -- Blackhole register:
@@ -1020,14 +1024,6 @@ map(
 map({ "o", "x" }, "gf", "gn", { noremap = true, silent = true, desc = "Next find textobj" })
 map({ "o", "x" }, "gF", "gN", { noremap = true, silent = true, desc = "Prev find textobj" })
 
--- reference textobj:
-map(
-  { "n", "x", "o" },
-  "gI",
-  '<cmd>lua require"illuminate".textobj_select()<cr>',
-  { silent = true, desc = "select reference" }
-)
-
 -- _git_hunk_(next/prev_autojump_unsupported)
 if not vim.g.vscode then
   map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>", { silent = true, desc = "Git hunk textobj" })
@@ -1036,8 +1032,9 @@ else
 end
 
 -- https://www.reddit.com/r/vim/comments/xnuaxs/last_change_text_object
-map("o", "gm", "<cmd>normal! `[v`]<cr>", { silent = true, desc = "Last change textobj" })
-map("x", "gm", "`[o`]", { silent = true, desc = "Last change textobj" })
+-- https://stackoverflow.com/questions/4775088/vim-how-to-select-pasted-block
+map("o", "gm", "<cmd>normal! `[v`]<cr>", { silent = true, desc = "Last modified/pasted text textobj" })
+map("x", "gm", "`[o`]", { silent = true, desc = "Last modified/pasted textobj" })
 
 -- _nvim_various_textobjs
 map(
@@ -1256,17 +1253,19 @@ map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { silent =
 -- _columnmove_repeatable
 vim.g.columnmove_strict_wbege = 0 -- skips inner-paragraph whitespaces for wbege
 vim.g.columnmove_no_default_key_mappings = true
-map({ "n", "x", "o" }, "<leader><leader>f", "<Plug>(columnmove-f)", { silent = true })
-map({ "n", "x", "o" }, "<leader><leader>t", "<Plug>(columnmove-t)", { silent = true })
-map({ "n", "x", "o" }, "<leader><leader>F", "<Plug>(columnmove-F)", { silent = true })
-map({ "n", "x", "o" }, "<leader><leader>T", "<Plug>(columnmove-T)", { silent = true })
+map({ "n", "x", "o" }, "<leader><leader>", "", { desc = "+ColumnMove" })
+map({ "n", "x", "o" }, "<leader><leader>g", "", { desc = "+ColumnMove_g" })
+map({ "n", "x", "o" }, "<leader><leader>f", "<Plug>(columnmove-f)", { silent = true, desc = "ColumnMove_f" })
+map({ "n", "x", "o" }, "<leader><leader>t", "<Plug>(columnmove-t)", { silent = true, desc = "ColumnMove_t" })
+map({ "n", "x", "o" }, "<leader><leader>F", "<Plug>(columnmove-F)", { silent = true, desc = "ColumnMove_F" })
+map({ "n", "x", "o" }, "<leader><leader>T", "<Plug>(columnmove-T)", { silent = true, desc = "ColumnMove_T" })
 
 local next_columnmove, prev_columnmove = ts_repeat_move.make_repeatable_move_pair(
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-;)" ]]) end,
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-,)" ]]) end
 )
-map({ "n", "x", "o" }, "<leader><leader>;", next_columnmove, { silent = true, desc = "Next ColumnMove_;" })
-map({ "n", "x", "o" }, "<leader><leader>,", prev_columnmove, { silent = true, desc = "Prev ColumnMove_," })
+map({ "n", "x", "o" }, "<leader><leader>;", next_columnmove, { silent = true, desc = "ColumnMove_;" })
+map({ "n", "x", "o" }, "<leader><leader>,", prev_columnmove, { silent = true, desc = "ColumnMove_," })
 
 -- _jump_indent_repeatable_with_blankline
 local next_indent_wb, prev_indent_wb = ts_repeat_move.make_repeatable_move_pair(
@@ -1288,29 +1287,29 @@ local next_columnmove_w, prev_columnmove_b = ts_repeat_move.make_repeatable_move
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-w)" ]]) end,
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-b)" ]]) end
 )
-map({ "n", "x", "o" }, "<leader><leader>w", next_columnmove_w, { silent = true, desc = "Next ColumnMove_w" })
-map({ "n", "x", "o" }, "<leader><leader>b", prev_columnmove_b, { silent = true, desc = "Prev ColumnMove_b" })
+map({ "n", "x", "o" }, "<leader><leader>w", next_columnmove_w, { silent = true, desc = "ColumnMove_w" })
+map({ "n", "x", "o" }, "<leader><leader>b", prev_columnmove_b, { silent = true, desc = "ColumnMove_b" })
 
 local next_columnmove_e, prev_columnmove_ge = ts_repeat_move.make_repeatable_move_pair(
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-e)" ]]) end,
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-ge)" ]]) end
 )
-map({ "n", "x", "o" }, "<leader><leader>e", next_columnmove_e, { silent = true, desc = "Next ColumnMove_e" })
-map({ "n", "x", "o" }, "<leader><leader>ge", prev_columnmove_ge, { silent = true, desc = "Prev ColumnMove_ge" })
+map({ "n", "x", "o" }, "<leader><leader>e", next_columnmove_e, { silent = true, desc = "ColumnMove_e" })
+map({ "n", "x", "o" }, "<leader><leader>ge", prev_columnmove_ge, { silent = true, desc = "ColumnMove_ge" })
 
 local next_columnmove_W, prev_columnmove_B = ts_repeat_move.make_repeatable_move_pair(
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-W)" ]]) end,
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-B)" ]]) end
 )
-map({ "n", "x", "o" }, "<leader><leader>W", next_columnmove_W, { silent = true, desc = "Next ColumnMove_W" })
-map({ "n", "x", "o" }, "<leader><leader>B", prev_columnmove_B, { silent = true, desc = "Prev ColumnMove_B" })
+map({ "n", "x", "o" }, "<leader><leader>W", next_columnmove_W, { silent = true, desc = "ColumnMove_W" })
+map({ "n", "x", "o" }, "<leader><leader>B", prev_columnmove_B, { silent = true, desc = "ColumnMove_B" })
 
 local next_columnmove_E, prev_columnmove_gE = ts_repeat_move.make_repeatable_move_pair(
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-E)" ]]) end,
   function() vim.cmd([[ execute "normal \<Plug>(columnmove-gE)" ]]) end
 )
-map({ "n", "x", "o" }, "<leader><leader>E", next_columnmove_E, { silent = true, desc = "Next ColumnMove_E" })
-map({ "n", "x", "o" }, "<leader><leader>gE", prev_columnmove_gE, { silent = true, desc = "Prev ColumnMove_gE" })
+map({ "n", "x", "o" }, "<leader><leader>E", next_columnmove_E, { silent = true, desc = "ColumnMove_E" })
+map({ "n", "x", "o" }, "<leader><leader>gE", prev_columnmove_gE, { silent = true, desc = "ColumnMove_gE" })
 
 -- _jump_blankline_repeatable
 local next_blankline, prev_blankline = ts_repeat_move.make_repeatable_move_pair(
@@ -1355,40 +1354,50 @@ local next_comment, prev_comment = ts_repeat_move.make_repeatable_move_pair(
 map({ "n", "x", "o" }, "gnc", next_comment, { silent = true, desc = "Next Comment" })
 map({ "n", "x", "o" }, "gpc", prev_comment, { silent = true, desc = "Prev Comment" })
 
--- _goto_diagnostic_repeatable
-local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(
-  function() vscode.call("editor.action.marker.next") end,
-  function() vscode.call("editor.action.marker.prev") end
-)
-map({ "n", "x", "o" }, "gnd", next_diagnostic, { silent = true, desc = "Next Diagnostic (vscode only)" })
-map({ "n", "x", "o" }, "gpd", prev_diagnostic, { silent = true, desc = "Prev Diagnostic (vscode only)" })
+if vim.g.vscode then
+  -- _goto_diagnostic_repeatable
+  local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(
+    function() vscode.call("editor.action.marker.next") end,
+    function() vscode.call("editor.action.marker.prev") end
+  )
+  map({ "n", "x", "o" }, "gnd", next_diagnostic, { silent = true, desc = "Next Diagnostic" })
+  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { silent = true, desc = "Prev Diagnostic" })
 
--- _gitsigns_chunck_repeatable
-local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(
-  function() vscode.call("workbench.action.editor.nextChange") end,
-  function() vscode.call("workbench.action.editor.previousChange") end
-)
-map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk (vscode only)" })
-map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk (vscode only)" })
-map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "Next GitHunk (vscode only)" })
-map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "Prev GitHunk (vscode only)" })
+  -- _gitsigns_chunck_repeatable
+  local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(
+    function() vscode.call("workbench.action.editor.nextChange") end,
+    function() vscode.call("workbench.action.editor.previousChange") end
+  )
+  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk" })
+  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk" })
+  map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "Next GitHunk" })
+  map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "Prev GitHunk" })
+else
+  -- _goto_diagnostic_repeatable
+  local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(
+    function() vim.diagnostic.goto_next() end,
+    function() vim.diagnostic.goto_prev() end
+  )
+  map({ "n", "x", "o" }, "gnd", next_diagnostic, { silent = true, desc = "Next Diagnostic" })
+  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { silent = true, desc = "Prev Diagnostic" })
 
-if not vim.g.vscode then
+  -- _gitsigns_chunck_repeatable
   local gs = require("gitsigns")
   local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
   map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { silent = true, desc = "Next GitHunk" })
   map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { silent = true, desc = "Prev GitHunk" })
-  map({ "n", "x", "o" }, "<leader>gp", function() gs.preview_hunk() end, { silent = true, desc = "Preview GitHunk" })
-  map({ "n", "x", "o" }, "<leader>gr", function() gs.reset_hunk() end, { silent = true, desc = "Reset GitHunk" })
+  map({ "n" }, "<leader>g","", { desc ="+Git" })
+  map({ "n" }, "<leader>gp", function() gs.preview_hunk() end, { silent = true, desc = "Preview GitHunk" })
+  map({ "n" }, "<leader>gr", function() gs.reset_hunk() end, { silent = true, desc = "Reset GitHunk" })
 end
 
 -- _references_repeatable
 local next_reference, prev_reference = ts_repeat_move.make_repeatable_move_pair(
-  function() require("illuminate").goto_next_reference(wrap) end,
-  function() require("illuminate").goto_prev_reference(wrap) end
+  function() vscode.call("editor.action.wordHighlight.next") end,
+  function() vscode.call("editor.action.wordHighlight.prev") end
 )
-map({ "n", "x", "o" }, "gnr", next_reference, { silent = true, desc = "Next Reference" })
-map({ "n", "x", "o" }, "gpr", prev_reference, { silent = true, desc = "Prev Reference" })
+map({ "n", "x", "o" }, "gnr", next_reference, { silent = true, desc = "Next Reference (vscode only)" })
+map({ "n", "x", "o" }, "gpr", prev_reference, { silent = true, desc = "Prev Reference (vscode only)" })
 
 -- _goto_function_definition_repeatable
 local next_inner_funccall, prev_inner_funccall = ts_repeat_move.make_repeatable_move_pair(
