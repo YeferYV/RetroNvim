@@ -806,6 +806,27 @@
         "when": "editorTextFocus && neovim.mode == normal"
       },
 
+      {
+        "key": "h",
+        "command": "cursorLeft",
+        "when": "editorTextFocus && !(neovim.fullMode =~ /^(f|r)/) && neovim.mode != 'insert' && neovim.mode != 'visual' && ( isWindows || isWeb )"
+      },
+      {
+        "key": "j",
+        "command": "cursorDown",
+        "when": "editorTextFocus && !(neovim.fullMode =~ /^(f|r)/) && neovim.mode != 'insert' && neovim.mode != 'visual' && ( isWindows || isWeb )"
+      },
+      {
+        "key": "k",
+        "command": "cursorUp",
+        "when": "editorTextFocus && !(neovim.fullMode =~ /^(f|r)/) && neovim.mode != 'insert' && neovim.mode != 'visual' && ( isWindows || isWeb )"
+      },
+      {
+        "key": "l",
+        "command": "cursorRight",
+        "when": "editorTextFocus && !(neovim.fullMode =~ /^(f|r)/) && neovim.mode != 'insert' && neovim.mode != 'visual' && ( isWindows || isWeb )"
+      },
+
       { "key": "ctrl+alt+right", "command": "cursorWordPartRightSelect" }
     ]
   },

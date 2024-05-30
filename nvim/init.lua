@@ -49,9 +49,9 @@ local plugins = {
   },
   {
     "folke/flash.nvim",
-    commit = "48817af25f51c0590653bbc290866e4890fe1cbe",
+    commit = "11a2e667d19d8f48c93c6ed2e2e525ac6b1b79be",
     event = "VeryLazy",
-    opts = {},
+    opts = { modes = { search = { enabled = true}}},
   },
   { "machakann/vim-columnmove", commit = "21a43d809a03ff9bf9946d983d17b3a316bf7a64", event = "VeryLazy" },
 
@@ -152,6 +152,7 @@ if not vim.g.vscode then
   vim.cmd [[ au VimEnter * :TSEnable highlight" ]]
   vim.cmd [[ color poimandres ]]
   vim.api.nvim_set_hl(0, "Comment", { fg = "#444444", bg = "NONE" })
+  vim.api.nvim_set_hl(0, "FlashLabel", { fg = "NONE", bg = "#5FB3A1" })
   vim.api.nvim_set_hl(0, "Visual", { fg = "NONE", bg = "#1c1c1c" })
   vim.api.nvim_set_hl(0, "MiniCursorword", { fg = "NONE", bg = "#1c1c2c" })
 end
@@ -198,6 +199,44 @@ local function vscode_select_git_hunk()
   vim.defer_fn(function ()
     vim.cmd([[ execute "normal zz" ]])
   end, 450)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+
+-- vscode's keybinding.json with neovim.fullMode context for flash mode and replace mode
+-- https://github.com/vscode-neovim/vscode-neovim/issues/1718
+
+-- to view which keypresses is mapped to, run:
+-- :lua vim.on_key(function(key) vim.notify(key .. vim.api.nvim_get_mode().mode) end)
+-- :lua vim.on_key(function(key) vim.print({ key, vim.api.nvim_get_mode().mode }) end)
+
+if vim.g.vscode then
+  vim.on_key(function(key)
+
+    local esc_termcode = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
+    local key_termcode = vim.api.nvim_replace_termcodes(key, true, false, true)
+
+    if key_termcode:find("X.*g") then
+      -- vim.print("f_mode_enter");
+      vscode.call("setContext", { args = { "neovim.fullMode", "f" }, })
+    end
+
+    if (vim.api.nvim_get_mode().mode == "n" and key_termcode:find("'")) or key_termcode:find(esc_termcode) or key_termcode:find("X.*h") then
+      -- vim.print("f_mode_exit");
+      vscode.call("setContext", { args = { "neovim.fullMode", "n" }, })
+    end
+
+    if vim.api.nvim_get_mode().mode == "n" and key_termcode:find("r") then
+      -- vim.print("r_mode_enter");
+      vscode.call("setContext", { args = { "neovim.fullMode", "r" }, })
+    end
+
+    if vim.api.nvim_get_mode().mode == "R" then
+      -- vim.print("r_mode_exit");
+      vscode.call("setContext", { args = { "neovim.fullMode", "n" }, })
+    end
+
+  end)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
