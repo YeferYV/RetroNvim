@@ -47,6 +47,7 @@
       "editor.accessibilitySupport": "off",
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
+      "editor.minimap.enabled": false,
       "editor.renderWhitespace": "none",
       "editor.stickyScroll.enabled": false,
       "emmet.includeLanguages": { "javascript": "javascriptreact", "typescript": "typescriptreact" },
@@ -59,6 +60,7 @@
       "multiDiffEditor.experimental.enabled": true,
       "python.defaultInterpreterPath": ".\\.pixi\\envs\\default\\python.exe",
       "scm.defaultViewMode": "tree",
+      "security.workspace.trust.untrustedFiles": "open",
       "telemetry.telemetryLevel": "off",
       "terminal.integrated.commandsToSkipShell": [
         "whichkey.show",
@@ -78,12 +80,39 @@
       "terminal.integrated.env.windows": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "PATH": "$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}", "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
       "terminal.integrated.defaultProfile.windows": "Git Bash",
       "terminal.integrated.scrollback": 10000,
+      "vscode-neovim.compositeKeys": { "jk": { "command": "vscode-neovim.escape" }, "kj": { "command": "vscode-neovim.escape" } },
+      "vscode-neovim.ctrlKeysForInsertMode": [ ],
+      "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "o", "r", "u", "v", "w", "x", "y", "/" ],
       "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
       "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
       "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
-      "vscode-neovim.ctrlKeysForInsertMode": [ ],
-      "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "o", "r", "u", "v", "w", "x", "y", "/" ],
       "window.titleBarStyle": "custom",
+      "workbench.colorTheme": "Tokyo Night Dark",
+      "workbench.colorCustomizations": {
+        "[Tokyo Night Dark][Poimandres Alternate]": {
+          "editor.lineHighlightBackground": "#00000000",
+          "editor.lineHighlightBorder": "#00000000",
+          "editorGroup.border": "#25252566",
+          "panel.border": "#25252566",
+          "terminal.border": "#25252566",
+          "terminal.ansiBlack": "#363b54",
+          "terminal.ansiRed": "#f7768e",
+          "terminal.ansiGreen": "#41a6b5",
+          "terminal.ansiYellow": "#e0af68",
+          "terminal.ansiBlue": "#7aa2f7",
+          "terminal.ansiMagenta": "#bb9af7",
+          "terminal.ansiCyan": "#7dcfff",
+          "terminal.ansiWhite": "#787c99",
+          "terminal.ansiBrightBlack": "#555555",
+          "terminal.ansiBrightRed": "#ff0000",
+          "terminal.ansiBrightGreen": "#00ff00",
+          "terminal.ansiBrightYellow": "#ffff00",
+          "terminal.ansiBrightBlue": "#5555cc",
+          "terminal.ansiBrightMagenta": "#8855ff",
+          "terminal.ansiBrightCyan": "#5FB3A1",
+          "terminal.ansiBrightWhite": "#ffffff"
+        }
+      },
 
       "whichkey.bindings": [
         {
@@ -92,18 +121,10 @@
           "command": "runCommands",
           "args": {
             "commands": [
-              {
-                "command": "workbench.action.terminal.selectAll"
-              },
-              {
-                "command": "editor.action.clipboardCopyAction"
-              },
-              {
-                "command": "workbench.action.files.newUntitledFile"
-              },
-              {
-                "command": "editor.action.clipboardPasteAction"
-              }
+              { "command": "workbench.action.terminal.selectAll" },
+              { "command": "editor.action.clipboardCopyAction" },
+              { "command": "workbench.action.files.newUntitledFile" },
+              { "command": "editor.action.clipboardPasteAction" }
             ]
           }
         },
@@ -775,12 +796,7 @@
         "when": "editorTextFocus && neovim.mode == normal"
       },
 
-      { "key": "ctrl+alt+right", "command": "cursorWordPartRightSelect" },
-
-      { "key": "h", "command": "cursorLeft", "when": "editorTextFocus && neovim.mode == 'normal' && ( isWindows || isWeb )" },
-      { "key": "j", "command": "cursorDown", "when": "editorTextFocus && neovim.mode == 'normal' && ( isWindows || isWeb )" },
-      { "key": "k", "command": "cursorUp", "when": "editorTextFocus && neovim.mode == 'normal' && ( isWindows || isWeb )" },
-      { "key": "l", "command": "cursorRight", "when": "editorTextFocus && neovim.mode == 'normal' && ( isWindows || isWeb )" }
+      { "key": "ctrl+alt+right", "command": "cursorWordPartRightSelect" }
     ]
   },
   "extensionPack": [
