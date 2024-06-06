@@ -1,0 +1,10 @@
+format = "($battery)($sudo)($username)($directory)($git_branch)($git_status)($cmd_duration)($status)($character)"
+add_newline = false
+command_timeout = 60000
+
+[cmd_duration]
+min_time = 60000
+
+[directory]
+style = "bold fg:#5555cc"
+truncation_length = 9

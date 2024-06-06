@@ -75,9 +75,31 @@
         "workbench.action.openEditorAtIndex9"
       ],
       "terminal.integrated.enableImages": true,
-      "terminal.integrated.env.linux": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "PATH": "$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}", "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
-      "terminal.integrated.env.osx": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
-      "terminal.integrated.env.windows": { "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416", "PATH": "$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}", "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default", "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua", "VISUAL": "code" },
+      "terminal.integrated.env.linux": {
+        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416",
+        "PATH": "$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
+        "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default",
+        "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
+        "VISUAL": "code",
+        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh",
+        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh/starship.toml"
+      },
+      "terminal.integrated.env.osx": {
+        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416",
+        "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
+        "VISUAL": "code",
+        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh",
+        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh/starship.toml"
+      },
+      "terminal.integrated.env.windows": {
+        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416",
+        "PATH": "$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
+        "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
+        "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
+        "VISUAL": "code",
+        "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh",
+        "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh/starship.toml"
+      },
       "terminal.integrated.defaultProfile.windows": "Git Bash",
       "terminal.integrated.scrollback": 10000,
       "vscode-neovim.compositeKeys": { "jk": { "command": "vscode-neovim.escape" }, "kj": { "command": "vscode-neovim.escape" } },
@@ -315,39 +337,25 @@
               "commands": [ "workbench.panel.output.focus", "workbench.action.reloadWindow" ]
             },
             {
-              "key": "V",
-              "name": "Enable Bash vim-mode, keyboard repeat rate, alias y=yazi vi=retronvim (relaunch terminal)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
+              "key": "M",
+              "name": "Increase keyboard repeat rate on MacOS ",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
               "args":
               [
                 null,
-                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; set -o vi; (xset b off r rate 210 70 2>/dev/null); export EDITOR=\"$EDITOR\"; function vi() { $EDITOR $@; }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; source ~/.nix-profile/share/fzf/key-bindings.bash; source ~/.nix-profile/share/blesh/ble.sh; ble-face -s auto_complete fg=238; ble-face -s syntax_error fg=red; ble-face -s command_builtin fg=green; function ble/widget/normal_completion { ble/widget/auto_complete/insert; ble/widget/vi_imap/normal-mode; }; ble-bind -m auto_complete -f M-l normal_completion; ble-bind -m vi_imap -f C-n newline; ble-bind -m vi_imap -f C-m accept-line; ble-bind -m vi_imap -f C-c discard-line; ble-bind -m vi_nmap --cursor 2; ble-bind -m vi_imap --cursor 6; bleopt exec_errexit_mark=; function blerc/vim-load-hook { bleopt prompt_vi_mode_indicator= ; }; blehook/eval-after-load keymap_vi blerc/vim-load-hook; eval \"$(starship init bash)\"' | sed \"s|\\$EDITOR|$EDITOR|\"  >> ~/.bashrc; \n" },
-                { "text": "starship config format \"(\\$battery)(\\$sudo)(\\$username)(\\$directory)(\\$git_branch)(\\$git_status)(\\$cmd_duration)(\\$status)(\\$character)\"; starship config add_newline false; starship config command_timeout 60000; starship config cmd_duration.min_time 60000; (xset b off r rate 210 70 2>/dev/null) \n" },
-                "<cmd>lua require('vscode-neovim').notify('Relaunch terminal to see the changes')<cr>"
+                { "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n" },
+                "<cmd>lua require('vscode').notify('Relogin to MacOS to update keyboard repeat rate')<cr>"
               ]
             },
             {
-              "key": "Z",
-              "name": "Enable Zsh vim-mode, keyboard repeat rate, alias y=yazi vi=retronvim (relogin if MacOS)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
+              "key": "W",
+              "name": "Increase keyboard repeat rate on Windows 10/11",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
               "args":
               [
                 null,
-                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; SAVEHIST=10000; autoload -U compinit; compinit -d ~/.cache; zstyle \":completion:*\" menu select; bindkey -v; setopt interactive_comments; (xset b off r rate 210 70 2>/dev/null); export EDITOR=\"$EDITOR\"; function vi() { eval $EDITOR $@ }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; test $NIX_PROFILES && { source ~/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh; source ~/.nix-profile/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; source ~/.nix-profile/share/fzf/key-bindings.zsh } || { source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh; source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; source /usr/local/opt/fzf/shell/key-bindings.zsh }; eval \"$(starship init zsh)\"' | sed \"s|\\$EDITOR|$EDITOR|\" >> ~/.zshrc; \n" },
-                { "text": "starship config format \"(\\$battery)(\\$sudo)(\\$username)(\\$directory)(\\$git_branch)(\\$git_status)(\\$cmd_duration)(\\$status)(\\$character)\"; starship config add_newline false; starship config command_timeout 60000; starship config cmd_duration.min_time 60000; (xset b off r rate 210 70 2>/dev/null) || (brew --version 2>/dev/null && defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1) \n" },
-                "<cmd>lua require('vscode-neovim').notify('Relogin if using MacOS to update keyboard repeat rate')<cr>"
-              ]
-            },
-            {
-              "key": "G",
-              "name": "Enable Git-Bash vim-mode, keyboard repeat rate, alias y=yazi vi=retronvim (relogin to Windows)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
-              "args":
-              [
-                null,
-                { "text": "echo 'export EXA_COLORS=\"reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34\"; alias ls=\"eza --all --icons --group-directories-first\"; set -o vi; export EDITOR=\"$EDITOR\"; export LANG=\"en_US.UTF-8\"; export USER=$USERNAME; function vi() { $EDITOR $@; }; function y() { yazi --cwd-file=$HOME/.yazi $@; cd $(cat $HOME/.yazi); printf \"\\x1b[A\\x1b[K\"; }; export PROMPT_COMMAND=\"history -a\"; source ~/.config/fzf/key-bindings.bash; source ~/.config/ble-0.4.0-devel3/ble.sh; ble-face -s auto_complete fg=238; ble-face -s syntax_error fg=red; ble-face -s command_builtin fg=green; function ble/widget/normal_completion { ble/widget/auto_complete/insert; ble/widget/vi_imap/normal-mode; }; ble-bind -m auto_complete -f M-l normal_completion; ble-bind -m vi_imap -f @ESC vi_imap/normal-mode; ble-bind -m vi_imap -f C-n newline; ble-bind -m vi_imap -f C-m accept-line; ble-bind -m vi_imap -f C-s discard-line; ble-bind -m vi_nmap --cursor 2; ble-bind -m vi_imap --cursor 6; bleopt exec_errexit_mark=; function blerc/vim-load-hook { bleopt prompt_vi_mode_indicator= ; }; blehook/eval-after-load keymap_vi blerc/vim-load-hook; eval \"$(starship init bash)\"' | sed \"s|\\$EDITOR|$EDITOR|\" >> ~/.bashrc; \n" },
-                { "text": "starship config format \"(\\$battery)(\\$sudo)(\\$username)(\\$directory)(\\$git_branch)(\\$git_status)(\\$cmd_duration)(\\$status)(\\$character)\"; starship config add_newline false; starship config command_timeout 60000; starship config cmd_duration.min_time 60000; curl -L https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash --create-dirs --output $HOME/.config/fzf/key-bindings.bash; curl -L https://github.com/akinomyoga/ble.sh/releases/download/v0.4.0-devel3/ble-0.4.0-devel3.tar.xz | tar -xJf- --directory=$HOME/.config; powershell \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatDelay  -Value 210; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatRate -Value 7; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name DelayBeforeAcceptance -Value 0; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name Flags -Value 27 \" \n" },
-                "<cmd>lua require('vscode-neovim').notify('Relogin to Windows 10/11 to update keyboard repeat rate')<cr>"
+                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatDelay  -Value 210; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatRate -Value 7; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name DelayBeforeAcceptance -Value 0; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name Flags -Value 27 \" \n" },
+                "require('vscode').notify('Relogin to Windows 10/11 to update keyboard repeat rate')"
               ]
             },
             {
