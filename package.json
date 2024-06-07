@@ -100,8 +100,10 @@
         "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh",
         "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh/starship.toml"
       },
-      "terminal.integrated.defaultProfile.windows": "Git Bash",
       "terminal.integrated.scrollback": 10000,
+      "terminal.integrated.profiles.windows": { "zsh (MSYS2)": { "path": "msys2.cmd", "args": [ "-shell", "zsh", "-full-path" ], "env": { "HOME": "${env:USERPROFILE}" } } },
+      "terminal.integrated.defaultProfile.windows": "zsh (MSYS2)",
+      "terminal.integrated.defaultProfile.linux": "zsh",
       "vscode-neovim.compositeKeys": { "jk": { "command": "vscode-neovim.escape" }, "kj": { "command": "vscode-neovim.escape" } },
       "vscode-neovim.ctrlKeysForInsertMode": [ ],
       "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "o", "r", "u", "v", "w", "x", "y", "/" ],
@@ -285,13 +287,13 @@
             },
             {
               "key": "B",
-              "name": "brew install neovim gcc make FiraCode-NF fzf starship zsh-autosuggestions kanata git lazygit yazi",
+              "name": "brew install eza FiraCode-NF fzf git kanata lazygit neovim karabiner starship yazi",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
               "args":
               [
                 null,
-                { "text": "brew tap homebrew/cask-fonts && brew install neovim gcc make font-fira-code-nerd-font fzf karabiner-elements eza starship zsh-autosuggestions zsh-syntax-highlighting git lazygit yazi zoxide; \n" },
-                { "text": "sudo curl -Lo /usr/local/bin/kanata https://github.com/jtroo/kanata/releases/download/v1.6.0-prerelease-1/kanata_macos_cmd_allowed  && sudo chmod +x /usr/local/bin/kanata && sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n" },
+                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git lazygit neovim karabiner-elements starship yazi; \n" },
+                { "text": "sudo curl -Lo /usr/local/bin/kanata https://github.com/jtroo/kanata/releases/download/v1.6.1/kanata_macos_cmd_allowed_x86_64 && sudo chmod +x /usr/local/bin/kanata && sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n" },
                 "require('vscode-neovim').notify('for kanata to work you need to allow karabiner and vscode input monitoring on `security & privacy`')",
                 "require('vscode-neovim').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]
@@ -304,13 +306,13 @@
             },
             {
               "key": "N",
-              "name": "nixpkgs install neovim FiraCode-NF fzf blesh starship zsh-autosuggestions kanata git lazygit yazi",
+              "name": "nixpkgs install eza FiraCode-NF fzf git kanata lazygit neovim starship yazi",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
               "args":
               [
                 null,
-                { "text": "nix-env -iA nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.blesh nixpkgs.eza nixpkgs.starship nixpkgs.zsh-autosuggestions  nixpkgs.zsh-syntax-highlighting nixpkgs.kanata nixpkgs.git nixpkgs.lazygit nixpkgs.yazi nixpkgs.zoxide; \n" },
-                { "text": "sudo curl -L https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage --output /usr/local/bin/nvim && sudo chmod +x /usr/local/bin/nvim \n" },
+                { "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.kanata nixpkgs.lazygit nixpkgs.starship nixpkgs.yazi nixpkgs.zsh; \n" },
+                { "text": "sudo curl -L https://github.com/neovim/neovim/releases/download/v0.10.0/nvim.appimage --output /usr/local/bin/nvim && sudo chmod +x /usr/local/bin/nvim \n" },
                 "<cmd>lua require('vscode-neovim').notify('Relaunch vscode after finishing the installation of dependencies')<cr>"
               ]
             },
@@ -322,13 +324,13 @@
             },
             {
               "key": "S",
-              "name": "scoop install neovim gcc make FiraCode-NF eza starship fzf kanata git lazygit yazi zoxide",
+              "name": "scoop install eza FiraCode-NF fzf gcc git kanata lazygit neovim msys2 starship yazi",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
               "args":
               [
                 null,
-                { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install neovim vcredist2022 gcc make FiraCode-NF eza starship fzf kanata lazygit zoxide; scoop install yazi@0.1.5 \n" },
-                "<cmd>lua require('vscode-neovim').notify('Relaunch vscode after finishing the installation of dependencies')<cr>"
+                { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf gcc kanata lazygit neovim msys2 starship vcredist2022 yazi; msys2 -c 'pacman -S --noconfirm zsh' \n" },
+                "<cmd>lua require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')<cr>"
               ]
             },
             {
@@ -360,7 +362,7 @@
             },
             {
               "key": "K",
-              "name": "start touchcursor keyboard layout (`sudo pkill kanata` or LeftCtrl+Space+Escape to stop)",
+              "name": "Start touchcursor keyboard layout (LeftCtrl + Space + Escape to stop)",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
               "args": [ null, { "text": "sh -c \"(which scoop 2>/dev/null) && (conhost.exe --headless kanata --cfg '${RETRONVIM_PATH/\\$HOME/$HOME}/kanata/simple.kbd' &) || { sudo --preserve-env bash --login -c 'kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; } \"; sleep 5; exit;\r" } ]
             },
