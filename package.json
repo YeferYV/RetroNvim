@@ -1,14 +1,14 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + minimal zsh/bash/git-bash setup",
+  "description": "neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + minimal zsh / Msys2's zsh setup",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
     "name": "YeferYV",
     "url": "https://github.com/YeferYV"
   },
-  "version": "0.0.20240416",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -76,29 +76,29 @@
       ],
       "terminal.integrated.enableImages": true,
       "terminal.integrated.env.linux": {
-        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416",
+        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
         "PATH": "$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
         "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
-        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh",
-        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh/starship.toml"
+        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
+        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh/starship.toml"
       },
       "terminal.integrated.env.osx": {
-        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416",
+        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
-        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh",
-        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh/starship.toml"
+        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
+        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh/starship.toml"
       },
       "terminal.integrated.env.windows": {
-        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416",
+        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
         "PATH": "$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
         "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
-        "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh",
-        "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.20240416/zsh/starship.toml"
+        "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
+        "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh/starship.toml"
       },
       "terminal.integrated.scrollback": 10000,
       "terminal.integrated.profiles.windows": { "zsh (MSYS2)": { "path": "msys2.cmd", "args": [ "-shell", "zsh", "-full-path" ], "env": { "HOME": "${env:USERPROFILE}" } } },
@@ -107,9 +107,9 @@
       "vscode-neovim.compositeKeys": { "jk": { "command": "vscode-neovim.escape" }, "kj": { "command": "vscode-neovim.escape" } },
       "vscode-neovim.ctrlKeysForInsertMode": [ ],
       "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "o", "r", "u", "v", "w", "x", "y", "/" ],
-      "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.20240416/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
       "window.titleBarStyle": "custom",
       "workbench.colorTheme": "Tokyo Night Dark",
       "workbench.colorCustomizations": {

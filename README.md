@@ -2,7 +2,7 @@
 
 <div align="center"><p>
 
-Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + minimal zsh/bash/git-bash setup
+Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + minimal zsh / Msys2's zsh setup
 
 <!-- <img src="https://github.com/yeferyv/retronvim/blob/main/assets/demo.gif?raw=true"> -->
 
@@ -31,24 +31,20 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
    - [Neovim Space TextObjects/Motions](#neovim-space-textobject-motions)
    - [Neovim Mini.brackets](#neovim-minibrackets)
 2. Neovim Goto
-   - [Neovim Go to Previous](#neovim-go-to-previous)
-   - [Neovim Go to Next](#neovim-go-to-next)
-   - [Neovim Go to Previous Start of](#neovim-go-to-previous-start-of)
-   - [Neovim Go to Next Start of](#neovim-go-to-next-start-of)
-   - [Neovim Go to Previous End of](#neovim-go-to-previous-end-of)
-   - [Neovim Go to Next End of](#neovim-go-to-next-end-of)
+   - [Neovim Go to Previous / Next](#neovim-go-to-previous--next)
+   - [Neovim Go to Previous_Start / Next_Start / Previous_End / Next_End of](#neovim-go-to-previous_start--next_start--previous_end--next_end-of)
 3. keybindings.json
    - [File Explorer keymaps](#file-explorer-keymaps)
    - [Terminal keymaps](#terminal-keymaps)
    - [Suggestion keymaps](#suggestion-keymaps)
    - [Editor keymaps (keybindings.json)](#editor-keymaps-keybindingsjson)
    - [Native neovim ctrl keys](#native-neovim-ctrl-keys)
-4. [If zsh/bash/git-bash Setup Enabled](#if-zsh-bash-git-bash-setup-enabled)
+4. [zsh keymaps](#zsh-keymaps)
 5. [If Touchcursor Keyboard Layout Started](#if-touchcursor-keyboard-layout-started)
 6. Installation
    - [Dependencies Installation](#dependencies-installation)
    - [Treesitter Installation](#treesitter-installation)
-7. [Vim Cheatsheets](#vim-cheatsheets)
+7. [Vim Cheatsheets / Tutorials](#vim-cheatsheets--tutorials)
 8. [Related projects](#related-projects)
 
 </details>
@@ -138,8 +134,8 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |        `g.`        | `o`,`x` |              | Jump toLastChange                                             |                                          | won't jump               | uses selection               | `vg.` will select from cursor position until last change                         |
 |        `ga`        | `n`,`x` |              | align                                                         | followed by textobject/motion            |                          | uses selected region         | `vipga=` will align a paragraph by `=`                                           |
 |        `gA`        | `n`,`x` |              | preview align (escape to cancel, enter to accept)             | followed by textobject/motion            |                          | uses selected region         | `vipgA=` will align a paraghaph by `=`                                           |
-|        `gb`        | `n`,`x` |     `.`      | add virtual cursor (select and find)                          | selects word under cursor                |                          | uses selected word           | `gb.` will select 2 same words                                                   |
-|        `gB`        | `n`,`x` |     `.`      | add virtual cursor (find selected)                            | selects last search                      |                          | uses selected word           | `gB.` will select last search (2 matches)                                        |
+|        `gb`        | `n`,`x` |     `.`      | add virtual cursor (select and find) (vscode only)            | selects word under cursor                |                          | uses selected word           | `gb.` will select 2 same words                                                   |
+|        `gB`        | `n`,`x` |     `.`      | add virtual cursor (find selected) (vscode only)              | selects last search                      |                          | uses selected word           | `gB.` will select last search (2 matches)                                        |
 |        `gc`        | `o`,`x` |     `.`      | Block comment                                                 |                                          | will find and jump       | will find and jump           | `vgc` will find and select a block of comment                                    |
 |        `gC`        | `o`,`x` |     `.`      | Rest of comment                                               |                                          | won't jump               | uses selection               | `vgc` will select from cursor position until the end of block of comment         |
 |        `gd`        | `o`,`x` |     `.`      | Diagnostic (requires LSP so only works inside neovim)         |                                          | will find and jump       | will find and jump           | `vgd` will select the error                                                      |
@@ -155,10 +151,10 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |        `gk`        | `o`,`x` |     `.`      | GoUp when wrapped                                             |                                          | uses cursor position     | uses selection               | `vgj` will select one line up                                                    |
 |        `gK`        | `o`,`x` |     `.`      | column down until indent or shorter line                      |                                          | won't jump               | uses selection               | `vgK` will select column from cursor position until indent or shorter line       |
 |        `gL`        | `o`,`x` |     `.`      | Url                                                           |                                          | will find and jump       | relesects                    | `vgL` will select url                                                            |
-|        `gm`        | `o`,`x` |              | Last change                                                   |                                          | won't jump               | reselects                    | `vgm` will select last change                                                    |
+|        `gm`        | `o`,`x` |              | Last modified/pasted                                          |                                          | won't jump               | reselects                    | `vgm` will select last change                                                    |
 |        `gn`        | `o`,`x` |     `.`      | +goto next (only textobj with `@`,`_`)                        |                                          | followed by textobject   | uses selection               | `vgniu` will select from cursor position until next quotation                    |
-|        `go`        | `n`,`x` |     `.`      | add virtual cursor down                                       | selects word under cursor                |                          | uses selected word           | `go.` will select word and go down then select word and go down                  |
-|        `gO`        | `n`,`x` |     `.`      | add virtual cursor up                                         | selects word under cursor                |                          | uses selected word           | `gO.` will select word and go up then select word and go up                      |
+|        `go`        | `n`,`x` |     `.`      | add virtual cursor down (vscode only)                         | selects word under cursor                |                          | uses selected word           | `go.` will select word and go down then select word and go down                  |
+|        `gO`        | `n`,`x` |     `.`      | add virtual cursor up (vscode only)                           | selects word under cursor                |                          | uses selected word           | `gO.` will select word and go up then select word and go up                      |
 |        `gp`        | `o`,`x` |     `.`      | +goto previous (only textobj with `@`,`_`)                    |                                          | followed by textobject   | uses selection               | `vgpiu` will select from cursor position until previous quotation                |
 |        `gq`        | `n`,`x` |     `.`      | Split/Join comments/lines 80chars (LSP overrides it)          | requires a textobject                    |                          | applies to selection         | `vipgq` will split/join a paragraph limited by 80 characters                     |
 |        `gr`        | `o`,`x` |     `.`      | RestOfWindow                                                  |                                          | uses cursor position     | uses selection               | `vgr` will select from the cursorline to the last line in the window             |
@@ -225,8 +221,8 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |          `g;`          |   `n`   | go backward in `:changes`                                |                        |                                                                            |                                                          |
 |          `ga`          | `n`,`x` | +align                                                   |          `.`           |                                    yes                                     | `gaip=` will align a paragraph by `=`                    |
 |          `gA`          | `n`,`x` | +preview align (escape to cancel, enter to accept)       |          `.`           |                                    yes                                     | `gAip=` will align a paragraph by `=`                    |
-|          `gb`          | `n`,`x` | add virtual cursor (select and find)                     |          `.`           |                                                                            |                                                          |
-|          `gB`          | `n`,`x` | add virtual cursor (find selected)                       |          `.`           |                                                                            |                                                          |
+|          `gb`          | `n`,`x` | add virtual cursor (select and find) (vscode only)       |          `.`           |                                                                            |                                                          |
+|          `gB`          | `n`,`x` | add virtual cursor (find selected) (vscode only)         |          `.`           |                                                                            |                                                          |
 |          `gc`          | `n`,`x` | +comment                                                 |          `.`           |                                    yes                                     | `gcip` comment a paragraph                               |
 |          `gd`          |   `n`   | goto definition                                          |                        |                                                                            |                                                          |
 |          `ge`          | `n`,`x` | goto previous endOfWord                                  |                        |                                                                            |                                                          |
@@ -242,10 +238,10 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |          `gm`          |   `n`   | goto mid window                                          |                        |                                                                            |                                                          |
 |          `gM`          | `n`,`x` | goto mid line                                            |                        |                                                                            |                                                          |
 |          `gn`          | `n`,`x` | +goto next (only textobj with `@`,`_`)                   | `;`forward `,`backward |                                    yes                                     | `gniu` go to next quotation                              |
-|          `go`          | `n`,`x` | add virtual cursor down (tab to extend/cursor mode)      |          `.`           |                                                                            |                                                          |
-|          `gO`          | `n`,`x` | add virtual cursor up (tab to extend/cursor mode)        |          `.`           |                                                                            |                                                          |
+|          `go`          | `n`,`x` | add virtual cursor down (vscode only)                    |          `.`           |                                                                            |                                                          |
+|          `gO`          | `n`,`x` | add virtual cursor up (vscode only)                      |          `.`           |                                                                            |                                                          |
 |          `gp`          | `n`,`x` | +goto previous (only textobj with `@`,`_`)               | `;`forward `,`backward |                                    yes                                     | `gpiu` go to previous quotation                          |
-|          `gq`          | `n`,`x` | +SplitJoin comment/lines 80chars (overrited by LSP)      |          `.`           |                                    yes                                     | `gqip` split/join a paragraph by 80 characters           |
+|          `gq`          | `n`,`x` | +SplitJoin comment/lines 80chars (overridden by LSP)     |          `.`           |                                    yes                                     | `gqip` split/join a paragraph by 80 characters           |
 |          `gr`          |   `n`   | Redo register (dot to paste forward)                     |          `.`           |                                                                            |                                                          |
 |          `gR`          |   `n`   | Redo register (dot to paste backward)                    |          `.`           |                                                                            |                                                          |
 |          `gs`          | `n`,`x` | +Surround (followed by a=add, d=delete, r=replace)       |          `.`           |                                    yes                                     | `gsaiw"` add `"`, `gsd"` delete `"`, `gsr"'` replace `"` |
@@ -288,7 +284,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |          `S`           | `n`,`x` | Flash Treesitter                                         |                        |                                                                            |                                                          |
 |          `t`           | `n`,`x` | Move before next char                                    |          `t`           |                                                                            |                                                          |
 |          `T`           | `n`,`x` | Move before previous char                                |          `T`           |                                                                            |                                                          |
-|          `U`           |   `n`   | repeat :normal <keys>                                    |                        |                                                                            |                                                          |
+|          `U`           |   `n`   | repeat `:normal <keys>` or `:<commands>`                 |                        |                                                                            |                                                          |
 |          `w`           | `n`,`x` | Next word                                                |                        |                                                                            |                                                          |
 |          `W`           | `n`,`x` | Next WORD                                                |                        |                                                                            |                                                          |
 |          `Y`           | `n`,`x` | Yank until end of line                                   |                        |                                                                            |                                                          |
@@ -358,221 +354,65 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 </details>
 
-## Neovim Go to Previous
+## Neovim Go to Previous / Next
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description                                                                                                                                |      repeater key      |
-| :----: | :---------: | :----------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
-| `gpc`  | `n`,`o`,`x` | go to previous comment                                                                                                                     | `;`forward `,`backward |
-| `gpd`  | `n`,`o`,`x` | go to previous diagnostic                                                                                                                  | `;`forward `,`backward |
-| `gph`  | `n`,`o`,`x` | go to previous git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/#gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
-| `gpH`  | `n`,`o`,`x` | go to previous git hunk (working on Windows10)                                                                                             | `;`forward `,`backward |
-| `gpiy` | `n`,`o`,`x` | go to previous same_indent                                                                                                                 | `;`forward `,`backward |
-| `gpr`  | `n`,`o`,`x` | go to previous reference                                                                                                                   | `;`forward `,`backward |
-| `gpz`  | `n`,`o`,`x` | go to previous start of fold                                                                                                               | `;`forward `,`backward |
-| `gpZ`  | `n`,`o`,`x` | go to previous start scope                                                                                                                 | `;`forward `,`backward |
+|    Keymap     |    Mode     | Description                                                                                                                               |      repeater key      |
+| :-----------: | :---------: | :---------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
+|  `gpc`/`gnc`  | `n`,`o`,`x` | previous/next comment                                                                                                                     | `;`forward `,`backward |
+|  `gpd`/`gnd`  | `n`,`o`,`x` | previous/next diagnostic                                                                                                                  | `;`forward `,`backward |
+|  `gph`/`gnh`  | `n`,`o`,`x` | previous/next git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/#gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
+|  `gpH`/`gnH`  | `n`,`o`,`x` | previous/next git hunk (working on Windows10)                                                                                             | `;`forward `,`backward |
+| `gpiy`/`gniy` | `n`,`o`,`x` | previous/next same_indent                                                                                                                 | `;`forward `,`backward |
+|  `gpr`/`gnr`  | `n`,`o`,`x` | previous/next reference                                                                                                                   | `;`forward `,`backward |
+|  `gpz`/`gnz`  | `n`,`o`,`x` | previous/next start of fold                                                                                                               | `;`forward `,`backward |
+|  `gpZ`/`gnZ`  | `n`,`o`,`x` | previous/next start scope                                                                                                                 | `;`forward `,`backward |
 
 </details>
 
-## Neovim Go to Next
+## Neovim Go to Previous_Start / Next_Start / Previous_End / Next_End of
 
 <details open><summary></summary>
 
-| Keymap |    Mode     | Description                                                                                                                            |      repeater key      |
-| :----: | :---------: | :------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
-| `gnc`  | `n`,`o`,`x` | go to next comment                                                                                                                     | `;`forward `,`backward |
-| `gnd`  | `n`,`o`,`x` | go to next diagnostic                                                                                                                  | `;`forward `,`backward |
-| `gnh`  | `n`,`o`,`x` | go to next git hunk ([not working on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/#gnh-gph-not-working-on-windows10)) | `;`forward `,`backward |
-| `gnH`  | `n`,`o`,`x` | go to next git hunk (working on Windows10)                                                                                             | `;`forward `,`backward |
-| `gniy` | `n`,`o`,`x` | go to next same_indent                                                                                                                 | `;`forward `,`backward |
-| `gnr`  | `n`,`o`,`x` | go to next reference                                                                                                                   | `;`forward `,`backward |
-| `gnz`  | `n`,`o`,`x` | go to next start of fold                                                                                                               | `;`forward `,`backward |
-| `gnZ`  | `n`,`o`,`x` | go to next start scope                                                                                                                 | `;`forward `,`backward |
-
-</details>
-
-## Neovim Go to Previous Start of
-
-<details open><summary></summary>
-
-| Keymap | Mode        | Description           | Repeater Key           |
-| ------ | ----------- | --------------------- | ---------------------- |
-| `gpaB` | `n`,`o`,`x` | @block.outer          | `;`forward `,`backward |
-| `gpaq` | `n`,`o`,`x` | @call.outer           | `;`forward `,`backward |
-| `gpaQ` | `n`,`o`,`x` | @class.outer          | `;`forward `,`backward |
-| `gpag` | `n`,`o`,`x` | @comment.outer        | `;`forward `,`backward |
-| `gpaG` | `n`,`o`,`x` | @conditional.outer    | `;`forward `,`backward |
-| `gpaF` | `n`,`o`,`x` | @function.outer       | `;`forward `,`backward |
-| `gpaL` | `n`,`o`,`x` | @loop.outer           | `;`forward `,`backward |
-| `gpaP` | `n`,`o`,`x` | @parameter.outer      | `;`forward `,`backward |
-| `gpaR` | `n`,`o`,`x` | @return.outer         | `;`forward `,`backward |
-| `gpaA` | `n`,`o`,`x` | @assignment.outer     | `;`forward `,`backward |
-| `gpa=` | `n`,`o`,`x` | @assignment.lhs       | `;`forward `,`backward |
-| `gpa#` | `n`,`o`,`x` | @number.outer         | `;`forward `,`backward |
-| `gpaf` | `n`,`o`,`x` | outer \_function      | `;`forward `,`backward |
-| `gpah` | `n`,`o`,`x` | outer \_htmlAttribute | `;`forward `,`backward |
-| `gpak` | `n`,`o`,`x` | outer \_key           | `;`forward `,`backward |
-| `gpan` | `n`,`o`,`x` | outer \_number        | `;`forward `,`backward |
-| `gpau` | `n`,`o`,`x` | outer \_quote         | `;`forward `,`backward |
-| `gpax` | `n`,`o`,`x` | outer \_Hex           | `;`forward `,`backward |
-| `gpiB` | `n`,`o`,`x` | @block.inner          | `;`forward `,`backward |
-| `gpiq` | `n`,`o`,`x` | @call.inner           | `;`forward `,`backward |
-| `gpiQ` | `n`,`o`,`x` | @class.inner          | `;`forward `,`backward |
-| `gpig` | `n`,`o`,`x` | @comment.inner        | `;`forward `,`backward |
-| `gpiG` | `n`,`o`,`x` | @conditional.inner    | `;`forward `,`backward |
-| `gpiF` | `n`,`o`,`x` | @function.inner       | `;`forward `,`backward |
-| `gpiL` | `n`,`o`,`x` | @loop.inner           | `;`forward `,`backward |
-| `gpiP` | `n`,`o`,`x` | @parameter.inner      | `;`forward `,`backward |
-| `gpiR` | `n`,`o`,`x` | @return.inner         | `;`forward `,`backward |
-| `gpiA` | `n`,`o`,`x` | @assignment.inner     | `;`forward `,`backward |
-| `gpi=` | `n`,`o`,`x` | @assignment.rhs       | `;`forward `,`backward |
-| `gpi#` | `n`,`o`,`x` | @number.inner         | `;`forward `,`backward |
-| `gpif` | `n`,`o`,`x` | inner \_function      | `;`forward `,`backward |
-| `gpih` | `n`,`o`,`x` | inner \_htmlAttribute | `;`forward `,`backward |
-| `gpik` | `n`,`o`,`x` | inner \_key           | `;`forward `,`backward |
-| `gpin` | `n`,`o`,`x` | inner \_number        | `;`forward `,`backward |
-| `gpiu` | `n`,`o`,`x` | inner \_quote         | `;`forward `,`backward |
-| `gpix` | `n`,`o`,`x` | inner \_Hex           | `;`forward `,`backward |
-
-</details>
-
-## Neovim Go to Next Start of
-
-<details open><summary></summary>
-
-| Keymap | Mode        | Description           | Repeater Key           |
-| ------ | ----------- | --------------------- | ---------------------- |
-| `gnaB` | `n`,`o`,`x` | @block.outer          | `;`forward `,`backward |
-| `gnaq` | `n`,`o`,`x` | @call.outer           | `;`forward `,`backward |
-| `gnaQ` | `n`,`o`,`x` | @class.outer          | `;`forward `,`backward |
-| `gnag` | `n`,`o`,`x` | @comment.outer        | `;`forward `,`backward |
-| `gnaG` | `n`,`o`,`x` | @conditional.outer    | `;`forward `,`backward |
-| `gnaF` | `n`,`o`,`x` | @function.outer       | `;`forward `,`backward |
-| `gnaL` | `n`,`o`,`x` | @loop.outer           | `;`forward `,`backward |
-| `gnaP` | `n`,`o`,`x` | @parameter.outer      | `;`forward `,`backward |
-| `gnaR` | `n`,`o`,`x` | @return.outer         | `;`forward `,`backward |
-| `gnaA` | `n`,`o`,`x` | @assignment.outer     | `;`forward `,`backward |
-| `gna=` | `n`,`o`,`x` | @assignment.lhs       | `;`forward `,`backward |
-| `gna#` | `n`,`o`,`x` | @number.outer         | `;`forward `,`backward |
-| `gnaf` | `n`,`o`,`x` | outer \_function      | `;`forward `,`backward |
-| `gnah` | `n`,`o`,`x` | outer \_htmlAttribute | `;`forward `,`backward |
-| `gnak` | `n`,`o`,`x` | outer \_key           | `;`forward `,`backward |
-| `gnan` | `n`,`o`,`x` | outer \_number        | `;`forward `,`backward |
-| `gnau` | `n`,`o`,`x` | outer \_quote         | `;`forward `,`backward |
-| `gnax` | `n`,`o`,`x` | outer \_Hex           | `;`forward `,`backward |
-| `gniB` | `n`,`o`,`x` | @block.inner          | `;`forward `,`backward |
-| `gniq` | `n`,`o`,`x` | @call.inner           | `;`forward `,`backward |
-| `gniQ` | `n`,`o`,`x` | @class.inner          | `;`forward `,`backward |
-| `gnig` | `n`,`o`,`x` | @comment.inner        | `;`forward `,`backward |
-| `gniG` | `n`,`o`,`x` | @conditional.inner    | `;`forward `,`backward |
-| `gniF` | `n`,`o`,`x` | @function.inner       | `;`forward `,`backward |
-| `gniL` | `n`,`o`,`x` | @loop.inner           | `;`forward `,`backward |
-| `gniP` | `n`,`o`,`x` | @parameter.inner      | `;`forward `,`backward |
-| `gniR` | `n`,`o`,`x` | @return.inner         | `;`forward `,`backward |
-| `gniA` | `n`,`o`,`x` | @assignment.inner     | `;`forward `,`backward |
-| `gni=` | `n`,`o`,`x` | @assignment.rhs       | `;`forward `,`backward |
-| `gni#` | `n`,`o`,`x` | @number.inner         | `;`forward `,`backward |
-| `gnif` | `n`,`o`,`x` | inner \_function      | `;`forward `,`backward |
-| `gnih` | `n`,`o`,`x` | inner \_htmlAttribute | `;`forward `,`backward |
-| `gnik` | `n`,`o`,`x` | inner \_key           | `;`forward `,`backward |
-| `gnin` | `n`,`o`,`x` | inner \_number        | `;`forward `,`backward |
-| `gniu` | `n`,`o`,`x` | inner \_quote         | `;`forward `,`backward |
-| `gnix` | `n`,`o`,`x` | inner \_Hex           | `;`forward `,`backward |
-
-</details>
-
-## Neovim Go to Previous End of
-
-<details open><summary></summary>
-
-| Keymap  | Mode        | Description           | Repeater Key           |
-| ------- | ----------- | --------------------- | ---------------------- |
-| `gpeaB` | `n`,`o`,`x` | @block.outer          | `;`forward `,`backward |
-| `gpeaq` | `n`,`o`,`x` | @call.outer           | `;`forward `,`backward |
-| `gpeaQ` | `n`,`o`,`x` | @class.outer          | `;`forward `,`backward |
-| `gpeag` | `n`,`o`,`x` | @comment.outer        | `;`forward `,`backward |
-| `gpeaG` | `n`,`o`,`x` | @conditional.outer    | `;`forward `,`backward |
-| `gpeaF` | `n`,`o`,`x` | @function.outer       | `;`forward `,`backward |
-| `gpeaL` | `n`,`o`,`x` | @loop.outer           | `;`forward `,`backward |
-| `gpeaP` | `n`,`o`,`x` | @parameter.outer      | `;`forward `,`backward |
-| `gpeaR` | `n`,`o`,`x` | @return.outer         | `;`forward `,`backward |
-| `gpeaA` | `n`,`o`,`x` | @assignment.lhs       | `;`forward `,`backward |
-| `gpea=` | `n`,`o`,`x` | @assignment.outer     | `;`forward `,`backward |
-| `gpea#` | `n`,`o`,`x` | @number.outer         | `;`forward `,`backward |
-| `gpeaf` | `n`,`o`,`x` | outer \_function      | `;`forward `,`backward |
-| `gpeah` | `n`,`o`,`x` | outer \_htmlAttribute | `;`forward `,`backward |
-| `gpeak` | `n`,`o`,`x` | outer \_key           | `;`forward `,`backward |
-| `gpean` | `n`,`o`,`x` | outer \_number        | `;`forward `,`backward |
-| `gpeau` | `n`,`o`,`x` | outer \_quote         | `;`forward `,`backward |
-| `gpeax` | `n`,`o`,`x` | outer \_Hex           | `;`forward `,`backward |
-| `gpez`  | `n`,`o`,`x` | Previous End Fold     | `;`forward `,`backward |
-| `gpeZ`  | `n`,`o`,`x` | Next scope            | `;`forward `,`backward |
-| `gpeiB` | `n`,`o`,`x` | @block.inner          | `;`forward `,`backward |
-| `gpeiq` | `n`,`o`,`x` | @call.inner           | `;`forward `,`backward |
-| `gpeiQ` | `n`,`o`,`x` | @class.inner          | `;`forward `,`backward |
-| `gpeig` | `n`,`o`,`x` | @comment.inner        | `;`forward `,`backward |
-| `gpeiG` | `n`,`o`,`x` | @conditional.inner    | `;`forward `,`backward |
-| `gpeiF` | `n`,`o`,`x` | @function.inner       | `;`forward `,`backward |
-| `gpeiL` | `n`,`o`,`x` | @loop.inner           | `;`forward `,`backward |
-| `gpeiP` | `n`,`o`,`x` | @parameter.inner      | `;`forward `,`backward |
-| `gpeiR` | `n`,`o`,`x` | @return.inner         | `;`forward `,`backward |
-| `gpeiA` | `n`,`o`,`x` | @assignment.inner     | `;`forward `,`backward |
-| `gpei=` | `n`,`o`,`x` | @assignment.rhs       | `;`forward `,`backward |
-| `gpei#` | `n`,`o`,`x` | @number.inner         | `;`forward `,`backward |
-| `gpeif` | `n`,`o`,`x` | inner \_function      | `;`forward `,`backward |
-| `gpeih` | `n`,`o`,`x` | inner \_htmlAttribute | `;`forward `,`backward |
-| `gpeik` | `n`,`o`,`x` | inner \_key           | `;`forward `,`backward |
-| `gpein` | `n`,`o`,`x` | inner \_number        | `;`forward `,`backward |
-| `gpeiu` | `n`,`o`,`x` | inner \_quote         | `;`forward `,`backward |
-| `gpeix` | `n`,`o`,`x` | inner \_Hex           | `;`forward `,`backward |
-
-</details>
-
-## Neovim Go to Next End of
-
-<details open><summary></summary>
-
-| Keymap  | Mode        | Description           | Repeater Key           |
-| ------- | ----------- | --------------------- | ---------------------- |
-| `gneaB` | `n`,`o`,`x` | @block.outer          | `;`forward `,`backward |
-| `gneaq` | `n`,`o`,`x` | @call.outer           | `;`forward `,`backward |
-| `gneaQ` | `n`,`o`,`x` | @class.outer          | `;`forward `,`backward |
-| `gneag` | `n`,`o`,`x` | @comment.outer        | `;`forward `,`backward |
-| `gneaG` | `n`,`o`,`x` | @conditional.outer    | `;`forward `,`backward |
-| `gneaF` | `n`,`o`,`x` | @function.outer       | `;`forward `,`backward |
-| `gneaL` | `n`,`o`,`x` | @loop.outer           | `;`forward `,`backward |
-| `gneaP` | `n`,`o`,`x` | @parameter.outer      | `;`forward `,`backward |
-| `gneaR` | `n`,`o`,`x` | @return.outer         | `;`forward `,`backward |
-| `gneaA` | `n`,`o`,`x` | @assignment.outer     | `;`forward `,`backward |
-| `gnea=` | `n`,`o`,`x` | @assignment.lhs       | `;`forward `,`backward |
-| `gnea#` | `n`,`o`,`x` | @number.outer         | `;`forward `,`backward |
-| `gneaf` | `n`,`o`,`x` | outer \_function      | `;`forward `,`backward |
-| `gneah` | `n`,`o`,`x` | outer \_htmlAttribute | `;`forward `,`backward |
-| `gneak` | `n`,`o`,`x` | outer \_key           | `;`forward `,`backward |
-| `gnean` | `n`,`o`,`x` | outer \_number        | `;`forward `,`backward |
-| `gneau` | `n`,`o`,`x` | outer \_quote         | `;`forward `,`backward |
-| `gneax` | `n`,`o`,`x` | outer \_Hex           | `;`forward `,`backward |
-| `gnez`  | `n`,`o`,`x` | Next scope            | `;`forward `,`backward |
-| `gneZ`  | `n`,`o`,`x` | Next End Fold         | `;`forward `,`backward |
-| `gneiB` | `n`,`o`,`x` | @block.inner          | `;`forward `,`backward |
-| `gneiq` | `n`,`o`,`x` | @call.inner           | `;`forward `,`backward |
-| `gneiQ` | `n`,`o`,`x` | @class.inner          | `;`forward `,`backward |
-| `gneig` | `n`,`o`,`x` | @comment.inner        | `;`forward `,`backward |
-| `gneiG` | `n`,`o`,`x` | @conditional.inner    | `;`forward `,`backward |
-| `gneiF` | `n`,`o`,`x` | @function.inner       | `;`forward `,`backward |
-| `gneiL` | `n`,`o`,`x` | @loop.inner           | `;`forward `,`backward |
-| `gneiP` | `n`,`o`,`x` | @parameter.inner      | `;`forward `,`backward |
-| `gneiR` | `n`,`o`,`x` | @return.inner         | `;`forward `,`backward |
-| `gneiA` | `n`,`o`,`x` | @assignment.inner     | `;`forward `,`backward |
-| `gnei=` | `n`,`o`,`x` | @assignment.rhs       | `;`forward `,`backward |
-| `gnei#` | `n`,`o`,`x` | @number.inner         | `;`forward `,`backward |
-| `gneif` | `n`,`o`,`x` | inner \_function      | `;`forward `,`backward |
-| `gneih` | `n`,`o`,`x` | inner \_htmlAttribute | `;`forward `,`backward |
-| `gneik` | `n`,`o`,`x` | inner \_key           | `;`forward `,`backward |
-| `gnein` | `n`,`o`,`x` | inner \_number        | `;`forward `,`backward |
-| `gneiu` | `n`,`o`,`x` | inner \_quote         | `;`forward `,`backward |
-| `gneix` | `n`,`o`,`x` | inner \_Hex           | `;`forward `,`backward |
+|               Keymap                |    Mode     | Description                                                      |      Repeater Key      |
+| :---------------------------------: | :---------: | :--------------------------------------------------------------- | :--------------------: |
+| `gpaB` / `gnaB` / `gpeaB` / `gneaB` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @block.outer          | `;`forward `,`backward |
+| `gpaq` / `gnaq` / `gpeaq` / `gneaq` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @call.outer           | `;`forward `,`backward |
+| `gpaQ` / `gnaQ` / `gpeaQ` / `gneaQ` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @class.outer          | `;`forward `,`backward |
+| `gpag` / `gnag` / `gpeag` / `gneag` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @comment.outer        | `;`forward `,`backward |
+| `gpaG` / `gnaG` / `gpeaG` / `gneaG` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @conditional.outer    | `;`forward `,`backward |
+| `gpaF` / `gnaF` / `gpeaF` / `gneaF` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @function.outer       | `;`forward `,`backward |
+| `gpaL` / `gnaL` / `gpeaL` / `gneaL` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @loop.outer           | `;`forward `,`backward |
+| `gpaP` / `gnaP` / `gpeaP` / `gneaP` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @parameter.outer      | `;`forward `,`backward |
+| `gpaR` / `gnaR` / `gpeaR` / `gneaR` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @return.outer         | `;`forward `,`backward |
+| `gpaA` / `gnaA` / `gpeaA` / `gneaA` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @assignment.outer     | `;`forward `,`backward |
+| `gpa=` / `gna=` / `gpea=` / `gnea=` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @assignment.lhs       | `;`forward `,`backward |
+| `gpa#` / `gna#` / `gpea#` / `gnea#` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @number.outer         | `;`forward `,`backward |
+| `gpaf` / `gnaf` / `gpeaf` / `gneaf` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of outer \_function      | `;`forward `,`backward |
+| `gpah` / `gnah` / `gpeah` / `gneah` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of outer \_htmlAttribute | `;`forward `,`backward |
+| `gpak` / `gnak` / `gpeak` / `gneak` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of outer \_key           | `;`forward `,`backward |
+| `gpan` / `gnan` / `gpean` / `gnean` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of outer \_number        | `;`forward `,`backward |
+| `gpau` / `gnau` / `gpeau` / `gneau` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of outer \_quote         | `;`forward `,`backward |
+| `gpax` / `gnax` / `gpeax` / `gneax` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of outer \_Hex           | `;`forward `,`backward |
+| `gpiB` / `gniB` / `gpeiB` / `gneiB` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @block.inner          | `;`forward `,`backward |
+| `gpiq` / `gniq` / `gpeiq` / `gneiq` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @call.inner           | `;`forward `,`backward |
+| `gpiQ` / `gniQ` / `gpeiQ` / `gneiQ` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @class.inner          | `;`forward `,`backward |
+| `gpig` / `gnig` / `gpeig` / `gneig` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @comment.inner        | `;`forward `,`backward |
+| `gpiG` / `gniG` / `gpeiG` / `gneiG` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @conditional.inner    | `;`forward `,`backward |
+| `gpiF` / `gniF` / `gpeiF` / `gneiF` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @function.inner       | `;`forward `,`backward |
+| `gpiL` / `gniL` / `gpeiL` / `gneiL` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @loop.inner           | `;`forward `,`backward |
+| `gpiP` / `gniP` / `gpeiP` / `gneiP` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @parameter.inner      | `;`forward `,`backward |
+| `gpiR` / `gniR` / `gpeiR` / `gneiR` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @return.inner         | `;`forward `,`backward |
+| `gpiA` / `gniA` / `gpeiA` / `gneiA` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @assignment.inner     | `;`forward `,`backward |
+| `gpi=` / `gni=` / `gpei=` / `gnei=` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @assignment.rhs       | `;`forward `,`backward |
+| `gpi#` / `gni#` / `gpei#` / `gnei#` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of @number.inner         | `;`forward `,`backward |
+| `gpif` / `gnif` / `gpeif` / `gneif` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of inner \_function      | `;`forward `,`backward |
+| `gpih` / `gnih` / `gpeih` / `gneih` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of inner \_htmlAttribute | `;`forward `,`backward |
+| `gpik` / `gnik` / `gpeik` / `gneik` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of inner \_key           | `;`forward `,`backward |
+| `gpin` / `gnin` / `gpein` / `gnein` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of inner \_number        | `;`forward `,`backward |
+| `gpiu` / `gniu` / `gpeiu` / `gneiu` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of inner \_quote         | `;`forward `,`backward |
+| `gpix` / `gnix` / `gpeix` / `gneix` | `n`,`o`,`x` | prev_start/next_start/prev_end/next_end of inner \_Hex           | `;`forward `,`backward |
 
 </details>
 
@@ -632,6 +472,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |   `alt+right`   | Resize terminal pane right          |
 |   `alt+down`    | Resize terminal pane down           |
 |    `alt+up`     | Resize terminal pane up             |
+|  `alt+ctrl+r`   | select from shell history           |
 
 </details>
 
@@ -660,38 +501,39 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 <details open><summary></summary>
 
-|     Key Combination      |  mode   | Description                                              |
-| :----------------------: | :-----: | :------------------------------------------------------- |
-|         `ctrl+\`         |   `n`   | Toggle panel (terminal) visibility                       |
-|      `shift+space`       |   `n`   | Show whichkey menu (Windows, Linux, Mac)                 |
-|       `alt+space`        |   `n`   | Show whichkey menu (Linux, Mac)                          |
-|         `alt+.`          |   `n`   | Repeat most recent Whichkey action                       |
-|         `alt+c`          |   `i`   | Copy                                                     |
-|         `alt+v`          |   `i`   | Paste                                                    |
-|           `jk`           |   `i`   | send Escape                                              |
-|         `alt+h`          | `i`,`x` | Send Escape                                              |
-|         `alt+j`          |   `n`   | Quick-open-menu select next                              |
-|         `alt+k`          |   `n`   | Quick-open-menu select previous                          |
-|         `alt+h`          |   `n`   | Type `10h`                                               |
-|         `alt+j`          |   `n`   | Type `10gj`                                              |
-|         `alt+k`          |   `n`   | Type `10gk`                                              |
-|         `alt+l`          |   `n`   | Type `10l`                                               |
-|         `alt+v`          |   `n`   | Type `V`                                                 |
-|    `alt+s` or `left`     |   `n`   | Go to previous editor                                    |
-|    `alt+f` or `right`    |   `n`   | Go to next editor                                        |
-| `alt+left` or `alt+down` |   `n`   | Decrease view size                                       |
-| `alt+right` or `alt+up`  |   `n`   | Increase view size                                       |
-|         `ctrl+h`         |   `n`   | Navigate to left window                                  |
-|         `ctrl+j`         |   `n`   | Navigate to down window                                  |
-|         `ctrl+k`         |   `n`   | Navigate to up window                                    |
-|         `ctrl+l`         |   `n`   | Navigate to right window                                 |
-|   `alt+q` or `shift+q`   |   `n`   | Close active editor                                      |
-|   `alt+r` or `shift+r`   |   `n`   | Format and save                                          |
-|     `ctrl+alt+right`     |   `n`   | select right word (on multi cursor)                      |
-|           `h`            |   `n`   | Move cursor left (on Windows10 `<number>h` unsupported)  |
-|           `j`            |   `n`   | Move cursor down (on Windows10 not restoring position)   |
-|           `k`            |   `n`   | Move cursor up (on Windows10 not restoring position)     |
-|           `l`            |   `n`   | Move cursor right (on Windows10 `<number>l` unsupported) |
+|     Key Combination      |    mode     | Description                                              |
+| :----------------------: | :---------: | :------------------------------------------------------- |
+|         `ctrl+\`         |     `n`     | Toggle panel (terminal) visibility                       |
+|      `shift+space`       |     `n`     | Show whichkey menu (Windows, Linux, Mac)                 |
+|       `alt+space`        |     `n`     | Show whichkey menu (Linux, Mac)                          |
+|         `alt+.`          |     `n`     | Repeat most recent Whichkey action                       |
+|         `alt+c`          |     `i`     | Copy                                                     |
+|         `alt+v`          |     `i`     | Paste                                                    |
+|           `jk`           |     `i`     | send Escape                                              |
+|         `alt+h`          |   `i`,`x`   | Send Escape                                              |
+|         `alt+j`          |     `n`     | Quick-open-menu select next                              |
+|         `alt+k`          |     `n`     | Quick-open-menu select previous                          |
+|         `alt+h`          |     `n`     | Type `10h`                                               |
+|         `alt+j`          |     `n`     | Type `10gj`                                              |
+|         `alt+k`          |     `n`     | Type `10gk`                                              |
+|         `alt+l`          |     `n`     | Type `10l`                                               |
+|         `alt+v`          |     `n`     | Type `V`                                                 |
+|    `alt+s` or `left`     |     `n`     | Go to previous editor                                    |
+|    `alt+f` or `right`    |     `n`     | Go to next editor                                        |
+| `alt+left` or `alt+down` |     `n`     | Decrease view size                                       |
+| `alt+right` or `alt+up`  |     `n`     | Increase view size                                       |
+|         `ctrl+h`         |     `n`     | Navigate to left window                                  |
+|         `ctrl+j`         |     `n`     | Navigate to down window                                  |
+|         `ctrl+k`         |     `n`     | Navigate to up window                                    |
+|         `ctrl+l`         |     `n`     | Navigate to right window                                 |
+|   `alt+q` or `shift+q`   |     `n`     | Close active editor                                      |
+|   `alt+r` or `shift+r`   |     `n`     | Format and save                                          |
+|     `ctrl+alt+left`      | `n`,`i`,`x` | select left word (on multi cursor)                       |
+|     `ctrl+alt+right`     | `n`,`i`,`x` | select right word (on multi cursor)                      |
+|           `h`            |     `n`     | Move cursor left (on Windows10 `<number>h` unsupported)  |
+|           `j`            |     `n`     | Move cursor down (on Windows10 not restoring position)   |
+|           `k`            |     `n`     | Move cursor up (on Windows10 not restoring position)     |
+|           `l`            |     `n`     | Move cursor right (on Windows10 `<number>l` unsupported) |
 
 </details>
 
@@ -720,20 +562,23 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 ---
 
-## If zsh/bash/git-bash Setup Enabled
+## zsh keymaps
 
 <details open><summary></summary>
 
-|   keymap    | description                            |
-| :---------: | :------------------------------------- |
-| `vi<enter>` | open retronvim's neovim                |
-| `y<enter>`  | open yazi (changes directory on exit)  |
-|   `alt+h`   | enter vim mode                         |
-|   `alt+j`   | previous history and enter vim-mode    |
-|   `alt+k`   | next history and enter vim-mode        |
-|   `alt+l`   | complete suggestion and enter vim-mode |
-|  `ctrl+r`   | search history with fzf                |
-|  `ctrl+l`   | clear screen                           |
+|    keymap     | description                               |
+| :-----------: | :---------------------------------------- |
+|    `<tab>`    | show (dash/path) options or complete path |
+| `<tab>+<tab>` | enter completion menu                     |
+|  `vi<enter>`  | open retronvim's neovim                   |
+|  `y<enter>`   | open yazi (changes directory on exit)     |
+|    `alt+o`    | open yazi (even while writing commands)   |
+|    `alt+h`    | enter vim mode                            |
+|    `alt+j`    | previous history and enter vim-mode       |
+|    `alt+k`    | next history and enter vim-mode           |
+|    `alt+l`    | complete suggestion and enter vim-mode    |
+|   `ctrl+r`    | search history with fzf                   |
+|   `ctrl+l`    | clear screen                              |
 
 </details>
 
@@ -808,10 +653,7 @@ _    _    _              _              _    _    _
 <details open><summary></summary>
 
 After installing retronvim extension, open
-`whichkey` > `+Install Dependencies` > `install <your package manager>` > `<your package manager> install neovim gcc make ...` > relaunch vscode
-
-Important: for new retronvim releases if zsh/bash/git-bash setup is enable then you need to update the hardcode `$EDITOR` variable with `whichkey` > `+Install Dependencies` > `Enable Zsh/Bash/Git-Bash ...`
-(just in case you want to use `$EDITOR` inside other terminals otherwise skip this step)
+`whichkey` > `+Install Dependencies` > `install <your package manager>` > `<your package manager> install neovim gcc git` > relaunch vscode
 
 </details>
 
@@ -832,7 +674,7 @@ Tip: to make a clean neovim-extensions/tressitter-grammar installation remove th
 
 </details>
 
-## Vim Cheatsheets
+## Vim Cheatsheets / Tutorials
 
 <details open><summary></summary>
 
