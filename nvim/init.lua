@@ -245,109 +245,84 @@ end
 
 -- https://thevaluable.dev/vim-create-text-objects
 -- select indent by the same level:
-_G.select_same_indent = function(skip_blank_line)
+M.select_same_indent = function(skip_blank_line, skip_comment_line)
   local start_indent = vim.fn.indent(vim.fn.line('.'))
+  local get_comment_regex = "^%s*" .. string.gsub(vim.bo.commentstring, "%%s", ".*") .. "%s*$"
+  local is_blank_line = function(line) return string.match(vim.fn.getline(line), '^%s*$') end
+  local is_comment_line = function(line) return string.find(vim.fn.getline(line), get_comment_regex) end
 
-  function is_blank_line(line) return string.match(vim.fn.getline(line), '^%s*$') end
-
-  if skip_blank_line then
-    match_blank_line = function(line) return false end
-  else
-    match_blank_line = function(line) return is_blank_line(line) end
-  end
-
+  -- go up while having the same indent
   local prev_line = vim.fn.line('.') - 1
-  while vim.fn.indent(prev_line) == start_indent or match_blank_line(prev_line) do
+  while vim.fn.indent(prev_line) == start_indent or (is_blank_line(prev_line) and vim.fn.indent(prev_line) ~= -1) do
+    if skip_blank_line and is_blank_line(prev_line) then break end
+    if skip_comment_line and is_comment_line(prev_line) then break end
     vim.cmd('-')
-    prev_line = vim.fn.line('.') - 1
-
-    -- exit loop if there's no indentation
-    if skip_blank_line then
-      if vim.fn.indent(prev_line) == 0 and is_blank_line(prev_line) then
-        break
-      end
-    else
-      if vim.fn.indent(prev_line) < 0 then
-        break
-      end
-    end
+    prev_line = prev_line - 1
   end
 
-  vim.cmd('normal! 0V')
+  vim.cmd('normal! V')
 
+  -- go down while having the same indent
   local next_line = vim.fn.line('.') + 1
-  while vim.fn.indent(next_line) == start_indent or match_blank_line(next_line) do
+  while vim.fn.indent(next_line) == start_indent or (is_blank_line(next_line) and vim.fn.indent(next_line) ~= -1) do
+    if skip_blank_line and is_blank_line(next_line) then break end
+    if skip_comment_line and is_comment_line(next_line) then break end
     vim.cmd('+')
-    next_line = vim.fn.line('.') + 1
-
-    -- exit loop if there's no indentation
-    if skip_blank_line then
-      if vim.fn.indent(next_line) == 0 and is_blank_line(next_line) then
-        break
-      end
-    else
-      if vim.fn.indent(prev_line) < 0 then
-        break
-      end
-    end
+    next_line = next_line + 1
   end
 end
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
 
--- goto next/prev same/different level indent:
-M.next_indent = function(next, level)
-  local start_indent = vim.fn.indent(vim.fn.line('.'))
-  local current_line = vim.fn.line('.')
-  local next_line = next and (vim.fn.line('.') + 1) or (vim.fn.line('.') - 1)
-  local sign = next and '+' or '-'
+-- https://github.com/romgrk/columnMove.vim
+M.ColumnMove = function(direction)
+  local lnum = vim.fn.line('.')
+  local colnum = vim.fn.virtcol('.')
+  local remove_extraline = false
+  local pattern1, pattern2
+  local match_char = function(lnum, pattern) return vim.fn.getline(lnum):sub(colnum, colnum):match(pattern) end
 
-  function is_blank_line(line) return string.match(vim.fn.getline(line), '^%s*$') end
+  if match_char(lnum, '%S') then
+    pattern1 = '^$'         -- pattern to stop at empty char
+    pattern2 = '%s'         -- pattern to stop at blankspace
+    lnum = lnum + direction -- continue (to the blankspace and emptychar conditional) when at end of line
+    remove_extraline = true
+    -- vim.notify("no_blankspace")
+  end
 
-  -- scroll no_blanklines (indent = 0) when going down
-  if is_blank_line(current_line) == nil then
-    if sign == '+' then
-      while vim.fn.indent(next_line) == 0 and is_blank_line(next_line) == nil do
-        vim.cmd('+')
-        next_line = vim.fn.line('.') + 1
+  if match_char(lnum, '%s') then
+    pattern1 = '%S'
+    pattern2 = nil
+    remove_extraline = false
+    -- vim.notify("blankspace")
+  end
+
+  if match_char(lnum, '^$') then
+    pattern1 = '%S'
+    pattern2 = nil
+    remove_extraline = false
+    -- vim.notify("emptychar")
+  end
+
+  while lnum >= 0 and lnum <= vim.fn.line('$') do
+    if match_char(lnum, pattern1) then
+      break
+    end
+
+    if pattern2 then
+      if match_char(lnum, pattern2) then
+        break
       end
     end
+
+    lnum = lnum + direction
   end
 
-  -- scroll same indentation (indent != 0)
-  if start_indent ~= 0 then
-    while vim.fn.indent(next_line) == start_indent do
-      vim.cmd(sign)
-      next_line = next and (vim.fn.line('.') + 1) or (vim.fn.line('.') - 1)
-    end
-  end
-
-  if level == "same_level" then
-    -- scroll differrent indentation (supports indent = 0, skip blacklines)
-    while vim.fn.indent(next_line) ~= -1 and (vim.fn.indent(next_line) ~= start_indent or is_blank_line(next_line)) do
-      vim.cmd(sign)
-      next_line = next and (vim.fn.line('.') + 1) or (vim.fn.line('.') - 1)
-    end
-  else -- level == "different_level"
-    -- scroll blanklines (indent = -1 is when line is 0 or line is last+1 )
-    while vim.fn.indent(next_line) == 0 and is_blank_line(next_line) do
-      vim.cmd(sign)
-      next_line = next and (vim.fn.line('.') + 1) or (vim.fn.line('.') - 1)
-    end
-  end
-
-  -- scroll to next indentation
-  vim.cmd(sign)
-
-  -- scroll to top of indentation no_blanklines
-  start_indent = vim.fn.indent(vim.fn.line('.'))
-  next_line = next and (vim.fn.line('.') + 1) or (vim.fn.line('.') - 1)
-  if sign == '-' then
-    -- next_line indent is start_indent, next_line is no_blankline
-    while vim.fn.indent(next_line) == start_indent and is_blank_line(next_line) == nil do
-      vim.cmd('-')
-      next_line = vim.fn.line('.') - 1
-    end
+  -- If the match was at the end of the line, return the previous line number and the current column number
+  if remove_extraline then
+    vim.cmd.normal(lnum - direction .. "gg" .. colnum .. "|")
+  else
+    vim.cmd.normal(lnum .. "gg" .. colnum .. "|")
   end
 end
 
@@ -830,7 +805,6 @@ local flash = require("flash")
 local gs = require("gitsigns")
 local textobjs = require("various-textobjs")
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
-local map = vim.keymap.set
 vim.g.mapleader = " "
 
 map({ "i" }, "jk", "<ESC>")
@@ -1083,7 +1057,6 @@ map({ "o" }, "az", ":normal Vaz<cr>", { desc = "outer fold" })
 -- ╰──────────────────────────────────────────╯
 
 -- _nvim-treesitter-textobjs_repeatable
-local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next, { silent = true, desc = "Next TS textobj" })
 map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { silent = true, desc = "Prev TS textobj" })
 
@@ -1129,7 +1102,6 @@ else
   map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Next Diagnostic" })
   map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Prev Diagnostic" })
 
-  local gs = require("gitsigns")
   local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
   map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { silent = true, desc = "Next GitHunk" })
   map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { silent = true, desc = "Prev GitHunk" })
