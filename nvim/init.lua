@@ -353,6 +353,78 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
+-- https://www.reddit.com/r/neovim/comments/1d7j0c1/a_small_gist_to_use_the_new_builtin_completion/
+-- https://www.reddit.com/r/neovim/comments/rddugs/snipcomplua_luasnip_companion_plugin_for_omni/
+local luasnip = require("luasnip")
+local map = vim.keymap.set
+
+---For replacing certain <C-x>... keymaps.
+---@param keys string
+local function feedkeys(keys)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
+end
+
+---Is the completion menu open?
+local function pumvisible()
+  return tonumber(vim.fn.pumvisible()) ~= 0
+end
+
+vim.api.nvim_create_autocmd('LspAttach', {
+
+  callback = function(args)
+    vim.lsp.completion.enable(true, args.data.client_id, args.buf, { autotrigger = true })
+
+    -- Use enter to expand snippet or accept completions.
+    map('i', '<cr>', function()
+      if luasnip.expandable() then
+        luasnip.expand()
+      elseif pumvisible() then
+        feedkeys '<C-y>'
+      else
+        feedkeys '<cr>'
+      end
+    end)
+
+    -- complete placeholder (if selecting snippet expand it with <cr>)
+    map('i', '<down>', function()
+      if pumvisible() then
+        feedkeys '<C-n>'
+      else
+        feedkeys '<down>'
+      end
+    end)
+    map('i', '<up>', function()
+      if pumvisible() then
+        feedkeys '<C-p>'
+      else
+        feedkeys '<up>'
+      end
+    end)
+
+    -- to navigate between completion list or snippet tabstops,
+    map({ 'i', 's' }, '<Tab>', function()
+      if pumvisible() then
+        feedkeys '<C-n>'
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        feedkeys '<Tab>'
+      end
+    end)
+    map({ 'i', 's' }, '<S-Tab>', function()
+      if pumvisible() then
+        feedkeys '<C-p>'
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        feedkeys '<S-Tab>'
+      end
+    end)
+  end
+})
+
+------------------------------------------------------------------------------------------------------------------------
+
 -- ╭──────╮
 -- │ Mini │
 -- ╰──────╯
@@ -574,7 +646,42 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "Special", { fg = "#767c9d" })
   vim.api.nvim_set_hl(0, "Type", { fg = "#a6accd" })
 
-  require('mini.completion').setup()
+  -- TODO: remove it when mini.snippets available
+  local H = {}
+
+  -- extracted from https://github.com/echasnovski/mini.nvim/blob/main/lua/mini/completion.lua
+  H.table_get = function(t, id)
+    if type(id) ~= 'table' then return H.table_get(t, { id }) end
+    local success, res = true, t
+    for _, i in ipairs(id) do
+      success, res = pcall(function() return res[i] end)
+      if not success or res == nil then return end
+    end
+    return res
+  end
+
+  -- Completion word (textEdit.newText > insertText > label)
+  H.get_completion_word = function(item)
+    return H.table_get(item, { 'textEdit', 'newText' }) or item.insertText or item.label or ''
+  end
+
+  -- skip snippets filter
+  -- press <c-x><c-o> if snippet not showing (e.g using lua-ls when configured with `require('mini.completion').setup()` )
+  require('mini.completion').setup({
+    lsp_completion = {
+      process_items = function(items, base)
+        local res = vim.tbl_filter(function(item)
+          -- Keep items which match the base
+          local text = item.filterText or H.get_completion_word(item)
+          return vim.startswith(text, base)
+        end, items)
+
+        table.sort(res, function(a, b) return (a.sortText or a.label) < (b.sortText or b.label) end)
+        return res
+      end,
+    },
+  })
+
   require('mini.cursorword').setup()
   require('mini.extra').setup()
   require('mini.icons').setup()
@@ -786,10 +893,24 @@ end
 if not vim.g.vscode then
   -- LSP
   require("mason").setup()
+  require('null-ls').setup({
+    sources = {
+      -- to make luasnip behave as a lsp
+      require('null-ls').builtins.completion.luasnip
+    },
+  })
   require("mason-null-ls").setup({ handlers = {}, })
+
+  -- `:help mason-lspconfig.setup_handlers()`
   require("mason-lspconfig").setup_handlers {
     function(server_name)
-      require("lspconfig")[server_name].setup {}
+      -- add snippets capability to lsp to show it inside mini.completion
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      local opts = { capabilities = capabilities }
+
+      -- require("lspconfig")[server_name].setup {}
+      require('lspconfig')[server_name].setup(opts)
     end,
   }
 
