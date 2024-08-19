@@ -357,9 +357,7 @@ end
 -- │ Mini │
 -- ╰──────╯
 
-local mini_status_ok, mini_ai = pcall(require, 'mini.ai')
-if not mini_status_ok then return end
-local spec_treesitter = mini_ai.gen_spec.treesitter
+local spec_treesitter = require("mini.ai").gen_spec.treesitter
 local mini_clue = require("mini.clue")
 
 require("mini.ai").setup({
@@ -384,118 +382,107 @@ require("mini.ai").setup({
     o = { "%S()%s+()%S" },                                                                                            -- whitespace textobj
     u = { { "%b''", '%b""', '%b``' }, '^.().*().$' },                                                                 -- quote textobj
   },
-  user_textobject_id = true,
+})
+
+require('mini.surround').setup({
   mappings = {
-    around = 'a',
-    inside = 'i',
-    around_next = 'aN',
-    inside_next = 'iN',
-    around_last = 'al',
-    inside_last = 'il',
-    goto_left = 'g[',
-    goto_right = 'g]',
+    add = 'gza',            -- Add surrounding in Normal and Visual modes
+    delete = 'gzd',         -- Delete surrounding
+    find = 'gzf',           -- Find surrounding (to the right)
+    find_left = 'gzF',      -- Find surrounding (to the left)
+    highlight = 'gzh',      -- Highlight surrounding
+    replace = 'gzr',        -- Replace surrounding
+    update_n_lines = 'gzn', -- Update `n_lines`
   },
-  n_lines = 50,
-  search_method = 'cover_or_next',
 })
 
 require('mini.align').setup()
 require('mini.bracketed').setup()
-require('mini.comment').setup()
-require('mini.indentscope').setup()
-
-require('mini.operators').setup({
-  evaluate = {
-    prefix = '', -- 'g=',
-    func = nil,
-  },
-  exchange = {
-    prefix = 'gY',
-    reindent_linewise = true,
-  },
-  multiply = {
-    prefix = '', -- 'gm',
-    func = nil,
-  },
-  replace = {
-    prefix = 'gy',
-    reindent_linewise = true,
-  },
-  sort = {
-    prefix = 'gz',
-    func = nil,
-  }
-})
-
+require('mini.operators').setup()
 require('mini.splitjoin').setup()
-
-require('mini.surround').setup({
-  custom_surroundings = nil,
-  highlight_duration = 500,
-  mappings = {
-    add = 'gsa',            -- Add surrounding in Normal and Visual modes
-    delete = 'gsd',         -- Delete surrounding
-    find = 'gsf',           -- Find surrounding (to the right)
-    find_left = 'gsF',      -- Find surrounding (to the left)
-    highlight = 'gsh',      -- Highlight surrounding
-    replace = 'gsr',        -- Replace surrounding
-    update_n_lines = 'gsn', -- Update `n_lines`
-
-    suffix_last = 'l',      -- Suffix to search with "prev" method
-    suffix_next = 'N',      -- Suffix to search with "next" method
-  },
-  n_lines = 20,
-  respect_selection_type = false,
-  search_method = 'cover',
-})
 
 if not vim.g.vscode then
   require('mini.clue').setup({
     triggers = {
-      -- Leader triggers
       { mode = 'n', keys = '<Leader>' },
       { mode = 'x', keys = '<Leader>' },
-
-      -- Built-in completion
       { mode = 'i', keys = '<C-x>' },
-
-      -- `g` key
+      { mode = 'o', keys = 'a' },
+      { mode = 'o', keys = 'i' },
+      { mode = 'x', keys = 'a' },
+      { mode = 'x', keys = 'i' },
+      { mode = 'o', keys = 'g' },
       { mode = 'n', keys = 'g' },
       { mode = 'x', keys = 'g' },
-
-      -- Marks
       { mode = 'n', keys = "'" },
       { mode = 'n', keys = '`' },
       { mode = 'x', keys = "'" },
       { mode = 'x', keys = '`' },
-
-      -- Registers
       { mode = 'n', keys = '"' },
       { mode = 'x', keys = '"' },
       { mode = 'i', keys = '<C-r>' },
       { mode = 'c', keys = '<C-r>' },
-
-      -- Window commands
       { mode = 'n', keys = '<C-w>' },
-
-      -- `z` key
       { mode = 'n', keys = 'z' },
       { mode = 'x', keys = 'z' },
+      { mode = 'n', keys = ']' },
+      { mode = 'n', keys = '[' },
+      { mode = 'x', keys = ']' },
+      { mode = 'x', keys = '[' },
     },
     clues = {
-      -- Enhance this by adding descriptions for <Leader> mapping groups
       mini_clue.gen_clues.builtin_completion(),
       mini_clue.gen_clues.g(),
       mini_clue.gen_clues.marks(),
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
+      { desc = "@block.outer",       keys = "aB", mode = "o" },
+      { desc = "@block.outer",       keys = "aB", mode = "x" },
+      { desc = "@block.inner",       keys = "iB", mode = "o" },
+      { desc = "@block.inner",       keys = "iB", mode = "x" },
+      { desc = "@call.outer",        keys = "aC", mode = "o" },
+      { desc = "@call.outer",        keys = "aC", mode = "x" },
+      { desc = "@call.inner",        keys = "iC", mode = "o" },
+      { desc = "@call.inner",        keys = "iC", mode = "x" },
+      { desc = "@comment.outer",     keys = "aQ", mode = "o" },
+      { desc = "@comment.outer",     keys = "aQ", mode = "x" },
+      { desc = "@comment.inner",     keys = "iQ", mode = "o" },
+      { desc = "@comment.inner",     keys = "iQ", mode = "x" },
+      { desc = "@conditional.outer", keys = "aG", mode = "o" },
+      { desc = "@conditional.outer", keys = "aG", mode = "x" },
+      { desc = "@conditional.inner", keys = "iG", mode = "o" },
+      { desc = "@conditional.inner", keys = "iG", mode = "x" },
+      { desc = "@function.outer",    keys = "aF", mode = "o" },
+      { desc = "@function.outer",    keys = "aF", mode = "x" },
+      { desc = "@function.inner",    keys = "iF", mode = "o" },
+      { desc = "@function.inner",    keys = "iF", mode = "x" },
+      { desc = "@loop.outer",        keys = "aL", mode = "o" },
+      { desc = "@loop.outer",        keys = "aL", mode = "x" },
+      { desc = "@loop.inner",        keys = "iL", mode = "o" },
+      { desc = "@loop.inner",        keys = "iL", mode = "x" },
+      { desc = "@parameter.outer",   keys = "aP", mode = "o" },
+      { desc = "@parameter.outer",   keys = "aP", mode = "x" },
+      { desc = "@parameter.inner",   keys = "iP", mode = "o" },
+      { desc = "@parameter.inner",   keys = "iP", mode = "x" },
+      { desc = "@return.outer",      keys = "aR", mode = "o" },
+      { desc = "@return.outer",      keys = "aR", mode = "x" },
+      { desc = "@return.inner",      keys = "iR", mode = "o" },
+      { desc = "@return.inner",      keys = "iR", mode = "x" },
+      { desc = "@assignment.outer",  keys = "aA", mode = "o" },
+      { desc = "@assignment.outer",  keys = "aA", mode = "x" },
+      { desc = "@assignment.inner",  keys = "iA", mode = "o" },
+      { desc = "@assignment.inner",  keys = "iA", mode = "x" },
+      { desc = "@assignment.rhs",    keys = "a=", mode = "o" },
+      { desc = "@assignment.rhs",    keys = "a=", mode = "x" },
+      { desc = "@assignment.lhs",    keys = "i=", mode = "o" },
+      { desc = "@assignment.lhs",    keys = "i=", mode = "x" },
+      { desc = "@number.outer",      keys = "a#", mode = "o" },
+      { desc = "@number.outer",      keys = "a#", mode = "x" },
+      { desc = "@number.inner",      keys = "i#", mode = "o" },
+      { desc = "@number.inner",      keys = "i#", mode = "x" },
     },
   })
-
-  require('mini.completion').setup()
-  require('mini.cursorword').setup()
-  require('mini.extra').setup()
 
   require("mini.files").setup({
     windows = {
@@ -507,33 +494,111 @@ if not vim.g.vscode then
     },
   })
 
+  require('mini.base16').setup({
+    -- `:Inspect` to reverse engineering a colorscheme
+    -- `:hi <@treesitter>` to view colors of `:Inspect` output
+    -- `:Pick hl_groups` to view generated colorscheme
+    -- https://github.com/NvChad/base46/tree/v2.5/lua/base46/themes for popular colorscheme palettes
+    -- https://github.com/echasnovski/mini.nvim/discussions/36 community palettes
+    palette = {
+      -- nvchad poimandres
+      base00 = "#1b1e28", -- default bg, terminal_color_0
+      base01 = "#171922", -- line number bg, popup bg
+      base02 = "#32384a", -- statusline bg, tabline bg, selection bg
+      base03 = "#3b4258", -- line number fg, comments, terminal_color_8
+      base04 = "#48506a", -- statusline fg, tabline inactive fg
+      base05 = "#A6ACCD", -- default fg, tabline fg, terminal_color_7
+      base06 = "#b6d7f4", -- unused
+      base07 = "#ffffff", -- terminal_color_15
+      base08 = "#A6ACCD", -- return, Diff delete, Diagnostic Error
+      base09 = "#D0679D", -- integers, booleans, constants, search
+      base0A = "#5DE4C7", -- classes, search, tag signs/attributes
+      base0B = "#5DE4C7", -- strings, Diff added
+      base0C = "#89DDFF", -- builtins, Diagnostic Info
+      base0D = "#ADD7FF", -- functions, Diagnostic Hint
+      base0E = "#91B4D5", -- keywords (def, for), Diff changed, Diagnostic Warn
+      base0F = "#FFFFFF", -- punctuation, regex, indentscope
+    },
+  })
+
+  -- poimandres transparency
+  vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MsgArea", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MiniClueBorder", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MiniClueTitle", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MiniFilesBorder", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MiniFilesTitle", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MiniFilesTitleFocused", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MiniClueDescSingle", { link = "Pmenu" })
+  vim.api.nvim_set_hl(0, "MiniStatuslineFilename", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { underline = false, bg = "#1c1c2c" })
+  vim.api.nvim_set_hl(0, "MiniCursorword", { bg = "#1c1c2c" })
+  vim.api.nvim_set_hl(0, "LineNr", { fg = "#506477", bg = "NONE" })
+  vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "Statusline", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "StatuslineNC", { bg = "NONE" })
+
+  -- poimandres custom colors
+  vim.api.nvim_set_hl(0, "Comment", { fg = "#444444", })
+  vim.api.nvim_set_hl(0, "Visual", { bg = "#1c1c1c" })
+  vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#1ABC9C" })
+  vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#3C3CFf" })
+  vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#880000" })
+
+  -- poimandres same as the original
+  vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#D0679D" })
+  vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#89DDFF" })
+  vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#91B4D5" })
+  vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#FFFAC2" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = "#D0679D" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignHint", { fg = "#89DDFF" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignInfo", { fg = "#91B4D5" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignWarn", { fg = "#FFFAC2" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true, sp = "#D0679D" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#89DDFF" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#91B4D5" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#FFFAC2" })
+  vim.api.nvim_set_hl(0, "Number", { fg = "#5de4c7" })
+  vim.api.nvim_set_hl(0, "Constant", { fg = "#5de4c7" })
+  vim.api.nvim_set_hl(0, "Boolean", { fg = "#5de4c7" })
+  vim.api.nvim_set_hl(0, "Search", { fg = "#FFFFFF", bg = "#506477" })
+  vim.api.nvim_set_hl(0, "CurSearch", { fg = "#171922", bg = "#ADD7FF" })
+  vim.api.nvim_set_hl(0, "IncSearch", { fg = "#171922", bg = "#ADD7FF" })
+
+  -- poimandres treesitter same as the original
+  vim.api.nvim_set_hl(0, "@keyword.operator", { fg = "#5de4c7" })
+  vim.api.nvim_set_hl(0, "@keyword.return", { fg = "#5fb3a1" })
+  vim.api.nvim_set_hl(0, "@tag.delimiter", { fg = "#e4f0fb", })
+  vim.api.nvim_set_hl(0, "@type.builtin", { fg = "#A6ACCD", })
+  vim.api.nvim_set_hl(0, "Special", { fg = "#767c9d" })
+  vim.api.nvim_set_hl(0, "Type", { fg = "#a6accd" })
+
+  require('mini.completion').setup()
+  require('mini.cursorword').setup()
+  require('mini.extra').setup()
+  require('mini.icons').setup()
+  require('mini.indentscope').setup()
+  require('mini.misc').setup_auto_root()
+  require('mini.notify').setup()
   require('mini.pairs').setup()
   require('mini.pick').setup()
   require('mini.statusline').setup()
+  require('mini.starter').setup()
   require('mini.tabline').setup()
+  MiniIcons.mock_nvim_web_devicons()
+  MiniIcons.tweak_lsp_kind( --[[ "replace" ]])
+  vim.notify = MiniNotify.make_notify() -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
+  vim.opt.completeopt:append('fuzzy')   -- it should be after require("mini.completion").setup())
 end
 
 -- ╭────────────╮
 -- │ Treesitter │
 -- ╰────────────╯
 
-local status_ok, configs = pcall(require, "nvim-treesitter.configs")
-if not status_ok then return end
-
-configs.setup {
-  autopairs = {
-    enable = false,
-  },
-  highlight = {     -- enable highlighting for all file types
-    enable = false, -- you can also use a table with list of langs here (e.g. { "python", "javascript" })
-    use_languagetree = false,
-    additional_vim_regex_highlighting = false,
-  },
-  indent = { enable = true, disable = { "python", "yaml" } },
+require("nvim-treesitter.configs").setup {
   textobjects = {
     move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
       goto_previous_start = {
         ['gpaB'] = '@block.outer',
         ['gpaq'] = '@call.outer',
@@ -549,7 +614,6 @@ configs.setup {
         ['gpa#'] = '@number.outer',
         ["gpz"] = { query = "@fold", query_group = "folds", desc = "Previous Start Fold" },
         ["gpZ"] = { query = "@scope", query_group = "locals", desc = "Prev scope" },
-
         ['gpiB'] = '@block.inner',
         ['gpiq'] = '@call.inner',
         ['gpiQ'] = '@class.inner',
@@ -578,7 +642,6 @@ configs.setup {
         ['gna#'] = '@number.outer',
         ["gnz"] = { query = "@fold", query_group = "folds", desc = "Next Start Fold" },
         ["gnZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-
         ['gniB'] = '@block.inner',
         ['gniq'] = '@call.inner',
         ['gniQ'] = '@class.inner',
@@ -607,7 +670,6 @@ configs.setup {
         ['gpea#'] = '@number.outer',
         ["gpez"] = { query = "@fold", query_group = "folds", desc = "Previous End Fold" },
         ["gpeZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-
         ['gpeiB'] = '@block.inner',
         ['gpeiq'] = '@call.inner',
         ['gpeiQ'] = '@class.inner',
@@ -634,9 +696,8 @@ configs.setup {
         ['gneaA'] = '@assignment.outer',
         ['gnea='] = '@assignment.lhs',
         ['gnea#'] = '@number.outer',
-        ["gnez"] = { query = "@fold", query_group = "folds", desc = "Next End Fold" },
-        ["gneZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-
+        ["gnez"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+        ["gneZ"] = { query = "@fold", query_group = "folds", desc = "Next End Fold" },
         ['gneiB'] = '@block.inner',
         ['gneiq'] = '@call.inner',
         ['gneiQ'] = '@class.inner',
@@ -649,18 +710,9 @@ configs.setup {
         ['gneiA'] = '@assignment.inner',
         ['gnei='] = '@assignment.rhs',
         ['gnei#'] = '@number.inner',
-      },
-    },
-    swap = {
-      enable = true,
-      swap_next = {
-        ['>,'] = '@parameter.inner',
-      },
-      swap_previous = {
-        ['<,'] = '@parameter.inner',
-      },
-    },
-  },
+      }
+    }
+  }
 }
 
 -- ╭────────────╮
@@ -780,6 +832,11 @@ if not vim.g.vscode then
   map("n", "<leader>fF", ":Pick grep_live<cr>", { desc = "Pick Grep (tab to preview)" })
   map("n", "<leader>f'", ":Pick marks<cr>", { desc = "Pick Marks (tab to preview)" })
   map("n", "<leader>fR", ":Pick registers<cr>", { desc = "Pick register" })
+  map("n", "<leader>g", "", { desc = "+Git" })
+  map("n", "<leader>gp", ":Gitsigns preview_hunk", { silent = true, desc = "Preview GitHunk" })
+  map("n", "<leader>gr", ":Gitsigns reset_hunk", { silent = true, desc = "Reset GitHunk" })
+  map("n", "<leader>gs", ":Gitsigns stage_hunk", { silent = true, desc = "Stage GitHunk" })
+  map("n", "<leader>gS", ":Gitsigns undo_stage_hunk", { silent = true, desc = "Undo stage GitHunk" })
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", ":set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", ":set showtabline=2<cr>", { desc = "Buffer Show" })
@@ -955,9 +1012,6 @@ else
   local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
   map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { silent = true, desc = "Next GitHunk" })
   map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { silent = true, desc = "Prev GitHunk" })
-  map({ "n" }, "<leader>g", "", { desc = "+Git" })
-  map({ "n" }, "<leader>gp", function() gs.preview_hunk() end, { silent = true, desc = "Preview GitHunk" })
-  map({ "n" }, "<leader>gr", function() gs.reset_hunk() end, { silent = true, desc = "Reset GitHunk" })
 end
 
 local next_comment, prev_comment = ts_repeat_move.make_repeatable_move_pair(
