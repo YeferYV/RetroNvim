@@ -2,85 +2,47 @@
 -- │ Plugins │
 -- ╰─────────╯
 
+-- Clone 'mini.nvim'
+local path_package = vim.fn.stdpath('data') .. '/site/'
+local mini_path = path_package .. 'pack/deps/start/mini.nvim'
+
+if not vim.loop.fs_stat(mini_path) then
+  vim.cmd('echo "Installing `mini.nvim`" | redraw')
+  local clone_cmd = { 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.nvim', mini_path }
+  vim.fn.system(clone_cmd)
+  vim.cmd('packadd mini.nvim | helptags ALL')
+  vim.cmd('echo "Installed `mini.nvim`" | redraw')
+end
+
+require('mini.deps').setup()
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local _, vscode = pcall(require, "vscode-neovim")
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-  if vim.g.vscode then
-    vscode.notify("Please wait until neovim finishes downloading extensions (view status bar) and close if any log window appears (ignore nvim_set_current_win/nvim_win_set_cursor error which is because log window is not editable)")
-  end
-end
+------------------------------------------------------------------------------------------------------------------------
 
-vim.opt.rtp:prepend(lazypath)
-vim.g.mapleader = " "
+-- text-objects
+add { source = "chrisgrieser/nvim-various-textobjs", checkout = "52343c70e2487095cafd4a5000d0465a2b992b03", }
+add { source = "folke/flash.nvim", checkout = "v2.1.0" }
+add { source = "lewis6991/gitsigns.nvim", checkout = "v0.9.0", }
+add { source = "nvim-treesitter/nvim-treesitter", checkout = "a8535b2329a082c7f4e0b11b91b1792770425eaa", }
+add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "33a17515b79ddb10d750320fa994098bdc3e93ef" }
 
-local status_ok, lazy = pcall(require, "lazy")
-if not status_ok then
-  return
-end
+-- completion
+add { source = "Exafunction/codeium.vim", checkout = "v1.12.0", }
+add { source = "L3MON4D3/LuaSnip", checkout = "v2.0.0" }
+add { source = "jay-babu/mason-null-ls.nvim", checkout = "de19726de7260c68d94691afb057fa73d3cc53e7" }
+add { source = "neovim/nvim-lspconfig", checkout = "6c505d4220b521f3b0e7b645f6ce45fa914d0eed" }
+add { source = "nvim-lua/plenary.nvim", checkout = "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" }
+add { source = "nvimtools/none-ls.nvim", checkout = "cfa65d86e21eeb60544d5e823f6db43941322a53" }
+add { source = "rafamadriz/friendly-snippets", checkout = "00ebcaa159e817150bd83bfe2d51fa3b3377d5c4" }
+add { source = "williamboman/mason-lspconfig.nvim", checkout = "62360f061d45177dda8afc1b0fd1327328540301" }
+add { source = "williamboman/mason.nvim", checkout = "e2f7f9044ec30067bc11800a9e266664b88cda22", }
 
-local opts = {
-  ui = { border = "rounded" },
-  defaults = { lazy = true },
-  performance = {
-    rtp = {
-      disabled_plugins = { "tohtml", "gzip", "zipPlugin", "netrwPlugin", "tarPlugin" },
-    },
-  },
-}
+later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
 
-local plugins = {
-
-  -- Motions
-  {
-    'vscode-neovim/vscode-multi-cursor.nvim',
-    commit = "ac2505395071a85fe7e051dfd624f933ea5a62ef",
-    event = "VeryLazy",
-    cond = not not vim.g.vscode,
-    opts = {}
-  },
-  {
-    "folke/flash.nvim",
-    commit = "11a2e667d19d8f48c93c6ed2e2e525ac6b1b79be",
-    event = "VeryLazy",
-    opts = { modes = { search = { enabled = true}}},
-  },
-  { "machakann/vim-columnmove", commit = "21a43d809a03ff9bf9946d983d17b3a316bf7a64", event = "VeryLazy" },
-
-  -- Text-Objects
-  { "echasnovski/mini.nvim",    commit = "5d841fcca666bc27ca777807a63381ce2cf6e2f9" },
-  {
-    "coderifous/textobj-word-column.vim",  -- delimited by comments or indentation
-    commit = "cb40e1459817a7fa23741ff6df05e4481bde5a33",
-    event = "VeryLazy",
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    commit = "567a76780cd4f982dae1ec57e3dad6174bef3680",
-    build = ":TSUpdate", -- treesitter works with specific versions of language parsers
-    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", commit = "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" }
-  },
-  {
-    "chrisgrieser/nvim-various-textobjs",
-    commit = "6cefba253d69306004a641a11c395381ae428903",
-    opts = { useDefaultKeymaps = false, lookForwardSmall = 30, lookForwardBig = 30 },
-  },
-
-  -- UI
-  { 'olivercederborg/poimandres.nvim' },
-  {
-    "lewis6991/gitsigns.nvim",
-    commit = "b45ff86f5618d1421a88c12d4feb286b80a1e2d3",
-    event = "VeryLazy",
-    opts = {
+later(
+  function()
+    require("gitsigns").setup {
       signs = {
         add          = { text = "│" },
         change       = { text = "│" },
@@ -88,26 +50,10 @@ local plugins = {
         topdelete    = { text = "" },
         changedelete = { text = "~" },
         untracked    = { text = '┆' },
-      },
+      }
     }
-  },
-
-	-- LSP/Completion
-	{ "Exafunction/codeium.vim", commit = "31dd2962c81759be007895db6ce089feec397c86", event = function() if not vim.g.vscode then return "InsertEnter" end end }, -- AI completion
-	{ "williamboman/mason.nvim", -- LSP/linter/formatter binary installer
-	  commit = "751b1fcbf3d3b783fcf8d48865264a9bcd8f9b10",
-    dependencies = {
-	    { "neovim/nvim-lspconfig",             commit = "cfa386fc4027e847156ee16141ea1f4c0bc2f0a4" }, -- default configurations for LSP
-	    { "nvimtools/none-ls.nvim",            commit = "88821b67e6007041f43b802f58e3d9fa9bfce684" }, -- default configurations formatters and linters
-	    { "williamboman/mason-lspconfig.nvim", commit = "1a14770dc8c7cb29643870ac79788eec6f7ce1f8" }, -- compatibility between mason and nvim-lspconfig
-	    { "jay-babu/mason-null-ls.nvim",       commit = "de19726de7260c68d94691afb057fa73d3cc53e7" }, -- compatibility between mason and none-ls
-	    { "nvim-lua/plenary.nvim",             commit = "5129a3693c482fcbc5ab99a7706ffc4360b995a0" }, -- lua modules required by none-ls
-    },
-  }
-
-}
-
-lazy.setup(plugins, opts)
+  end
+)
 
 -- ╭──────╮
 -- │ Opts │
@@ -144,13 +90,11 @@ vim.o.foldexpr = "nvim_treesitter#foldexpr()"  -- folding using treesitter (gram
 -- ╰──────────────╯
 
 if not vim.g.vscode then
-  require("poimandres").setup({ disable_background = true })
   vim.opt.scrolloff = 8       -- vertical scrolloff
   vim.opt.sidescrolloff = 8   -- horizontal scrolloff
   vim.opt.signcolumn = "yes"  -- always show the sign column, otherwise it would shift the text each time
   vim.opt.virtualedit = "all" -- allow cursor bypass end of line
   vim.cmd [[ au VimEnter * :TSEnable highlight" ]]
-  vim.cmd [[ color poimandres ]]
   vim.api.nvim_set_hl(0, "Comment", { fg = "#444444", bg = "NONE" })
   vim.api.nvim_set_hl(0, "FlashLabel", { fg = "NONE", bg = "#5FB3A1" })
   vim.api.nvim_set_hl(0, "Visual", { fg = "NONE", bg = "#1c1c1c" })
@@ -578,7 +522,6 @@ local status_ok, configs = pcall(require, "nvim-treesitter.configs")
 if not status_ok then return end
 
 configs.setup {
-  ensure_installed = { "python", "bash", "javascript", "json", "html", "css", "c", "lua" },
   autopairs = {
     enable = false,
   },
