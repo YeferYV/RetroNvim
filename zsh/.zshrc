@@ -32,9 +32,9 @@ bindkey '\eo' 'yy' # \eo = alt + o
 
 source $RETRONVIM_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-which fzf      >/dev/null 2>&1 && source $RETRONVIM_PATH/zsh/plugins/fzf-key-bindings/key-bindings.zsh
+which fzf      >/dev/null 2>&1 && source <(fzf --zsh)
 which eza      >/dev/null 2>&1 && alias ls="eza --all --icons --group-directories-first"
 which starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 which fnm      >/dev/null 2>&1 && eval "$(fnm env --use-on-cd --shell zsh)"
 
-[[ "$TERM_PROGRAM" == "vscode" ]] && source "$(code --locate-shell-integration-path zsh)" && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc
+[[ "$TERM_PROGRAM" == "vscode" ]] && source "$(code --locate-shell-integration-path zsh)" && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc || true
