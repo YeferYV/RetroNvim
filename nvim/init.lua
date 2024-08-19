@@ -59,60 +59,54 @@ later(
 -- │ Opts │
 -- ╰──────╯
 
-vim.opt.autoindent = true                           -- auto indent new lines
-vim.opt.clipboard = "unnamedplus"                   -- allows neovim to access the system clipboard
-vim.opt.copyindent = true                           -- Copy the previous indentation on autoindenting
-vim.opt.expandtab = true                            -- convert tabs to spaces
-vim.opt.hlsearch = true                             -- highlight all matches on previous search pattern
-vim.opt.ignorecase = true                           -- ignore case in search patterns
-vim.opt.laststatus = 3                              -- laststatus=3 global status line (line between splits)
-vim.opt.number = true                               -- set numbered lines
-vim.opt.numberwidth = 4                             -- set number column width to 2 {default 4}
-vim.opt.preserveindent = true                       -- Preserve indent structure as much as possible
-vim.opt.shiftwidth = 2                              -- the number of spaces inserted for each indentation
-vim.opt.showmode = false                            -- we don't need to see things like -- INSERT -- anymore
-vim.opt.smartcase = true                            -- smart case
-vim.opt.smartindent = true                          -- make indenting smarter again
-vim.opt.splitbelow = true                           -- force all horizontal splits to go below current window
-vim.opt.splitright = true                           -- force all vertical splits to go to the right of current window
-vim.opt.tabstop = 2                                 -- insert 2 spaces for a tab
-vim.opt.termguicolors = true                        -- set term gui colors (most terminals support this)
-vim.opt.timeoutlen = 500                            -- time to wait for a mapped sequence to complete (in milliseconds)
-vim.opt.wrap = false                                -- display lines as one long line
-vim.opt.shortmess:append "c"                        -- don't give |ins-completion-menu| messages
-vim.opt.iskeyword:append "-"                        -- hyphenated words recognized by searches
-vim.o.foldcolumn = '1'                              -- if '1' will show clickable fold signs
-vim.o.foldlevel = 99                                -- Disable folding at startup
-vim.o.foldmethod = "expr"                           -- expr = specify an expression to define folds
-vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- folding using treesitter (grammar required)
-vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-vim.o.statuscolumn = '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "▼" : "⏵") : " " }%s%l '
+vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
+vim.opt.ignorecase = true         -- ignore case in search patterns
+vim.opt.preserveindent = true     -- Preserve indent structure as much as possible
+vim.opt.shiftwidth = 2            -- the number of spaces inserted for each indentation
+vim.opt.smartcase = true          -- smart case
+vim.opt.smartindent = true        -- make indenting smarter again
+vim.opt.splitbelow = true         -- force all horizontal splits to go below current window
+vim.opt.splitright = true         -- force all vertical splits to go to the right of current window
+vim.opt.tabstop = 2               -- insert 2 spaces for a tab
+vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.wrap = false              -- display lines as one long line
+vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
+vim.opt.iskeyword:append "-"      -- hyphenated words recognized by searches
+
+if not vim.g.vscode then
+  vim.opt.cmdheight = 0                               -- more space in the neovim command line for displaying messages
+  vim.opt.laststatus = 3                              -- laststatus=3 global status line (line between splits)
+  vim.opt.number = true                               -- set numbered lines
+  vim.opt.scrolloff = 8                               -- vertical scrolloff
+  vim.opt.sidescrolloff = 8                           -- horizontal scrolloff
+  vim.opt.virtualedit = "all"                         -- allow cursor bypass end of line
+  vim.g.mapleader = " "                               -- <leader> key
+  vim.o.foldcolumn = '1'                              -- if '1' will show clickable fold signs
+  vim.o.foldlevel = 99                                -- Disable folding at startup
+  vim.o.foldmethod = "expr"                           -- expr = specify an expression to define folds
+  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- folding using treesitter (grammar required)
+  vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+  vim.o.statuscolumn =
+  '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
+
+  vim.fn.sign_define("DiagnosticSignError", { texthl = "DiagnosticSignError", text = "" })
+  vim.fn.sign_define("DiagnosticSignWarn", { texthl = "DiagnosticSignWarn", text = "" })
+  vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "" })
+  vim.fn.sign_define("DiagnosticSignInfo", { texthl = "DiagnosticSignInfo", text = "" })
+end
 
 -- ╭──────────────╮
 -- │ Autocommands │
 -- ╰──────────────╯
-
-if not vim.g.vscode then
-  vim.opt.scrolloff = 8       -- vertical scrolloff
-  vim.opt.sidescrolloff = 8   -- horizontal scrolloff
-  vim.opt.signcolumn = "yes"  -- always show the sign column, otherwise it would shift the text each time
-  vim.opt.virtualedit = "all" -- allow cursor bypass end of line
-  vim.cmd [[ au VimEnter * :TSEnable highlight" ]]
-  vim.api.nvim_set_hl(0, "Comment", { fg = "#444444", bg = "NONE" })
-  vim.api.nvim_set_hl(0, "FlashLabel", { fg = "NONE", bg = "#5FB3A1" })
-  vim.api.nvim_set_hl(0, "Visual", { fg = "NONE", bg = "#1c1c1c" })
-  vim.api.nvim_set_hl(0, "MiniCursorword", { fg = "NONE", bg = "#1c1c2c" })
-end
-
-------------------------------------------------------------------------------------------------------------------------
 
 vim.cmd [[
 
   augroup _general_settings
     autocmd!
     autocmd TextYankPost * silent!lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 200})
-    autocmd BufEnter * :set formatoptions-=cro
-    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    autocmd BufEnter     * :set formatoptions-=cro
+    autocmd BufReadPost  * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
   augroup end
 
   augroup _hightlight_whitespaces
@@ -125,6 +119,46 @@ vim.cmd [[
   augroup end
 
 ]]
+
+------------------------------------------------------------------------------------------------------------------------
+
+local autocmd = vim.api.nvim_create_autocmd
+
+autocmd({ "TermEnter", "TermOpen" }, {
+  callback = function()
+    vim.cmd [[ setlocal nocursorline ]]
+    vim.cmd [[ setlocal nonumber ]]
+    vim.cmd [[ setlocal signcolumn=no ]]
+    vim.cmd.startinsert()
+    vim.cmd.highlight("ExtraWhitespace guibg=none")
+
+    -- hide bufferline if `nvim -cterm`
+    if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 then
+      vim.cmd("set showtabline=0")
+    else
+      vim.cmd("set showtabline=2")
+    end
+  end,
+})
+
+------------------------------------------------------------------------------------------------------------------------
+
+-- https://github.com/neovim/neovim/issues/14986
+autocmd({ "TermClose", --[[ "BufWipeout" ]] }, {
+  callback = function()
+    vim.schedule(function()
+      -- if vim.bo.buftype == 'terminal' and vim.v.shell_error == 0 then
+      if vim.bo.filetype == 'terminal' then
+        vim.cmd [[ bp | bd! # ]]
+      end
+
+      -- required when exiting `nvim -cterm`
+      if vim.fn.bufname() == "" then
+        vim.cmd [[ quit ]]
+      end
+    end)
+  end,
+})
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -208,13 +242,6 @@ vim.api.nvim_create_user_command("EnableAutoNoHighlightSearch", M.EnableAutoNoHi
 vim.api.nvim_create_user_command("DisableAutoNoHighlightSearch", M.DisableAutoNoHighlightSearch, {})
 
 M.EnableAutoNoHighlightSearch() -- autostart
-
-------------------------------------------------------------------------------------------------------------------------
-
-_G.FeedKeysCorrectly = function(keys)
-  local feedableKeys = vim.api.nvim_replace_termcodes(keys, true, false, true)
-  vim.api.nvim_feedkeys(feedableKeys, "n", true)
-end
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -323,6 +350,39 @@ M.ColumnMove = function(direction)
     vim.cmd.normal(lnum - direction .. "gg" .. colnum .. "|")
   else
     vim.cmd.normal(lnum .. "gg" .. colnum .. "|")
+  end
+end
+
+--------------------------------------------------------------------------------------------------------------------
+
+-- https://www.reddit.com/r/neovim/comments/ww2oyu/toggle_terminal
+function ToggleTerminal()
+  local buf_exists = vim.fn.bufexists(te_buf) == 1
+  local win_exists = vim.fn.win_gotoid(te_win_id) == 1
+
+  if not buf_exists then
+    -- Terminal buffer doesn't exist, create it
+    vim.cmd("vsplit +term")
+    te_win_id = vim.fn.win_getid()
+    te_buf = vim.fn.bufnr()
+  elseif not win_exists then
+    -- Terminal buffer exists but not visible, show it
+    vim.cmd('vs | buffer' .. te_buf)
+    te_win_id = vim.fn.win_getid()
+  else
+    -- Terminal buffer exists and is visible, hide it
+    vim.cmd("hide")
+  end
+end
+
+function HideUnhideWindow()
+  if not Hidden then
+    Bufnr = vim.fn.bufnr()
+    vim.cmd('hide')
+    Hidden = true
+  else
+    vim.cmd('vs | buffer' .. Bufnr)
+    Hidden = false
   end
 end
 
@@ -805,7 +865,6 @@ local flash = require("flash")
 local gs = require("gitsigns")
 local textobjs = require("various-textobjs")
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
-vim.g.mapleader = " "
 
 map({ "i" }, "jk", "<ESC>")
 map({ "i" }, "kj", "<ESC>")
@@ -836,8 +895,9 @@ if not vim.g.vscode then
   map({ "x" }, "<C-s>", ":s//g<Left><Left>", { desc = "Replace in Visual_selected" })
   map({ "t", "n" }, "<C-h>", "<C-\\><C-n><C-w>h", { desc = "left window" })
   map({ "t", "n" }, "<C-j>", "<C-\\><C-n><C-w>j", { desc = "down window" })
-  map({ "t", "n" }, "<C-k>", "<C-\\><C-n><C-w>k", { desc = "right window" })
+  map({ "t", "n" }, "<C-k>", "<C-\\><C-n><C-w>k", { desc = "up window" })
   map({ "t", "n" }, "<C-l>", "<C-\\><C-n><C-w>l", { desc = "right window" })
+  map({ "t", "n" }, "<C-\\>", ToggleTerminal, { desc = "toggle window terminal" })
   map({ "t", "n" }, "<C-;>", "<C-\\><C-n><C-6>", { desc = "go to last buffer" })
   map({ "n" }, "<right>", ":bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", ":bprevious<CR>", { desc = "prev buffer" })
@@ -928,6 +988,7 @@ if not vim.g.vscode then
   map("n", "<leader>f'", ":Pick marks<cr>", { desc = "Pick Marks (tab to preview)" })
   map("n", "<leader>fR", ":Pick registers<cr>", { desc = "Pick register" })
   map("n", "<leader>g", "", { desc = "+Git" })
+  map("n", "<leader>gg", ":lua vim.cmd[[terminal lazygit]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "lazygit" })
   map("n", "<leader>gp", ":Gitsigns preview_hunk", { silent = true, desc = "Preview GitHunk" })
   map("n", "<leader>gr", ":Gitsigns reset_hunk", { silent = true, desc = "Reset GitHunk" })
   map("n", "<leader>gs", ":Gitsigns stage_hunk", { silent = true, desc = "Stage GitHunk" })
@@ -939,10 +1000,12 @@ if not vim.g.vscode then
   map("n", "<leader>uS", ":set laststatus=3<cr>", { desc = "StatusBar Show" })
   map("n", "<leader>uh", function() M.EnableAutoNoHighlightSearch() end, { desc = "Enable AutoNoHighlightSearch" })
   map("n", "<leader>uH", function() M.DisableAutoNoHighlightSearch() end, { desc = "Disable AutoNoHighlightSearch" })
+  map("n", "<leader>uu", HideUnhideWindow, { desc = "Hide/Unhide window (useful for terminal)" })
   map("n", "<leader>t", "", { desc = "+Terminal" })
   map("n", "<leader>tt", ":lua vim.cmd [[          terminal ]] <cr>", { desc = "buffer terminal" })
-  map("n", "<leader>tv", ":lua vim.cmd [[ split  | terminal ]] <cr>", { desc = "vertical terminal" })
-  map("n", "<leader>th", ":lua vim.cmd [[ vsplit | terminal ]] <cr>", { desc = "horizontal terminal" })
+  map("n", "<leader>ty", ":lua vim.cmd[[terminal yazi]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "yazi" })
+  map("n", "<leader>v", ":lua vim.cmd [[ split  | terminal ]] <cr>", { desc = "vertical terminal" })
+  map("n", "<leader>V", ":lua vim.cmd [[ vsplit | terminal ]] <cr>", { desc = "horizontal terminal" })
 end
 
 map(
