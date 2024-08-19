@@ -110,6 +110,9 @@
       "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
       "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
       "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
+      "zenMode.centerLayout": false,
+      "zenMode.fullScreen": false,
+      "zenMode.hideLineNumbers": false,
       "window.titleBarStyle": "custom",
       "workbench.colorTheme": "Tokyo Night Dark",
       "workbench.colorCustomizations": {
@@ -379,7 +382,7 @@
               "args":
               [
                 null,
-                { "text": "code --install-extension alefragnani.Bookmarks; code --install-extension MarsCode.marscode-extension; code --install-extension WallabyJs.console-ninja; code --install-extension usernamehw.errorlens; code --install-extension dsznajder.es7-react-js-snippets; code --install-extension lamartire.git-indicators; code --install-extension PKief.material-icon-theme; code --install-extension christian-kohler.path-intellisense; code --install-extension drewxs.tokyo-night-dark; code --install-extension esbenp.prettier-vscode code --install-extension yeferyv.retronvim; code --install-extension bradlc.vscode-tailwindcss; code --install-extension rangav.vscode-thunder-client; \n" },
+                { "text": "code --install-extension alefragnani.Bookmarks; code --install-extension MarsCode.marscode-extension; code --install-extension WallabyJs.console-ninja; code --install-extension usernamehw.errorlens; code --install-extension imgildev.vscode-nextjs-generator; code --install-extension lamartire.git-indicators; code --install-extension PKief.material-icon-theme; code --install-extension christian-kohler.path-intellisense; code --install-extension drewxs.tokyo-night-dark; code --install-extension esbenp.prettier-vscode code --install-extension yeferyv.retronvim; code --install-extension bradlc.vscode-tailwindcss; code --install-extension rangav.vscode-thunder-client; \n" },
                 { "text": "sh -c 'if [[ $NIX_PROFILES ]]; then nix-env -iA nixpkgs.fnm; elif [[ $APPDATA ]]; then winget install fnm; else brew install fnm; fi;' \n" },
                 "require('vscode-neovim').notify('extensions are installed for the default vscode profile')",
                 "require('vscode-neovim').notify('cheatsheet: https://cht.sh/fnm. choose your node version with `fnm use v20.10.0` (run the command inside a new terminal) (relaunch vscode on Windows10)')"
@@ -538,10 +541,11 @@
             { "key": "p", "name": "Focus previous terminal group", "command": "workbench.action.terminal.focusPrevious" },
             { "key": "v", "name": "split Vertical Tab/Panel terminal", "command": "workbench.action.terminal.splitInActiveWorkspace" },
             { "key": "V", "name": "split Horizontal Tab/Panel terminal", "commands": [ "workbench.action.terminal.split", "workbench.action.moveActiveEditorGroupDown" ] },
-            { "key": "\\", "name": "Focus terminal", "command": "workbench.action.terminal.toggleTerminal" },
-            { "key": "T", "name": "Toggle terminal", "command": "workbench.action.togglePanel" },
-            { "key": "t", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
-            { "key": ">", "name": "New Tab terminal (separated window group)", "command": "workbench.action.createTerminalEditorSide" }
+						{ "key": "t", "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)", "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ], "args": [ null, { "text": "nvim -cterm; exit\n" } ] },
+            { "key": "s", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
+            { "key": "S", "name": "New Tab terminal (Separated window group)", "command": "workbench.action.createTerminalEditorSide" },
+            { "key": "/", "name": "Focus terminal (find terminal panel)", "command": "workbench.action.terminal.toggleTerminal" },
+            { "key": "\\", "name": "Toggle terminal", "command": "workbench.action.togglePanel" }
           ]
         },
         {
