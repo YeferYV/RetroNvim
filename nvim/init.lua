@@ -60,6 +60,7 @@ later(
 -- ╰──────╯
 
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+vim.opt.expandtab = true          -- convert tabs to spaces
 vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
 vim.opt.ignorecase = true         -- ignore case in search patterns
 vim.opt.preserveindent = true     -- Preserve indent structure as much as possible
@@ -159,28 +160,6 @@ autocmd({ "TermClose", --[[ "BufWipeout" ]] }, {
     end)
   end,
 })
-
-------------------------------------------------------------------------------------------------------------------------
-
-local function vscode_select_git_hunk()
-  vim.defer_fn(function()
-    vscode.action("workbench.action.editor.previousChange")
-    vscode.action("workbench.action.editor.nextChange")
-  end, 1)
-
-  vim.defer_fn(function()
-    vim.cmd([[ execute "normal! \<esc>V" ]])
-  end, 150)
-
-  vim.defer_fn(function()
-    vscode.action("editor.action.dirtydiff.next")
-    vscode.action("closeDirtyDiff")
-  end, 300)
-
-  vim.defer_fn(function()
-    vim.cmd([[ execute "normal zz" ]])
-  end, 450)
-end
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -469,7 +448,7 @@ local mini_clue = require("mini.clue")
 
 require("mini.ai").setup({
   custom_textobjects = {
-    B = spec_treesitter({ a = "@block.outer", i = "@block.inner" }),
+    K = spec_treesitter({ a = "@block.outer", i = "@block.inner" }),
     q = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
     Q = spec_treesitter({ a = "@class.outer", i = "@class.inner" }),
     g = spec_treesitter({ a = "@comment.outer", i = "@comment.inner" }),
@@ -484,7 +463,7 @@ require("mini.ai").setup({
     h = { { "<(%w-)%f[^<%w][^<>]->.-</%1>" }, { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" } }, -- html attribute textobj
     k = { { "\n.-[=:]", "^.-[=:]" }, "^%s*()().-()%s-()=?[!=<>\\+-\\*]?[=:]" },                                       -- key textobj
     v = { { "[=:]()%s*().-%s*()[;,]()", "[=:]=?()%s*().*()().$" } },                                                  -- value textobj
-    n = { '[-+]?()%f[%d]%d+()%.?%d*' },                                                                               -- number(inside string) textobj
+    N = { '[-+]?()%f[%d]%d+()%.?%d*' },                                                                               -- number(inside string) textobj
     x = { '#()%x%x%x%x%x%x()' },                                                                                      -- hexadecimal textobj
     o = { "%S()%s+()%S" },                                                                                            -- whitespace textobj
     u = { { "%b''", '%b""', '%b``' }, '^.().*().$' },                                                                 -- quote textobj
@@ -544,10 +523,10 @@ if not vim.g.vscode then
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
-      { desc = "@block.outer",       keys = "aB", mode = "o" },
-      { desc = "@block.outer",       keys = "aB", mode = "x" },
-      { desc = "@block.inner",       keys = "iB", mode = "o" },
-      { desc = "@block.inner",       keys = "iB", mode = "x" },
+      { desc = "@block.outer",       keys = "aK", mode = "o" },
+      { desc = "@block.outer",       keys = "aK", mode = "x" },
+      { desc = "@block.inner",       keys = "iK", mode = "o" },
+      { desc = "@block.inner",       keys = "iK", mode = "x" },
       { desc = "@call.outer",        keys = "aC", mode = "o" },
       { desc = "@call.outer",        keys = "aC", mode = "x" },
       { desc = "@call.inner",        keys = "iC", mode = "o" },
@@ -742,7 +721,7 @@ require("nvim-treesitter.configs").setup {
   textobjects = {
     move = {
       goto_previous_start = {
-        ['gpaB'] = '@block.outer',
+        ['gpaK'] = '@block.outer',
         ['gpaq'] = '@call.outer',
         ['gpaQ'] = '@class.outer',
         ['gpag'] = '@comment.outer',
@@ -756,7 +735,7 @@ require("nvim-treesitter.configs").setup {
         ['gpa#'] = '@number.outer',
         ["gpz"] = { query = "@fold", query_group = "folds", desc = "Previous Start Fold" },
         ["gpZ"] = { query = "@scope", query_group = "locals", desc = "Prev scope" },
-        ['gpiB'] = '@block.inner',
+        ['gpiK'] = '@block.inner',
         ['gpiq'] = '@call.inner',
         ['gpiQ'] = '@class.inner',
         ['gpig'] = '@comment.inner',
@@ -770,7 +749,7 @@ require("nvim-treesitter.configs").setup {
         ['gpi#'] = '@number.inner',
       },
       goto_next_start = {
-        ['gnaB'] = '@block.outer',
+        ['gnaK'] = '@block.outer',
         ['gnaq'] = '@call.outer',
         ['gnaQ'] = '@class.outer',
         ['gnag'] = '@comment.outer',
@@ -784,7 +763,7 @@ require("nvim-treesitter.configs").setup {
         ['gna#'] = '@number.outer',
         ["gnz"] = { query = "@fold", query_group = "folds", desc = "Next Start Fold" },
         ["gnZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-        ['gniB'] = '@block.inner',
+        ['gniK'] = '@block.inner',
         ['gniq'] = '@call.inner',
         ['gniQ'] = '@class.inner',
         ['gnig'] = '@comment.inner',
@@ -798,7 +777,7 @@ require("nvim-treesitter.configs").setup {
         ['gni#'] = '@number.inner',
       },
       goto_previous_end = {
-        ['gpeaB'] = '@block.outer',
+        ['gpeaK'] = '@block.outer',
         ['gpeaq'] = '@call.outer',
         ['gpeaQ'] = '@class.outer',
         ['gpeag'] = '@comment.outer',
@@ -812,7 +791,7 @@ require("nvim-treesitter.configs").setup {
         ['gpea#'] = '@number.outer',
         ["gpez"] = { query = "@fold", query_group = "folds", desc = "Previous End Fold" },
         ["gpeZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-        ['gpeiB'] = '@block.inner',
+        ['gpeiK'] = '@block.inner',
         ['gpeiq'] = '@call.inner',
         ['gpeiQ'] = '@class.inner',
         ['gpeig'] = '@comment.inner',
@@ -826,7 +805,7 @@ require("nvim-treesitter.configs").setup {
         ['gpei#'] = '@number.inner',
       },
       goto_next_end = {
-        ['gneaB'] = '@block.outer',
+        ['gneaK'] = '@block.outer',
         ['gneaq'] = '@call.outer',
         ['gneaQ'] = '@class.outer',
         ['gneag'] = '@comment.outer',
@@ -840,7 +819,7 @@ require("nvim-treesitter.configs").setup {
         ['gnea#'] = '@number.outer',
         ["gnez"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
         ["gneZ"] = { query = "@fold", query_group = "folds", desc = "Next End Fold" },
-        ['gneiB'] = '@block.inner',
+        ['gneiK'] = '@block.inner',
         ['gneiq'] = '@call.inner',
         ['gneiQ'] = '@class.inner',
         ['gneig'] = '@comment.inner',
@@ -1010,7 +989,7 @@ end
 
 map(
   "n",
-  "<leader>uu",
+  "<leader>uU",
   function()
     vscode.action("editor.gotoParentFold")
     vscode.action("cursorHome")
@@ -1063,16 +1042,33 @@ map({ "x" }, "g<Down>", "g<c-x>", { desc = "numbers descending" })
 map({ "n", "x" }, "g+", "<C-a>", { desc = "Increment number (dot to repeat)" })
 map({ "n", "x" }, "g-", "<C-x>", { desc = "Decrement number (dot to repeat)" })
 
+if vim.g.vscode then
+  map(
+    { "n", "x" },
+    "gh",
+    function()
+      vscode.action("editor.action.dirtydiff.next")
+      vscode.action("closeDirtyDiff")
+    end,
+    { desc = "EndOf Git hunk (vscode only)" }
+  )
+else
+  map(
+    { "o", "x" },
+    "gh",
+    ":<c-u>Gitsigns select_hunk<cr>",
+    { desc = "Git hunk textobj" }
+  )
+end
+
 -- ╭───────────────────────────────────────╮
 -- │ Text Objects with "g" (dot to repeat) │
 -- ╰───────────────────────────────────────╯
 
-map({ "x" }, "gC", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "BlockComment textobj" })
-map({ "o" }, "gC", ":<c-u>lua require('mini.comment').textobject()<cr>", { desc = "BlockComment textobj" })
-map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "BlockComment textobj" })
+map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
+map({ "o", "x" }, "gC", ":<c-u>lua require('mini.comment').textobject()<cr>", { desc = "BlockComment textobj" })
 map({ "o", "x" }, "gf", "gn", { desc = "Next find textobj" })
 map({ "o", "x" }, "gF", "gN", { desc = "Prev find textobj" })
-map({ "o", "x" }, "gh", ":<c-u>Gitsigns select_hunk<cr>", { desc = "Git hunk textobj" })
 map({ "o", "x" }, "gd", function() textobjs.diagnostic() end, { desc = "Diagnostic textobj" })
 map({ "o", "x" }, "gK", function() textobjs.column() end, { desc = "ColumnDown textobj" })
 map({ "o", "x" }, "gl", function() textobjs.lastChange() end, { desc = "last modified/yank/paste (noRepeaterKey)" }) -- `vgm` and `dgm` works. `cgm` and `ygm` doesn't work but it notifies
