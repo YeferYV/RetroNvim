@@ -28,7 +28,7 @@ add { source = "nvim-treesitter/nvim-treesitter", checkout = "a8535b2329a082c7f4
 add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "33a17515b79ddb10d750320fa994098bdc3e93ef" }
 
 -- completion
-add { source = "Exafunction/codeium.vim", checkout = "v1.12.0", }
+add { source = "Exafunction/codeium.vim", checkout = "v1.12.0", } -- run `:Codeium Auth` then `:Codeium Enable` see: https://github.com/Exafunction/codeium.vim/issues/376
 add { source = "L3MON4D3/LuaSnip", checkout = "v2.0.0" }
 add { source = "jay-babu/mason-null-ls.nvim", checkout = "de19726de7260c68d94691afb057fa73d3cc53e7" }
 add { source = "neovim/nvim-lspconfig", checkout = "6c505d4220b521f3b0e7b645f6ce45fa914d0eed" }
@@ -37,6 +37,9 @@ add { source = "nvimtools/none-ls.nvim", checkout = "cfa65d86e21eeb60544d5e823f6
 add { source = "rafamadriz/friendly-snippets", checkout = "00ebcaa159e817150bd83bfe2d51fa3b3377d5c4" }
 add { source = "williamboman/mason-lspconfig.nvim", checkout = "62360f061d45177dda8afc1b0fd1327328540301" }
 add { source = "williamboman/mason.nvim", checkout = "e2f7f9044ec30067bc11800a9e266664b88cda22", }
+
+-- luasnip version "v2.3.0" or latest commit requires modifying `null_ls.builtins.completion.luasnip`. see: https://github.com/nvimtools/none-ls.nvim/discussions/130
+later(function() require("luasnip.loaders.from_vscode").lazy_load() end)
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
 
@@ -63,10 +66,8 @@ vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboar
 vim.opt.expandtab = true          -- convert tabs to spaces
 vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
 vim.opt.ignorecase = true         -- ignore case in search patterns
-vim.opt.preserveindent = true     -- Preserve indent structure as much as possible
 vim.opt.shiftwidth = 2            -- the number of spaces inserted for each indentation
 vim.opt.smartcase = true          -- smart case
-vim.opt.smartindent = true        -- make indenting smarter again
 vim.opt.splitbelow = true         -- force all horizontal splits to go below current window
 vim.opt.splitright = true         -- force all vertical splits to go to the right of current window
 vim.opt.tabstop = 2               -- insert 2 spaces for a tab
@@ -95,6 +96,7 @@ if not vim.g.vscode then
   vim.fn.sign_define("DiagnosticSignWarn", { texthl = "DiagnosticSignWarn", text = "" })
   vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "" })
   vim.fn.sign_define("DiagnosticSignInfo", { texthl = "DiagnosticSignInfo", text = "" })
+  vim.cmd [[ TSEnable highlight ]]
 end
 
 -- ╭──────────────╮
@@ -468,6 +470,7 @@ require("mini.ai").setup({
     o = { "%S()%s+()%S" },                                                                                            -- whitespace textobj
     u = { { "%b''", '%b""', '%b``' }, '^.().*().$' },                                                                 -- quote textobj
   },
+  n_lines = 500,                                                                                                      -- search range and required by functions less than 500 LOC
 })
 
 require('mini.surround').setup({
@@ -718,6 +721,8 @@ end
 -- ╰────────────╯
 
 require("nvim-treesitter.configs").setup {
+  indent = { enable = true },    -- https://www.reddit.com/r/neovim/comments/14n6iiy/if_you_have_treesitter_make_sure_to_disable_smartindent
+  highlight = { enable = true }, -- https://github.com/nvim-treesitter/nvim-treesitter/issues/5264
   textobjects = {
     move = {
       goto_previous_start = {
@@ -966,6 +971,7 @@ if not vim.g.vscode then
   map("n", "<leader>fF", ":Pick grep_live<cr>", { desc = "Pick Grep (tab to preview)" })
   map("n", "<leader>f'", ":Pick marks<cr>", { desc = "Pick Marks (tab to preview)" })
   map("n", "<leader>fR", ":Pick registers<cr>", { desc = "Pick register" })
+  map("n", "<leader>fn", ":lua MiniNotify.show_history()<cr>", { desc = "Notify history" })
   map("n", "<leader>g", "", { desc = "+Git" })
   map("n", "<leader>gg", ":lua vim.cmd[[terminal lazygit]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "lazygit" })
   map("n", "<leader>gp", ":Gitsigns preview_hunk", { silent = true, desc = "Preview GitHunk" })
