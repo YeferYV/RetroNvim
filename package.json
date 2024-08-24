@@ -290,15 +290,13 @@
             },
             {
               "key": "B",
-              "name": "brew install eza FiraCode-NF fzf git kanata lazygit neovim karabiner starship yazi",
+              "name": "brew install eza FiraCode-NF fzf git lazygit karabiner starship",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
-              "args":
-              [
+              "args": [
                 null,
-                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git lazygit neovim karabiner-elements starship yazi; \n" },
+                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git lazygit karabiner-elements starship; \n" },
                 { "text": "sudo curl -Lo /usr/local/bin/kanata https://github.com/jtroo/kanata/releases/download/v1.6.1/kanata_macos_cmd_allowed_x86_64 && sudo chmod +x /usr/local/bin/kanata && sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n" },
-                "require('vscode-neovim').notify('for kanata to work you need to allow karabiner and vscode input monitoring on `security & privacy`')",
-                "require('vscode-neovim').notify('Relaunch vscode after finishing the installation of dependencies')"
+                "require('vscode-neovim').notify('for kanata to work you need to allow karabiner and vscode input monitoring on `security & privacy`')"
               ]
             },
             {
@@ -309,15 +307,9 @@
             },
             {
               "key": "N",
-              "name": "nixpkgs install eza FiraCode-NF fzf git kanata lazygit neovim starship yazi",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
-              "args":
-              [
-                null,
-                { "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.kanata nixpkgs.lazygit nixpkgs.starship nixpkgs.yazi nixpkgs.zsh; \n" },
-                { "text": "sudo curl -L https://github.com/neovim/neovim/releases/download/v0.10.0/nvim.appimage --output /usr/local/bin/nvim && sudo chmod +x /usr/local/bin/nvim \n" },
-                "<cmd>lua require('vscode-neovim').notify('Relaunch vscode after finishing the installation of dependencies')<cr>"
-              ]
+              "name": "nixpkgs install eza FiraCode-NF fzf git lazygit ripdrag starship zsh",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
+              "args": [ null, { "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.starship nixpkgs.zsh; \n" } ]
             },
             {
               "key": "s",
@@ -327,12 +319,11 @@
             },
             {
               "key": "S",
-              "name": "scoop install eza FiraCode-NF fzf gcc git kanata lazygit neovim msys2 starship yazi",
+              "name": "scoop install eza FiraCode-NF fzf git lazygit msys2 starship zig zsh",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
-              "args":
-              [
+              "args": [
                 null,
-                { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf gcc kanata lazygit neovim msys2 starship vcredist2022 yazi; msys2 -c 'pacman -S --noconfirm zsh' \n" },
+                { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf lazygit msys2 starship zig; msys2 -c 'pacman -S --noconfirm zsh' \n" },
                 "<cmd>lua require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')<cr>"
               ]
             },
@@ -542,8 +533,8 @@
             { "key": "v", "name": "split Vertical Tab/Panel terminal", "command": "workbench.action.terminal.splitInActiveWorkspace" },
             { "key": "V", "name": "split Horizontal Tab/Panel terminal", "commands": [ "workbench.action.terminal.split", "workbench.action.moveActiveEditorGroupDown" ] },
 						{ "key": "t", "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)", "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ], "args": [ null, { "text": "nvim -cterm; exit\n" } ] },
-            { "key": "s", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
-            { "key": "S", "name": "New Tab terminal (Separated window group)", "command": "workbench.action.createTerminalEditorSide" },
+            { "key": "w", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
+            { "key": "W", "name": "New Tab terminal (Separated window group)", "command": "workbench.action.createTerminalEditorSide" },
             { "key": "/", "name": "Focus terminal (find terminal panel)", "command": "workbench.action.terminal.toggleTerminal" },
             { "key": "\\", "name": "Toggle terminal", "command": "workbench.action.togglePanel" }
           ]
