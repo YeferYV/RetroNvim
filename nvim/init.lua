@@ -3,7 +3,7 @@
 -- ╰─────────╯
 
 -- Clone 'mini.nvim'
-local path_package = vim.fn.stdpath('data') .. '/site/'
+local path_package = vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/plugins/site/"
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
 if not vim.loop.fs_stat(mini_path) then
@@ -14,7 +14,8 @@ if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
-require('mini.deps').setup()
+vim.opt.rtp:prepend(mini_path)
+require('mini.deps').setup({ path = { package = path_package } })
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local _, vscode = pcall(require, "vscode-neovim")
 
@@ -28,7 +29,7 @@ add { source = "nvim-treesitter/nvim-treesitter", checkout = "a8535b2329a082c7f4
 add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "33a17515b79ddb10d750320fa994098bdc3e93ef" }
 
 -- completion
-add { source = "Exafunction/codeium.vim", checkout = "v1.12.0", } -- run `:Codeium Auth` then `:Codeium Enable` see: https://github.com/Exafunction/codeium.vim/issues/376
+add { source = "mehalter/codeium.vim", checkout = "8b0a827a6fc6a224c2a3f083def46bd5981309f3", } -- offline: https://github.com/Exafunction/codeium.vim/pull/421, run `:Codeium Auth` then `:Codeium Enable` see: https://github.com/Exafunction/codeium.vim/issues/376
 add { source = "L3MON4D3/LuaSnip", checkout = "v2.0.0" }
 add { source = "jay-babu/mason-null-ls.nvim", checkout = "de19726de7260c68d94691afb057fa73d3cc53e7" }
 add { source = "neovim/nvim-lspconfig", checkout = "6c505d4220b521f3b0e7b645f6ce45fa914d0eed" }
@@ -974,10 +975,10 @@ if not vim.g.vscode then
   map("n", "<leader>fn", ":lua MiniNotify.show_history()<cr>", { desc = "Notify history" })
   map("n", "<leader>g", "", { desc = "+Git" })
   map("n", "<leader>gg", ":lua vim.cmd[[terminal lazygit]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "lazygit" })
-  map("n", "<leader>gp", ":Gitsigns preview_hunk", { silent = true, desc = "Preview GitHunk" })
-  map("n", "<leader>gr", ":Gitsigns reset_hunk", { silent = true, desc = "Reset GitHunk" })
-  map("n", "<leader>gs", ":Gitsigns stage_hunk", { silent = true, desc = "Stage GitHunk" })
-  map("n", "<leader>gS", ":Gitsigns undo_stage_hunk", { silent = true, desc = "Undo stage GitHunk" })
+  map("n", "<leader>gp", ":Gitsigns preview_hunk<cr>", { silent = true, desc = "Preview GitHunk" })
+  map("n", "<leader>gr", ":Gitsigns reset_hunk<cr>", { silent = true, desc = "Reset GitHunk" })
+  map("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", { silent = true, desc = "Stage GitHunk" })
+  map("n", "<leader>gS", ":Gitsigns undo_stage_hunk<cr>", { silent = true, desc = "Undo stage GitHunk" })
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", ":set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", ":set showtabline=2<cr>", { desc = "Buffer Show" })
