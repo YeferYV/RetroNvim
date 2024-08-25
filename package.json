@@ -92,7 +92,7 @@
         "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh/starship.toml"
       },
       "terminal.integrated.env.windows": {
-        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
+        "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4",
         "PATH": "$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
         "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
@@ -333,7 +333,7 @@
               "commands": [ "workbench.panel.output.focus", "workbench.action.reloadWindow" ]
             },
             {
-              "key": "M",
+              "key": "i",
               "name": "Increase keyboard repeat rate on MacOS ",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
               "args":
@@ -344,7 +344,7 @@
               ]
             },
             {
-              "key": "W",
+              "key": "I",
               "name": "Increase keyboard repeat rate on Windows 10/11",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
               "args":
@@ -355,10 +355,16 @@
               ]
             },
             {
-              "key": "K",
-              "name": "Start touchcursor keyboard layout (LeftCtrl + Space + Escape to stop)",
+              "key": "k",
+              "name": "Start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "sh -c \"(which scoop 2>/dev/null) && (conhost.exe --headless kanata --cfg '${RETRONVIM_PATH/\\$HOME/$HOME}/kanata/simple.kbd' &) || { sudo --preserve-env bash --login -c 'kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; } \"; sleep 5; exit;\r" } ]
+              "args": [ null, { "text": "sudo --preserve-env bash --login -c 'kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r" } ]
+            },
+            {
+              "key": "K",
+              "name": "Start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
+              "args": [ null, { "text": "powershell -c 'conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd'; sleep 2; exit; \r" } ]
             },
             {
               "key": "T",
