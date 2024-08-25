@@ -367,10 +367,15 @@
               "args": [ null, { "text": "powershell -c 'conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd'; sleep 2; exit; \r" } ]
             },
             {
-              "key": "T",
-              "name": "Install SixelRice (terminal version of RetroNvim based on Lazyvim)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "git clone --depth=1 https://github.com/yeferyv/sixelrice $(sh -c 'test $LOCALAPPDATA && echo \"$LOCALAPPDATA/sixelrice\" || echo \"$HOME/.config/nvim\"'); sh -c 'test $LOCALAPPDATA && mkdir -p $LOCALAPPDATA/nvim && cp -r $LOCALAPPDATA/sixelrice/nvim/{lua,init.lua} $LOCALAPPDATA/nvim || exit 0' \n" } ]
+              "key": "A",
+              "name": "Install ArchRice (retronvim's neovim extensions + extra extensions)",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
+              "args": [
+                null,
+                { "text": "git clone --depth=1 https://github.com/yeferyv/archrice $HOME/.config/archrice \n" },
+                { "text": "sh -c 'cp -r ~/.config/archrice/.config/nvim ${LOCALAPPDATA:-~/.config}' \n" },
+                "require('vscode-neovim').notify('Windows requires `scoop install git`')"
+              ]
             },
             {
               "key": "J",
@@ -538,7 +543,12 @@
             { "key": "p", "name": "Focus previous terminal group", "command": "workbench.action.terminal.focusPrevious" },
             { "key": "v", "name": "split Vertical Tab/Panel terminal", "command": "workbench.action.terminal.splitInActiveWorkspace" },
             { "key": "V", "name": "split Horizontal Tab/Panel terminal", "commands": [ "workbench.action.terminal.split", "workbench.action.moveActiveEditorGroupDown" ] },
-						{ "key": "t", "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)", "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ], "args": [ null, { "text": "nvim -cterm; exit\n" } ] },
+						{
+						  "key": "t",
+						  "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)",
+						  "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
+						  "args": [ null, { "text": "nvim -u $HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua -cterm; exit\n" } ]
+						},
             { "key": "w", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
             { "key": "W", "name": "New Tab terminal (Separated window group)", "command": "workbench.action.createTerminalEditorSide" },
             { "key": "/", "name": "Focus terminal (find terminal panel)", "command": "workbench.action.terminal.toggleTerminal" },
