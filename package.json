@@ -12,6 +12,10 @@
   "engines": {
     "vscode": "^1.85.0"
   },
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./extension.js",
   "categories": [
     "Keymaps"
   ],
@@ -77,7 +81,7 @@
       "terminal.integrated.enableImages": true,
       "terminal.integrated.env.linux": {
         "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
-        "PATH": "$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin:$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
         "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
@@ -86,6 +90,7 @@
       },
       "terminal.integrated.env.osx": {
         "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin:${env:PATH}",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
@@ -93,7 +98,7 @@
       },
       "terminal.integrated.env.windows": {
         "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4",
-        "PATH": "$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
+        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.0.4\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
         "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
