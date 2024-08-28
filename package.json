@@ -90,7 +90,7 @@
       },
       "terminal.integrated.env.osx": {
         "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin:${env:PATH}",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin:${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin/nvim-macos-x86_64/bin:${env:PATH}",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
@@ -98,7 +98,7 @@
       },
       "terminal.integrated.env.windows": {
         "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4",
-        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.0.4\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
+        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.0.4\\bin;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.0.4\\bin\\nvim-win64\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
         "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
