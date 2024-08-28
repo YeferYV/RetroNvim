@@ -8,7 +8,7 @@
     "name": "YeferYV",
     "url": "https://github.com/YeferYV"
   },
-  "version": "0.0.4",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -80,30 +80,30 @@
       ],
       "terminal.integrated.enableImages": true,
       "terminal.integrated.env.linux": {
-        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin:$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
+        "RETRONVIM_PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin:$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
         "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
-        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
-        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh/starship.toml"
+        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh",
+        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh/starship.toml"
       },
       "terminal.integrated.env.osx": {
-        "RETRONVIM_PATH": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin:${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/bin/nvim-macos-x86_64/bin:${env:PATH}",
+        "RETRONVIM_PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin:${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim-macos-x86_64/bin:${env:PATH}",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
-        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
-        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh/starship.toml"
+        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh",
+        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh/starship.toml"
       },
       "terminal.integrated.env.windows": {
-        "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4",
-        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.0.4\\bin;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.0.4\\bin\\nvim-win64\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
+        "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.0",
+        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.0\\bin;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.0\\bin\\nvim-win64\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
         "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
-        "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh",
-        "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.0.4/zsh/starship.toml"
+        "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh",
+        "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh/starship.toml"
       },
       "terminal.integrated.scrollback": 10000,
       "terminal.integrated.profiles.windows": { "zsh (MSYS2)": { "path": "msys2.cmd", "args": [ "-shell", "zsh", "-full-path" ], "env": { "HOME": "${env:USERPROFILE}" } } },
@@ -112,9 +112,9 @@
       "vscode-neovim.compositeKeys": { "jk": { "command": "vscode-neovim.escape" }, "kj": { "command": "vscode-neovim.escape" } },
       "vscode-neovim.ctrlKeysForInsertMode": [ ],
       "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "o", "r", "u", "v", "w", "x", "y", "/" ],
-      "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/init.lua",
+      "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/init.lua",
       "zenMode.centerLayout": false,
       "zenMode.fullScreen": false,
       "zenMode.hideLineNumbers": false,
@@ -363,7 +363,7 @@
               "key": "k",
               "name": "Start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "sudo --preserve-env bash --login -c 'kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r" } ]
+              "args": [ null, { "text": "sudo --preserve-env bash --login -c '$RETRONVIM_PATH/bin/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r" } ]
             },
             {
               "key": "K",
@@ -552,7 +552,7 @@
 						  "key": "t",
 						  "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)",
 						  "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-						  "args": [ null, { "text": "nvim -u $HOME/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/init.lua -cterm; exit\n" } ]
+						  "args": [ null, { "text": "nvim -u $HOME/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/init.lua -cterm; exit\n" } ]
 						},
             { "key": "w", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
             { "key": "W", "name": "New Tab terminal (Separated window group)", "command": "workbench.action.createTerminalEditorSide" },

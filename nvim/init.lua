@@ -3,7 +3,7 @@
 -- ╰─────────╯
 
 -- Clone 'mini.nvim'
-local path_package = vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim-0.0.4/nvim/plugins/site/"
+local path_package = vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/plugins/site/"
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
 if not vim.loop.fs_stat(mini_path) then
@@ -28,19 +28,21 @@ add { source = "lewis6991/gitsigns.nvim", checkout = "v0.9.0", }
 add { source = "nvim-treesitter/nvim-treesitter", checkout = "a8535b2329a082c7f4e0b11b91b1792770425eaa", }
 add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "33a17515b79ddb10d750320fa994098bdc3e93ef" }
 
--- completion
-add { source = "mehalter/codeium.vim", checkout = "8b0a827a6fc6a224c2a3f083def46bd5981309f3", } -- offline: https://github.com/Exafunction/codeium.vim/pull/421, run `:Codeium Auth` then `:Codeium Enable` see: https://github.com/Exafunction/codeium.vim/issues/376
-add { source = "L3MON4D3/LuaSnip", checkout = "v2.0.0" }
-add { source = "jay-babu/mason-null-ls.nvim", checkout = "de19726de7260c68d94691afb057fa73d3cc53e7" }
-add { source = "neovim/nvim-lspconfig", checkout = "6c505d4220b521f3b0e7b645f6ce45fa914d0eed" }
-add { source = "nvim-lua/plenary.nvim", checkout = "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" }
-add { source = "nvimtools/none-ls.nvim", checkout = "cfa65d86e21eeb60544d5e823f6db43941322a53" }
-add { source = "rafamadriz/friendly-snippets", checkout = "00ebcaa159e817150bd83bfe2d51fa3b3377d5c4" }
-add { source = "williamboman/mason-lspconfig.nvim", checkout = "62360f061d45177dda8afc1b0fd1327328540301" }
-add { source = "williamboman/mason.nvim", checkout = "e2f7f9044ec30067bc11800a9e266664b88cda22", }
+if not vim.g.vscode then
+  -- completions
+  add { source = "mehalter/codeium.vim", checkout = "8b0a827a6fc6a224c2a3f083def46bd5981309f3", } -- offline: https://github.com/Exafunction/codeium.vim/pull/421, run `:Codeium Auth` then `:Codeium Enable` see: https://github.com/Exafunction/codeium.vim/issues/376
+  add { source = "L3MON4D3/LuaSnip", checkout = "v2.0.0" }
+  add { source = "jay-babu/mason-null-ls.nvim", checkout = "de19726de7260c68d94691afb057fa73d3cc53e7" }
+  add { source = "neovim/nvim-lspconfig", checkout = "6c505d4220b521f3b0e7b645f6ce45fa914d0eed" }
+  add { source = "nvim-lua/plenary.nvim", checkout = "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" }
+  add { source = "nvimtools/none-ls.nvim", checkout = "cfa65d86e21eeb60544d5e823f6db43941322a53" }
+  add { source = "rafamadriz/friendly-snippets", checkout = "00ebcaa159e817150bd83bfe2d51fa3b3377d5c4" }
+  add { source = "williamboman/mason-lspconfig.nvim", checkout = "62360f061d45177dda8afc1b0fd1327328540301" }
+  add { source = "williamboman/mason.nvim", checkout = "e2f7f9044ec30067bc11800a9e266664b88cda22", }
 
--- luasnip version "v2.3.0" or latest commit requires modifying `null_ls.builtins.completion.luasnip`. see: https://github.com/nvimtools/none-ls.nvim/discussions/130
-later(function() require("luasnip.loaders.from_vscode").lazy_load() end)
+  -- luasnip version "v2.3.0" or latest commit requires modifying `null_ls.builtins.completion.luasnip`. see: https://github.com/nvimtools/none-ls.nvim/discussions/130
+  later(function() require("luasnip.loaders.from_vscode").lazy_load() end)
+end
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
 
@@ -372,7 +374,7 @@ end
 
 -- https://www.reddit.com/r/neovim/comments/1d7j0c1/a_small_gist_to_use_the_new_builtin_completion/
 -- https://www.reddit.com/r/neovim/comments/rddugs/snipcomplua_luasnip_companion_plugin_for_omni/
-local luasnip = require("luasnip")
+local _, luasnip = pcall(require, "luasnip")
 local map = vim.keymap.set
 
 ---For replacing certain <C-x>... keymaps.

@@ -13,7 +13,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 **[<kbd> <br> Wiki <br> </kbd>][Wiki]** 
 **[<kbd> <br> Dependencies <br> </kbd>][Dependencies]**
 
-[Install]: #dependencies-installation
+[Install]: #terminal-dependencies-optional
 [Keyboard-Layout]: #if-touchcursor-keyboard-layout-started
 [Wiki]: https://github.com/YeferYV/RetroNvim/wiki
 [Dependencies]: https://github.com/YeferYV/RetroNvim/wiki/dependencies
@@ -43,7 +43,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 5. [If Touchcursor Keyboard Layout Started](#if-touchcursor-keyboard-layout-started)
 6. Installation
    - [terminal Dependencies (optional)](#terminal-dependencies-optional)
-   - [Treesitter Installation](#treesitter-installation)
+   - [Treesitter Installation (optional)](#treesitter-installation-optional)
 7. [Vim Cheatsheets / Tutorials](#vim-cheatsheets--tutorials)
 8. [Related projects](#related-projects)
 
@@ -633,7 +633,7 @@ To install terminal dependencies after installing retronvim extension, open
 
 </details>
 
-## Treesitter Installation
+## Treesitter Installation (optional)
 
 <details open><summary></summary>
 

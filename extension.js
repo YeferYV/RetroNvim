@@ -5,9 +5,9 @@ const os = require('os');
 function setNeovimPath() {
   // Construct the dynamic path
   const homeDirectory = os.homedir();
-  const nvimPathLinux = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.0.4/bin/nvim');
-  const nvimPathMacOS = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.0.4/bin/nvim-macos-x86_64/bin/nvim');
-  const nvimPathWindows = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.0.4/bin/nvim-win64/bin/nvim.exe');
+  const nvimPathLinux = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim');
+  const nvimPathMacOS = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim-macos-x86_64/bin/nvim');
+  const nvimPathWindows = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim-win64/bin/nvim.exe');
 
   // Access the configuration for 'vscode-neovim'
   const config = vscode.workspace.getConfiguration('vscode-neovim');

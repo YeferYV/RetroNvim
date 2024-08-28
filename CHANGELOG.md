@@ -1,5 +1,24 @@
 # Change Log
 
+## v0.1.0 (28-08-2024)
+
+**Added**
+- neovim LSP / Formatter / Linter / Snippet support
+- open neovim terminal
+- neovim's extension and zsh's extensions as git-submodules
+
+**Changed**
+- migration to more `mini.nvim` modules
+- removed `vscode-multi-cursor.nvim` and `textobj-word-column.vim`
+- replacing `vim-columnmove` extension and `next_indent` with builtin `ColumnMove`
+- replacing `install sixelrice` with `install archrice's neovim`
+- refactored keymaps
+
+**Fixed**
+- `h`, `j`, `k` and `l` mapped to vscode's arrow keys on Windows 10/11 since it's slow in old machines
+- Windows requires compiling treesitter parsers with Zig otherwise it crashes when opening neovim in the terminal
+
+
 ## v0.0.4 (07-06-2024)
 
 **Added**
