@@ -1,13 +1,21 @@
 const vscode = require('vscode');
 const path = require('path');
 const os = require('os');
+const fs = require('fs');
 
 function setNeovimPath() {
   // Construct the dynamic path
   const homeDirectory = os.homedir();
-  const nvimPathLinux = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim');
-  const nvimPathMacOS = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim-macos-x86_64/bin/nvim');
-  const nvimPathWindows = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim-win64/bin/nvim.exe');
+  const nvimPathLinux = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/linux-x64/nvim');
+  const nvimPathMacOS = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/darwin-x64/nvim-macos-x86_64/bin/nvim');
+  const nvimPathWindows = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0/bin/win32-x64/nvim-win64/bin/nvim.exe');
+  const nvimPathWindowsRoot = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0');
+  const nvimPathWindowsRootX64 = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim-0.1.0-win32-x64');
+
+  // create symlink if installing from marketplace on Windows 10/11
+  if (os.platform() == "win32" && fs.existsSync(nvimPathWindowsRootX64)) {
+    fs.symlinkSync(nvimPathWindowsRootX64, nvimPathWindowsRoot)
+  }
 
   // Access the configuration for 'vscode-neovim'
   const config = vscode.workspace.getConfiguration('vscode-neovim');

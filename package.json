@@ -81,7 +81,7 @@
       "terminal.integrated.enableImages": true,
       "terminal.integrated.env.linux": {
         "RETRONVIM_PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin:$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin/linux-x64:$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
         "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
@@ -90,7 +90,7 @@
       },
       "terminal.integrated.env.osx": {
         "RETRONVIM_PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin:${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin/nvim-macos-x86_64/bin:${env:PATH}",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/bin/darwin-x64/nvim-macos-x86_64/bin:${env:PATH}",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh",
@@ -98,7 +98,7 @@
       },
       "terminal.integrated.env.windows": {
         "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.0",
-        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.0\\bin;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.0\\bin\\nvim-win64\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
+        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.0\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.0\\bin\\win32-x64\\nvim-win64\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
         "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "VISUAL": "code",
@@ -552,7 +552,7 @@
 						  "key": "t",
 						  "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)",
 						  "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-						  "args": [ null, { "text": "nvim -u $HOME/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/init.lua -cterm; exit\n" } ]
+						  "args": [ null, { "text": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -cterm; exit\n" } ]
 						},
             { "key": "w", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
             { "key": "W", "name": "New Tab terminal (Separated window group)", "command": "workbench.action.createTerminalEditorSide" },
