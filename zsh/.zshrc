@@ -17,7 +17,7 @@ export EXA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:
 export HISTFILE="$HOME/.cache/.zsh_history"
 export SAVEHIST=10000
 export RETRONVIM_PATH="$HOME/.vscode/extensions/yeferyv.retronvim-0.1.0"
-export EDITOR="nvim -u $RETRONVIM_PATH/nvim/init.lua"
+export EDITOR='nvim --clean -c "source $RETRONVIM_PATH/nvim/init.lua"'
 
 # retronvim's neovim
 vi() { eval $EDITOR $@; }

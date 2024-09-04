@@ -1,0 +1,37 @@
+[manager]
+cwd           = { fg = "blue" }
+border_symbol = " "
+# hovered     = { bg = "#3c3c3c" }
+
+[filetype]
+
+rules = [
+	# Images
+	{ mime = "image/*", fg = "magenta" },
+
+	# Media
+	{ mime = "{audio,video}/*", fg = "magenta" },
+
+	# Archives
+	{ mime = "application/{,g}zip", fg = "yellow" },
+	{ mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", fg = "yellow" },
+
+	# Documents
+	{ mime = "application/{pdf,doc,rtf,vnd.*}", fg = "magenta" },
+
+	# Empty files
+	{ mime = "inode/x-empty", fg = "yellow" },
+
+	# Special files
+	{ name = "*/", is = "link", fg = "cyan" },
+	{ name = "*", is = "link"  , fg = "cyan" },
+	{ name = "*", is = "orphan", bg = "red" },
+	{ name = "*", is = "exec"  , fg = "green" },
+
+  # Directory (should be after special files otherwise will override it)
+	# { mime = "inode/*", fg = "#6c6c6c" },
+
+	# Fallback
+	{ name = "*/", fg = "blue" },
+
+]

@@ -10,7 +10,7 @@ if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installing `mini.nvim`" | redraw')
   local clone_cmd = { 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.nvim', mini_path }
   vim.fn.system(clone_cmd)
-  vim.cmd('packadd mini.nvim | helptags ALL')
+  -- vim.cmd('packadd mini.nvim | helptags ALL')
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
@@ -611,6 +611,7 @@ if not vim.g.vscode then
       base0E = "#91B4D5", -- keywords (def, for), Diff changed, Diagnostic Warn
       base0F = "#FFFFFF", -- punctuation, regex, indentscope
     },
+    use_cterm = true,     -- required if `vi -c 'Pick files'`
   })
 
   -- poimandres transparency

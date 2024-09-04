@@ -18,29 +18,35 @@ function setNeovimPath() {
   }
 
   // Access the configuration for 'vscode-neovim'
-  const config = vscode.workspace.getConfiguration('vscode-neovim');
+  const config = vscode.workspace.getConfiguration();
 
   // Update the 'neovimExecutablePaths.linux' setting
-  config.update('neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
     .then(() => {
       vscode.window.showInformationMessage(`Neovim path set to: ${nvimPath}`);
     }, (err) => {
       vscode.window.showErrorMessage(`Failed to set Neovim path: ${err}`);
     });
 
-  config.update('neovimExecutablePaths.darwin', nvimPathMacOS, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacOS, vscode.ConfigurationTarget.Global)
     .then(() => {
       vscode.window.showInformationMessage(`Neovim path set to: ${nvimPath}`);
     }, (err) => {
       vscode.window.showErrorMessage(`Failed to set Neovim path: ${err}`);
     });
 
-  config.update('neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
     .then(() => {
       vscode.window.showInformationMessage(`Neovim path set to: ${nvimPath}`);
     }, (err) => {
       vscode.window.showErrorMessage(`Failed to set Neovim path: ${err}`);
     });
+
+  // config.update("telemetry.telemetryLevel", "off", vscode.ConfigurationTarget.Global)
+  // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
+  config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
+  config.update('window.customMenuBarAltFocus', false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
+
 }
 
 // You can call this function in your extension's activate function or based on certain events

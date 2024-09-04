@@ -49,3 +49,6 @@
 [submodule "nvim/plugins/site/pack/deps/opt/codeium.vim"]
 	path = nvim/plugins/site/pack/deps/opt/codeium.vim
 	url = https://github.com/mehalter/codeium.vim
+[submodule "yazi/plugins/bookmarks.yazi"]
+	path = yazi/plugins/bookmarks.yazi
+	url = https://github.com/dedukun/bookmarks.yazi

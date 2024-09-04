@@ -1,0 +1,72 @@
+[manager]
+
+prepend_keymap = [
+
+  # Navigation
+	{ on = [ "<A-j>" ], run = "seek 5", desc = "preview down 5 lines" },
+	{ on = [ "<A-k>" ], run = "seek -5", desc = "preview up 5 lines" },
+	{ on = [   "K"   ], run = "arrow -10", desc = "Move cursor up 5 lines" },
+	{ on = [   "J"   ], run = "arrow 10",  desc = "Move cursor down 5 lines" },
+	{ on = [   "R"   ], run = "refresh",  desc = "Refresh" },
+
+	# Search by First Char
+	{ on = [ "f", "a" ], run = "find_do '^a' --smart", desc = "find ^a" },
+	{ on = [ "f", "b" ], run = "find_do '^b' --smart", desc = "find ^b" },
+	{ on = [ "f", "c" ], run = "find_do '^c' --smart", desc = "find ^c" },
+	{ on = [ "f", "d" ], run = "find_do '^d' --smart", desc = "find ^d" },
+	{ on = [ "f", "e" ], run = "find_do '^e' --smart", desc = "find ^e" },
+	{ on = [ "f", "f" ], run = "find_do '^f' --smart", desc = "find ^f" },
+	{ on = [ "f", "g" ], run = "find_do '^g' --smart", desc = "find ^g" },
+	{ on = [ "f", "h" ], run = "find_do '^h' --smart", desc = "find ^h" },
+	{ on = [ "f", "i" ], run = "find_do '^i' --smart", desc = "find ^i" },
+	{ on = [ "f", "j" ], run = "find_do '^j' --smart", desc = "find ^j" },
+	{ on = [ "f", "k" ], run = "find_do '^k' --smart", desc = "find ^k" },
+	{ on = [ "f", "l" ], run = "find_do '^l' --smart", desc = "find ^l" },
+	{ on = [ "f", "m" ], run = "find_do '^m' --smart", desc = "find ^m" },
+	{ on = [ "f", "n" ], run = "find_do '^n' --smart", desc = "find ^n" },
+	{ on = [ "f", "o" ], run = "find_do '^o' --smart", desc = "find ^o" },
+	{ on = [ "f", "p" ], run = "find_do '^p' --smart", desc = "find ^p" },
+	{ on = [ "f", "q" ], run = "find_do '^q' --smart", desc = "find ^q" },
+	{ on = [ "f", "r" ], run = "find_do '^r' --smart", desc = "find ^r" },
+	{ on = [ "f", "s" ], run = "find_do '^s' --smart", desc = "find ^s" },
+	{ on = [ "f", "t" ], run = "find_do '^t' --smart", desc = "find ^t" },
+	{ on = [ "f", "u" ], run = "find_do '^u' --smart", desc = "find ^u" },
+	{ on = [ "f", "v" ], run = "find_do '^v' --smart", desc = "find ^v" },
+	{ on = [ "f", "w" ], run = "find_do '^w' --smart", desc = "find ^w" },
+	{ on = [ "f", "x" ], run = "find_do '^x' --smart", desc = "find ^x" },
+	{ on = [ "f", "y" ], run = "find_do '^y' --smart", desc = "find ^y" },
+	{ on = [ "f", "z" ], run = "find_do '^z' --smart", desc = "find ^z" },
+
+	# Filter
+	{ on = [ "F" ], run = "filter --smart", desc = "Filter" },
+
+  # Shell
+	{ on = [ "s", "c" ], run = """ shell 'code "$@"' --block --confirm """,                                                           desc = "VScode open selected (unix)" },
+	{ on = [ "s", "C" ], run = """ shell 'code %*' --block --confirm """,                                                             desc = "VScode open selected (windows)" },
+	{ on = [ "s", "D" ], run = "search fd",                                                                                           desc = "Search by content using fd" },
+	{ on = [ "s", "e" ], run = """ shell 'eval $EDITOR "$@"' --block --confirm """,                                                   desc = "$EDITOR open selected (unix)" },
+	{ on = [ "s", "E" ], run = """ shell '%EDITOR% %*' --block --confirm """,                                                         desc = "$EDITOR open selected (windows)" },
+	{ on = [ "s", "f" ], run = """ shell 'eval $EDITOR_FZF' --block --confirm """,                                                    desc = "Neovim pick files (unix)" },
+	{ on = [ "s", "g" ], run = """ shell 'eval $EDITOR_RIPGREP' --block --confirm """,                                                desc = "Neovim pick grep (unix)" },
+	{ on = [ "s", "F" ], run = """ shell '%EDITOR_FZF%' --block --confirm """,                                                        desc = "Neovim pick files (windows)" },
+	{ on = [ "s", "G" ], run = """ shell '%EDITOR_RIPGREP%' --block --confirm """,                                                    desc = "Neovim pick grep (windows)" },
+	{ on = [ "s", "i" ], run = """ shell '$SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"' --block --confirm """,                       desc = "Swallow sxiv (linux)" },
+	{ on = [ "s", "l" ], run = """ shell "lazygit" --block --confirm """,                                                             desc = "Lazygit" },
+	{ on = [ "s", "n" ], run = """ shell 'nvim "$@"' --block --confirm """,                                                           desc = "Neovim open selected (unix)" },
+	{ on = [ "s", "N" ], run = """ shell 'nvim %*' --block --confirm """,                                                             desc = "Neovim open selected (windows)" },
+	{ on = [ "s", "p" ], run = """ shell '$SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"' --block --confirm """,                 desc = "Swallow zathura (linux)" },
+	{ on = [ "s", "r" ], run = """ shell 'ripdrag "$@" -x 2>/dev/null &' --confirm """,                                               desc = "Ripdrag (linux)" },
+	{ on = [ "s", "s" ], run = """ shell "zsh" --block --confirm """,                                                                 desc = "Open zsh (zle unsupported)" },
+	{ on = [ "s", "S" ], run = """ shell "powershell" --block --confirm """,                                                          desc = "Open powershell" },
+	{ on = [ "s", "v" ], run = """ shell '$SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"' --block --confirm """,                         desc = "Swallow mpv (unix)" },
+	{ on = [ "s", "V" ], run = """ shell 'mpv %*' --block --confirm """,                                                              desc = "Mpv open selected (powershell)" },
+	{ on = [ "s", "x" ], run = """ shell '$SWALLOWER xdg-open "$1" 2>/dev/null || xdg-open "$1"' --block --confirm """,               desc = "Swallow xdg-open (linux)" },
+	{ on = [ "s", "z" ], run = """ shell 'printf "Your Name:"; read name; zip "$name.zip" $(basename -a "$@")' --block --confirm """, desc = "Zip selected (unix)" },
+	{ on = [ "s", "Z" ], run = """ shell 'unzip "$0"' --block --confirm """,                                                          desc = "Unzip hovered file (unix)" },
+
+  # Plugins
+	{ on = [ "l" ], run = "plugin --sync smart-enter",      desc = "open directory or file" },
+	{ on = [ "m" ], run = "plugin bookmarks --args=save",   desc = "bookmark create" },
+	{ on = [ "'" ], run = "plugin bookmarks --args=jump",   desc = "bookmark jump" },
+	{ on = [ '"' ], run = "plugin bookmarks --args=delete", desc = "bookmark delete" },
+]
