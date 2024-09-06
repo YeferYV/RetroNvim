@@ -37,7 +37,7 @@
 (deflayer qwerty
   @grl 1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-  @cap a    s    d    f    g    h    j    k    l    ;    '    ret
+  @cap a    s    d    f    g    @h   @j   @k   @l   ;    '    ret
   lsft z    x    c    v    b    n    m    ,    .    /    rsft
   lctl lmet @alt           @spc           @sft rmet rctl
 )
@@ -56,7 +56,7 @@
 (deflayer touchcursor
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    _    @sh  @vim _    _    _    _    @vi  _    _    _    _    _
-  _    @mw↑ spc  bspc @yaz @laz left down up   rght @mw↓ _    _
+  _    @mw↑ spc  bspc @yaz @laz @🡠   @↓   @↑   @🡪  @mw↓ _    _
   _    @za  @zr  caps @cod _    @ñ   _    _    _    _    _
   _    _    _              _              _    _    _
 )
@@ -100,6 +100,17 @@
   ;; open shell inside yazi
   2 2
   sh (macro S-; s h spc - c spc ' S-4 S-(s h e l l) ' ret)
+
+  ;; fast keyboard repeat rate emulation
+  ;; (multi f24) fixes fast typing `vh`, `vj`, `vk` and `vl` not entering visual mode on neovim
+  h (multi f24 (tap-hold 200 200 h     (macro-repeat h     20)))
+  j (multi f24 (tap-hold 200 200 j     (macro-repeat j     20)))
+  k (multi f24 (tap-hold 200 200 k     (macro-repeat k     20)))
+  l (multi f24 (tap-hold 200 200 l     (macro-repeat l     20)))
+  🡠 (multi f24 (tap-hold 200 200 left  (macro-repeat left  20)))
+  ↓ (multi f24 (tap-hold 200 200 down  (macro-repeat down  20)))
+  ↑ (multi f24 (tap-hold 200 200 up    (macro-repeat up    20)))
+  🡪 (multi f24 (tap-hold 200 200 right (macro-repeat right 20)))
 
   ;; open with neovim inside yazi
   1 1
