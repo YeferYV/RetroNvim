@@ -576,9 +576,9 @@ lctl lmet @alt           @spc           @sft rmet rctl
 
 ```
 _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-_    _    @sh  @vim _    _    _    _    @vi  _    _    _    _    _
-_    @mw↑ spc  bspc @yaz @laz left down up   rght @mw↓ _    _
-_    @za  @zr  caps @cod _    @ñ   _    _    _    _    _
+_    @¿   @sh  @vi  _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
+_    del  spc  bspc @yaz @laz @🡠   @↓   @↑   @🡪   @ñ   _    _
+_    @za  @zr  caps @cod @vim pgup home end  pgdn _    _
 _    _    _              _              _    _    _
 ```
 
@@ -592,31 +592,40 @@ _    /^z  /^x  /^c  /^v  /^b  /^n  /^m  _    _    _    _
 _    _    _              _              _    _    _
 ```
 
-| key  | description                                                                               |          example / keymap          | not supported key on: |
-| :--: | :---------------------------------------------------------------------------------------- | :--------------------------------: | :-------------------: |
-| @grl | tap: backtick/grave, hold and press `1` = qwerty layer, hold and press `2` = dvorak layer |         `` `+2 = dvorak ``         |                       |
-| @cap | tap for escape, hold for LeftCtrl                                                         |          `cap+l = ctrl+l`          |                       |
-| @sft | tap for backspace, hold for LeftShift                                                     |         `RAlt+l = shift+l`         |                       |
-| @alt | tap for middle click, hold for LeftAlt                                                    |         `LAlt+l = LAlt+l`          |         macos         |
-| @spc | tap for space, hold for touchcursor layer, release for qwerty layer                       | `space+jj = DownArrow + DownArrow` |                       |
-| @yaz | tap and release then press one key in yazi-find layer (timeout: 500ms)                    |     `space+f l = jump to file`     |                       |
-| @sh  | open shell inside yazi                                                                    |             `space+w`              |                       |
-| @vim | open with neovim inside yazi                                                              |             `space+e`              |                       |
-| @vi  | open with $EDITOR inside yazi                                                             |             `space+i`              |                       |
-| @cod | open with vscode inside yazi                                                              |             `space+v`              |                       |
-| @laz | open lazygit inside yazi                                                                  |             `space+g`              |                       |
-| @za  | zoxide add current working directory inside yazi                                          |             `space+z`              |                       |
-| @zr  | zoxide remove current working directory inside yazi                                       |             `space+x`              |                       |
-|  @ñ  | unicode ñ                                                                                 |             `space+n`              |         macos         |
-| @mw↑ | mouse scrolling up                                                                        |             `space+a`              |         macos         |
-| @mw↓ | mouse scrolling down                                                                      |             `space+;`              |         macos         |
-| spc  | presses espace                                                                            |             `space+s`              |                       |
-| bspc | presses backspace                                                                         |             `space+d`              |                       |
-| left | presses left arrow                                                                        |             `space+h`              |                       |
-| down | presses down arrow                                                                        |             `space+j`              |                       |
-|  up  | presses up arrow                                                                          |             `space+k`              |                       |
-| rght | presses right arrow                                                                       |             `space+l`              |                       |
-| caps | toggles capslock                                                                          |             `space+c`              |                       |
+| key  | description                                                                               |          example / keymap          |
+| :--: | :---------------------------------------------------------------------------------------- | :--------------------------------: |
+| @grl | tap: backtick/grave, hold and press `1` = qwerty layer, hold and press `2` = dvorak layer |         `` `+2 = dvorak ``         |
+| @cap | tap for escape, hold for LeftCtrl                                                         |          `cap+l = ctrl+l`          |
+| @sft | tap for backspace, hold for LeftShift                                                     |         `RAlt+l = shift+l`         |
+| @alt | tap for middle click, hold for LeftAlt                                                    |         `LAlt+l = LAlt+l`          |
+| @spc | tap for space, hold for touchcursor layer, release for qwerty layer                       | `space+jj = DownArrow + DownArrow` |
+| @yaz | tap and release then press one key in yazi-find layer (timeout: 500ms)                    |     `space+f l = jump to file`     |
+| @sh  | open shell inside yazi                                                                    |             `space+w`              |
+| @vim | open with neovim inside yazi                                                              |             `space+b`              |
+| @vi  | open with $EDITOR inside yazi                                                             |             `space+e`              |
+| @cod | open with vscode inside yazi                                                              |             `space+v`              |
+| @laz | open lazygit inside yazi                                                                  |             `space+g`              |
+| @za  | zoxide add current working directory inside yazi                                          |             `space+z`              |
+| @zr  | zoxide remove current working directory inside yazi                                       |             `space+x`              |
+|  @ñ  | unicode ñ                                                                                 |             `space+;`              |
+|  @¿  | unicode ¿                                                                                 |             `space+q`              |
+| @m🡠  | mouse scrolling left                                                                      |             `space+t`              |
+| @m🡪  | mouse scrolling right                                                                     |             `space+p`              |
+| @m↑  | mouse scrolling up                                                                        |             `space+i`              |
+| @m↓  | mouse scrolling down                                                                      |             `space+u`              |
+| @M↑  | mouse fast scrolling up                                                                   |             `space+y`              |
+| @M↓  | mouse fast scrolling down                                                                 |             `space+p`              |
+| spc  | space key                                                                                 |             `space+s`              |
+| bspc | backspace key                                                                             |             `space+d`              |
+| home | home key                                                                                  |             `space+s`              |
+| end  | end key                                                                                   |             `space+d`              |
+| pgup | pageup key                                                                                |             `space+s`              |
+| pgdn | pagedown key                                                                              |             `space+d`              |
+|  @🡠  | left arrow key                                                                            |             `space+h`              |
+|  @↓  | down arrow key                                                                            |             `space+j`              |
+|  @↑  | up arrow key                                                                              |             `space+k`              |
+|  @🡪  | right arrow key                                                                           |             `space+l`              |
+| caps | toggles capslock                                                                          |             `space+c`              |
 
 </details>
 
@@ -656,8 +665,8 @@ Tip: to make a clean tressitter parser installation remove the folder
 
 <details open><summary></summary>
 
-- [devhints.io/vim](https://devhints.io/vim)
-- [viemu.com](http://www.viemu.com/a_vi_vim_graphical_cheat_sheet_tutorial.html)
+- [devhints.io/vim](https://devhints.io/vim) most used vim keys
+- [viemu.com](http://www.viemu.com/a_vi_vim_graphical_cheat_sheet_tutorial.html) vim keys from A-Z
 - [vscode with embedded neovim](https://www.youtube.com/watch?v=g4dXZ0RQWdw) youtube tutorial most of the keybindings are similar to RetroNvim
 - [treesitter text-objects demo](https://www.youtube.com/watch?v=FuYQ7M73bC0) youtube tutorial the keybindings are similar to RetroNvim
 - [treesitter text-objects extended](https://www.youtube.com/watch?v=CEMPq_r8UYQ) youtube tutorial the keybindings are similar to RetroNvim
@@ -670,7 +679,7 @@ Tip: to make a clean tressitter parser installation remove the folder
 
 <details open><summary></summary>
 
-- [yeferyv/archrice](https://github.com/yeferyv/archrice) (RetroNvim linux distro) comes with retronvim's neovim extensions + extra extensions, based on [mini.nvim](https://github.com/echasnovski/mini.nvim)
+- [yeferyv/archrice](https://github.com/yeferyv/archrice) (RetroNvim's linux distro) comes with retronvim's neovim extensions + extra extensions, based on [mini.nvim](https://github.com/echasnovski/mini.nvim)
 - [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) (terminal version of RetroNvim) neovim with text objects from A-Z, based on [lazyvim](https://github.com/LazyVim/LazyVim)
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) vscode vim extension with some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
 - [vspacecode](https://github.com/vspacecode/vspacecode) vscode vim extension with some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps

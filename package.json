@@ -114,6 +114,7 @@
         "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.0/zsh"
       },
       "terminal.integrated.scrollback": 10000,
+      "terminal.integrated.suggest.enabled": true,
       "terminal.integrated.profiles.windows": { "zsh (MSYS2)": { "path": "msys2.cmd", "args": [ "-shell", "zsh", "-full-path" ], "env": { "HOME": "${env:USERPROFILE}" } } },
       "terminal.integrated.defaultProfile.windows": "zsh (MSYS2)",
       "terminal.integrated.defaultProfile.linux": "zsh",
@@ -358,12 +359,13 @@
             {
               "key": "I",
               "name": "Increase keyboard repeat rate on Windows 10/11",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
               "args":
               [
                 null,
                 { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatDelay  -Value 210; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatRate -Value 7; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name DelayBeforeAcceptance -Value 0; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name Flags -Value 27 \" \n" },
-                "require('vscode').notify('Relogin to Windows 10/11 to update keyboard repeat rate')"
+                "require('vscode').notify('Relogin to Windows 10/11 to update keyboard repeat rate')",
+                "require('vscode').notify('`<windowskey-x>ui` to relogin, `<windowskey>vscode` to open vscode')"
               ]
             },
             {
@@ -375,8 +377,13 @@
             {
               "key": "K",
               "name": "Start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "powershell -c 'conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd'; sleep 2; exit; \r" } ]
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
+              "args":
+              [
+                null,
+                { "text": "powershell -c 'conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd; Set-WinUserLanguageList -force en-US,es-US'; sleep 2; exit; \r" },
+                "require('vscode').notify('`<windowskey-r>control keyboard` and `<windows>filter keys` to change keyboard repeat rate without relogin')"
+              ]
             },
             {
               "key": "A",
@@ -659,13 +666,13 @@
               "args": { "text": "printf '\\x1b[2A\\x1b[K'\n" }
             },
             {
-              "key": "e",
+              "key": "b",
               "name": "print sequence to open file with neovim (when inside yazi)",
               "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
               "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && nvim '%1' || nvim $*\"\n" } ]
             },
             {
-              "key": "i",
+              "key": "e",
               "name": "print sequence to open file with vi (when inside yazi)",
               "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
               "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && $EDITOR '%1' || $EDITOR $*\"\n" } ]
