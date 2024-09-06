@@ -11,6 +11,10 @@
 ;; also hopefully have helpful error messages in case something goes wrong.
 ;; If you need help, you are welcome to ask.
 
+;; testing: map `a` as `A`
+;; (defcfg process-unmapped-keys yes) (defsrc) (deflayer mylayer) (defoverrides (a) (lsft a))
+;; (defcfg process-unmapped-keys yes) (defsrc) (deflayermap (mylayer) a (multi lsft a))
+
 (defcfg
   linux-x11-repeat-delay-rate 210,70
 )
@@ -53,6 +57,10 @@
   lctl lmet lalt           spc            ralt rmet rctl
 )
 
+;; (deflayermap (altspace)
+;;   spc  (multi (release-key lalt) lsft spc)
+;; )
+
 (deflayer touchcursor
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    _    @sh  @vim _    _    _    _    @vi  _    _    _    _    _
@@ -90,6 +98,9 @@
 
   ;; tap for middle click, hold for lalt
   alt (tap-hold 200 200 mmid lalt)
+
+  ;; tap for middle click, hold for altspace layout
+  ;; alt (tap-hold 200 200 mmid (multi lalt (layer-while-held altspace)))
 
   ;; tap for space, hold for oneshot in touchcursor layout
   spc (tap-hold 200 200 spc (one-shot 500 (layer-while-held touchcursor)))
@@ -154,4 +165,10 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _              _              _    _    _
+)
+
+;; RetroNvim uses alt+space to open whichkey but Windows uses alt+space to open minimize/maximize menu
+(defoverrides
+  (lalt spc) (lsft spc)
+  (rsft spc) (ralt spc)
 )
