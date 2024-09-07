@@ -1,5 +1,20 @@
 # Change Log
 
+## v0.1.1 (06-09-2024)
+
+**Added**
+- `bookmars.yazi` and `smart-enter.yazi` plugins
+- yazi new shell commands
+- `touchcursor` layout new keys: `pageup`, `home`, `end`, `pagedown`, `¿`, `left-wheel` and `right-wheel`
+
+**Changed**
+- yazi keymaps: `f` to `F` and `s` to `sD`
+- `touchcursor` layout fast `hjkl`/arrow keys
+- `start touchcursor` now also start the `en-US` keyboard layout on Windows
+
+**Fixed**
+- yazi now has large image preview
+
 ## v0.1.0 (28-08-2024)
 
 **Added**
