@@ -30,7 +30,7 @@ add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "33a175
 
 if not vim.g.vscode then
   -- completions
-  add { source = "mehalter/codeium.vim", checkout = "8b0a827a6fc6a224c2a3f083def46bd5981309f3", } -- offline: https://github.com/Exafunction/codeium.vim/pull/421, run `:Codeium Auth` then `:Codeium Enable` see: https://github.com/Exafunction/codeium.vim/issues/376
+  add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
   add { source = "L3MON4D3/LuaSnip", checkout = "v2.0.0" }
   add { source = "jay-babu/mason-null-ls.nvim", checkout = "de19726de7260c68d94691afb057fa73d3cc53e7" }
   add { source = "neovim/nvim-lspconfig", checkout = "6c505d4220b521f3b0e7b645f6ce45fa914d0eed" }
@@ -56,6 +56,18 @@ later(
         topdelete    = { text = "" },
         changedelete = { text = "~" },
         untracked    = { text = '┆' },
+      }
+    }
+  end
+)
+
+later(
+  function()
+    require("supermaven-nvim").setup {
+      keymaps = {
+        accept_suggestion = "<A-l>",
+        clear_suggestion = "<A-k>",
+        accept_word = "<A-j>",
       }
     }
   end
@@ -391,6 +403,7 @@ end
 vim.api.nvim_create_autocmd('LspAttach', {
 
   callback = function(args)
+    vim.cmd [[ LspStart ]] -- the `vi` zsh alias doesn't autostart lsp
     vim.lsp.completion.enable(true, args.data.client_id, args.buf, { autotrigger = true })
 
     -- Use enter to expand snippet or accept completions.
@@ -633,11 +646,11 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "StatuslineNC", { bg = "NONE" })
 
   -- poimandres custom colors
-  vim.api.nvim_set_hl(0, "Comment", { fg = "#444444", })
-  vim.api.nvim_set_hl(0, "Visual", { bg = "#1c1c1c" })
-  vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#1ABC9C" })
+  vim.api.nvim_set_hl(0, "Comment", { fg = "#5c5c5c", })
+  vim.api.nvim_set_hl(0, "Visual", { bg = "#2c2c2c" })
+  vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#009900" })
   vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#3C3CFf" })
-  vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#880000" })
+  vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#990000" })
 
   -- poimandres same as the original
   vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#D0679D" })
@@ -891,9 +904,6 @@ if not vim.g.vscode then
   map({ "n" }, "<left>", ":bprevious<CR>", { desc = "prev buffer" })
   map({ "n" }, "<leader>x", ":bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
   map({ "n" }, "<leader>X", ":tabclose<CR>", { desc = "Close Tab" })
-  map("i", "<A-j>", function() return vim.fn["codeium#CycleCompletions"](1) end, { expr = true, desc = "next suggest" })
-  map("i", "<A-k>", function() return vim.fn["codeium#CycleCompletions"](-1) end, { expr = true, desc = "prev suggest" })
-  map("i", "<A-l>", function() return vim.fn["codeium#Accept"]() end, { expr = true, desc = "accept suggest" })
 end
 
 -- Quick quit/write
