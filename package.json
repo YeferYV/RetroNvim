@@ -52,6 +52,7 @@
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
       "editor.minimap.enabled": false,
+      "editor.quickSuggestions": { "strings": "on" },
       "editor.renderWhitespace": "none",
       "editor.stickyScroll.enabled": false,
       "emmet.includeLanguages": { "javascript": "javascriptreact", "typescript": "typescriptreact" },
@@ -83,8 +84,7 @@
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "EDITOR_FZF": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick files'",
         "EDITOR_RIPGREP": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick grep_live'",
-        "FNM_MULTISHELL_PATH": "$HOME/.local/share/fnm/aliases/default",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/bin/linux-x64:$HOME/.pixi/bin:$HOME/.local/share/fnm/aliases/default/bin:${env:PATH}",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/zsh/starship.toml",
         "SWALLOWER": "devour",
@@ -97,7 +97,7 @@
         "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
         "EDITOR_FZF": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick files'",
         "EDITOR_RIPGREP": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick grep_live'",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/bin/darwin-x64/nvim-macos-x86_64/bin:${env:PATH}",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/bin/darwin-x64/nvim-macos-x86_64/bin:${env:HOME}/.pixi/bin:${env:HOME}/Library/pnpm:${env:PATH}",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/zsh/starship.toml",
         "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim-0.1.1/yazi",
@@ -108,8 +108,7 @@
 				"EDITOR": "nvim --clean -c \"source $RETRONVIM_PATH/nvim/init.lua\"",
 				"EDITOR_FZF": "nvim --clean -c \"source $RETRONVIM_PATH/nvim/init.lua\" -c \"Pick files\"",
 				"EDITOR_RIPGREP": "nvim --clean -c \"source $RETRONVIM_PATH/nvim/init.lua\" -c \"Pick grep_live\"",
-        "FNM_MULTISHELL_PATH": "$APPDATA/Roaming/fnm/aliases/default",
-        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.1\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.1\\bin\\win32-x64\\nvim-win64\\bin;$APPDATA\\Roaming\\fnm\\aliases\\default;${env:PATH}",
+        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.1\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.1\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.1/zsh/starship.toml",
         "YAZI_CONFIG_HOME": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.1/yazi",
@@ -135,6 +134,7 @@
           "editor.lineHighlightBackground": "#00000000",
           "editor.lineHighlightBorder": "#00000000",
           "editorGroup.border": "#25252566",
+          "editorSuggestWidget.selectedBackground": "#20222c",
           "panel.border": "#25252566",
           "terminal.border": "#25252566",
           "terminal.ansiBlack": "#363b54",
@@ -299,26 +299,40 @@
           "bindings": [
             {
               "key": "b",
-              "name": "install brew (MacOS)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n" } ]
+              "name": "install brew, pixi and pnpm package-managers (MacOS)",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "args": [
+                null,
+                { "text": "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n" },
+                { "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n" },
+                { "text": "curl -fsSL https://pixi.sh/install.sh | bash \n" },
+                "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
+                "require('vscode').notify('cheatsheet: https://cht.sh/pnpm & https://pnpm.io/cli/env. eg. `pnpm env use --global latest; pnpm create t3-app`')"
+              ]
             },
             {
               "key": "B",
-              "name": "brew install eza FiraCode-NF fzf git lazygit karabiner starship",
+              "name": "brew install eza FiraCode-NF fzf git karabiner lazygit starship",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
               "args": [
                 null,
-                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git lazygit karabiner-elements starship; \n" },
-                { "text": "sudo curl -Lo /usr/local/bin/kanata https://github.com/jtroo/kanata/releases/download/v1.6.1/kanata_macos_cmd_allowed_x86_64 && sudo chmod +x /usr/local/bin/kanata && sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n" },
+                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship; \n" },
+                { "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n" },
                 "require('vscode-neovim').notify('for kanata to work you need to allow karabiner and vscode input monitoring on `security & privacy`')"
               ]
             },
             {
               "key": "n",
-              "name": "install nixpkgs (Linux)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "yes | sh <(curl -L https://nixos.org/nix/install) --daemon \n" } ]
+              "name": "install nixpkgs, pixi and pnpm package managers (Linux)",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "args": [
+                null,
+                { "text": "yes | sh <(curl -L https://nixos.org/nix/install) --daemon \n" },
+                { "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n" },
+                { "text": "curl -fsSL https://pixi.sh/install.sh | bash \n" },
+                "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
+                "require('vscode').notify('cheatsheet: https://cht.sh/pnpm & https://pnpm.io/cli/env. eg. `pnpm env use --global latest; pnpm create t3-app`')"
+              ]
             },
             {
               "key": "N",
@@ -328,18 +342,26 @@
             },
             {
               "key": "s",
-              "name": "install scoop (Windows 10/11)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n" } ]
+              "name": "install scoop, pixi and pnpm package managers (Windows 10/11)",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "args": [
+                null,
+                { "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n" },
+                { "text": "iwr -useb https://pixi.sh/install.ps1 | iex \n" },
+                { "text": "iwr -useb https://get.pnpm.io/install.ps1 | iex \n" },
+                "require('vscode').notify('Relaunch vscode after installation')",
+                "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
+                "require('vscode').notify('cheatsheet: https://cht.sh/pnpm & https://pnpm.io/cli/env. eg. `pnpm env use --global latest; pnpm create t3-app`')"
+              ]
             },
             {
               "key": "S",
               "name": "scoop install eza FiraCode-NF fzf git lazygit msys2 starship zig zsh",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
               "args": [
                 null,
                 { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf lazygit msys2 starship zig; msys2 -c 'pacman -S --noconfirm zsh' \n" },
-                "<cmd>lua require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')<cr>"
+                "require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]
             },
             {
@@ -361,11 +383,14 @@
             {
               "key": "I",
               "name": "Increase keyboard repeat rate on Windows 10/11",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
               "args":
               [
                 null,
-                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatDelay  -Value 210; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name AutoRepeatRate -Value 7; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name DelayBeforeAcceptance -Value 0; set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' -Name Flags -Value 27 \" \n" },
+                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 190     \" \n" },
+                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 7        \" \n" },
+                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \" \n" },
+                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27                \" \n" },
                 "require('vscode').notify('Relogin to Windows 10/11 to update keyboard repeat rate')",
                 "require('vscode').notify('`<windowskey-x>ui` to relogin, `<windowskey>vscode` to open vscode')"
               ]
@@ -399,29 +424,18 @@
               ]
             },
             {
-              "key": "J",
-              "name": "Install javascript vscode-extensions pack + fnm (node version manager)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "key": "E",
+              "name": "Install javascript and python vscode-extensions",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
               "args":
               [
                 null,
-                { "text": "code --install-extension alefragnani.Bookmarks; code --install-extension MarsCode.marscode-extension; code --install-extension WallabyJs.console-ninja; code --install-extension usernamehw.errorlens; code --install-extension imgildev.vscode-nextjs-generator; code --install-extension lamartire.git-indicators; code --install-extension PKief.material-icon-theme; code --install-extension christian-kohler.path-intellisense; code --install-extension drewxs.tokyo-night-dark; code --install-extension esbenp.prettier-vscode code --install-extension yeferyv.retronvim; code --install-extension bradlc.vscode-tailwindcss; code --install-extension rangav.vscode-thunder-client; \n" },
-                { "text": "sh -c 'if [[ $NIX_PROFILES ]]; then nix-env -iA nixpkgs.fnm; elif [[ $APPDATA ]]; then winget install fnm; else brew install fnm; fi;' \n" },
-                "require('vscode-neovim').notify('extensions are installed for the default vscode profile')",
-                "require('vscode-neovim').notify('cheatsheet: https://cht.sh/fnm. choose your node version with `fnm use v20.10.0` (run the command inside a new terminal) (relaunch vscode on Windows10)')"
-              ]
-            },
-            {
-              "key": "P",
-              "name": "Install python vscode-extensions pack + pixi (python package manager)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
-              "args":
-              [
-                null,
-                { "text": "code --install-extension ms-python.black-formatter; code --install-extension alefragnani.Bookmarks; code --install-extension MarsCode.marscode-extension; code --install-extension lamartire.git-indicators; code --install-extension PKief.material-icon-theme; code --install-extension christian-kohler.path-intellisense; code --install-extension drewxs.tokyo-night-dark; code --install-extension ms-python.python; code --install-extension yeferyv.retronvim; code --install-extension traBpUkciP.wolf; \n" },
-                { "text": "sh -c 'if [[ $NIX_PROFILES ]]; then nix-env -iA nixpkgs.pixi; elif [[ $APPDATA ]]; then winget install prefix-dev.pixi; else brew install pixi; fi;' \n" },
-                "require('vscode-neovim').notify('extensions are installed for the default vscode profile')",
-                "require('vscode-neovim').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')"
+                { "text": "code --install-extension alefragnani.Bookmarks        --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark      --install-extension lamartire.git-indicators         \n" },
+                { "text": "code --install-extension WallabyJs.console-ninja      --install-extension bradlc.vscode-tailwindcss          --install-extension emranweb.daisyui-snippet     --install-extension imgildev.vscode-nextjs-generator \n" },
+                { "text": "code --install-extension esbenp.prettier-vscode       --install-extension prisma.prisma                      --install-extension rangav.vscode-thunder-client --install-extension usernamehw.errorlens             \n" },
+                { "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          \n" },
+                { "text": "code --install-extension snippington.snp-pandas-basic --install-extension supermaven.supermaven              --install-extension miguelsolorio.symbols                                                             \n" },
+                "require('vscode-neovim').notify('extensions are installed for the default vscode profile')"
               ]
             }
           ]
