@@ -5,7 +5,7 @@ setopt interactive_comments                                    # allow comments
 zstyle ":completion:*" menu select                             # <tab><tab> to enter menu completion
 
 # linux keyboard repeat rate, xset doesn't support wayland
-(xset b off r rate 210 70 2>/dev/null)
+(xset b off r rate 190 70 2>/dev/null)
 
 # Change cursor shape for different vi modes.
 zle-keymap-select() { [[ $KEYMAP == "vicmd" ]] && echo -ne '\e[2 q' || echo -ne '\e[6 q'; }
@@ -35,6 +35,5 @@ source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highligh
 which fzf      >/dev/null 2>&1 && source <(fzf --zsh)
 which eza      >/dev/null 2>&1 && alias ls="eza --all --icons --group-directories-first"
 which starship >/dev/null 2>&1 && eval "$(starship init zsh)"
-which fnm      >/dev/null 2>&1 && eval "$(fnm env --use-on-cd --shell zsh)"
 
 [[ "$TERM_PROGRAM" == "vscode" ]] && source "$(code --locate-shell-integration-path zsh)" && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc || true

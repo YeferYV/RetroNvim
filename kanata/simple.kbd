@@ -16,7 +16,7 @@
 ;; (defcfg process-unmapped-keys yes) (defsrc) (deflayermap (mylayer) a (multi lsft a))
 
 (defcfg
-  linux-x11-repeat-delay-rate 210,70
+  linux-x11-repeat-delay-rate 190,70
 )
 
 ;; Only one defsrc is allowed.
@@ -114,14 +114,14 @@
 
   ;; fast keyboard repeat rate emulation
   ;; (multi f24) fixes fast typing `vh`, `vj`, `vk` and `vl` not entering visual mode on neovim
-  h (multi f24 (tap-hold 200 200 h     (macro-repeat h     20)))
-  j (multi f24 (tap-hold 200 200 j     (macro-repeat j     20)))
-  k (multi f24 (tap-hold 200 200 k     (macro-repeat k     20)))
-  l (multi f24 (tap-hold 200 200 l     (macro-repeat l     20)))
-  🡠 (multi f24 (tap-hold 200 200 left  (macro-repeat left  20)))
-  ↓ (multi f24 (tap-hold 200 200 down  (macro-repeat down  20)))
-  ↑ (multi f24 (tap-hold 200 200 up    (macro-repeat up    20)))
-  🡪 (multi f24 (tap-hold 200 200 right (macro-repeat right 20)))
+  h (multi f24 (tap-hold 150 150 h     (macro-repeat h     15)))
+  j (multi f24 (tap-hold 150 150 j     (macro-repeat j     15)))
+  k (multi f24 (tap-hold 150 150 k     (macro-repeat k     15)))
+  l (multi f24 (tap-hold 150 150 l     (macro-repeat l     15)))
+  🡠 (multi f24 (tap-hold 150 150 left  (macro-repeat left  15)))
+  ↓ (multi f24 (tap-hold 150 150 down  (macro-repeat down  15)))
+  ↑ (multi f24 (tap-hold 150 150 up    (macro-repeat up    15)))
+  🡪 (multi f24 (tap-hold 150 150 right (macro-repeat right 15)))
 
   ;; open with neovim inside yazi
   1 1

@@ -23,21 +23,21 @@ function setNeovimPath() {
   // Update the 'neovimExecutablePaths.linux' setting
   config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
     .then(() => {
-      vscode.window.showInformationMessage(`Neovim path set to: ${nvimPath}`);
+      vscode.window.showInformationMessage(`Neovim path set to: ${nvimPathLinux}`);
     }, (err) => {
       vscode.window.showErrorMessage(`Failed to set Neovim path: ${err}`);
     });
 
   config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacOS, vscode.ConfigurationTarget.Global)
     .then(() => {
-      vscode.window.showInformationMessage(`Neovim path set to: ${nvimPath}`);
+      vscode.window.showInformationMessage(`Neovim path set to: ${nvimPathMacOS}`);
     }, (err) => {
       vscode.window.showErrorMessage(`Failed to set Neovim path: ${err}`);
     });
 
   config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
     .then(() => {
-      vscode.window.showInformationMessage(`Neovim path set to: ${nvimPath}`);
+      vscode.window.showInformationMessage(`Neovim path set to: ${nvimPathWindows}`);
     }, (err) => {
       vscode.window.showErrorMessage(`Failed to set Neovim path: ${err}`);
     });
