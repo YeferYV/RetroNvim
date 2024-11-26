@@ -241,31 +241,6 @@ M.EnableAutoNoHighlightSearch() -- autostart
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function GotoTextObj_Callback()
-  vim.api.nvim_feedkeys(vim.g.dotargs, "n", true)
-end
-
-_G.GotoTextObj = function(motion, selection_char, selection_line, selection_block)
-  vim.g.dotargs = motion
-
-  if vim.fn.mode() == "v" then
-    vim.g.dotargs = selection_char
-  end
-
-  if vim.fn.mode() == "V" then
-    vim.g.dotargs = selection_line
-  end
-
-  if vim.fn.mode() == "\22" then
-    vim.g.dotargs = selection_block
-  end
-
-  vim.o.operatorfunc = 'v:lua.GotoTextObj_Callback'
-  return "<esc>m'g@"
-end
-
-------------------------------------------------------------------------------------------------------------------------
-
 -- https://thevaluable.dev/vim-create-text-objects
 -- select indent by the same level:
 M.select_same_indent = function(skip_blank_line, skip_comment_line)
@@ -1030,16 +1005,28 @@ map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward (second_clip)" })
 -- │ Operator / Motions │
 -- ╰────────────────────╯
 
+-- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
+_G.GoStartNormal = function() vim.cmd('normal! `[') --[[ vim.cmd('normal! `<') ]] end
+_G.GoEndNormal = function() vim.cmd('normal! `]') --[[ vim.cmd('normal! `>') ]] end
+_G.GoStartVisual = function() vim.api.nvim_feedkeys("`[v`'", "n", true) end
+_G.GoEndVisual = function() vim.api.nvim_feedkeys("`'v`]", "n", true) end
+
 map(
   { "n", "x" },
   "g<",
-  function() return GotoTextObj("`<", "`<v`'", "`<V`'", "`<\22`'") end,
+  function()
+    vim.o.operatorfunc = vim.fn.mode() == 'n' and 'v:lua.GoStartNormal' or 'v:lua.GoStartVisual'
+    return "<esc>m'g@"
+  end,
   { expr = true, desc = "StartOf TextObj (dot to repeat)" }
 )
 map(
   { "n", "x" },
   "g>",
-  function() return GotoTextObj("`>", "`'v`>", "`'V`>", "`'\22`>") end,
+  function()
+    vim.o.operatorfunc = vim.fn.mode() == 'n' and 'v:lua.GoEndNormal' or 'v:lua.GoEndVisual'
+    return "<esc>m'g@"
+  end,
   { expr = true, desc = "EndOf TextObj (dot to repeat)" }
 )
 
