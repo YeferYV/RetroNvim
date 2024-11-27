@@ -1006,28 +1006,37 @@ map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward (second_clip)" })
 -- ╰────────────────────╯
 
 -- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
-_G.GoStartNormal = function() vim.cmd('normal! `[') --[[ vim.cmd('normal! `<') ]] end
-_G.GoEndNormal = function() vim.cmd('normal! `]') --[[ vim.cmd('normal! `>') ]] end
-_G.GoStartVisual = function() vim.api.nvim_feedkeys("`[v`'", "n", true) end
-_G.GoEndVisual = function() vim.api.nvim_feedkeys("`'v`]", "n", true) end
-
 map(
   { "n", "x" },
   "g<",
   function()
-    vim.o.operatorfunc = vim.fn.mode() == 'n' and 'v:lua.GoStartNormal' or 'v:lua.GoStartVisual'
-    return "<esc>m'g@"
+    local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
+    local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
+    if not ok1 then return end
+    if not ok2 then return end
+    local cmd = ":normal v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`<"
+    if vim.fn.mode() ~= "n" then
+      cmd = "<esc>:normal m'v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`<v`'"
+    end
+    return cmd
   end,
-  { expr = true, desc = "StartOf TextObj (dot to repeat)" }
+  { expr = true, desc = "Start of TextObj" }
 )
 map(
   { "n", "x" },
   "g>",
   function()
-    vim.o.operatorfunc = vim.fn.mode() == 'n' and 'v:lua.GoEndNormal' or 'v:lua.GoEndVisual'
-    return "<esc>m'g@"
+    local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
+    local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
+    if not ok1 then return end
+    if not ok2 then return end
+    local cmd = ":normal v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`>"
+    if vim.fn.mode() ~= "n" then
+      cmd = ":<c-u>normal m'v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`'v`>"
+    end
+    return cmd
   end,
-  { expr = true, desc = "EndOf TextObj (dot to repeat)" }
+  { expr = true, desc = "End of TextObj" }
 )
 
 map({ "n", "x", "o" }, "s", function() flash.jump() end, { desc = "Flash" })
