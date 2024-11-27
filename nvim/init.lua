@@ -73,6 +73,15 @@ later(
   end
 )
 
+later(
+  function()
+    require("nvim-treesitter.configs").setup {
+      indent = { enable = true },    -- https://www.reddit.com/r/neovim/comments/14n6iiy/if_you_have_treesitter_make_sure_to_disable_smartindent
+      highlight = { enable = true }, -- https://github.com/nvim-treesitter/nvim-treesitter/issues/5264
+    }
+  end
+)
+
 -- ╭──────╮
 -- │ Opts │
 -- ╰──────╯
@@ -517,50 +526,6 @@ if not vim.g.vscode then
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
-      { desc = "@block.outer",       keys = "aK", mode = "o" },
-      { desc = "@block.outer",       keys = "aK", mode = "x" },
-      { desc = "@block.inner",       keys = "iK", mode = "o" },
-      { desc = "@block.inner",       keys = "iK", mode = "x" },
-      { desc = "@call.outer",        keys = "aC", mode = "o" },
-      { desc = "@call.outer",        keys = "aC", mode = "x" },
-      { desc = "@call.inner",        keys = "iC", mode = "o" },
-      { desc = "@call.inner",        keys = "iC", mode = "x" },
-      { desc = "@comment.outer",     keys = "aQ", mode = "o" },
-      { desc = "@comment.outer",     keys = "aQ", mode = "x" },
-      { desc = "@comment.inner",     keys = "iQ", mode = "o" },
-      { desc = "@comment.inner",     keys = "iQ", mode = "x" },
-      { desc = "@conditional.outer", keys = "aG", mode = "o" },
-      { desc = "@conditional.outer", keys = "aG", mode = "x" },
-      { desc = "@conditional.inner", keys = "iG", mode = "o" },
-      { desc = "@conditional.inner", keys = "iG", mode = "x" },
-      { desc = "@function.outer",    keys = "aF", mode = "o" },
-      { desc = "@function.outer",    keys = "aF", mode = "x" },
-      { desc = "@function.inner",    keys = "iF", mode = "o" },
-      { desc = "@function.inner",    keys = "iF", mode = "x" },
-      { desc = "@loop.outer",        keys = "aL", mode = "o" },
-      { desc = "@loop.outer",        keys = "aL", mode = "x" },
-      { desc = "@loop.inner",        keys = "iL", mode = "o" },
-      { desc = "@loop.inner",        keys = "iL", mode = "x" },
-      { desc = "@parameter.outer",   keys = "aP", mode = "o" },
-      { desc = "@parameter.outer",   keys = "aP", mode = "x" },
-      { desc = "@parameter.inner",   keys = "iP", mode = "o" },
-      { desc = "@parameter.inner",   keys = "iP", mode = "x" },
-      { desc = "@return.outer",      keys = "aR", mode = "o" },
-      { desc = "@return.outer",      keys = "aR", mode = "x" },
-      { desc = "@return.inner",      keys = "iR", mode = "o" },
-      { desc = "@return.inner",      keys = "iR", mode = "x" },
-      { desc = "@assignment.outer",  keys = "aA", mode = "o" },
-      { desc = "@assignment.outer",  keys = "aA", mode = "x" },
-      { desc = "@assignment.inner",  keys = "iA", mode = "o" },
-      { desc = "@assignment.inner",  keys = "iA", mode = "x" },
-      { desc = "@assignment.rhs",    keys = "a=", mode = "o" },
-      { desc = "@assignment.rhs",    keys = "a=", mode = "x" },
-      { desc = "@assignment.lhs",    keys = "i=", mode = "o" },
-      { desc = "@assignment.lhs",    keys = "i=", mode = "x" },
-      { desc = "@number.outer",      keys = "a#", mode = "o" },
-      { desc = "@number.outer",      keys = "a#", mode = "x" },
-      { desc = "@number.inner",      keys = "i#", mode = "o" },
-      { desc = "@number.inner",      keys = "i#", mode = "x" },
     },
   })
 
@@ -705,133 +670,9 @@ if not vim.g.vscode then
   MiniIcons.mock_nvim_web_devicons()
   MiniIcons.tweak_lsp_kind( --[[ "replace" ]])
   vim.notify = MiniNotify.make_notify() -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
+  vim.ui.select = MiniPick.ui_select
   vim.opt.completeopt:append('fuzzy')   -- it should be after require("mini.completion").setup())
 end
-
--- ╭────────────╮
--- │ Treesitter │
--- ╰────────────╯
-
-require("nvim-treesitter.configs").setup {
-  indent = { enable = true },    -- https://www.reddit.com/r/neovim/comments/14n6iiy/if_you_have_treesitter_make_sure_to_disable_smartindent
-  highlight = { enable = true }, -- https://github.com/nvim-treesitter/nvim-treesitter/issues/5264
-  textobjects = {
-    move = {
-      goto_previous_start = {
-        ['gpaK'] = '@block.outer',
-        ['gpaq'] = '@call.outer',
-        ['gpaQ'] = '@class.outer',
-        ['gpag'] = '@comment.outer',
-        ['gpaG'] = '@conditional.outer',
-        ['gpaF'] = '@function.outer',
-        ['gpaL'] = '@loop.outer',
-        ['gpaP'] = '@parameter.outer',
-        ['gpaR'] = '@return.outer',
-        ['gpaA'] = '@assignment.outer',
-        ['gpa='] = '@assignment.lhs',
-        ['gpa#'] = '@number.outer',
-        ["gpz"] = { query = "@fold", query_group = "folds", desc = "Previous Start Fold" },
-        ["gpZ"] = { query = "@scope", query_group = "locals", desc = "Prev scope" },
-        ['gpiK'] = '@block.inner',
-        ['gpiq'] = '@call.inner',
-        ['gpiQ'] = '@class.inner',
-        ['gpig'] = '@comment.inner',
-        ['gpiG'] = '@conditional.inner',
-        ['gpiF'] = '@function.inner',
-        ['gpiL'] = '@loop.inner',
-        ['gpiP'] = '@parameter.inner',
-        ['gpiR'] = '@return.inner',
-        ['gpiA'] = '@assignment.inner',
-        ['gpi='] = '@assignment.rhs',
-        ['gpi#'] = '@number.inner',
-      },
-      goto_next_start = {
-        ['gnaK'] = '@block.outer',
-        ['gnaq'] = '@call.outer',
-        ['gnaQ'] = '@class.outer',
-        ['gnag'] = '@comment.outer',
-        ['gnaG'] = '@conditional.outer',
-        ['gnaF'] = '@function.outer',
-        ['gnaL'] = '@loop.outer',
-        ['gnaP'] = '@parameter.outer',
-        ['gnaR'] = '@return.outer',
-        ['gnaA'] = '@assignment.outer',
-        ['gna='] = '@assignment.lhs',
-        ['gna#'] = '@number.outer',
-        ["gnz"] = { query = "@fold", query_group = "folds", desc = "Next Start Fold" },
-        ["gnZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-        ['gniK'] = '@block.inner',
-        ['gniq'] = '@call.inner',
-        ['gniQ'] = '@class.inner',
-        ['gnig'] = '@comment.inner',
-        ['gniG'] = '@conditional.inner',
-        ['gniF'] = '@function.inner',
-        ['gniL'] = '@loop.inner',
-        ['gniP'] = '@parameter.inner',
-        ['gniR'] = '@return.inner',
-        ['gniA'] = '@assignment.inner',
-        ['gni='] = '@assignment.rhs',
-        ['gni#'] = '@number.inner',
-      },
-      goto_previous_end = {
-        ['gpeaK'] = '@block.outer',
-        ['gpeaq'] = '@call.outer',
-        ['gpeaQ'] = '@class.outer',
-        ['gpeag'] = '@comment.outer',
-        ['gpeaG'] = '@conditional.outer',
-        ['gpeaF'] = '@function.outer',
-        ['gpeaL'] = '@loop.outer',
-        ['gpeaP'] = '@parameter.outer',
-        ['gpeaR'] = '@return.outer',
-        ['gpeaA'] = '@assignment.lhs',
-        ['gpea='] = '@assignment.outer',
-        ['gpea#'] = '@number.outer',
-        ["gpez"] = { query = "@fold", query_group = "folds", desc = "Previous End Fold" },
-        ["gpeZ"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-        ['gpeiK'] = '@block.inner',
-        ['gpeiq'] = '@call.inner',
-        ['gpeiQ'] = '@class.inner',
-        ['gpeig'] = '@comment.inner',
-        ['gpeiG'] = '@conditional.inner',
-        ['gpeiF'] = '@function.inner',
-        ['gpeiL'] = '@loop.inner',
-        ['gpeiP'] = '@parameter.inner',
-        ['gpeiR'] = '@return.inner',
-        ['gpeiA'] = '@assignment.inner',
-        ['gpei='] = '@assignment.rhs',
-        ['gpei#'] = '@number.inner',
-      },
-      goto_next_end = {
-        ['gneaK'] = '@block.outer',
-        ['gneaq'] = '@call.outer',
-        ['gneaQ'] = '@class.outer',
-        ['gneag'] = '@comment.outer',
-        ['gneaG'] = '@conditional.outer',
-        ['gneaF'] = '@function.outer',
-        ['gneaL'] = '@loop.outer',
-        ['gneaP'] = '@parameter.outer',
-        ['gneaR'] = '@return.outer',
-        ['gneaA'] = '@assignment.outer',
-        ['gnea='] = '@assignment.lhs',
-        ['gnea#'] = '@number.outer',
-        ["gnez"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-        ["gneZ"] = { query = "@fold", query_group = "folds", desc = "Next End Fold" },
-        ['gneiK'] = '@block.inner',
-        ['gneiq'] = '@call.inner',
-        ['gneiQ'] = '@class.inner',
-        ['gneig'] = '@comment.inner',
-        ['gneiG'] = '@conditional.inner',
-        ['gneiF'] = '@function.inner',
-        ['gneiL'] = '@loop.inner',
-        ['gneiP'] = '@parameter.inner',
-        ['gneiR'] = '@return.inner',
-        ['gneiA'] = '@assignment.inner',
-        ['gnei='] = '@assignment.rhs',
-        ['gnei#'] = '@number.inner',
-      }
-    }
-  }
-}
 
 -- ╭────────────╮
 -- │ Navigation │
@@ -1219,3 +1060,25 @@ repeat_mini_ai("i", "v", "value")
 repeat_mini_ai("a", "v", "value")
 repeat_mini_ai("i", "x", "hexadecimal")
 repeat_mini_ai("a", "x", "hexadecimal")
+repeat_mini_ai("i", "K", "@block.outer")
+repeat_mini_ai("a", "K", "@block.inner")
+repeat_mini_ai("i", "Q", "@call.outer")
+repeat_mini_ai("a", "Q", "@call.inner")
+repeat_mini_ai("i", "g", "@comment.outer")
+repeat_mini_ai("a", "g", "@comment.inner")
+repeat_mini_ai("i", "G", "@conditional.outer")
+repeat_mini_ai("a", "G", "@conditional.inner")
+repeat_mini_ai("i", "F", "@function.outer")
+repeat_mini_ai("a", "F", "@function.inner")
+repeat_mini_ai("i", "L", "@loop.outer")
+repeat_mini_ai("a", "L", "@loop.inner")
+repeat_mini_ai("i", "P", "@parameter.outer")
+repeat_mini_ai("a", "P", "@parameter.inner")
+repeat_mini_ai("i", "R", "@return.outer")
+repeat_mini_ai("a", "R", "@return.inner")
+repeat_mini_ai("i", "A", "@assignment.outer")
+repeat_mini_ai("a", "A", "@assignment.inner")
+repeat_mini_ai("i", "=", "@assignment.rhs")
+repeat_mini_ai("a", "=", "@assignment.lhs")
+repeat_mini_ai("i", "#", "@number.outer")
+repeat_mini_ai("a", "#", "@number.inner")
