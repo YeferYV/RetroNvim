@@ -22,7 +22,6 @@ local _, vscode = pcall(require, "vscode-neovim")
 ------------------------------------------------------------------------------------------------------------------------
 
 -- text-objects
-add { source = "chrisgrieser/nvim-various-textobjs", checkout = "52343c70e2487095cafd4a5000d0465a2b992b03", }
 add { source = "folke/flash.nvim", checkout = "v2.1.0" }
 add { source = "lewis6991/gitsigns.nvim", checkout = "v0.9.0", }
 add { source = "nvim-treesitter/nvim-treesitter", checkout = "a8535b2329a082c7f4e0b11b91b1792770425eaa", }
@@ -251,27 +250,34 @@ M.EnableAutoNoHighlightSearch() -- autostart
 ------------------------------------------------------------------------------------------------------------------------
 
 -- https://thevaluable.dev/vim-create-text-objects
--- select indent by the same level:
-M.select_same_indent = function(skip_blank_line, skip_comment_line)
+-- select indent by the same or mayor level:
+M.select_indent = function(skip_blank_line, skip_comment_line, same_indent, visual_mode)
   local start_indent = vim.fn.indent(vim.fn.line('.'))
   local get_comment_regex = "^%s*" .. string.gsub(vim.bo.commentstring, "%%s", ".*") .. "%s*$"
   local is_blank_line = function(line) return string.match(vim.fn.getline(line), '^%s*$') end
   local is_comment_line = function(line) return string.find(vim.fn.getline(line), get_comment_regex) end
+  local is_not_out_of_range = function(line) return vim.fn.indent(line) ~= -1 end
+  local has_not_same_indent = function(line) return vim.fn.indent(line) ~= start_indent end
+  local has_mayor_indent = function(line) return vim.fn.indent(line) >= start_indent end
 
-  -- go up while having the same indent
+  vim.cmd [[ execute "normal \<esc>" ]] -- to exit visual mode
+
+  -- go up while having a same or mayor indent
   local prev_line = vim.fn.line('.') - 1
-  while vim.fn.indent(prev_line) == start_indent or (is_blank_line(prev_line) and vim.fn.indent(prev_line) ~= -1) do
+  while has_mayor_indent(prev_line) or (is_blank_line(prev_line) and is_not_out_of_range(prev_line)) do
+    if same_indent and has_not_same_indent(prev_line) and (not is_blank_line(prev_line)) then break end
     if skip_blank_line and is_blank_line(prev_line) then break end
     if skip_comment_line and is_comment_line(prev_line) then break end
     vim.cmd('-')
     prev_line = prev_line - 1
   end
 
-  vim.cmd('normal! V')
+  vim.cmd('normal! ' .. visual_mode)
 
-  -- go down while having the same indent
+  -- go down while having a same or mayor indent
   local next_line = vim.fn.line('.') + 1
-  while vim.fn.indent(next_line) == start_indent or (is_blank_line(next_line) and vim.fn.indent(next_line) ~= -1) do
+  while has_mayor_indent(next_line) or (is_blank_line(next_line) and is_not_out_of_range(next_line)) do
+    if same_indent and has_not_same_indent(next_line) and (not is_blank_line(next_line)) then break end
     if skip_blank_line and is_blank_line(next_line) then break end
     if skip_comment_line and is_comment_line(next_line) then break end
     vim.cmd('+')
@@ -446,6 +452,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- ╰──────╯
 
 local spec_treesitter = require("mini.ai").gen_spec.treesitter
+local gen_ai_spec = require('mini.extra').gen_ai_spec
 local mini_clue = require("mini.clue")
 
 require("mini.ai").setup({
@@ -462,15 +469,18 @@ require("mini.ai").setup({
     ["A"] = spec_treesitter({ a = "@assignment.outer", i = "@assignment.inner" }),
     ["="] = spec_treesitter({ a = "@assignment.rhs", i = "@assignment.lhs" }),
     ["#"] = spec_treesitter({ a = "@number.outer", i = "@number.inner" }),
-    h = { { "<(%w-)%f[^<%w][^<>]->.-</%1>" }, { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" } }, -- html attribute textobj
-    k = { { "\n.-[=:]", "^.-[=:]" }, "^%s*()().-()%s-()=?[!=<>\\+-\\*]?[=:]" },                                       -- key textobj
-    v = { { "[=:]()%s*().-%s*()[;,]()", "[=:]=?()%s*().*()().$" } },                                                  -- value textobj
-    N = { '[-+]?()%f[%d]%d+()%.?%d*' },                                                                               -- number(inside string) textobj
-    x = { '#()%x%x%x%x%x%x()' },                                                                                      -- hexadecimal textobj
-    o = { "%S()%s+()%S" },                                                                                            -- whitespace textobj
-    u = { { "%b''", '%b""', '%b``' }, '^.().*().$' },                                                                 -- quote textobj
+    d = gen_ai_spec.diagnostic(),                                                                                           -- diagnostic textobj
+    e = gen_ai_spec.line(),                                                                                                 -- line textobj
+    h = { { "<(%w-)%f[^<%w][^<>]->.-</%1>" }, { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" } },       -- html attribute textobj
+    k = { { "\n.-[=:]", "^.-[=:]" }, "^%s*()().-()%s-()=?[!=<>\\+-\\*]?[=:]" },                                             -- key textobj
+    v = { { "[=:]()%s*().-%s*()[;,]()", "[=:]=?()%s*().*()().$" } },                                                        -- value textobj
+    N = gen_ai_spec.number(),                                                                                               -- number(inside string) textobj { '[-+]?()%f[%d]%d+()%.?%d*' }
+    x = { '#()%x%x%x%x%x%x()' },                                                                                            -- hexadecimal textobj
+    o = { "%S()%s+()%S" },                                                                                                  -- whitespace textobj
+    S = { { '%u[%l%d]+%f[^%l%d]', '%f[%S][%l%d]+%f[^%l%d]', '%f[%P][%l%d]+%f[^%l%d]', '^[%l%d]+%f[^%l%d]', }, '^().*()$' }, -- sub word textobj https://github.com/echasnovski/mini.nvim/blob/main/doc/mini-ai.txt
+    u = { { "%b''", '%b""', '%b``' }, '^.().*().$' },                                                                       -- quote textobj
   },
-  n_lines = 500,                                                                                                      -- search range and required by functions less than 500 LOC
+  n_lines = 500,                                                                                                            -- search range and required by functions less than 500 LOC
 })
 
 require('mini.surround').setup({
@@ -711,7 +721,7 @@ if not vim.g.vscode then
   require('mini.cursorword').setup()
   require('mini.extra').setup()
   require('mini.icons').setup()
-  require('mini.indentscope').setup()
+  require('mini.indentscope').setup({ options = { indent_at_cursor = false, }, symbol = '│', })
   require('mini.misc').setup_auto_root()
   require('mini.notify').setup()
   require('mini.pairs').setup()
@@ -732,7 +742,6 @@ end
 
 local flash = require("flash")
 local gs = require("gitsigns")
-local textobjs = require("various-textobjs")
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 
 map({ "i" }, "jk", "<ESC>")
@@ -978,43 +987,17 @@ map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc 
 map({ "o", "x" }, "gC", ":<c-u>lua require('mini.comment').textobject()<cr>", { desc = "BlockComment textobj" })
 map({ "o", "x" }, "gf", "gn", { desc = "Next find textobj" })
 map({ "o", "x" }, "gF", "gN", { desc = "Prev find textobj" })
-map({ "o", "x" }, "gd", function() textobjs.diagnostic() end, { desc = "Diagnostic textobj" })
-map({ "o", "x" }, "gK", function() textobjs.column() end, { desc = "ColumnDown textobj" })
-map({ "o", "x" }, "gl", function() textobjs.lastChange() end, { desc = "last modified/yank/paste (noRepeaterKey)" }) -- `vgm` and `dgm` works. `cgm` and `ygm` doesn't work but it notifies
-map({ "o", "x" }, "gL", function() textobjs.url() end, { desc = "Url textobj" })
-map({ "o", "x" }, "go", function() textobjs.restOfWindow() end, { desc = "RestOfWindow textobj" })
-map({ "o", "x" }, "gO", function() textobjs.visibleInWindow() end, { desc = "VisibleWindow textobj" })
-map({ "o", "x" }, "gt", function() textobjs.toNextQuotationMark() end, { desc = "toNextQuotationMark textobj" })
-map({ "o", "x" }, "gT", function() textobjs.toNextClosingBracket() end, { desc = "toNextClosingBracket textobj" })
 
 -- ╭───────────────────────────────────────╮
 -- │ Text Objects with a/i (dot to repeat) │
 -- ╰───────────────────────────────────────╯
 
-map({ "o", "x" }, "ad", function() textobjs.greedyOuterIndentation('outer') end, { desc = "greddyOuterIndent" })
-map({ "o", "x" }, "id", function() textobjs.greedyOuterIndentation('inner') end, { desc = "greddyOuterIndent" })
-map({ "o", "x" }, "ie", function() textobjs.nearEoL() end, { desc = "nearEndOfLine textobj" })
-map({ "o", "x" }, "ae", function() textobjs.lineCharacterwise('inner') end, { desc = "lineCharacterwise" })
-map({ "o", "x" }, "ii", function() textobjs.indentation("inner", "inner", "noBlanks") end, { desc = "indent" })
-map({ "o", "x" }, "ai", function() textobjs.indentation("outer", "outer", "noBlanks") end, { desc = "indent" })
-map({ "o", "x" }, "iI", function() textobjs.indentation("inner", "inner") end, { desc = "Indent blanklines" })
-map({ "o", "x" }, "aI", function() textobjs.indentation("outer", "outer") end, { desc = "Indent blanklines" })
-map({ "o", "x" }, "aj", function() textobjs.cssSelector('outer') end, { desc = "cssSelector" })
-map({ "o", "x" }, "ij", function() textobjs.cssSelector('inner') end, { desc = "cssSelector" })
-map({ "o", "x" }, "am", function() textobjs.chainMember('outer') end, { desc = "chainMember" })
-map({ "o", "x" }, "im", function() textobjs.chainMember('inner') end, { desc = "chainMember" })
-map({ "o", "x" }, "aM", function() textobjs.mdFencedCodeBlock('outer') end, { desc = "mdFencedCodeBlock" })
-map({ "o", "x" }, "iM", function() textobjs.mdFencedCodeBlock('inner') end, { desc = "mdFencedCodeBlock" })
-map({ "o", "x" }, "ir", function() textobjs.restOfParagraph() end, { desc = "RestOfParagraph" })
-map({ "o", "x" }, "ar", function() textobjs.restOfIndentation() end, { desc = "restOfIndentation" })
-map({ "o", "x" }, "aS", function() textobjs.subword('outer') end, { desc = "Subword" })
-map({ "o", "x" }, "iS", function() textobjs.subword('inner') end, { desc = "Subword" })
-map({ "o", "x" }, "aU", function() textobjs.pyTripleQuotes('outer') end, { desc = "pyTrippleQuotes" })
-map({ "o", "x" }, "iU", function() textobjs.pyTripleQuotes('inner') end, { desc = "pyTrippleQuotes" })
-map({ "x", "o" }, "iy", function() M.select_same_indent(true, true) end, { desc = "same_indent" })
-map({ "x", "o" }, "ay", function() M.select_same_indent(false, false) end, { desc = "same_indent blank" })
-map({ "o", "x" }, "aZ", function() textobjs.closedFold('outer') end, { desc = "ClosedFold" })
-map({ "o", "x" }, "iZ", function() textobjs.closedFold('inner') end, { desc = "ClosedFold" })
+map({ "o", "x" }, "iI", function() require("mini.indentscope").textobject(false) end, { desc = "indent blank" })
+map({ "o", "x" }, "aI", function() require("mini.indentscope").textobject(true) end, { desc = "indent blank" })
+map({ "x", "o" }, "ii", function() M.select_indent(true, true, false, "V") end, { desc = "indent" })
+map({ "x", "o" }, "ai", function() M.select_indent(true, true, false, "kV") end, { desc = "indent" })
+map({ "x", "o" }, "iy", function() M.select_indent(true, true, true, "V") end, { desc = "same_indent" })
+map({ "x", "o" }, "ay", function() M.select_indent(false, false, true, "V") end, { desc = "same_indent blank" })
 map({ "x" }, "iz", ":<c-u>normal! [zjV]zk<cr>", { desc = "inner fold" })
 map({ "o" }, "iz", ":normal Viz<CR>", { desc = "inner fold" })
 map({ "x" }, "az", ":<c-u>normal! [zV]z<cr>", { desc = "outer fold" })
