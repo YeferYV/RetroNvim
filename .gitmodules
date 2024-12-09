@@ -4,21 +4,16 @@
 [submodule "zsh/plugins/zsh-autosuggestions"]
 	path = zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
+
 [submodule "nvim/plugins/site/pack/deps/start/mini.nvim"]
 	path = nvim/plugins/site/pack/deps/start/mini.nvim
 	url = https://github.com/echasnovski/mini.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/flash.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/flash.nvim
 	url = https://github.com/folke/flash.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/friendly-snippets"]
-	path = nvim/plugins/site/pack/deps/opt/friendly-snippets
-	url = https://github.com/rafamadriz/friendly-snippets
 [submodule "nvim/plugins/site/pack/deps/opt/gitsigns.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/gitsigns.nvim
 	url = https://github.com/lewis6991/gitsigns.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/LuaSnip"]
-	path = nvim/plugins/site/pack/deps/opt/LuaSnip
-	url = https://github.com/L3MON4D3/LuaSnip
 [submodule "nvim/plugins/site/pack/deps/opt/mason-lspconfig.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/mason-lspconfig.nvim
 	url = https://github.com/williamboman/mason-lspconfig.nvim
@@ -40,15 +35,13 @@
 [submodule "nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects"]
 	path = nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-[submodule "nvim/plugins/site/pack/deps/opt/nvim-various-textobjs"]
-	path = nvim/plugins/site/pack/deps/opt/nvim-various-textobjs
-	url = https://github.com/chrisgrieser/nvim-various-textobjs
 [submodule "nvim/plugins/site/pack/deps/opt/plenary.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/plenary.nvim
 	url = https://github.com/nvim-lua/plenary.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/codeium.vim"]
-	path = nvim/plugins/site/pack/deps/opt/codeium.vim
-	url = https://github.com/mehalter/codeium.vim
+[submodule "nvim/plugins/site/pack/deps/opt/supermaven-nvim"]
+	path = nvim/plugins/site/pack/deps/opt/supermaven-nvim
+	url = https://github.com/supermaven-inc/supermaven-nvim
+
 [submodule "yazi/plugins/bookmarks.yazi"]
 	path = yazi/plugins/bookmarks.yazi
 	url = https://github.com/dedukun/bookmarks.yazi

@@ -24,23 +24,18 @@ local _, vscode = pcall(require, "vscode-neovim")
 -- text-objects
 add { source = "folke/flash.nvim", checkout = "v2.1.0" }
 add { source = "lewis6991/gitsigns.nvim", checkout = "v0.9.0", }
-add { source = "nvim-treesitter/nvim-treesitter", checkout = "a8535b2329a082c7f4e0b11b91b1792770425eaa", }
-add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "33a17515b79ddb10d750320fa994098bdc3e93ef" }
+add { source = "nvim-treesitter/nvim-treesitter", checkout = "v0.9.3", }
+add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "ad8f0a472148c3e0ae9851e26a722ee4e29b1595" }
 
 if not vim.g.vscode then
   -- completions
   add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
-  add { source = "L3MON4D3/LuaSnip", checkout = "v2.0.0" }
-  add { source = "jay-babu/mason-null-ls.nvim", checkout = "de19726de7260c68d94691afb057fa73d3cc53e7" }
-  add { source = "neovim/nvim-lspconfig", checkout = "6c505d4220b521f3b0e7b645f6ce45fa914d0eed" }
-  add { source = "nvim-lua/plenary.nvim", checkout = "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" }
   add { source = "nvimtools/none-ls.nvim", checkout = "cfa65d86e21eeb60544d5e823f6db43941322a53" }
-  add { source = "rafamadriz/friendly-snippets", checkout = "00ebcaa159e817150bd83bfe2d51fa3b3377d5c4" }
-  add { source = "williamboman/mason-lspconfig.nvim", checkout = "62360f061d45177dda8afc1b0fd1327328540301" }
-  add { source = "williamboman/mason.nvim", checkout = "e2f7f9044ec30067bc11800a9e266664b88cda22", }
-
-  -- luasnip version "v2.3.0" or latest commit requires modifying `null_ls.builtins.completion.luasnip`. see: https://github.com/nvimtools/none-ls.nvim/discussions/130
-  later(function() require("luasnip.loaders.from_vscode").lazy_load() end)
+  add { source = "jay-babu/mason-null-ls.nvim", checkout = "2.6.0 " }
+  add { source = "nvim-lua/plenary.nvim", checkout = "v0.1.4" }
+  add { source = "williamboman/mason.nvim", checkout = "v1.10.0", }
+  add { source = "williamboman/mason-lspconfig.nvim", checkout = "v1.31.0" }
+  add { source = "neovim/nvim-lspconfig", checkout = "v1.0.0" }
 end
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
@@ -375,8 +370,6 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 -- https://www.reddit.com/r/neovim/comments/1d7j0c1/a_small_gist_to_use_the_new_builtin_completion/
--- https://www.reddit.com/r/neovim/comments/rddugs/snipcomplua_luasnip_companion_plugin_for_omni/
-local _, luasnip = pcall(require, "luasnip")
 local map = vim.keymap.set
 
 ---For replacing certain <C-x>... keymaps.
@@ -398,9 +391,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Use enter to expand snippet or accept completions.
     map('i', '<cr>', function()
-      if luasnip.expandable() then
-        luasnip.expand()
-      elseif pumvisible() then
+      -- if luasnip.expandable() then luasnip.expand()
+      if pumvisible() then
         feedkeys '<C-y>'
       else
         feedkeys '<cr>'
@@ -427,8 +419,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map({ 'i', 's' }, '<Tab>', function()
       if pumvisible() then
         feedkeys '<C-n>'
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
+        --  elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
+      elseif vim.snippets.active { direction = 1 } then
+        vim.snippet.jump(1)
       else
         feedkeys '<Tab>'
       end
@@ -436,8 +429,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map({ 'i', 's' }, '<S-Tab>', function()
       if pumvisible() then
         feedkeys '<C-p>'
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
+        -- elseif luasnip.jumpable(-1) then luasnip.jump(-1)
+      elseif vim.snippets.active { direction = -1 } then
+        vim.snippet.jump(-1)
       else
         feedkeys '<S-Tab>'
       end
@@ -802,12 +796,7 @@ end
 if not vim.g.vscode then
   -- LSP
   require("mason").setup()
-  require('null-ls').setup({
-    sources = {
-      -- to make luasnip behave as a lsp
-      require('null-ls').builtins.completion.luasnip
-    },
-  })
+  require('null-ls').setup( --[[{ sources = { require('null-ls').builtins.completion.luasnip } }]])
   require("mason-null-ls").setup({ handlers = {}, })
 
   -- `:help mason-lspconfig.setup_handlers()`
