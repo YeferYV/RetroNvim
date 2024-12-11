@@ -31,7 +31,6 @@ if not vim.g.vscode then
   -- completions
   add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
   add { source = "williamboman/mason.nvim", checkout = "v1.10.0", }
-  add { source = "williamboman/mason-lspconfig.nvim", checkout = "v1.31.0" }
   add { source = "neovim/nvim-lspconfig", checkout = "v1.0.0" }
 end
 
@@ -794,41 +793,100 @@ if not vim.g.vscode then
   -- LSP
   require("mason").setup()
 
-  -- `:help mason-lspconfig.setup_handlers()`
-  require("mason-lspconfig").setup_handlers {
-    function(server_name)
-      -- add snippets capability to lsp to show it inside mini.completion
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
-      local opts = { capabilities = capabilities }
+  -- https://github.com/NvChad/ui/blob/v3.0/lua/nvchad/mason/names.lua
+  local masonames = {
+    angularls = "angular-language-server",
+    astro = "astro-language-server",
+    bashls = "bash-language-server",
+    cmake = "cmake-language-server",
+    csharp_ls = "csharp-language-server",
+    css_variables = "css-variables-language-server",
+    cssls = "css-lsp",
+    cssmodules_ls = "cssmodules-language-server",
+    denols = "deno",
+    docker_compose_language_service = "docker-compose-language-service",
+    dockerls = "dockerfile-language-server",
+    emmet_language_server = "emmet-language-server",
+    emmet_ls = "emmet-ls",
+    eslint = "eslint-lsp",
+    graphql = "graphql-language-service-cli",
+    gitlab_ci_ls = "gitlab-ci-ls",
+    gopls = "gopls",
+    html = "html-lsp",
+    htmx = "htmx-lsp",
+    java_language_server = "java-language-server",
+    jdtls = "jdtls",
+    jsonls = "json-lsp",
+    lua_ls = "lua-language-server",
+    neocmake = "neocmakelsp",
+    nginx_language_server = "nginx-language-server",
+    omnisharp = "omnisharp",
+    prismals = "prisma-language-server",
+    pylsp = "python-lsp-server",
+    pylyzer = "pylyzer",
+    quick_lint_js = "quick-lint-js",
+    r_language_server = "r-languageserver",
+    ruby_lsp = "ruby-lsp",
+    ruff_lsp = "ruff-lsp",
+    rust_analyzer = "rust-analyzer",
+    svelte = "svelte-language-server",
+    tailwindcss = "tailwindcss-language-server",
+    ts_ls = "typescript-language-server",
+    volar = "vue-language-server",
+    vuels = "vetur-vls",
+    yamlls = "yaml-language-server",
+  }
 
-      -- require("lspconfig")[server_name].setup {}
-      require('lspconfig')[server_name].setup(opts)
-    end,
+  -- extract installed lsp servers from mason.nvim
+  local servers = {}
+  local pkgs = require("mason-registry").get_installed_packages()
+  for _, pkgvalue in pairs(pkgs) do
+    if pkgvalue.spec.categories[1] == "LSP" then
+      table.insert(servers, pkgvalue.name)
+    end
+  end
 
-    -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
-    -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
-    ["efm"] = function()
-      require("lspconfig").efm.setup {
-        init_options = { documentFormatting = true },
-        settings = {
-          rootMarkers = { ".git/" },
-          languages = {
-            python = { { formatCommand = "black -", formatStdin = true } },
-            javascript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            javascriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            typescript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            typescriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            css = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            html = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            json = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            markdown = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-            yaml = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          }
+  -- update incompatible mason's lsp names according to nvim-lspconfig
+  -- https://github.com/NvChad/ui/blob/v3.0/lua/nvchad/mason/init.lua
+  for masonkey, masonvalue in pairs(masonames) do
+    for serverkey, servervalue in pairs(servers) do
+      if masonvalue == servervalue then
+        servers[serverkey] = masonkey
+      end
+    end
+  end
+
+  -- autoconfigure lsp servers installed by mason
+  for _, server in pairs(servers) do
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    local opts = { capabilities = capabilities }
+
+    require("lspconfig")[server].setup(opts)
+  end
+
+  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
+  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
+  if vim.tbl_contains(servers, "efm") then
+    require("lspconfig").efm.setup {
+      init_options = { documentFormatting = true },
+      settings = {
+        rootMarkers = { ".git/" },
+        languages = {
+          python = { { formatCommand = "black -", formatStdin = true } },
+          javascript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          javascriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          typescript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          typescriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          css = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          html = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          json = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          markdown = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          yaml = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
         }
       }
-    end,
-  }
+    }
+  end
 
   map("n", "<leader>l", "", { desc = "+LSP" })
   map("n", "<leader>lA", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })

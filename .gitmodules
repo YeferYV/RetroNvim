@@ -14,18 +14,9 @@
 [submodule "nvim/plugins/site/pack/deps/opt/gitsigns.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/gitsigns.nvim
 	url = https://github.com/lewis6991/gitsigns.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/mason-lspconfig.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/mason-lspconfig.nvim
-	url = https://github.com/williamboman/mason-lspconfig.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/mason-null-ls.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/mason-null-ls.nvim
-	url = https://github.com/jay-babu/mason-null-ls.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/mason.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/mason.nvim
 	url = https://github.com/williamboman/mason.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/none-ls.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/none-ls.nvim
-	url = https://github.com/nvimtools/none-ls.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/nvim-lspconfig"]
 	path = nvim/plugins/site/pack/deps/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
@@ -35,9 +26,6 @@
 [submodule "nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects"]
 	path = nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-[submodule "nvim/plugins/site/pack/deps/opt/plenary.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/plenary.nvim
-	url = https://github.com/nvim-lua/plenary.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/supermaven-nvim"]
 	path = nvim/plugins/site/pack/deps/opt/supermaven-nvim
 	url = https://github.com/supermaven-inc/supermaven-nvim
