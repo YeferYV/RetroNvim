@@ -30,9 +30,6 @@ add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "ad8f0a
 if not vim.g.vscode then
   -- completions
   add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
-  add { source = "nvimtools/none-ls.nvim", checkout = "cfa65d86e21eeb60544d5e823f6db43941322a53" }
-  add { source = "jay-babu/mason-null-ls.nvim", checkout = "2.6.0 " }
-  add { source = "nvim-lua/plenary.nvim", checkout = "v0.1.4" }
   add { source = "williamboman/mason.nvim", checkout = "v1.10.0", }
   add { source = "williamboman/mason-lspconfig.nvim", checkout = "v1.31.0" }
   add { source = "neovim/nvim-lspconfig", checkout = "v1.0.0" }
@@ -796,8 +793,6 @@ end
 if not vim.g.vscode then
   -- LSP
   require("mason").setup()
-  require('null-ls').setup( --[[{ sources = { require('null-ls').builtins.completion.luasnip } }]])
-  require("mason-null-ls").setup({ handlers = {}, })
 
   -- `:help mason-lspconfig.setup_handlers()`
   require("mason-lspconfig").setup_handlers {
@@ -809,6 +804,29 @@ if not vim.g.vscode then
 
       -- require("lspconfig")[server_name].setup {}
       require('lspconfig')[server_name].setup(opts)
+    end,
+
+    -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
+    -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
+    ["efm"] = function()
+      require("lspconfig").efm.setup {
+        init_options = { documentFormatting = true },
+        settings = {
+          rootMarkers = { ".git/" },
+          languages = {
+            python = { { formatCommand = "black -", formatStdin = true } },
+            javascript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            javascriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            typescript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            typescriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            css = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            html = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            json = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            markdown = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+            yaml = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+          }
+        }
+      }
     end,
   }
 
@@ -1084,25 +1102,25 @@ repeat_mini_ai("i", "v", "value")
 repeat_mini_ai("a", "v", "value")
 repeat_mini_ai("i", "x", "hexadecimal")
 repeat_mini_ai("a", "x", "hexadecimal")
-repeat_mini_ai("i", "K", "@block.outer")
-repeat_mini_ai("a", "K", "@block.inner")
-repeat_mini_ai("i", "Q", "@call.outer")
-repeat_mini_ai("a", "Q", "@call.inner")
-repeat_mini_ai("i", "g", "@comment.outer")
-repeat_mini_ai("a", "g", "@comment.inner")
-repeat_mini_ai("i", "G", "@conditional.outer")
-repeat_mini_ai("a", "G", "@conditional.inner")
-repeat_mini_ai("i", "F", "@function.outer")
-repeat_mini_ai("a", "F", "@function.inner")
-repeat_mini_ai("i", "L", "@loop.outer")
-repeat_mini_ai("a", "L", "@loop.inner")
-repeat_mini_ai("i", "P", "@parameter.outer")
-repeat_mini_ai("a", "P", "@parameter.inner")
-repeat_mini_ai("i", "R", "@return.outer")
-repeat_mini_ai("a", "R", "@return.inner")
-repeat_mini_ai("i", "A", "@assignment.outer")
-repeat_mini_ai("a", "A", "@assignment.inner")
-repeat_mini_ai("i", "=", "@assignment.rhs")
-repeat_mini_ai("a", "=", "@assignment.lhs")
-repeat_mini_ai("i", "#", "@number.outer")
-repeat_mini_ai("a", "#", "@number.inner")
+repeat_mini_ai("i", "K", "@block.inner")
+repeat_mini_ai("a", "K", "@block.outer")
+repeat_mini_ai("i", "Q", "@call.inner")
+repeat_mini_ai("a", "Q", "@call.outer")
+repeat_mini_ai("i", "g", "@comment.inner")
+repeat_mini_ai("a", "g", "@comment.outer")
+repeat_mini_ai("i", "G", "@conditional.inner")
+repeat_mini_ai("a", "G", "@conditional.outer")
+repeat_mini_ai("i", "F", "@function.inner")
+repeat_mini_ai("a", "F", "@function.outer")
+repeat_mini_ai("i", "L", "@loop.inner")
+repeat_mini_ai("a", "L", "@loop.outer")
+repeat_mini_ai("i", "P", "@parameter.inner")
+repeat_mini_ai("a", "P", "@parameter.outer")
+repeat_mini_ai("i", "R", "@return.inner")
+repeat_mini_ai("a", "R", "@return.outer")
+repeat_mini_ai("i", "A", "@assignment.inner")
+repeat_mini_ai("a", "A", "@assignment.outer")
+repeat_mini_ai("i", "=", "@assignment.lhs")
+repeat_mini_ai("a", "=", "@assignment.rhs")
+repeat_mini_ai("i", "#", "@number.inner")
+repeat_mini_ai("a", "#", "@number.outer")
