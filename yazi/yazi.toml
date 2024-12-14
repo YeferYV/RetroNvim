@@ -4,9 +4,9 @@ scrolloff      = 10
 show_hidden    = true
 show_symlink   = false
 
-[preview]
-max_width       = 800
-max_height      = 500
+# [preview]
+# max_width       = 800
+# max_height      = 500
 
 [opener]
 edit = [
