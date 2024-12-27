@@ -51,17 +51,19 @@ later(
   end
 )
 
-later(
-  function()
-    require("supermaven-nvim").setup {
-      keymaps = {
-        accept_suggestion = "<A-l>",
-        clear_suggestion = "<A-k>",
-        accept_word = "<A-j>",
+if not vim.g.vscode then
+  later(
+    function()
+      require("supermaven-nvim").setup {
+        keymaps = {
+          accept_suggestion = "<A-l>",
+          clear_suggestion = "<A-k>",
+          accept_word = "<A-j>",
+        }
       }
-    }
-  end
-)
+    end
+  )
+end
 
 later(
   function()
@@ -101,7 +103,7 @@ if not vim.g.vscode then
   vim.o.foldcolumn = '1'                              -- if '1' will show clickable fold signs
   vim.o.foldlevel = 99                                -- Disable folding at startup
   vim.o.foldmethod = "expr"                           -- expr = specify an expression to define folds
-  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- folding using treesitter (grammar required)
+  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- if folding using lsp then 'v:lua.vim.lsp.foldexpr()'
   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
   vim.o.statuscolumn =
   '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
@@ -526,6 +528,50 @@ if not vim.g.vscode then
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
+      { desc = "@block.outer",       keys = "aK", mode = "o" },
+      { desc = "@block.outer",       keys = "aK", mode = "x" },
+      { desc = "@block.inner",       keys = "iK", mode = "o" },
+      { desc = "@block.inner",       keys = "iK", mode = "x" },
+      { desc = "@call.outer",        keys = "aC", mode = "o" },
+      { desc = "@call.outer",        keys = "aC", mode = "x" },
+      { desc = "@call.inner",        keys = "iC", mode = "o" },
+      { desc = "@call.inner",        keys = "iC", mode = "x" },
+      { desc = "@comment.outer",     keys = "aQ", mode = "o" },
+      { desc = "@comment.outer",     keys = "aQ", mode = "x" },
+      { desc = "@comment.inner",     keys = "iQ", mode = "o" },
+      { desc = "@comment.inner",     keys = "iQ", mode = "x" },
+      { desc = "@conditional.outer", keys = "aG", mode = "o" },
+      { desc = "@conditional.outer", keys = "aG", mode = "x" },
+      { desc = "@conditional.inner", keys = "iG", mode = "o" },
+      { desc = "@conditional.inner", keys = "iG", mode = "x" },
+      { desc = "@function.outer",    keys = "aF", mode = "o" },
+      { desc = "@function.outer",    keys = "aF", mode = "x" },
+      { desc = "@function.inner",    keys = "iF", mode = "o" },
+      { desc = "@function.inner",    keys = "iF", mode = "x" },
+      { desc = "@loop.outer",        keys = "aL", mode = "o" },
+      { desc = "@loop.outer",        keys = "aL", mode = "x" },
+      { desc = "@loop.inner",        keys = "iL", mode = "o" },
+      { desc = "@loop.inner",        keys = "iL", mode = "x" },
+      { desc = "@parameter.outer",   keys = "aP", mode = "o" },
+      { desc = "@parameter.outer",   keys = "aP", mode = "x" },
+      { desc = "@parameter.inner",   keys = "iP", mode = "o" },
+      { desc = "@parameter.inner",   keys = "iP", mode = "x" },
+      { desc = "@return.outer",      keys = "aR", mode = "o" },
+      { desc = "@return.outer",      keys = "aR", mode = "x" },
+      { desc = "@return.inner",      keys = "iR", mode = "o" },
+      { desc = "@return.inner",      keys = "iR", mode = "x" },
+      { desc = "@assignment.outer",  keys = "aA", mode = "o" },
+      { desc = "@assignment.outer",  keys = "aA", mode = "x" },
+      { desc = "@assignment.inner",  keys = "iA", mode = "o" },
+      { desc = "@assignment.inner",  keys = "iA", mode = "x" },
+      { desc = "@assignment.rhs",    keys = "a=", mode = "o" },
+      { desc = "@assignment.rhs",    keys = "a=", mode = "x" },
+      { desc = "@assignment.lhs",    keys = "i=", mode = "o" },
+      { desc = "@assignment.lhs",    keys = "i=", mode = "x" },
+      { desc = "@number.outer",      keys = "a#", mode = "o" },
+      { desc = "@number.outer",      keys = "a#", mode = "x" },
+      { desc = "@number.inner",      keys = "i#", mode = "o" },
+      { desc = "@number.inner",      keys = "i#", mode = "x" },
     },
   })
 
@@ -754,6 +800,8 @@ map({ "v" }, "<", "<gv", { desc = "continious indent" })
 map({ "v" }, ">", ">gv", { desc = "continious indent" })
 
 if not vim.g.vscode then
+  map("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, desc = "next completion when no lsp" })
+  map("i", "<S-Tab>", [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true, desc = "prev completion when no lsp" })
   map({ "n", "v", "t" }, "<M-Left>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
   map({ "n", "v", "t" }, "<M-Right>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
   map({ "n", "v", "t" }, "<M-Up>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
@@ -921,7 +969,8 @@ if not vim.g.vscode then
     { desc = "lsp start (none-ls < lsp)" }
   )
 
-  map("n", "<leader>o", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0),true)<cr>", { desc = "Open Explorer" })
+  map("n", "<leader>o", ":lua MiniFiles.open()<cr>", { desc = "Open Explorer (CWD)" })
+  map("n", "<leader>O", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", { desc = "Open Explorer (CurrentFile)" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>f/", ":Pick files<cr>", { desc = "Pick Files (tab to preview)" })
   map("n", "<leader>fF", ":Pick grep_live<cr>", { desc = "Pick Grep (tab to preview)" })
@@ -975,7 +1024,7 @@ map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward (second_clip)" })
 -- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
 map(
   { "n", "x" },
-  "g<",
+  "gh",
   function()
     local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
     local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
@@ -991,7 +1040,7 @@ map(
 )
 map(
   { "n", "x" },
-  "g>",
+  "gl",
   function()
     local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
     local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
@@ -1028,7 +1077,7 @@ map({ "n", "x" }, "g-", "<C-x>", { desc = "Decrement number (dot to repeat)" })
 if vim.g.vscode then
   map(
     { "n", "x" },
-    "gh",
+    "gH",
     function()
       vscode.action("editor.action.dirtydiff.next")
       vscode.action("closeDirtyDiff")

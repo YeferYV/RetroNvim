@@ -105,9 +105,9 @@
       },
       "terminal.integrated.env.windows": {
         "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.1",
-				"EDITOR": "nvim --clean -c \"source $RETRONVIM_PATH/nvim/init.lua\"",
-				"EDITOR_FZF": "nvim --clean -c \"source $RETRONVIM_PATH/nvim/init.lua\" -c \"Pick files\"",
-				"EDITOR_RIPGREP": "nvim --clean -c \"source $RETRONVIM_PATH/nvim/init.lua\" -c \"Pick grep_live\"",
+				"EDITOR": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua'",
+				"EDITOR_FZF": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick files'",
+				"EDITOR_RIPGREP": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick grep_live'",
         "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.1\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim-0.1.1\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim-0.1.1/zsh/starship.toml",
@@ -312,11 +312,11 @@
             },
             {
               "key": "B",
-              "name": "brew install eza FiraCode-NF fzf git karabiner lazygit starship",
+              "name": "brew install eza FiraCode-NF fzf git karabiner lazygit starship 7zip",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
               "args": [
                 null,
-                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship; \n" },
+                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship sevenzip; \n" },
                 { "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n" },
                 "require('vscode-neovim').notify('for kanata to work you need to allow karabiner and vscode input monitoring on `security & privacy`')"
               ]
@@ -336,9 +336,9 @@
             },
             {
               "key": "N",
-              "name": "nixpkgs install eza FiraCode-NF fzf git lazygit ripdrag starship zsh",
+              "name": "nixpkgs install eza FiraCode-NF fzf git lazygit ripdrag starship zsh 7zip",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.starship nixpkgs.zsh; \n" } ]
+              "args": [ null, { "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n" } ]
             },
             {
               "key": "s",
@@ -356,11 +356,11 @@
             },
             {
               "key": "S",
-              "name": "scoop install eza FiraCode-NF fzf git lazygit msys2 starship zig zsh",
+              "name": "scoop install eza FiraCode-NF fzf git lazygit msys2 starship zig zsh 7zip",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
               "args": [
                 null,
-                { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf lazygit msys2 starship zig; msys2 -c 'pacman -S --noconfirm zsh' \n" },
+                { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf lazygit msys2 starship zig 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n" },
                 "require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]
             },
@@ -761,12 +761,9 @@
     },
     "keybindings": [
 
-      {
-        "key": "alt+y",
-        "command": "workbench.action.terminal.sendSequence",
-        "args": { "text": "yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi) \n" }
-      },
       { "key": "e", "command": "whichkey.triggerKey", "args": { "key": "e", "when": "sideBarVisible && explorerViewletVisible" }, "when": "whichkeyVisible && sideBarVisible && explorerViewletVisible" },
+      { "key": "q", "command": "workbench.action.toggleSidebarVisibility", "when": "listFocus && !inputFocus" },
+      { "key": "v", "command": "runCommands", "args": { "commands": [ "explorer.openToSide", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
       { "key": "Down", "command": "runCommands", "args": { "commands": [ "list.focusDown", "filesExplorer.openFilePreserveFocus" ] }, "when": "listFocus && !inputFocus" },
       { "key": "Up", "command": "runCommands", "args": { "commands": [ "list.focusUp", "filesExplorer.openFilePreserveFocus" ] }, "when": "listFocus && !inputFocus" },
       { "key": "alt+j", "command": "runCommands", "args": { "commands": [ "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown" ] }, "when": "listFocus && !inputFocus" },
@@ -776,21 +773,16 @@
       { "key": "shift+k", "command": "runCommands", "args": { "commands": [ "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp" ] }, "when": "listFocus && !inputFocus" },
       { "key": "shift+l", "command": "runCommands", "args": { "commands": [ "list.select", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
       { "key": "shift+o", "command": "runCommands", "args": { "commands": [ "explorer.openAndPassFocus", "workbench.view.explorer" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "v", "command": "runCommands", "args": { "commands": [ "explorer.openToSide", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "q", "command": "workbench.action.toggleSidebarVisibility", "when": "listFocus && !inputFocus" },
 
       { "key": "ctrl+\\", "command": "workbench.action.togglePanel" },
       { "key": "shift+space", "command": "whichkey.show" },
       { "key": "alt+space", "command": "whichkey.show" },
       { "key": "alt+.", "command": "whichkey.repeatMostRecent", "when": "editorTextFocus && neovim.mode == normal" },
-
       { "key": "alt+c", "command": "editor.action.clipboardCopyAction", "when": "!terminalFocus && neovim.mode == 'insert'" },
       { "key": "alt+v", "command": "editor.action.clipboardPasteAction", "when": "!terminalFocus && neovim.mode == 'insert'" },
       { "key": "alt+c", "command": "workbench.action.terminal.copySelection", "when": "terminalFocus" },
       { "key": "alt+v", "command": "workbench.action.terminal.paste", "when": "terminalFocus" },
-
       { "key": "alt+h", "command": "vscode-neovim.send", "args": "<esc><cmd>noh<cr>", "when": "inputFocus && neovim.mode == 'insert' || neovim.mode == 'visual'" },
-
       { "key": "alt+j", "command": "workbench.action.quickOpenSelectNext", "when": "inQuickOpen" },
       { "key": "alt+k", "command": "workbench.action.quickOpenSelectPrevious", "when": "inQuickOpen" },
       { "key": "alt+h", "command": "type", "args": { "text": "10h" }, "when": "inputFocus && neovim.mode == 'normal'" },
@@ -798,35 +790,21 @@
       { "key": "alt+k", "command": "type", "args": { "text": "10gk" }, "when": "!inQuickOpen && inputFocus && neovim.mode == 'normal'" },
       { "key": "alt+l", "command": "type", "args": { "text": "10l" }, "when": "inputFocus && neovim.mode == 'normal'" },
       { "key": "alt+v", "command": "type", "args": { "text": "V" }, "when": "!terminalFocus && inputFocus && neovim.mode == 'normal'" },
-
       { "key": "alt+s", "command": "workbench.action.previousEditor" },
       { "key": "alt+f", "command": "workbench.action.nextEditor" },
       { "key": "left", "command": "workbench.action.previousEditor", "when": "!terminalFocus && !sideBarFocus && neovim.mode == 'normal' && editorFocus" },
       { "key": "right", "command": "workbench.action.nextEditor", "when": "!terminalFocus && !sideBarFocus && neovim.mode == 'normal' && editorFocus" },
-
-      { "key": "alt+r", "command": "workbench.action.terminal.scrollToNextCommand", "when": "terminalFocus" },
-      { "key": "alt+w", "command": "workbench.action.terminal.scrollToPreviousCommand", "when": "terminalFocus" },
-      { "key": "alt+e", "command": "workbench.action.terminal.scrollUp", "when": "terminalFocus" },
-      { "key": "alt+d", "command": "workbench.action.terminal.scrollDown", "when": "terminalFocus" },
-      { "key": "alt+q", "command": "workbench.action.terminal.scrollUpPage", "when": "terminalFocus" },
-      { "key": "alt+a", "command": "workbench.action.terminal.scrollDownPage", "when": "terminalFocus" },
-      { "key": "alt+t", "command": "workbench.action.terminal.scrollToTop", "when": "terminalFocus" },
-      { "key": "alt+g", "command": "workbench.action.terminal.scrollToBottom", "when": "terminalFocus" },
-
-      { "key": "alt+left", "command": "workbench.action.terminal.resizePaneLeft", "when": "terminalFocus" },
-      { "key": "alt+right", "command": "workbench.action.terminal.resizePaneRight", "when": "terminalFocus" },
-      { "key": "alt+down", "command": "workbench.action.terminal.resizePaneDown", "when": "terminalFocus" },
-      { "key": "alt+up", "command": "workbench.action.terminal.resizePaneUp", "when": "terminalFocus" },
-
-      { "key": "alt+left", "command": "workbench.action.decreaseViewSize", "when": "neovim.mode != insert && !terminalFocus" },
-      { "key": "alt+right", "command": "workbench.action.increaseViewSize", "when": "neovim.mode != insert && !terminalFocus" },
-      { "key": "alt+down", "command": "vscode-neovim.send", "args": "<C-w>-", "when": "neovim.mode != insert && !terminalFocus" },
-      { "key": "alt+up", "command": "vscode-neovim.send", "args": "<C-w>+", "when": "neovim.mode != insert && !terminalFocus" },
-
       { "key": "ctrl+h", "command": "workbench.action.navigateLeft", "when": "neovim.mode == 'normal'" },
       { "key": "ctrl+j", "command": "workbench.action.navigateDown", "when": "neovim.mode == 'normal'" },
       { "key": "ctrl+k", "command": "workbench.action.navigateUp", "when": "neovim.mode == 'normal'" },
       { "key": "ctrl+l", "command": "workbench.action.navigateRight", "when": "neovim.mode == 'normal' && !terminalFocus" },
+      { "key": "alt+q", "command": "workbench.action.closeActiveEditor", "when": "editorTextFocus && neovim.mode == normal" },
+      {
+        "key": "alt+r",
+        "command": "vscode-neovim.send",
+        "args": "<cmd>lua require('vscode-neovim').call('editor.action.format') require('vscode-neovim').call('workbench.action.files.save')<cr>",
+        "when": "editorTextFocus && neovim.mode == normal"
+      },
 
       { "key": "ctrl+i", "command": "toggleSuggestionDetails", "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus" },
       { "key": "ctrl+space", "command": "editor.action.triggerSuggest", "when": "!suggestWidgetVisible && textInputFocus" },
@@ -834,7 +812,6 @@
       { "key": "ctrl+shift+space", "command": "editor.action.triggerParameterHints", "when": "editorHasSignatureHelpProvider && editorTextFocus" },
       { "key": "ctrl+shift+space", "command": "closeParameterHints", "when": "editorFocus && parameterHintsVisible" },
       { "key": "ctrl+alt+space", "command": "toggleSuggestionFocus", "when": "suggestWidgetVisible && textInputFocus" },
-
       { "key": "alt+j", "command": "editor.action.inlineSuggest.showNext", "when": "inlineSuggestionVisible && neovim.mode == 'insert'" },
       { "key": "alt+k", "command": "editor.action.inlineSuggest.showPrevious", "when": "inlineSuggestionVisible && neovim.mode == 'insert'" },
       { "key": "alt+l", "command": "editor.action.inlineSuggest.commit", "when": "inlineSuggestionVisible && neovim.mode == 'insert'" },
@@ -844,13 +821,27 @@
       { "key": "ctrl+d", "command": "selectNextPageSuggestion", "when": "suggestWidgetVisible" },
       { "key": "ctrl+u", "command": "selectPrevPageSuggestion", "when": "suggestWidgetVisible" },
 
-      { "key": "alt+q", "command": "workbench.action.closeActiveEditor", "when": "editorTextFocus && neovim.mode == normal" },
       {
-        "key": "alt+r",
-        "command": "vscode-neovim.send",
-        "args": "<cmd>lua require('vscode-neovim').call('editor.action.format') require('vscode-neovim').call('workbench.action.files.save')<cr>",
-        "when": "editorTextFocus && neovim.mode == normal"
+        "key": "alt+y",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": { "text": "yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi) \n" }
       },
+      { "key": "alt+r", "command": "workbench.action.terminal.scrollToNextCommand", "when": "terminalFocus" },
+      { "key": "alt+w", "command": "workbench.action.terminal.scrollToPreviousCommand", "when": "terminalFocus" },
+      { "key": "alt+e", "command": "workbench.action.terminal.scrollUp", "when": "terminalFocus" },
+      { "key": "alt+d", "command": "workbench.action.terminal.scrollDown", "when": "terminalFocus" },
+      { "key": "alt+q", "command": "workbench.action.terminal.scrollUpPage", "when": "terminalFocus" },
+      { "key": "alt+a", "command": "workbench.action.terminal.scrollDownPage", "when": "terminalFocus" },
+      { "key": "alt+t", "command": "workbench.action.terminal.scrollToTop", "when": "terminalFocus" },
+      { "key": "alt+g", "command": "workbench.action.terminal.scrollToBottom", "when": "terminalFocus" },
+      { "key": "alt+left", "command": "workbench.action.terminal.resizePaneLeft", "when": "terminalFocus" },
+      { "key": "alt+right", "command": "workbench.action.terminal.resizePaneRight", "when": "terminalFocus" },
+      { "key": "alt+down", "command": "workbench.action.terminal.resizePaneDown", "when": "terminalFocus" },
+      { "key": "alt+up", "command": "workbench.action.terminal.resizePaneUp", "when": "terminalFocus" },
+      { "key": "alt+left", "command": "workbench.action.decreaseViewSize", "when": "neovim.mode != insert && !terminalFocus" },
+      { "key": "alt+right", "command": "workbench.action.increaseViewSize", "when": "neovim.mode != insert && !terminalFocus" },
+      { "key": "alt+down", "command": "vscode-neovim.send", "args": "<C-w>-", "when": "neovim.mode != insert && !terminalFocus" },
+      { "key": "alt+up", "command": "vscode-neovim.send", "args": "<C-w>+", "when": "neovim.mode != insert && !terminalFocus" },
 
       {
         "key": "h",
