@@ -3,7 +3,7 @@
 -- ╰─────────╯
 
 -- Clone 'mini.nvim'
-local path_package = vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim-0.1.1/nvim/plugins/site/"
+local path_package = vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim-0.1.20241228/nvim/plugins/site/"
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
 if not vim.loop.fs_stat(mini_path) then

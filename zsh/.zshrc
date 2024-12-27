@@ -17,7 +17,7 @@ export EXA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:
 export HISTFILE="$HOME/.cache/.zsh_history"
 export LC_ALL=C.UTF-8 # `locale` lists all user's locale https://wiki.archlinux.org/title/Locale
 export SAVEHIST=10000
-export RETRONVIM_PATH="$HOME/.vscode/extensions/yeferyv.retronvim-0.1.1"
+export RETRONVIM_PATH="$HOME/.vscode/extensions/yeferyv.retronvim-0.1.20241228"
 export EDITOR="nvim --clean -c 'source \$RETRONVIM_PATH/nvim/init.lua'"
 
 # retronvim's neovim

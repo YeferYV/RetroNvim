@@ -1,0 +1,68 @@
+# ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+# │ systemctl start docker && act -s VSCE_TOKEN -s GITHUB_TOKEN="$(gh auth token)" -j upload-release --artifact-server-path ./artifacts --action-offline-mode --action-cache-path "$HOME/.cache/act" │
+# ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+# https://github.com/nektos/act/issues/2433
+name: Upload_Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# https://josh-ops.com/posts/gh-auth-login-in-actions/
+# https://stackoverflow.com/questions/76830110/github-cli-from-github-actions-workflow
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # setting GH_TOKEN for the entire workflow
+
+jobs:
+  upload-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: --------------------------------------------------------------------------------------
+        run: |
+          git submodule update --init;
+          rm -rf ./nvim/plugins/site/pack/deps/opt/{flash.nvim,gitsigns.nvim,mason.nvim,nvim-lspconfig,nvim-treesitter,nvim-treesitter-textobjects}/tests
+          rm -rf ./nvim/plugins/site/pack/deps/start/mini.nvim/tests
+
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0-prerelease-1/kanata_cmd_allowed               --create-dirs --output  "./bin/linux-x64/kanata"                                                                                                                                  && chmod +x "./bin/linux-x64/kanata"
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage                               --create-dirs --output  "./bin/linux-x64/nvim"                                                                                                                                    && chmod +x "./bin/linux-x64/nvim"
+          curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-unknown-linux-gnu.zip              --create-dirs --output  "/tmp/yazi-linux.zip"   && unzip "/tmp/yazi-linux.zip" -d "/tmp"   && cp -r    "/tmp/yazi-x86_64-unknown-linux-gnu/yazi"   "./bin/linux-x64"              && chmod +x "./bin/linux-x64/yazi"
+
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0-prerelease-1/kanata_macos_cmd_allowed_x86_64  --create-dirs --output  "./bin/darwin-x64/kanata"                                                                                                                                 && chmod +x "./bin/darwin-x64/kanata"
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-x86_64.tar.gz                    | tar -xzf- --directory "./bin/darwin-x64"
+          curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-apple-darwin.zip                   --create-dirs --output  "/tmp/yazi-macos.zip" && unzip "/tmp/yazi-macos.zip" -d "/tmp"     && cp -r    "/tmp/yazi-x86_64-apple-darwin/yazi"        "./bin/darwin-x64"             && chmod +x "./bin/darwin-x64/yazi"
+
+          yes | npx vsce package
+          npx vsce publish --pat ${{ secrets.VSCE_TOKEN }} --pre-release
+          rm -rf ./bin/{linux-x64,darwin-x64}
+
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0-prerelease-1/kanata_cmd_allowed.exe           --create-dirs --output  "./bin/win32-x64/kanata.exe"
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                              --create-dirs --output  "/tmp/nvim-windows.zip" && unzip "/tmp/nvim-windows.zip" -d "./bin/win32-x64"
+          curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-pc-windows-msvc.zip                --create-dirs --output  "/tmp/yazi-windows.zip" && unzip "/tmp/yazi-windows.zip" -d "/tmp" && cp -r    "/tmp/yazi-x86_64-pc-windows-msvc/yazi.exe" "./bin/win32-x64"
+          curl -L https://repo.prefix.dev/conda-forge/win-64/vc14_runtime-14.42.34433-he29a5d6_23.conda                  --create-dirs --output  "/tmp/vc14-runtime.zip" && unzip "/tmp/vc14-runtime.zip" -d "/tmp" && tar -xvf "/tmp/pkg-vc14_runtime-14.42.34433-he29a5d6_23.tar.zst" --directory="/tmp" && cp "/tmp/vcruntime140.dll" "./bin/win32-x64/nvim-win64/bin"
+
+          rm -rf ./bin/win32-x64/nvim-win64/bin/{nvim.pdb,dbghelp.dll}
+          yes | npx vsce package --target win32-x64
+          npx vsce publish --target win32-x64 --pat ${{ secrets.VSCE_TOKEN }} --pre-release
+
+          # curl -L https://github.com/cli/cli/releases/download/v2.64.0/gh_2.64.0_linux_amd64.tar.gz                      | tar -xzf- --directory "/tmp" && cp /tmp/gh_2.64.0_linux_amd64/bin/gh /bin
+          gh release create "${{ github.ref_name }}" ./retronvim-*.vsix --title "${{ github.ref_name }}" --notes-from-tag --prerelease # --token "${{ github.token }}"
+
+      ## `act` doesn't come with `gh` command
+      # - uses: actions4gh/setup-gh@v1
+      # - run: gh release create "${{ github.ref_name }}" ./retronvim-*.vsix --title "${{ github.ref_name }}" --notes-from-tag --prerelease # --token "${{ github.token }}"
+
+      # upload files to `./artifacts`
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-release
+          path: ./retronvim-*.vsix
+          # path: .
