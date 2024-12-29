@@ -15,8 +15,11 @@ on:
 
 # https://josh-ops.com/posts/gh-auth-login-in-actions/
 # https://stackoverflow.com/questions/76830110/github-cli-from-github-actions-workflow
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#secrets-context
+# Since `VSCE_TOKEN` is a secret variable, it is not immediately usable as an environment variable. see: https://github.com/microsoft/vscode-docs/pull/3857
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # setting GH_TOKEN for the entire workflow
+  VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
 
 jobs:
   upload-release:
@@ -41,7 +44,7 @@ jobs:
           curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-apple-darwin.zip                   --create-dirs --output  "/tmp/yazi-macos.zip" && unzip "/tmp/yazi-macos.zip" -d "/tmp"     && cp -r    "/tmp/yazi-x86_64-apple-darwin/yazi"        "./bin/darwin-x64"             && chmod +x "./bin/darwin-x64/yazi"
 
           yes | npx vsce package
-          npx vsce publish --pat ${{ secrets.VSCE_TOKEN }} --pre-release
+          npx vsce publish --pre-release
           rm -rf ./bin/{linux-x64,darwin-x64}
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0-prerelease-1/kanata_cmd_allowed.exe           --create-dirs --output  "./bin/win32-x64/kanata.exe"
@@ -51,7 +54,7 @@ jobs:
 
           rm -rf ./bin/win32-x64/nvim-win64/bin/{nvim.pdb,dbghelp.dll}
           yes | npx vsce package --target win32-x64
-          npx vsce publish --target win32-x64 --pat ${{ secrets.VSCE_TOKEN }} --pre-release
+          npx vsce publish --target win32-x64 --pre-release
 
           # curl -L https://github.com/cli/cli/releases/download/v2.64.0/gh_2.64.0_linux_amd64.tar.gz                      | tar -xzf- --directory "/tmp" && cp /tmp/gh_2.64.0_linux_amd64/bin/gh /bin
           gh release create "${{ github.ref_name }}" ./retronvim-*.vsix --title "${{ github.ref_name }}" --notes-from-tag --prerelease # --token "${{ github.token }}"
