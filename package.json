@@ -871,8 +871,5 @@
     "asvetliakov.vscode-neovim",
     "VSpaceCode.whichkey"
   ],
-  "extensionDependencies": [ ],
-  "devDependencies": {
-    "@vscode/vsce": "^3.2.1"
-  }
+  "extensionDependencies": [ ]
 }
