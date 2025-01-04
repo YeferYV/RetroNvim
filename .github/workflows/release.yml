@@ -82,7 +82,12 @@ jobs:
       # - uses: actions4gh/setup-gh@v1
       # - run: gh release create "${{ github.ref_name }}" *.vsix --notes-file CHANGELOG.md --generate-notes --draft # --prerelease
 
-      - name: Upload files to `./artifacts` 📦
+      - name: Github release 📦
+        if: ${{ steps.release.outputs.release_created }}
+        run:
+            gh release upload ${{ steps.release.outputs.tag_name }} *.vsix
+
+      - name: Upload files to `./artifacts` 📤
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/upload-artifact@v4
         with:
