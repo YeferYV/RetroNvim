@@ -7,8 +7,8 @@ name: Upload_Release
 
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,15 +21,29 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # setting GH_TOKEN for the entire workflow
   VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
 
+# https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   upload-release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+
+      # https://www.youtube.com/watch?v=P0wAXh5UOnM
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: node
+
+      - name: Checkout 🛬
+        if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
 
-      - name: --------------------------------------------------------------------------------------
+      - name: Publish to vscode marketplace 🚀
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           git submodule update --init;
           rm -rf ./nvim/plugins/site/pack/deps/opt/{flash.nvim,gitsigns.nvim,mason.nvim,nvim-lspconfig,nvim-treesitter,nvim-treesitter-textobjects}/tests
@@ -59,17 +73,18 @@ jobs:
           # npx release-please release-pr --release-type node --repo-url https://github.com/yeferyv/retronvim --token $(gh auth token)
           # npx release-please github-release --draft --release-type node --repo-url https://github.com/yeferyv/retronvim --token $(gh auth token)
           # npx standard-version
-          previous_tag="$(git tag --sort=creatordate | tail -n 2 | head -n 1)"
-          sed -i "/$previous_tag/,$ d" CHANGELOG.md # deletes from previous_tag to end of file
-          echo "## Manual Install\n- open vscode command palette then type \`Extension: Install from VSIX\`" >> CHANGELOG.md
-          gh release create "${{ github.ref_name }}" *.vsix --notes-file CHANGELOG.md --generate-notes --draft # --prerelease
+          # previous_tag="$(git tag --sort=creatordate | tail -n 2 | head -n 1)"
+          # sed -i "/$previous_tag/,$ d" CHANGELOG.md # deletes from previous_tag to end of file
+          # echo "## Manual Install\n- open vscode command palette then type \`Extension: Install from VSIX\`" >> CHANGELOG.md
+          # gh release create "${{ github.ref_name }}" *.vsix --notes-file CHANGELOG.md --generate-notes --draft # --prerelease
 
       ## `act` doesn't come with `gh` command
       # - uses: actions4gh/setup-gh@v1
       # - run: gh release create "${{ github.ref_name }}" *.vsix --notes-file CHANGELOG.md --generate-notes --draft # --prerelease
 
-      # upload files to `./artifacts`
-      - uses: actions/upload-artifact@v4
+      - name: Upload files to `./artifacts` 📦
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/upload-artifact@v4
         with:
           name: my-release
           path: ./retronvim-*.vsix
