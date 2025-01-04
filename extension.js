@@ -11,6 +11,12 @@ function setNeovimPath(homeExtension) {
   const nvimPathMacOS = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin/nvim');
   const nvimPathWindows = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/win32-x64/nvim-win64/bin/nvim.exe');
 
+  if (os.platform() == "win32") {
+    var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
+  } else {
+    var pixiPath = "./.pixi/envs/default/bin/python"
+  }
+
   // create symlink for environment variables path
   if (fs.existsSync(retronvimPath)) {
     fs.unlinkSync(retronvimPath)
@@ -26,9 +32,10 @@ function setNeovimPath(homeExtension) {
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
   config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
   config.update('window.customMenuBarAltFocus', false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
-  config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux)
-  config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacOS)
-  config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows)
+  config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacOS, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
+  config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)
 
 }
 

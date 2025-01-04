@@ -63,7 +63,6 @@
       "git.mergeEditor": true,
       "json.format.keepLines": true,
       "multiDiffEditor.experimental.enabled": true,
-      "python.defaultInterpreterPath": ".\\.pixi\\envs\\default\\python.exe",
       "scm.defaultViewMode": "tree",
       "terminal.integrated.commandsToSkipShell": [
         "whichkey.show",
@@ -426,7 +425,7 @@
               ]
             },
             {
-              "key": "E",
+              "key": "j",
               "name": "Install javascript and python vscode-extensions",
               "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
               "args":
@@ -436,8 +435,22 @@
                 { "text": "code --install-extension WallabyJs.console-ninja      --install-extension bradlc.vscode-tailwindcss          --install-extension emranweb.daisyui-snippet     --install-extension imgildev.vscode-nextjs-generator \n" },
                 { "text": "code --install-extension esbenp.prettier-vscode       --install-extension prisma.prisma                      --install-extension rangav.vscode-thunder-client --install-extension usernamehw.errorlens             \n" },
                 { "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          \n" },
-                { "text": "code --install-extension snippington.snp-pandas-basic --install-extension supermaven.supermaven              --install-extension miguelsolorio.symbols                                                             \n" },
+                { "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            \n" },
                 "require('vscode-neovim').notify('extensions are installed for the default vscode profile')"
+              ]
+            },
+            {
+              "key": "J",
+              "name": "Install jupyter and kaggle",
+              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
+              "args":
+              [
+                null,
+                { "text": "pixi global install kaggle; pixi init; pixi add python ipykernel; # then `pixi shell` on Unix and `pixi run zsh` on Windows \n" },
+                { "text": "code --install-extension ms-toolsai.jupyter                                                                                 \n" },
+                { "text": "# kaggle kernels init # requires API KEY then edit generated kernel-metadata.json                                           \n" },
+                { "text": "# kaggle kernels push; kaggle kernel output <owner/notebook> # https://www.kaggle.com/code/owner/notebook                   \n" },
+                "require('vscode-neovim').notify('to use kaggle machines from vscode see: https://www.kaggle.com/docs/api and https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md')"
               ]
             }
           ]
