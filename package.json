@@ -8,7 +8,7 @@
     "name": "YeferYV",
     "url": "https://github.com/YeferYV"
   },
-  "version": "0.1.1",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -44,7 +44,6 @@
     "url": "https://github.com/YeferYV/RetroNvim/issues"
   },
   "contributes": {
-
     "configurationDefaults": {
       "accessibility.accessibleView.closeOnKeyPress": false,
       "editor.linkedEditing": true,
@@ -52,11 +51,18 @@
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
       "editor.minimap.enabled": false,
-      "editor.quickSuggestions": { "strings": "on" },
+      "editor.quickSuggestions": {
+        "strings": "on"
+      },
       "editor.renderWhitespace": "none",
       "editor.stickyScroll.enabled": false,
-      "emmet.includeLanguages": { "javascript": "javascriptreact", "typescript": "typescriptreact" },
-      "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
+      "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "typescript": "typescriptreact"
+      },
+      "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+      },
       "diffEditor.maxComputationTime": 0,
       "files.trimTrailingWhitespace": true,
       "git.autofetch": true,
@@ -84,7 +90,7 @@
         "EDITOR_FZF": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick files'",
         "EDITOR_RIPGREP": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick grep_live'",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
-        "PNPM_HOME" : "${env:HOME}/.local/share/pnpm",
+        "PNPM_HOME": "${env:HOME}/.local/share/pnpm",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml",
         "SWALLOWER": "devour",
@@ -98,7 +104,7 @@
         "EDITOR_FZF": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick files'",
         "EDITOR_RIPGREP": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick grep_live'",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin:${env:HOME}/.pixi/bin:${env:HOME}/Library/pnpm:${env:PATH}",
-        "PNPM_HOME" : "${env:HOME}/Library/pnpm",
+        "PNPM_HOME": "${env:HOME}/Library/pnpm",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml",
         "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi",
@@ -106,9 +112,9 @@
       },
       "terminal.integrated.env.windows": {
         "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim",
-				"EDITOR": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua'",
-				"EDITOR_FZF": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick files'",
-				"EDITOR_RIPGREP": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick grep_live'",
+        "EDITOR": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua'",
+        "EDITOR_FZF": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick files'",
+        "EDITOR_RIPGREP": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick grep_live'",
         "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml",
@@ -117,12 +123,50 @@
       },
       "terminal.integrated.scrollback": 10000,
       "terminal.integrated.suggest.enabled": true,
-      "terminal.integrated.profiles.windows": { "zsh (MSYS2)": { "path": "msys2.cmd", "args": [ "-shell", "zsh", "-full-path" ], "env": { "HOME": "${env:USERPROFILE}" } } },
+      "terminal.integrated.profiles.windows": {
+        "zsh (MSYS2)": {
+          "path": "msys2.cmd",
+          "args": [
+            "-shell",
+            "zsh",
+            "-full-path"
+          ],
+          "env": {
+            "HOME": "${env:USERPROFILE}"
+          }
+        }
+      },
       "terminal.integrated.defaultProfile.windows": "zsh (MSYS2)",
       "terminal.integrated.defaultProfile.linux": "zsh",
-      "vscode-neovim.compositeKeys": { "jk": { "command": "vscode-neovim.escape" }, "kj": { "command": "vscode-neovim.escape" } },
-      "vscode-neovim.ctrlKeysForInsertMode": [ ],
-      "vscode-neovim.ctrlKeysForNormalMode": [ "a", "b", "d", "e", "f", "h", "i", "j", "k", "l", "o", "r", "u", "v", "w", "x", "y", "/" ],
+      "vscode-neovim.compositeKeys": {
+        "jk": {
+          "command": "vscode-neovim.escape"
+        },
+        "kj": {
+          "command": "vscode-neovim.escape"
+        }
+      },
+      "vscode-neovim.ctrlKeysForInsertMode": [],
+      "vscode-neovim.ctrlKeysForNormalMode": [
+        "a",
+        "b",
+        "d",
+        "e",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "o",
+        "r",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "/"
+      ],
       "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
       "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
       "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
@@ -156,7 +200,6 @@
           "terminal.ansiBrightWhite": "#ffffff"
         }
       },
-
       "whichkey.bindings": [
         {
           "key": " ",
@@ -164,61 +207,227 @@
           "command": "runCommands",
           "args": {
             "commands": [
-              { "command": "workbench.action.terminal.selectAll" },
-              { "command": "editor.action.clipboardCopyAction" },
-              { "command": "workbench.action.files.newUntitledFile" },
-              { "command": "editor.action.clipboardPasteAction" }
+              {
+                "command": "workbench.action.terminal.selectAll"
+              },
+              {
+                "command": "editor.action.clipboardCopyAction"
+              },
+              {
+                "command": "workbench.action.files.newUntitledFile"
+              },
+              {
+                "command": "editor.action.clipboardPasteAction"
+              }
             ]
           }
         },
-        { "key": ".", "name": "Repeat Which-key", "command": "whichkey.repeatMostRecent" },
-        { "key": "/", "name": "Comment", "command": "editor.action.commentLine" },
-        { "key": "?", "name": "FZF Wich-key", "command": "whichkey.searchBindings" },
+        {
+          "key": ".",
+          "name": "Repeat Which-key",
+          "command": "whichkey.repeatMostRecent"
+        },
+        {
+          "key": "/",
+          "name": "Comment",
+          "command": "editor.action.commentLine"
+        },
+        {
+          "key": "?",
+          "name": "FZF Wich-key",
+          "command": "whichkey.searchBindings"
+        },
         {
           "key": "b",
           "name": "+Buffers (Editors)",
           "bindings": [
-            { "key": ";", "name": "Recent editor", "commands": [ "workbench.action.quickOpenPreviousRecentlyUsedEditor", "workbench.action.acceptSelectedQuickOpenItem" ] },
-            { "key": "b", "name": "Find editors", "command": "workbench.action.showAllEditors" },
-            { "key": "B", "name": "Recent editors", "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor" },
-            { "key": "C", "name": "Close other editors", "command": "workbench.action.closeOtherEditors" },
-            { "key": "s", "name": "Previous editor", "command": "workbench.action.previousEditor" },
-            { "key": "f", "name": "Next editor", "command": "workbench.action.nextEditor" },
-            { "key": "S", "name": "Move editor left in group", "command": "workbench.action.moveEditorLeftInGroup" },
-            { "key": "F", "name": "Move editor right in group", "command": "workbench.action.moveEditorRightInGroup" },
-            { "key": "h", "name": "Move editor into left group", "command": "workbench.action.moveEditorToLeftGroup" },
-            { "key": "j", "name": "Move editor into below group", "command": "workbench.action.moveEditorToBelowGroup" },
-            { "key": "k", "name": "Move editor into above group", "command": "workbench.action.moveEditorToAboveGroup" },
-            { "key": "l", "name": "Move editor into right group", "command": "workbench.action.moveEditorToRightGroup" },
-            { "key": "t", "name": "New untitled editor", "command": "workbench.action.files.newUntitledFile" },
-            { "key": "x", "name": "Close active editor", "command": "workbench.action.closeActiveEditor" },
-            { "key": "X", "name": "Reopen closed editor", "command": "workbench.action.reopenClosedEditor" }
+            {
+              "key": ";",
+              "name": "Recent editor",
+              "commands": [
+                "workbench.action.quickOpenPreviousRecentlyUsedEditor",
+                "workbench.action.acceptSelectedQuickOpenItem"
+              ]
+            },
+            {
+              "key": "b",
+              "name": "Find editors",
+              "command": "workbench.action.showAllEditors"
+            },
+            {
+              "key": "B",
+              "name": "Recent editors",
+              "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor"
+            },
+            {
+              "key": "C",
+              "name": "Close other editors",
+              "command": "workbench.action.closeOtherEditors"
+            },
+            {
+              "key": "s",
+              "name": "Previous editor",
+              "command": "workbench.action.previousEditor"
+            },
+            {
+              "key": "f",
+              "name": "Next editor",
+              "command": "workbench.action.nextEditor"
+            },
+            {
+              "key": "S",
+              "name": "Move editor left in group",
+              "command": "workbench.action.moveEditorLeftInGroup"
+            },
+            {
+              "key": "F",
+              "name": "Move editor right in group",
+              "command": "workbench.action.moveEditorRightInGroup"
+            },
+            {
+              "key": "h",
+              "name": "Move editor into left group",
+              "command": "workbench.action.moveEditorToLeftGroup"
+            },
+            {
+              "key": "j",
+              "name": "Move editor into below group",
+              "command": "workbench.action.moveEditorToBelowGroup"
+            },
+            {
+              "key": "k",
+              "name": "Move editor into above group",
+              "command": "workbench.action.moveEditorToAboveGroup"
+            },
+            {
+              "key": "l",
+              "name": "Move editor into right group",
+              "command": "workbench.action.moveEditorToRightGroup"
+            },
+            {
+              "key": "t",
+              "name": "New untitled editor",
+              "command": "workbench.action.files.newUntitledFile"
+            },
+            {
+              "key": "x",
+              "name": "Close active editor",
+              "command": "workbench.action.closeActiveEditor"
+            },
+            {
+              "key": "X",
+              "name": "Reopen closed editor",
+              "command": "workbench.action.reopenClosedEditor"
+            }
           ]
         },
         {
           "key": "d",
           "name": "+Debug",
           "bindings": [
-            { "key": "b", "name": "Toggle breakpoint", "command": "editor.debug.action.toggleBreakpoint" },
-            { "key": "B", "name": "Toggle inline breakpoint", "command": "editor.debug.action.toggleInlineBreakpoint" },
-            { "key": "c", "name": "Continue debug", "command": "workbench.action.debug.continue" },
-            { "key": "i", "name": "Step into", "command": "workbench.action.debug.stepInto" },
-            { "key": "j", "name": "Jump to cursor", "command": "debug.jumpToCursor" },
-            { "key": "o", "name": "Step over", "command": "workbench.action.debug.stepOver" },
-            { "key": "O", "name": "Step out", "command": "workbench.action.debug.stepOut" },
-            { "key": "p", "name": "Pause debug", "command": "workbench.action.debug.pause" },
-            { "key": "q", "name": "Quokka start", "command": "quokka.makeQuokkaFromExistingFile" },
-            { "key": "Q", "name": "Quokka stop", "commands": [ "quokka.stopAll", "workbench.action.toggleAuxiliaryBar" ] },
-            { "key": "r", "name": "Restart debug", "command": "workbench.action.debug.restart" },
-            { "key": "R", "name": "Run without debugging", "command": "workbench.action.debug.run" },
-            { "key": "s", "name": "Start debug", "command": "workbench.action.debug.start" },
-            { "key": "S", "name": "Stop debug", "command": "workbench.action.debug.stop" },
-            { "key": "t", "name": "Toggle REPL", "command": "workbench.debug.action.toggleRepl" },
-            { "key": "T", "name": "Toggle quokka", "command": "quokka.toggle" },
-            { "key": "v", "name": "Focus on watch window", "command": "workbench.debug.action.focusWatchView" },
-            { "key": "V", "name": "Add to watch", "command": "editor.debug.action.selectionToWatch" },
-            { "key": "w", "name": "Wolf start", "command": "wolf.barkAtCurrentFile" },
-            { "key": "W", "name": "Wolf stop", "command": "wolf.stopBarking" }
+            {
+              "key": "b",
+              "name": "Toggle breakpoint",
+              "command": "editor.debug.action.toggleBreakpoint"
+            },
+            {
+              "key": "B",
+              "name": "Toggle inline breakpoint",
+              "command": "editor.debug.action.toggleInlineBreakpoint"
+            },
+            {
+              "key": "c",
+              "name": "Continue debug",
+              "command": "workbench.action.debug.continue"
+            },
+            {
+              "key": "i",
+              "name": "Step into",
+              "command": "workbench.action.debug.stepInto"
+            },
+            {
+              "key": "j",
+              "name": "Jump to cursor",
+              "command": "debug.jumpToCursor"
+            },
+            {
+              "key": "o",
+              "name": "Step over",
+              "command": "workbench.action.debug.stepOver"
+            },
+            {
+              "key": "O",
+              "name": "Step out",
+              "command": "workbench.action.debug.stepOut"
+            },
+            {
+              "key": "p",
+              "name": "Pause debug",
+              "command": "workbench.action.debug.pause"
+            },
+            {
+              "key": "q",
+              "name": "Quokka start",
+              "command": "quokka.makeQuokkaFromExistingFile"
+            },
+            {
+              "key": "Q",
+              "name": "Quokka stop",
+              "commands": [
+                "quokka.stopAll",
+                "workbench.action.toggleAuxiliaryBar"
+              ]
+            },
+            {
+              "key": "r",
+              "name": "Restart debug",
+              "command": "workbench.action.debug.restart"
+            },
+            {
+              "key": "R",
+              "name": "Run without debugging",
+              "command": "workbench.action.debug.run"
+            },
+            {
+              "key": "s",
+              "name": "Start debug",
+              "command": "workbench.action.debug.start"
+            },
+            {
+              "key": "S",
+              "name": "Stop debug",
+              "command": "workbench.action.debug.stop"
+            },
+            {
+              "key": "t",
+              "name": "Toggle REPL",
+              "command": "workbench.debug.action.toggleRepl"
+            },
+            {
+              "key": "T",
+              "name": "Toggle quokka",
+              "command": "quokka.toggle"
+            },
+            {
+              "key": "v",
+              "name": "Focus on watch window",
+              "command": "workbench.debug.action.focusWatchView"
+            },
+            {
+              "key": "V",
+              "name": "Add to watch",
+              "command": "editor.debug.action.selectionToWatch"
+            },
+            {
+              "key": "w",
+              "name": "Wolf start",
+              "command": "wolf.barkAtCurrentFile"
+            },
+            {
+              "key": "W",
+              "name": "Wolf stop",
+              "command": "wolf.stopBarking"
+            }
           ]
         },
         {
@@ -226,34 +435,98 @@
           "name": "Toggle Explorer",
           "type": "conditional",
           "bindings": [
-            { "key": "", "name": "default", "command": "workbench.view.explorer" },
-            { "key": "when:sideBarVisible && explorerViewletVisible", "name": "Hide explorer", "command": "workbench.action.toggleSidebarVisibility" }
+            {
+              "key": "",
+              "name": "default",
+              "command": "workbench.view.explorer"
+            },
+            {
+              "key": "when:sideBarVisible && explorerViewletVisible",
+              "name": "Hide explorer",
+              "command": "workbench.action.toggleSidebarVisibility"
+            }
           ]
         },
         {
           "key": "E",
           "name": "+Emmet (insert mode only)",
           "bindings": [
-            { "key": "a", "name": "select outward item", "command": "editor.emmet.action.balanceOut" },
-            { "key": "i", "name": "select inward item", "command": "editor.emmet.action.balanceIn" },
-            { "key": "n", "name": "select next item", "command": "editor.emmet.action.selectNextItem" },
-            { "key": "p", "name": "select prev item", "command": "editor.emmet.action.selectPrevItem" }
+            {
+              "key": "a",
+              "name": "select outward item",
+              "command": "editor.emmet.action.balanceOut"
+            },
+            {
+              "key": "i",
+              "name": "select inward item",
+              "command": "editor.emmet.action.balanceIn"
+            },
+            {
+              "key": "n",
+              "name": "select next item",
+              "command": "editor.emmet.action.selectNextItem"
+            },
+            {
+              "key": "p",
+              "name": "select prev item",
+              "command": "editor.emmet.action.selectPrevItem"
+            }
           ]
         },
-        { "key": "f", "name": "Find File", "command": "workbench.action.quickOpen" },
+        {
+          "key": "f",
+          "name": "Find File",
+          "command": "workbench.action.quickOpen"
+        },
         {
           "key": "g",
           "name": "+Git",
           "bindings": [
-            { "key": "A", "name": "Commit Staged (Amend)", "command": "git.commitStagedAmend" },
-            { "key": "b", "name": "Create Branch From", "command": "git.branchFrom" },
-            { "key": "B", "name": "Delete Branch", "command": "git.deleteBranch" },
-            { "key": "c", "name": "Checkout Branch", "command": "git.checkout" },
-            { "key": "C", "name": "Commit Changes", "command": "git.commit" },
-            { "key": "d", "name": "Discard Changes of current file", "command": "git.clean" },
-            { "key": "D", "name": "Toggle Diff view", "command": "toggle.diff.renderSideBySide" },
-            { "key": "f", "name": "Fetch", "command": "git.fetch" },
-            { "key": "F", "name": "Pull From", "command": "git.pullFrom" },
+            {
+              "key": "A",
+              "name": "Commit Staged (Amend)",
+              "command": "git.commitStagedAmend"
+            },
+            {
+              "key": "b",
+              "name": "Create Branch From",
+              "command": "git.branchFrom"
+            },
+            {
+              "key": "B",
+              "name": "Delete Branch",
+              "command": "git.deleteBranch"
+            },
+            {
+              "key": "c",
+              "name": "Checkout Branch",
+              "command": "git.checkout"
+            },
+            {
+              "key": "C",
+              "name": "Commit Changes",
+              "command": "git.commit"
+            },
+            {
+              "key": "d",
+              "name": "Discard Changes of current file",
+              "command": "git.clean"
+            },
+            {
+              "key": "D",
+              "name": "Toggle Diff view",
+              "command": "toggle.diff.renderSideBySide"
+            },
+            {
+              "key": "f",
+              "name": "Fetch",
+              "command": "git.fetch"
+            },
+            {
+              "key": "F",
+              "name": "Pull From",
+              "command": "git.pullFrom"
+            },
             {
               "key": "g",
               "name": "Lazygit",
@@ -274,23 +547,73 @@
                 ]
               }
             },
-            { "key": "j", "name": "Next Change", "command": "workbench.action.editor.nextChange" },
-            { "key": "k", "name": "Previous Change", "command": "workbench.action.editor.previousChange" },
-            { "key": "J", "name": "Preview Next Hunk", "command": "editor.action.dirtydiff.next" },
-            { "key": "K", "name": "Preview Previous Hunk", "command": "editor.action.dirtydiff.previous" },
-            { "key": "o", "name": "Open Diff (file changes)", "command": "git.openChange" },
-            { "key": "r", "name": "Reset hunk", "command": "git.revertSelectedRanges" },
-            { "key": "s", "name": "Stage current file", "command": "git.stage" },
-            { "key": "S", "name": "Unstage current file", "command": "git.unstage" },
-            { "key": "v", "name": "View Source Control", "command": "workbench.view.scm" },
-            { "key": "V", "name": "View All Changes", "command": "git.viewChanges" },
-            { "key": "<", "name": "Pull", "command": "git.pull" },
-            { "key": ">", "name": "Push", "command": "git.push" },
+            {
+              "key": "j",
+              "name": "Next Change",
+              "command": "workbench.action.editor.nextChange"
+            },
+            {
+              "key": "k",
+              "name": "Previous Change",
+              "command": "workbench.action.editor.previousChange"
+            },
+            {
+              "key": "J",
+              "name": "Preview Next Hunk",
+              "command": "editor.action.dirtydiff.next"
+            },
+            {
+              "key": "K",
+              "name": "Preview Previous Hunk",
+              "command": "editor.action.dirtydiff.previous"
+            },
+            {
+              "key": "o",
+              "name": "Open Diff (file changes)",
+              "command": "git.openChange"
+            },
+            {
+              "key": "r",
+              "name": "Reset hunk",
+              "command": "git.revertSelectedRanges"
+            },
+            {
+              "key": "s",
+              "name": "Stage current file",
+              "command": "git.stage"
+            },
+            {
+              "key": "S",
+              "name": "Unstage current file",
+              "command": "git.unstage"
+            },
+            {
+              "key": "v",
+              "name": "View Source Control",
+              "command": "workbench.view.scm"
+            },
+            {
+              "key": "V",
+              "name": "View All Changes",
+              "command": "git.viewChanges"
+            },
+            {
+              "key": "<",
+              "name": "Pull",
+              "command": "git.pull"
+            },
+            {
+              "key": ">",
+              "name": "Push",
+              "command": "git.push"
+            },
             {
               "key": "?",
               "name": "show lazygit keybindings (when inside lazygit)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "?" }
+              "args": {
+                "text": "?"
+              }
             }
           ]
         },
@@ -301,12 +624,23 @@
             {
               "key": "b",
               "name": "install brew, pixi and pnpm package-managers (MacOS)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua"
+              ],
               "args": [
                 null,
-                { "text": "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n" },
-                { "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n" },
-                { "text": "curl -fsSL https://pixi.sh/install.sh | bash \n" },
+                {
+                  "text": "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n"
+                },
+                {
+                  "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n"
+                },
+                {
+                  "text": "curl -fsSL https://pixi.sh/install.sh | bash \n"
+                },
                 "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
                 "require('vscode').notify('cheatsheet: https://cht.sh/pnpm & https://pnpm.io/cli/env. eg. `pnpm env use --global latest; pnpm create t3-app`')"
               ]
@@ -314,23 +648,44 @@
             {
               "key": "B",
               "name": "brew install eza FiraCode-NF fzf git karabiner lazygit starship 7zip",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua"
+              ],
               "args": [
                 null,
-                { "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship sevenzip; \n" },
-                { "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n" },
+                {
+                  "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship sevenzip; \n"
+                },
+                {
+                  "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n"
+                },
                 "require('vscode-neovim').notify('for kanata to work you need to allow karabiner and vscode input monitoring on `security & privacy`')"
               ]
             },
             {
               "key": "n",
               "name": "install nixpkgs, pixi and pnpm package managers (Linux)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua"
+              ],
               "args": [
                 null,
-                { "text": "yes | sh <(curl -L https://nixos.org/nix/install) --daemon \n" },
-                { "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n" },
-                { "text": "curl -fsSL https://pixi.sh/install.sh | bash \n" },
+                {
+                  "text": "yes | sh <(curl -L https://nixos.org/nix/install) --daemon \n"
+                },
+                {
+                  "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n"
+                },
+                {
+                  "text": "curl -fsSL https://pixi.sh/install.sh | bash \n"
+                },
                 "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
                 "require('vscode').notify('cheatsheet: https://cht.sh/pnpm & https://pnpm.io/cli/env. eg. `pnpm env use --global latest; pnpm create t3-app`')"
               ]
@@ -338,18 +693,38 @@
             {
               "key": "N",
               "name": "nixpkgs install eza FiraCode-NF fzf git lazygit ripdrag starship zsh 7zip",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n" } ]
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n"
+                }
+              ]
             },
             {
               "key": "s",
               "name": "install scoop, pixi and pnpm package managers (Windows 10/11)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua", "vscode-neovim.lua" ],
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua"
+              ],
               "args": [
                 null,
-                { "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n" },
-                { "text": "iwr -useb https://pixi.sh/install.ps1 | iex \n" },
-                { "text": "iwr -useb https://get.pnpm.io/install.ps1 | iex \n" },
+                {
+                  "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
+                },
+                {
+                  "text": "iwr -useb https://pixi.sh/install.ps1 | iex \n"
+                },
+                {
+                  "text": "iwr -useb https://get.pnpm.io/install.ps1 | iex \n"
+                },
                 "require('vscode').notify('Relaunch vscode after installation')",
                 "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
                 "require('vscode').notify('cheatsheet: https://cht.sh/pnpm & https://pnpm.io/cli/env. eg. `pnpm env use --global latest; pnpm create t3-app`')"
@@ -358,40 +733,69 @@
             {
               "key": "S",
               "name": "scoop install eza FiraCode-NF fzf git lazygit msys2 starship zig zsh 7zip",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua"
+              ],
               "args": [
                 null,
-                { "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf lazygit msys2 starship zig 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n" },
+                {
+                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf lazygit msys2 starship zig 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
+                },
                 "require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]
             },
             {
               "key": "R",
               "name": "Restart Retronvim (REQUIRED after installing dependencies) (windows 10/11 needs to relaunch vscode)",
-              "commands": [ "workbench.panel.output.focus", "workbench.action.reloadWindow" ]
+              "commands": [
+                "workbench.panel.output.focus",
+                "workbench.action.reloadWindow"
+              ]
             },
             {
               "key": "i",
               "name": "Increase keyboard repeat rate on MacOS ",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.send" ],
-              "args":
-              [
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.send"
+              ],
+              "args": [
                 null,
-                { "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n" },
+                {
+                  "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n"
+                },
                 "<cmd>lua require('vscode').notify('Relogin to MacOS to update keyboard repeat rate')<cr>"
               ]
             },
             {
               "key": "I",
               "name": "Increase keyboard repeat rate on Windows 10/11",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua", "vscode-neovim.lua" ],
-              "args":
-              [
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua"
+              ],
+              "args": [
                 null,
-                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 190     \" \n" },
-                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 7        \" \n" },
-                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \" \n" },
-                { "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27                \" \n" },
+                {
+                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 190     \" \n"
+                },
+                {
+                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 7        \" \n"
+                },
+                {
+                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \" \n"
+                },
+                {
+                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27                \" \n"
+                },
                 "require('vscode').notify('Relogin to Windows 10/11 to update keyboard repeat rate')",
                 "require('vscode').notify('`<windowskey-x>ui` to relogin, `<windowskey>vscode` to open vscode')"
               ]
@@ -399,57 +803,110 @@
             {
               "key": "k",
               "name": "Start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r" } ]
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
+                }
+              ]
             },
             {
               "key": "K",
               "name": "Start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
-              "args":
-              [
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua"
+              ],
+              "args": [
                 null,
-                { "text": "powershell -c 'conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd; Set-WinUserLanguageList -force en-US,es-US'; sleep 2; exit; \r" },
+                {
+                  "text": "powershell -c 'conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd; Set-WinUserLanguageList -force en-US,es-US'; sleep 2; exit; \r"
+                },
                 "require('vscode').notify('`<windowskey-r>control keyboard` and `<windows>filter keys` to change keyboard repeat rate without relogin')"
               ]
             },
             {
               "key": "A",
               "name": "Install ArchRice (retronvim's neovim extensions + extra extensions)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua"
+              ],
               "args": [
                 null,
-                { "text": "git clone --depth=1 https://github.com/yeferyv/archrice $HOME/.config/archrice \n" },
-                { "text": "sh -c 'cp -r ~/.config/archrice/.config/nvim ${LOCALAPPDATA:-~/.config}' \n" },
+                {
+                  "text": "git clone --depth=1 https://github.com/yeferyv/archrice $HOME/.config/archrice \n"
+                },
+                {
+                  "text": "sh -c 'cp -r ~/.config/archrice/.config/nvim ${LOCALAPPDATA:-~/.config}' \n"
+                },
                 "require('vscode-neovim').notify('Windows requires `scoop install git`')"
               ]
             },
             {
               "key": "j",
               "name": "Install javascript and python vscode-extensions",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
-              "args":
-              [
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua"
+              ],
+              "args": [
                 null,
-                { "text": "code --install-extension alefragnani.Bookmarks        --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark      --install-extension lamartire.git-indicators         \n" },
-                { "text": "code --install-extension WallabyJs.console-ninja      --install-extension bradlc.vscode-tailwindcss          --install-extension emranweb.daisyui-snippet     --install-extension imgildev.vscode-nextjs-generator \n" },
-                { "text": "code --install-extension esbenp.prettier-vscode       --install-extension prisma.prisma                      --install-extension rangav.vscode-thunder-client --install-extension usernamehw.errorlens             \n" },
-                { "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          \n" },
-                { "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            \n" },
+                {
+                  "text": "code --install-extension alefragnani.Bookmarks        --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark      --install-extension lamartire.git-indicators         \n"
+                },
+                {
+                  "text": "code --install-extension WallabyJs.console-ninja      --install-extension bradlc.vscode-tailwindcss          --install-extension emranweb.daisyui-snippet     --install-extension imgildev.vscode-nextjs-generator \n"
+                },
+                {
+                  "text": "code --install-extension esbenp.prettier-vscode       --install-extension prisma.prisma                      --install-extension rangav.vscode-thunder-client --install-extension usernamehw.errorlens             \n"
+                },
+                {
+                  "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          \n"
+                },
+                {
+                  "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            \n"
+                },
                 "require('vscode-neovim').notify('extensions are installed for the default vscode profile')"
               ]
             },
             {
               "key": "J",
               "name": "Install jupyter and kaggle",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence", "vscode-neovim.lua" ],
-              "args":
-              [
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua"
+              ],
+              "args": [
                 null,
-                { "text": "pixi global install kaggle; pixi init; pixi add python ipykernel; # then `pixi shell` on Unix and `pixi run zsh` on Windows \n" },
-                { "text": "code --install-extension ms-toolsai.jupyter                                                                                 \n" },
-                { "text": "# kaggle kernels init # requires API KEY then edit generated kernel-metadata.json                                           \n" },
-                { "text": "# kaggle kernels push; kaggle kernel output <owner/notebook> # https://www.kaggle.com/code/owner/notebook                   \n" },
+                {
+                  "text": "pixi global install kaggle; pixi init; pixi add python ipykernel; # then `pixi shell` on Unix and `pixi run zsh` on Windows \n"
+                },
+                {
+                  "text": "code --install-extension ms-toolsai.jupyter                                                                                 \n"
+                },
+                {
+                  "text": "# kaggle kernels init # requires API KEY then edit generated kernel-metadata.json                                           \n"
+                },
+                {
+                  "text": "# kaggle kernels push; kaggle kernel output <owner/notebook> # https://www.kaggle.com/code/owner/notebook                   \n"
+                },
                 "require('vscode-neovim').notify('to use kaggle machines from vscode see: https://www.kaggle.com/docs/api and https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md')"
               ]
             }
@@ -459,49 +916,197 @@
           "key": "l",
           "name": "+LSP",
           "bindings": [
-            { "key": "a", "name": "Auto Fix", "command": "editor.action.autoFix" },
-            { "key": "A", "name": "Code Action Refactor", "command": "editor.action.refactor" },
-            { "key": "c", "name": "View Calls Hierarchy", "command": "references-view.showCallHierarchy" },
-            { "key": "d", "name": "Go to Definition", "command": "editor.action.revealDefinition" },
-            { "key": "D", "name": "Go to Declaration", "command": "editor.action.revealDeclaration" },
-            { "key": "F", "name": "Format", "command": "editor.action.format" },
-            { "key": "h", "name": "Hover", "command": "editor.action.showHover" },
-            { "key": "H", "name": "Signature help", "command": "editor.action.triggerParameterHints" },
-            { "key": "I", "name": "Go to Implementation", "command": "editor.action.goToImplementation" },
-            { "key": "l", "name": "Jump to last change", "command": "workbench.action.navigateToLastEditLocation" },
-            { "key": "n", "name": "Next Problem", "command": "editor.action.marker.next" },
-            { "key": "N", "name": "Next Problem (Proj)", "command": "editor.action.marker.nextInFiles" },
-            { "key": "o", "name": "Open Diagnostics/Errors", "command": "editor.action.marker.next" },
-            { "key": "p", "name": "Prev Problem", "command": "editor.action.marker.prev" },
-            { "key": "P", "name": "Prev Problem (Proj)", "command": "editor.action.marker.prevInFiles" },
-            { "key": "q", "name": "Diagnostic List", "command": "workbench.actions.view.problems" },
-            { "key": "Q", "name": "Quick Fix", "command": "editor.action.quickFix" },
-            { "key": "r", "name": "Go to References", "command": "editor.action.goToReferences" },
-            { "key": "R", "name": "Rename", "command": "editor.action.rename" },
-            { "key": "s", "name": "Go To Symbol", "command": "workbench.action.gotoSymbol" },
-            { "key": "S", "name": "Show All Symbols", "command": "workbench.action.showAllSymbols" },
-            { "key": "t", "name": "Go to typedefinition", "command": "editor.action.goToTypeDefinition" },
-            { "key": "v", "name": "View All Diagnostics", "command": "workbench.actions.view.problems" },
-            { "key": "V", "name": "View All References", "command": "references-view.find" },
-            { "key": "w", "name": "View All Implementations", "command": "references-view.findImplementations" },
-            { "key": "W", "name": "View All Definition", "command": "editor.action.revealDefinitionAside" },
-            { "key": "z", "name": "Symbols Outline", "command": "outline.focus" },
-            { "key": "=", "name": "Format document", "command": "editor.action.formatDocument" },
-            { "key": "<", "name": "Prev Reference", "command": "editor.action.wordHighlight.prev" },
-            { "key": ">", "name": "Next Reference", "command": "editor.action.wordHighlight.next" }
+            {
+              "key": "a",
+              "name": "Auto Fix",
+              "command": "editor.action.autoFix"
+            },
+            {
+              "key": "A",
+              "name": "Code Action Refactor",
+              "command": "editor.action.refactor"
+            },
+            {
+              "key": "c",
+              "name": "View Calls Hierarchy",
+              "command": "references-view.showCallHierarchy"
+            },
+            {
+              "key": "d",
+              "name": "Go to Definition",
+              "command": "editor.action.revealDefinition"
+            },
+            {
+              "key": "D",
+              "name": "Go to Declaration",
+              "command": "editor.action.revealDeclaration"
+            },
+            {
+              "key": "F",
+              "name": "Format",
+              "command": "editor.action.format"
+            },
+            {
+              "key": "h",
+              "name": "Hover",
+              "command": "editor.action.showHover"
+            },
+            {
+              "key": "H",
+              "name": "Signature help",
+              "command": "editor.action.triggerParameterHints"
+            },
+            {
+              "key": "I",
+              "name": "Go to Implementation",
+              "command": "editor.action.goToImplementation"
+            },
+            {
+              "key": "l",
+              "name": "Jump to last change",
+              "command": "workbench.action.navigateToLastEditLocation"
+            },
+            {
+              "key": "n",
+              "name": "Next Problem",
+              "command": "editor.action.marker.next"
+            },
+            {
+              "key": "N",
+              "name": "Next Problem (Proj)",
+              "command": "editor.action.marker.nextInFiles"
+            },
+            {
+              "key": "o",
+              "name": "Open Diagnostics/Errors",
+              "command": "editor.action.marker.next"
+            },
+            {
+              "key": "p",
+              "name": "Prev Problem",
+              "command": "editor.action.marker.prev"
+            },
+            {
+              "key": "P",
+              "name": "Prev Problem (Proj)",
+              "command": "editor.action.marker.prevInFiles"
+            },
+            {
+              "key": "q",
+              "name": "Diagnostic List",
+              "command": "workbench.actions.view.problems"
+            },
+            {
+              "key": "Q",
+              "name": "Quick Fix",
+              "command": "editor.action.quickFix"
+            },
+            {
+              "key": "r",
+              "name": "Go to References",
+              "command": "editor.action.goToReferences"
+            },
+            {
+              "key": "R",
+              "name": "Rename",
+              "command": "editor.action.rename"
+            },
+            {
+              "key": "s",
+              "name": "Go To Symbol",
+              "command": "workbench.action.gotoSymbol"
+            },
+            {
+              "key": "S",
+              "name": "Show All Symbols",
+              "command": "workbench.action.showAllSymbols"
+            },
+            {
+              "key": "t",
+              "name": "Go to typedefinition",
+              "command": "editor.action.goToTypeDefinition"
+            },
+            {
+              "key": "v",
+              "name": "View All Diagnostics",
+              "command": "workbench.actions.view.problems"
+            },
+            {
+              "key": "V",
+              "name": "View All References",
+              "command": "references-view.find"
+            },
+            {
+              "key": "w",
+              "name": "View All Implementations",
+              "command": "references-view.findImplementations"
+            },
+            {
+              "key": "W",
+              "name": "View All Definition",
+              "command": "editor.action.revealDefinitionAside"
+            },
+            {
+              "key": "z",
+              "name": "Symbols Outline",
+              "command": "outline.focus"
+            },
+            {
+              "key": "=",
+              "name": "Format document",
+              "command": "editor.action.formatDocument"
+            },
+            {
+              "key": "<",
+              "name": "Prev Reference",
+              "command": "editor.action.wordHighlight.prev"
+            },
+            {
+              "key": ">",
+              "name": "Next Reference",
+              "command": "editor.action.wordHighlight.next"
+            }
           ]
         },
         {
           "key": "m",
           "name": "+Bookmarks extension",
           "bindings": [
-            { "key": "c", "name": "Clear Bookmarks", "command": "bookmarks.clear" },
-            { "key": "j", "name": "Next Bookmark", "command": "bookmarks.jumpToNext" },
-            { "key": "k", "name": "Previous Bookmark", "command": "bookmarks.jumpToPrevious" },
-            { "key": "l", "name": "List Bookmarks", "command": "bookmarks.listFromAllFiles" },
-            { "key": "r", "name": "Refresh Bookmarks", "command": "bookmarks.refresh" },
-            { "key": "t", "name": "Toggle Bookmark", "command": "bookmarks.toggle" },
-            { "key": "s", "name": "Show Bookmarks", "command": "workbench.view.extension.bookmarks" }
+            {
+              "key": "c",
+              "name": "Clear Bookmarks",
+              "command": "bookmarks.clear"
+            },
+            {
+              "key": "j",
+              "name": "Next Bookmark",
+              "command": "bookmarks.jumpToNext"
+            },
+            {
+              "key": "k",
+              "name": "Previous Bookmark",
+              "command": "bookmarks.jumpToPrevious"
+            },
+            {
+              "key": "l",
+              "name": "List Bookmarks",
+              "command": "bookmarks.listFromAllFiles"
+            },
+            {
+              "key": "r",
+              "name": "Refresh Bookmarks",
+              "command": "bookmarks.refresh"
+            },
+            {
+              "key": "t",
+              "name": "Toggle Bookmark",
+              "command": "bookmarks.toggle"
+            },
+            {
+              "key": "s",
+              "name": "Show Bookmarks",
+              "command": "workbench.view.extension.bookmarks"
+            }
           ]
         },
         {
@@ -513,155 +1118,617 @@
           "key": "O",
           "name": "+Open",
           "bindings": [
-            { "key": "d", "name": "Directory", "command": "workbench.action.files.openFolder" },
-            { "key": "r", "name": "Recent", "command": "workbench.action.openRecent" },
-            { "key": "f", "name": "File", "command": "workbench.action.files.openFile" },
-            { "key": "m", "name": "Markdown previewer", "command": "markdown.showPreview" }
+            {
+              "key": "d",
+              "name": "Directory",
+              "command": "workbench.action.files.openFolder"
+            },
+            {
+              "key": "r",
+              "name": "Recent",
+              "command": "workbench.action.openRecent"
+            },
+            {
+              "key": "f",
+              "name": "File",
+              "command": "workbench.action.files.openFile"
+            },
+            {
+              "key": "m",
+              "name": "Markdown previewer",
+              "command": "markdown.showPreview"
+            }
           ]
         },
         {
           "key": "p",
           "name": "+Peek",
           "bindings": [
-            { "key": "c", "name": "Calls Hierarchy", "command": "editor.showCallHierarchy" },
-            { "key": "d", "name": "Definition", "command": "editor.action.peekDefinition" },
-            { "key": "D", "name": "Declaration", "command": "editor.action.peekDeclaration" },
-            { "key": "h", "name": "Show Hover", "command": "editor.action.showHover" },
-            { "key": "H", "name": "Hover Definition", "command": "editor.action.showDefinitionPreviewHover" },
-            { "key": "I", "name": "Implementation", "command": "editor.action.peekImplementation" },
-            { "key": "p", "name": "Toggle Peek Focus", "command": "togglePeekWidgetFocus" },
-            { "key": "r", "name": "References", "command": "editor.action.referenceSearch.trigger" },
-            { "key": "t", "name": "Type Definition", "command": "editor.action.peekTypeDefinition" }
+            {
+              "key": "c",
+              "name": "Calls Hierarchy",
+              "command": "editor.showCallHierarchy"
+            },
+            {
+              "key": "d",
+              "name": "Definition",
+              "command": "editor.action.peekDefinition"
+            },
+            {
+              "key": "D",
+              "name": "Declaration",
+              "command": "editor.action.peekDeclaration"
+            },
+            {
+              "key": "h",
+              "name": "Show Hover",
+              "command": "editor.action.showHover"
+            },
+            {
+              "key": "H",
+              "name": "Hover Definition",
+              "command": "editor.action.showDefinitionPreviewHover"
+            },
+            {
+              "key": "I",
+              "name": "Implementation",
+              "command": "editor.action.peekImplementation"
+            },
+            {
+              "key": "p",
+              "name": "Toggle Peek Focus",
+              "command": "togglePeekWidgetFocus"
+            },
+            {
+              "key": "r",
+              "name": "References",
+              "command": "editor.action.referenceSearch.trigger"
+            },
+            {
+              "key": "t",
+              "name": "Type Definition",
+              "command": "editor.action.peekTypeDefinition"
+            }
           ]
         },
         {
           "key": "s",
           "name": "+Search",
           "bindings": [
-            { "key": "b", "name": "Bing Chat Gpt", "command": "simpleBrowser.show", "args": "https://bing.com/chat" },
-            { "key": "f", "name": "Find and replace", "command": "editor.action.startFindReplaceAction" },
-            { "key": "p", "name": "Project", "command": "workbench.action.replaceInFiles" },
-            { "key": "r", "name": "Ripgrep", "command": "search.action.openNewEditor" },
-            { "key": "s", "name": "Search and Insert snippet", "command": "editor.action.insertSnippet" },
-            { "key": "S", "name": "Show search panel", "command": "workbench.view.search" },
-            { "key": "t", "name": "Text in Files", "command": "workbench.action.findInFiles" },
-            { "key": "T", "name": "Text in Folder", "command": "filesExplorer.findInFolder" },
-            { "key": "w", "name": "VSCode builtin Browser (some urls are restricted, useful for localhost)", "command": "simpleBrowser.show" }
+            {
+              "key": "b",
+              "name": "Bing Chat Gpt",
+              "command": "simpleBrowser.show",
+              "args": "https://bing.com/chat"
+            },
+            {
+              "key": "f",
+              "name": "Find and replace",
+              "command": "editor.action.startFindReplaceAction"
+            },
+            {
+              "key": "p",
+              "name": "Project",
+              "command": "workbench.action.replaceInFiles"
+            },
+            {
+              "key": "r",
+              "name": "Ripgrep",
+              "command": "search.action.openNewEditor"
+            },
+            {
+              "key": "s",
+              "name": "Search and Insert snippet",
+              "command": "editor.action.insertSnippet"
+            },
+            {
+              "key": "S",
+              "name": "Show search panel",
+              "command": "workbench.view.search"
+            },
+            {
+              "key": "t",
+              "name": "Text in Files",
+              "command": "workbench.action.findInFiles"
+            },
+            {
+              "key": "T",
+              "name": "Text in Folder",
+              "command": "filesExplorer.findInFolder"
+            },
+            {
+              "key": "w",
+              "name": "VSCode builtin Browser (some urls are restricted, useful for localhost)",
+              "command": "simpleBrowser.show"
+            }
           ]
         },
         {
           "key": "t",
           "name": "+Terminal",
           "bindings": [
-
-            { "key": " ", "name": "Scrollback Buffer", "command": "workbench.action.terminal.focusAccessibleBuffer" },
-            { "key": "0", "name": "Focus tabs view", "command": "workbench.action.terminal.focusTabs" },
-            { "key": "1", "name": "Focus index 1", "command": "workbench.action.terminal.focusAtIndex1" },
-            { "key": "2", "name": "Focus index 2", "command": "workbench.action.terminal.focusAtIndex2" },
-            { "key": "3", "name": "Focus index 3", "command": "workbench.action.terminal.focusAtIndex3" },
-            { "key": "4", "name": "Focus index 4", "command": "workbench.action.terminal.focusAtIndex4" },
-            { "key": "5", "name": "Focus index 5", "command": "workbench.action.terminal.focusAtIndex5" },
-            { "key": "6", "name": "Focus index 6", "command": "workbench.action.terminal.focusAtIndex6" },
-            { "key": "7", "name": "Focus index 7", "command": "workbench.action.terminal.focusAtIndex7" },
-            { "key": "8", "name": "Focus index 8", "command": "workbench.action.terminal.focusAtIndex8" },
-            { "key": "9", "name": "Focus index 9", "command": "workbench.action.terminal.focusAtIndex9" },
-            { "key": "b", "name": "Move terminal to buffer", "command": "workbench.action.terminal.moveToEditor" },
-            { "key": "B", "name": "Move buffer to terminal", "command": "workbench.action.terminal.moveToTerminalPanel" },
-            { "key": "c", "name": "Create terminal group", "command": "workbench.action.terminal.newInActiveWorkspace" },
-
-            { "key": ";", "name": "Quick OpenTerm", "command": "workbench.action.quickOpenTerm" },
-            { "key": "!", "name": "Break panel", "command": "workbench.action.terminal.unsplit" },
-            { "key": "z", "name": "Toggle maximized panel", "command": "workbench.action.toggleMaximizedPanel" },
-            { "key": "-", "name": "Join panel (instances)", "command": "workbench.action.terminal.joinInstance" },
-            { "key": "+", "name": "Join panel (select)", "command": "workbench.action.terminal.join" },
-            { "key": "x", "name": "Close panel", "command": "workbench.action.terminal.kill" },
-            { "key": "s", "name": "Focus previous terminal group", "command": "workbench.action.terminal.focusPrevious" },
-            { "key": "f", "name": "Focus next terminal group", "command": "workbench.action.terminal.focusNext" },
-            { "key": "S", "name": "Move panel to Last position", "commands": [ "workbench.action.terminal.moveToEditor", "workbench.action.terminal.moveToTerminalPanel" ] },
-            { "key": "F", "name": "Move panel to Last position", "commands": [ "workbench.action.terminal.moveToEditor", "workbench.action.terminal.moveToTerminalPanel" ] },
-            { "key": "h", "name": "Focus previous panel", "command": "workbench.action.terminal.focusPreviousPane" },
-            { "key": "j", "name": "Focus next panel", "command": "workbench.action.terminal.focusNextPane" },
-            { "key": "k", "name": "Focus previous panel", "command": "workbench.action.terminal.focusPreviousPane" },
-            { "key": "l", "name": "Focus next panel", "command": "workbench.action.terminal.focusNextPane" },
-            { "key": "H", "name": "Resize Panel left", "command": "workbench.action.terminal.resizePaneLeft" },
-            { "key": "J", "name": "Resize Panel down", "command": "workbench.action.terminal.resizePaneDown" },
-            { "key": "K", "name": "Resize Panel up", "command": "workbench.action.terminal.resizePaneUp" },
-            { "key": "L", "name": "Resize Panel right", "command": "workbench.action.terminal.resizePaneRight" },
-
-            { "key": ",", "name": "Rename terminal", "command": "workbench.action.terminal.rename" },
-            { "key": "n", "name": "Focus next terminal group", "command": "workbench.action.terminal.focusNext" },
-            { "key": "p", "name": "Focus previous terminal group", "command": "workbench.action.terminal.focusPrevious" },
-            { "key": "v", "name": "split Vertical Tab/Panel terminal", "command": "workbench.action.terminal.splitInActiveWorkspace" },
-            { "key": "V", "name": "split Horizontal Tab/Panel terminal", "commands": [ "workbench.action.terminal.split", "workbench.action.moveActiveEditorGroupDown" ] },
-						{
-						  "key": "t",
-						  "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)",
-						  "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-						  "args": [ null, { "text": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -cterm; exit\n" } ]
-						},
-            { "key": "w", "name": "New Tab terminal (same window group)", "command": "workbench.action.createTerminalEditor" },
-            { "key": "W", "name": "New Tab terminal (Separated window group)", "command": "workbench.action.createTerminalEditorSide" },
-            { "key": "/", "name": "Focus terminal (find terminal panel)", "command": "workbench.action.terminal.toggleTerminal" },
-            { "key": "\\", "name": "Toggle terminal", "command": "workbench.action.togglePanel" }
+            {
+              "key": " ",
+              "name": "Scrollback Buffer",
+              "command": "workbench.action.terminal.focusAccessibleBuffer"
+            },
+            {
+              "key": "0",
+              "name": "Focus tabs view",
+              "command": "workbench.action.terminal.focusTabs"
+            },
+            {
+              "key": "1",
+              "name": "Focus index 1",
+              "command": "workbench.action.terminal.focusAtIndex1"
+            },
+            {
+              "key": "2",
+              "name": "Focus index 2",
+              "command": "workbench.action.terminal.focusAtIndex2"
+            },
+            {
+              "key": "3",
+              "name": "Focus index 3",
+              "command": "workbench.action.terminal.focusAtIndex3"
+            },
+            {
+              "key": "4",
+              "name": "Focus index 4",
+              "command": "workbench.action.terminal.focusAtIndex4"
+            },
+            {
+              "key": "5",
+              "name": "Focus index 5",
+              "command": "workbench.action.terminal.focusAtIndex5"
+            },
+            {
+              "key": "6",
+              "name": "Focus index 6",
+              "command": "workbench.action.terminal.focusAtIndex6"
+            },
+            {
+              "key": "7",
+              "name": "Focus index 7",
+              "command": "workbench.action.terminal.focusAtIndex7"
+            },
+            {
+              "key": "8",
+              "name": "Focus index 8",
+              "command": "workbench.action.terminal.focusAtIndex8"
+            },
+            {
+              "key": "9",
+              "name": "Focus index 9",
+              "command": "workbench.action.terminal.focusAtIndex9"
+            },
+            {
+              "key": "b",
+              "name": "Move terminal to buffer",
+              "command": "workbench.action.terminal.moveToEditor"
+            },
+            {
+              "key": "B",
+              "name": "Move buffer to terminal",
+              "command": "workbench.action.terminal.moveToTerminalPanel"
+            },
+            {
+              "key": "c",
+              "name": "Create terminal group",
+              "command": "workbench.action.terminal.newInActiveWorkspace"
+            },
+            {
+              "key": ";",
+              "name": "Quick OpenTerm",
+              "command": "workbench.action.quickOpenTerm"
+            },
+            {
+              "key": "!",
+              "name": "Break panel",
+              "command": "workbench.action.terminal.unsplit"
+            },
+            {
+              "key": "z",
+              "name": "Toggle maximized panel",
+              "command": "workbench.action.toggleMaximizedPanel"
+            },
+            {
+              "key": "-",
+              "name": "Join panel (instances)",
+              "command": "workbench.action.terminal.joinInstance"
+            },
+            {
+              "key": "+",
+              "name": "Join panel (select)",
+              "command": "workbench.action.terminal.join"
+            },
+            {
+              "key": "x",
+              "name": "Close panel",
+              "command": "workbench.action.terminal.kill"
+            },
+            {
+              "key": "s",
+              "name": "Focus previous terminal group",
+              "command": "workbench.action.terminal.focusPrevious"
+            },
+            {
+              "key": "f",
+              "name": "Focus next terminal group",
+              "command": "workbench.action.terminal.focusNext"
+            },
+            {
+              "key": "S",
+              "name": "Move panel to Last position",
+              "commands": [
+                "workbench.action.terminal.moveToEditor",
+                "workbench.action.terminal.moveToTerminalPanel"
+              ]
+            },
+            {
+              "key": "F",
+              "name": "Move panel to Last position",
+              "commands": [
+                "workbench.action.terminal.moveToEditor",
+                "workbench.action.terminal.moveToTerminalPanel"
+              ]
+            },
+            {
+              "key": "h",
+              "name": "Focus previous panel",
+              "command": "workbench.action.terminal.focusPreviousPane"
+            },
+            {
+              "key": "j",
+              "name": "Focus next panel",
+              "command": "workbench.action.terminal.focusNextPane"
+            },
+            {
+              "key": "k",
+              "name": "Focus previous panel",
+              "command": "workbench.action.terminal.focusPreviousPane"
+            },
+            {
+              "key": "l",
+              "name": "Focus next panel",
+              "command": "workbench.action.terminal.focusNextPane"
+            },
+            {
+              "key": "H",
+              "name": "Resize Panel left",
+              "command": "workbench.action.terminal.resizePaneLeft"
+            },
+            {
+              "key": "J",
+              "name": "Resize Panel down",
+              "command": "workbench.action.terminal.resizePaneDown"
+            },
+            {
+              "key": "K",
+              "name": "Resize Panel up",
+              "command": "workbench.action.terminal.resizePaneUp"
+            },
+            {
+              "key": "L",
+              "name": "Resize Panel right",
+              "command": "workbench.action.terminal.resizePaneRight"
+            },
+            {
+              "key": ",",
+              "name": "Rename terminal",
+              "command": "workbench.action.terminal.rename"
+            },
+            {
+              "key": "n",
+              "name": "Focus next terminal group",
+              "command": "workbench.action.terminal.focusNext"
+            },
+            {
+              "key": "p",
+              "name": "Focus previous terminal group",
+              "command": "workbench.action.terminal.focusPrevious"
+            },
+            {
+              "key": "v",
+              "name": "split Vertical Tab/Panel terminal",
+              "command": "workbench.action.terminal.splitInActiveWorkspace"
+            },
+            {
+              "key": "V",
+              "name": "split Horizontal Tab/Panel terminal",
+              "commands": [
+                "workbench.action.terminal.split",
+                "workbench.action.moveActiveEditorGroupDown"
+              ]
+            },
+            {
+              "key": "t",
+              "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -cterm; exit\n"
+                }
+              ]
+            },
+            {
+              "key": "w",
+              "name": "New Tab terminal (same window group)",
+              "command": "workbench.action.createTerminalEditor"
+            },
+            {
+              "key": "W",
+              "name": "New Tab terminal (Separated window group)",
+              "command": "workbench.action.createTerminalEditorSide"
+            },
+            {
+              "key": "/",
+              "name": "Focus terminal (find terminal panel)",
+              "command": "workbench.action.terminal.toggleTerminal"
+            },
+            {
+              "key": "\\",
+              "name": "Toggle terminal",
+              "command": "workbench.action.togglePanel"
+            }
           ]
         },
         {
           "key": "u",
           "name": "+UI toggles",
           "bindings": [
-            { "key": "b", "name": "Toggle activity bar", "command": "workbench.action.toggleActivityBarVisibility" },
-            { "key": "B", "name": "Toggle menu bar", "command": "workbench.action.toggleMenuBar" },
-            { "key": "f", "name": "Toggle full screen", "command": "workbench.action.toggleFullScreen" },
-            { "key": "F", "name": "Toggle flash search", "command": "vscode-neovim.send", "args": "<cmd>lua require('flash').toggle()<cr>" },
-            { "key": "h", "name": "Enable AutoNoHighlightSearch", "command": "vscode-neovim.send", "args": "<cmd>EnableAutoNoHighlightSearch<cr>" },
-            { "key": "H", "name": "Disable AutoNoHighlightSearch", "command": "vscode-neovim.send", "args": "<cmd>DisableAutoNoHighlightSearch<cr>" },
-            { "key": "k", "name": "Show keys on screen (Screencast Mode)", "command": "workbench.action.toggleScreencastMode" },
-            { "key": "m", "name": "Toggle maximized panel", "command": "workbench.action.toggleMaximizedPanel" },
-            { "key": "M", "name": "Toggle Minimap", "command": "editor.action.toggleMinimap" },
-            { "key": "P", "name": "Toggle panel visibility", "command": "workbench.action.togglePanel" },
-            { "key": "r", "name": "Show remote explorer", "command": "workbench.view.remote" },
-            { "key": "s", "name": "Toggle sidebar visibility", "command": "workbench.action.toggleSidebarVisibility" },
-            { "key": "S", "name": "Toggle sec-sidebar visibility", "command": "workbench.action.toggleAuxiliaryBar" },
-            { "key": "t", "name": "Select theme", "command": "workbench.action.selectTheme" },
-            { "key": "T", "name": "Toggle tab visibility", "command": "workbench.action.toggleTabsVisibility" },
-            { "key": "u", "name": "Go to Parent Fold", "commands": [ "editor.gotoParentFold", "cursorHome" ] },
-            { "key": "U", "name": "Go to Bracket", "command": "editor.action.jumpToBracket" },
-            { "key": "w", "name": "Toggle Wrap", "command": "editor.action.toggleWordWrap" },
-            { "key": "x", "name": "Extensions", "command": "workbench.view.extensions" },
-            { "key": "z", "name": "Toggle zen mode", "command": "workbench.action.toggleZenMode" },
-            { "key": "Z", "name": "Zoom reset", "command": "editor.action.fontZoomReset" }
+            {
+              "key": "b",
+              "name": "Toggle activity bar",
+              "command": "workbench.action.toggleActivityBarVisibility"
+            },
+            {
+              "key": "B",
+              "name": "Toggle menu bar",
+              "command": "workbench.action.toggleMenuBar"
+            },
+            {
+              "key": "f",
+              "name": "Toggle full screen",
+              "command": "workbench.action.toggleFullScreen"
+            },
+            {
+              "key": "F",
+              "name": "Toggle flash search",
+              "command": "vscode-neovim.send",
+              "args": "<cmd>lua require('flash').toggle()<cr>"
+            },
+            {
+              "key": "h",
+              "name": "Enable AutoNoHighlightSearch",
+              "command": "vscode-neovim.send",
+              "args": "<cmd>EnableAutoNoHighlightSearch<cr>"
+            },
+            {
+              "key": "H",
+              "name": "Disable AutoNoHighlightSearch",
+              "command": "vscode-neovim.send",
+              "args": "<cmd>DisableAutoNoHighlightSearch<cr>"
+            },
+            {
+              "key": "k",
+              "name": "Show keys on screen (Screencast Mode)",
+              "command": "workbench.action.toggleScreencastMode"
+            },
+            {
+              "key": "m",
+              "name": "Toggle maximized panel",
+              "command": "workbench.action.toggleMaximizedPanel"
+            },
+            {
+              "key": "M",
+              "name": "Toggle Minimap",
+              "command": "editor.action.toggleMinimap"
+            },
+            {
+              "key": "P",
+              "name": "Toggle panel visibility",
+              "command": "workbench.action.togglePanel"
+            },
+            {
+              "key": "r",
+              "name": "Show remote explorer",
+              "command": "workbench.view.remote"
+            },
+            {
+              "key": "s",
+              "name": "Toggle sidebar visibility",
+              "command": "workbench.action.toggleSidebarVisibility"
+            },
+            {
+              "key": "S",
+              "name": "Toggle sec-sidebar visibility",
+              "command": "workbench.action.toggleAuxiliaryBar"
+            },
+            {
+              "key": "t",
+              "name": "Select theme",
+              "command": "workbench.action.selectTheme"
+            },
+            {
+              "key": "T",
+              "name": "Toggle tab visibility",
+              "command": "workbench.action.toggleTabsVisibility"
+            },
+            {
+              "key": "u",
+              "name": "Go to Parent Fold",
+              "commands": [
+                "editor.gotoParentFold",
+                "cursorHome"
+              ]
+            },
+            {
+              "key": "U",
+              "name": "Go to Bracket",
+              "command": "editor.action.jumpToBracket"
+            },
+            {
+              "key": "w",
+              "name": "Toggle Wrap",
+              "command": "editor.action.toggleWordWrap"
+            },
+            {
+              "key": "x",
+              "name": "Extensions",
+              "command": "workbench.view.extensions"
+            },
+            {
+              "key": "z",
+              "name": "Toggle zen mode",
+              "command": "workbench.action.toggleZenMode"
+            },
+            {
+              "key": "Z",
+              "name": "Zoom reset",
+              "command": "editor.action.fontZoomReset"
+            }
           ]
         },
-        { "key": "v", "name": "Open/Move Terminal to Vertical split", "commands": [ "workbench.action.positionPanelRight", "workbench.action.terminal.focus" ] },
-        { "key": "V", "name": "Open/Move Terminal to Horizontal split", "commands": [ "workbench.action.positionPanelBottom", "workbench.action.terminal.focus" ] },
+        {
+          "key": "v",
+          "name": "Open/Move Terminal to Vertical split",
+          "commands": [
+            "workbench.action.positionPanelRight",
+            "workbench.action.terminal.focus"
+          ]
+        },
+        {
+          "key": "V",
+          "name": "Open/Move Terminal to Horizontal split",
+          "commands": [
+            "workbench.action.positionPanelBottom",
+            "workbench.action.terminal.focus"
+          ]
+        },
         {
           "key": "w",
           "name": "+Window",
           "bindings": [
-            { "key": ";", "name": "Recent editor group", "commands": [ "workbench.action.quickOpenPreviousRecentlyUsedEditor", "workbench.action.acceptSelectedQuickOpenItem" ] },
-            { "key": "c", "name": "Combine all editors", "command": "workbench.action.joinAllGroups" },
-            { "key": "C", "name": "Close all editor groups", "command": "workbench.action.closeAllGroups" },
-            { "key": "f", "name": "Focus editor group", "command": "workbench.action.focusActiveEditorGroup" },
-            { "key": "h", "name": "Move editor group left", "command": "workbench.action.moveActiveEditorGroupLeft" },
-            { "key": "j", "name": "Move editor group down", "command": "workbench.action.moveActiveEditorGroupDown" },
-            { "key": "k", "name": "Move editor group up", "command": "workbench.action.moveActiveEditorGroupUp" },
-            { "key": "l", "name": "Move editor group right", "command": "workbench.action.moveActiveEditorGroupRight" },
-            { "key": "H", "name": "Decrease editor group", "command": "workbench.action.decreaseViewSize" },
-            { "key": "J", "name": "Increase editor group", "command": "workbench.action.increaseViewSize" },
-            { "key": "K", "name": "Decrease editor group", "command": "workbench.action.decreaseViewSize" },
-            { "key": "L", "name": "Increase editor group", "command": "workbench.action.increaseViewSize" },
-            { "key": "m", "name": "Toggle Maximized editor group mode", "command": "workbench.action.toggleMaximizeEditorGroup" },
-            { "key": "M", "name": "Minimize other editors group", "command": "workbench.action.minimizeOtherEditors" },
-            { "key": "n", "name": "Focus next editor group", "command": "workbench.action.focusNextGroup" },
-            { "key": "p", "name": "Focus previous editor group", "command": "workbench.action.focusPreviousGroup" },
-            { "key": "t", "name": "Toggle editor group sizes", "command": "workbench.action.toggleEditorWidths" },
-            { "key": "v", "name": "Split Vertical", "command": "workbench.action.splitEditor" },
-            { "key": "V", "name": "Split Horizontal", "command": "workbench.action.splitEditorDown" },
-            { "key": "x", "name": "Close editor group", "command": "workbench.action.closeEditorsInGroup" },
-            { "key": "=", "name": "Reset editor group sizes", "command": "workbench.action.evenEditorWidths" }
+            {
+              "key": ";",
+              "name": "Recent editor group",
+              "commands": [
+                "workbench.action.quickOpenPreviousRecentlyUsedEditor",
+                "workbench.action.acceptSelectedQuickOpenItem"
+              ]
+            },
+            {
+              "key": "c",
+              "name": "Combine all editors",
+              "command": "workbench.action.joinAllGroups"
+            },
+            {
+              "key": "C",
+              "name": "Close all editor groups",
+              "command": "workbench.action.closeAllGroups"
+            },
+            {
+              "key": "f",
+              "name": "Focus editor group",
+              "command": "workbench.action.focusActiveEditorGroup"
+            },
+            {
+              "key": "h",
+              "name": "Move editor group left",
+              "command": "workbench.action.moveActiveEditorGroupLeft"
+            },
+            {
+              "key": "j",
+              "name": "Move editor group down",
+              "command": "workbench.action.moveActiveEditorGroupDown"
+            },
+            {
+              "key": "k",
+              "name": "Move editor group up",
+              "command": "workbench.action.moveActiveEditorGroupUp"
+            },
+            {
+              "key": "l",
+              "name": "Move editor group right",
+              "command": "workbench.action.moveActiveEditorGroupRight"
+            },
+            {
+              "key": "H",
+              "name": "Decrease editor group",
+              "command": "workbench.action.decreaseViewSize"
+            },
+            {
+              "key": "J",
+              "name": "Increase editor group",
+              "command": "workbench.action.increaseViewSize"
+            },
+            {
+              "key": "K",
+              "name": "Decrease editor group",
+              "command": "workbench.action.decreaseViewSize"
+            },
+            {
+              "key": "L",
+              "name": "Increase editor group",
+              "command": "workbench.action.increaseViewSize"
+            },
+            {
+              "key": "m",
+              "name": "Toggle Maximized editor group mode",
+              "command": "workbench.action.toggleMaximizeEditorGroup"
+            },
+            {
+              "key": "M",
+              "name": "Minimize other editors group",
+              "command": "workbench.action.minimizeOtherEditors"
+            },
+            {
+              "key": "n",
+              "name": "Focus next editor group",
+              "command": "workbench.action.focusNextGroup"
+            },
+            {
+              "key": "p",
+              "name": "Focus previous editor group",
+              "command": "workbench.action.focusPreviousGroup"
+            },
+            {
+              "key": "t",
+              "name": "Toggle editor group sizes",
+              "command": "workbench.action.toggleEditorWidths"
+            },
+            {
+              "key": "v",
+              "name": "Split Vertical",
+              "command": "workbench.action.splitEditor"
+            },
+            {
+              "key": "V",
+              "name": "Split Horizontal",
+              "command": "workbench.action.splitEditorDown"
+            },
+            {
+              "key": "x",
+              "name": "Close editor group",
+              "command": "workbench.action.closeEditorsInGroup"
+            },
+            {
+              "key": "=",
+              "name": "Reset editor group sizes",
+              "command": "workbench.action.evenEditorWidths"
+            }
           ]
         },
-        { "key": "x", "name": "Close active editor", "command": "workbench.action.closeActiveEditor" },
+        {
+          "key": "x",
+          "name": "Close active editor",
+          "command": "workbench.action.closeActiveEditor"
+        },
         {
           "key": "y",
           "name": "+File Manager (alt+y reopens)",
@@ -669,81 +1736,169 @@
             {
               "key": "y",
               "name": "open and export `y` command (on new terminal)",
-              "commands": [ "workbench.action.createTerminalEditor", "workbench.action.terminal.sendSequence" ],
-              "args": [ null, { "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }; y; clear\n" } ]
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }; y; clear\n"
+                }
+              ]
             },
             {
               "key": "O",
               "name": "open y='cd when yazi exits, press q to exit yazi' (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "y\n" }
+              "args": {
+                "text": "y\n"
+              }
             },
             {
               "key": "Y",
               "name": "print sequence to export `y` command (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }" }
+              "args": {
+                "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }"
+              }
             },
             {
               "key": "V",
               "name": "print sequence to export vi = textobj + mini.File(Explorer) + mini.Clue(Whichkey) + mini.Pick(Telescope)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "function vi() { sh -c \"$EDITOR $@\"; } # ($EDITOR) # eval $EDITOR # iex $env:EDITOR \n" }
+              "args": {
+                "text": "function vi() { sh -c \"$EDITOR $@\"; } # ($EDITOR) # eval $EDITOR # iex $env:EDITOR \n"
+              }
             },
             {
               "key": "C",
               "name": "print sequence to clear_previous_line (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "printf '\\x1b[2A\\x1b[K'\n" }
+              "args": {
+                "text": "printf '\\x1b[2A\\x1b[K'\n"
+              }
             },
             {
               "key": "b",
               "name": "print sequence to open file with neovim (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && nvim '%1' || nvim $*\"\n" } ]
+              "commands": [
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "text": ":"
+                },
+                {
+                  "text": "sh -c \"test $APPDATA && nvim '%1' || nvim $*\"\n"
+                }
+              ]
             },
             {
               "key": "e",
               "name": "print sequence to open file with vi (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && $EDITOR '%1' || $EDITOR $*\"\n" } ]
+              "commands": [
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "text": ":"
+                },
+                {
+                  "text": "sh -c \"test $APPDATA && $EDITOR '%1' || $EDITOR $*\"\n"
+                }
+              ]
             },
             {
               "key": "g",
               "name": "print sequence to open lazygit in current working directory (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "lazygit\n" } ]
+              "commands": [
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "text": ":"
+                },
+                {
+                  "text": "lazygit\n"
+                }
+              ]
             },
             {
               "key": "v",
               "name": "print sequence to open file with vscode (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "sh -c \"test $APPDATA && code '%1' || code $*\"\n" } ]
+              "commands": [
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "text": ":"
+                },
+                {
+                  "text": "sh -c \"test $APPDATA && code '%1' || code $*\"\n"
+                }
+              ]
             },
             {
               "key": "w",
               "name": "print sequence to open a shell in current working directory (when inside yazi)",
               "command": "workbench.action.terminal.sendSequence",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "sh -c '$SHELL'\n" } ]
+              "commands": [
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "text": ":"
+                },
+                {
+                  "text": "sh -c '$SHELL'\n"
+                }
+              ]
             },
             {
               "key": "x",
               "name": "print sequence to zoxide remove current working directory (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "zoxide remove .\n" } ]
+              "commands": [
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "text": ":"
+                },
+                {
+                  "text": "zoxide remove .\n"
+                }
+              ]
             },
             {
               "key": "z",
               "name": "print sequence to zoxide add current working directory (when inside yazi)",
-              "commands": [ "workbench.action.terminal.sendSequence", "workbench.action.terminal.sendSequence" ],
-              "args": [ { "text": ":" }, { "text": "zoxide add .\n" } ]
+              "commands": [
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "text": ":"
+                },
+                {
+                  "text": "zoxide add .\n"
+                }
+              ]
             },
             {
               "key": "?",
               "name": "print sequence to show yazi keybindings menu (when inside yazi)",
               "command": "workbench.action.terminal.sendSequence",
-              "args": { "text": "~" }
+              "args": {
+                "text": "~"
+              }
             }
           ]
         },
@@ -751,113 +1906,539 @@
           "key": "Y",
           "name": "+Sync",
           "bindings": [
-            { "key": "c", "name": "Sync Show Conflicts", "command": "workbench.userDataSync.actions.showConflicts" },
-            { "key": "d", "name": "Sync Show Data", "command": "workbench.userDataSync.actions.showSyncedData" },
-            { "key": "n", "name": "Sync Now", "command": "workbench.userDataSync.actions.syncNow" },
-            { "key": "l", "name": "Sync Logs", "command": "workbench.userDataSync.actions.showLog" }
+            {
+              "key": "c",
+              "name": "Sync Show Conflicts",
+              "command": "workbench.userDataSync.actions.showConflicts"
+            },
+            {
+              "key": "d",
+              "name": "Sync Show Data",
+              "command": "workbench.userDataSync.actions.showSyncedData"
+            },
+            {
+              "key": "n",
+              "name": "Sync Now",
+              "command": "workbench.userDataSync.actions.syncNow"
+            },
+            {
+              "key": "l",
+              "name": "Sync Logs",
+              "command": "workbench.userDataSync.actions.showLog"
+            }
           ]
         },
         {
           "key": "z",
           "name": "+Folding",
           "bindings": [
-            { "key": "a", "name": "Toggle Fold", "command": "editor.toggleFold" },
-            { "key": "c", "name": "Close Fold", "command": "editor.fold" },
-            { "key": "C", "name": "Close Fold Recursively", "command": "editor.foldRecursively" },
-            { "key": "M", "name": "Close All Folds", "command": "editor.foldAll" },
-            { "key": "j", "name": "Go to Next Fold", "command": "editor.gotoNextFold" },
-            { "key": "k", "name": "Go to Previous Fold", "command": "editor.gotoPreviousFold" },
-            { "key": "o", "name": "Open Fold", "command": "editor.unfold" },
-            { "key": "O", "name": "Open Fold Recursively", "command": "editor.unfoldRecursively" },
-            { "key": "R", "name": "Open All Folds", "command": "editor.unfoldAll" }
+            {
+              "key": "a",
+              "name": "Toggle Fold",
+              "command": "editor.toggleFold"
+            },
+            {
+              "key": "c",
+              "name": "Close Fold",
+              "command": "editor.fold"
+            },
+            {
+              "key": "C",
+              "name": "Close Fold Recursively",
+              "command": "editor.foldRecursively"
+            },
+            {
+              "key": "M",
+              "name": "Close All Folds",
+              "command": "editor.foldAll"
+            },
+            {
+              "key": "j",
+              "name": "Go to Next Fold",
+              "command": "editor.gotoNextFold"
+            },
+            {
+              "key": "k",
+              "name": "Go to Previous Fold",
+              "command": "editor.gotoPreviousFold"
+            },
+            {
+              "key": "o",
+              "name": "Open Fold",
+              "command": "editor.unfold"
+            },
+            {
+              "key": "O",
+              "name": "Open Fold Recursively",
+              "command": "editor.unfoldRecursively"
+            },
+            {
+              "key": "R",
+              "name": "Open All Folds",
+              "command": "editor.unfoldAll"
+            }
           ]
         }
       ]
     },
     "keybindings": [
-
-      { "key": "e", "command": "whichkey.triggerKey", "args": { "key": "e", "when": "sideBarVisible && explorerViewletVisible" }, "when": "whichkeyVisible && sideBarVisible && explorerViewletVisible" },
-      { "key": "q", "command": "workbench.action.toggleSidebarVisibility", "when": "listFocus && !inputFocus" },
-      { "key": "v", "command": "runCommands", "args": { "commands": [ "explorer.openToSide", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "Down", "command": "runCommands", "args": { "commands": [ "list.focusDown", "filesExplorer.openFilePreserveFocus" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "Up", "command": "runCommands", "args": { "commands": [ "list.focusUp", "filesExplorer.openFilePreserveFocus" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "alt+j", "command": "runCommands", "args": { "commands": [ "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "alt+k", "command": "runCommands", "args": { "commands": [ "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "alt+l", "command": "runCommands", "args": { "commands": [ "list.select", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "shift+j", "command": "runCommands", "args": { "commands": [ "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown", "list.focusDown" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "shift+k", "command": "runCommands", "args": { "commands": [ "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp", "list.focusUp" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "shift+l", "command": "runCommands", "args": { "commands": [ "list.select", "workbench.action.toggleSidebarVisibility" ] }, "when": "listFocus && !inputFocus" },
-      { "key": "shift+o", "command": "runCommands", "args": { "commands": [ "explorer.openAndPassFocus", "workbench.view.explorer" ] }, "when": "listFocus && !inputFocus" },
-
-      { "key": "ctrl+\\", "command": "workbench.action.togglePanel" },
-      { "key": "shift+space", "command": "whichkey.show" },
-      { "key": "alt+space", "command": "whichkey.show" },
-      { "key": "alt+.", "command": "whichkey.repeatMostRecent", "when": "editorTextFocus && neovim.mode == normal" },
-      { "key": "alt+c", "command": "editor.action.clipboardCopyAction", "when": "!terminalFocus && neovim.mode == 'insert'" },
-      { "key": "alt+v", "command": "editor.action.clipboardPasteAction", "when": "!terminalFocus && neovim.mode == 'insert'" },
-      { "key": "alt+c", "command": "workbench.action.terminal.copySelection", "when": "terminalFocus" },
-      { "key": "alt+v", "command": "workbench.action.terminal.paste", "when": "terminalFocus" },
-      { "key": "alt+h", "command": "vscode-neovim.send", "args": "<esc><cmd>noh<cr>", "when": "inputFocus && neovim.mode == 'insert' || neovim.mode == 'visual'" },
-      { "key": "alt+j", "command": "workbench.action.quickOpenSelectNext", "when": "inQuickOpen" },
-      { "key": "alt+k", "command": "workbench.action.quickOpenSelectPrevious", "when": "inQuickOpen" },
-      { "key": "alt+h", "command": "type", "args": { "text": "10h" }, "when": "inputFocus && neovim.mode == 'normal'" },
-      { "key": "alt+j", "command": "type", "args": { "text": "10gj" }, "when": "!inQuickOpen && inputFocus && neovim.mode == 'normal'" },
-      { "key": "alt+k", "command": "type", "args": { "text": "10gk" }, "when": "!inQuickOpen && inputFocus && neovim.mode == 'normal'" },
-      { "key": "alt+l", "command": "type", "args": { "text": "10l" }, "when": "inputFocus && neovim.mode == 'normal'" },
-      { "key": "alt+v", "command": "type", "args": { "text": "V" }, "when": "!terminalFocus && inputFocus && neovim.mode == 'normal'" },
-      { "key": "alt+s", "command": "workbench.action.previousEditor" },
-      { "key": "alt+f", "command": "workbench.action.nextEditor" },
-      { "key": "left", "command": "workbench.action.previousEditor", "when": "!terminalFocus && !sideBarFocus && neovim.mode == 'normal' && editorFocus" },
-      { "key": "right", "command": "workbench.action.nextEditor", "when": "!terminalFocus && !sideBarFocus && neovim.mode == 'normal' && editorFocus" },
-      { "key": "ctrl+h", "command": "workbench.action.navigateLeft", "when": "neovim.mode == 'normal'" },
-      { "key": "ctrl+j", "command": "workbench.action.navigateDown", "when": "neovim.mode == 'normal'" },
-      { "key": "ctrl+k", "command": "workbench.action.navigateUp", "when": "neovim.mode == 'normal'" },
-      { "key": "ctrl+l", "command": "workbench.action.navigateRight", "when": "neovim.mode == 'normal' && !terminalFocus" },
-      { "key": "alt+q", "command": "workbench.action.closeActiveEditor", "when": "editorTextFocus && neovim.mode == normal" },
+      {
+        "key": "e",
+        "command": "whichkey.triggerKey",
+        "args": {
+          "key": "e",
+          "when": "sideBarVisible && explorerViewletVisible"
+        },
+        "when": "whichkeyVisible && sideBarVisible && explorerViewletVisible"
+      },
+      {
+        "key": "q",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "v",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "explorer.openToSide",
+            "workbench.action.toggleSidebarVisibility"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "Down",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusDown",
+            "filesExplorer.openFilePreserveFocus"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "Up",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusUp",
+            "filesExplorer.openFilePreserveFocus"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "alt+j",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "alt+k",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "alt+l",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.select",
+            "workbench.action.toggleSidebarVisibility"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "shift+j",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "shift+k",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "shift+l",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.select",
+            "workbench.action.toggleSidebarVisibility"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "shift+o",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "explorer.openAndPassFocus",
+            "workbench.view.explorer"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "ctrl+\\",
+        "command": "workbench.action.togglePanel"
+      },
+      {
+        "key": "shift+space",
+        "command": "whichkey.show"
+      },
+      {
+        "key": "alt+space",
+        "command": "whichkey.show"
+      },
+      {
+        "key": "alt+.",
+        "command": "whichkey.repeatMostRecent",
+        "when": "editorTextFocus && neovim.mode == normal"
+      },
+      {
+        "key": "alt+c",
+        "command": "editor.action.clipboardCopyAction",
+        "when": "!terminalFocus && neovim.mode == 'insert'"
+      },
+      {
+        "key": "alt+v",
+        "command": "editor.action.clipboardPasteAction",
+        "when": "!terminalFocus && neovim.mode == 'insert'"
+      },
+      {
+        "key": "alt+c",
+        "command": "workbench.action.terminal.copySelection",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+v",
+        "command": "workbench.action.terminal.paste",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+h",
+        "command": "vscode-neovim.send",
+        "args": "<esc><cmd>noh<cr>",
+        "when": "inputFocus && neovim.mode == 'insert' || neovim.mode == 'visual'"
+      },
+      {
+        "key": "alt+j",
+        "command": "workbench.action.quickOpenSelectNext",
+        "when": "inQuickOpen"
+      },
+      {
+        "key": "alt+k",
+        "command": "workbench.action.quickOpenSelectPrevious",
+        "when": "inQuickOpen"
+      },
+      {
+        "key": "alt+h",
+        "command": "type",
+        "args": {
+          "text": "10h"
+        },
+        "when": "inputFocus && neovim.mode == 'normal'"
+      },
+      {
+        "key": "alt+j",
+        "command": "type",
+        "args": {
+          "text": "10gj"
+        },
+        "when": "!inQuickOpen && inputFocus && neovim.mode == 'normal'"
+      },
+      {
+        "key": "alt+k",
+        "command": "type",
+        "args": {
+          "text": "10gk"
+        },
+        "when": "!inQuickOpen && inputFocus && neovim.mode == 'normal'"
+      },
+      {
+        "key": "alt+l",
+        "command": "type",
+        "args": {
+          "text": "10l"
+        },
+        "when": "inputFocus && neovim.mode == 'normal'"
+      },
+      {
+        "key": "alt+v",
+        "command": "type",
+        "args": {
+          "text": "V"
+        },
+        "when": "!terminalFocus && inputFocus && neovim.mode == 'normal'"
+      },
+      {
+        "key": "alt+s",
+        "command": "workbench.action.previousEditor"
+      },
+      {
+        "key": "alt+f",
+        "command": "workbench.action.nextEditor"
+      },
+      {
+        "key": "left",
+        "command": "workbench.action.previousEditor",
+        "when": "!terminalFocus && !sideBarFocus && neovim.mode == 'normal' && editorFocus"
+      },
+      {
+        "key": "right",
+        "command": "workbench.action.nextEditor",
+        "when": "!terminalFocus && !sideBarFocus && neovim.mode == 'normal' && editorFocus"
+      },
+      {
+        "key": "ctrl+h",
+        "command": "workbench.action.navigateLeft",
+        "when": "neovim.mode == 'normal'"
+      },
+      {
+        "key": "ctrl+j",
+        "command": "workbench.action.navigateDown",
+        "when": "neovim.mode == 'normal'"
+      },
+      {
+        "key": "ctrl+k",
+        "command": "workbench.action.navigateUp",
+        "when": "neovim.mode == 'normal'"
+      },
+      {
+        "key": "ctrl+l",
+        "command": "workbench.action.navigateRight",
+        "when": "neovim.mode == 'normal' && !terminalFocus"
+      },
+      {
+        "key": "alt+q",
+        "command": "workbench.action.closeActiveEditor",
+        "when": "editorTextFocus && neovim.mode == normal"
+      },
       {
         "key": "alt+r",
         "command": "vscode-neovim.send",
         "args": "<cmd>lua require('vscode-neovim').call('editor.action.format') require('vscode-neovim').call('workbench.action.files.save')<cr>",
         "when": "editorTextFocus && neovim.mode == normal"
       },
-
-      { "key": "ctrl+i", "command": "toggleSuggestionDetails", "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus" },
-      { "key": "ctrl+space", "command": "editor.action.triggerSuggest", "when": "!suggestWidgetVisible && textInputFocus" },
-      { "key": "ctrl+space", "command": "hideSuggestWidget", "when": "suggestWidgetVisible && textInputFocus" },
-      { "key": "ctrl+shift+space", "command": "editor.action.triggerParameterHints", "when": "editorHasSignatureHelpProvider && editorTextFocus" },
-      { "key": "ctrl+shift+space", "command": "closeParameterHints", "when": "editorFocus && parameterHintsVisible" },
-      { "key": "ctrl+alt+space", "command": "toggleSuggestionFocus", "when": "suggestWidgetVisible && textInputFocus" },
-      { "key": "alt+j", "command": "editor.action.inlineSuggest.showNext", "when": "inlineSuggestionVisible && neovim.mode == 'insert'" },
-      { "key": "alt+k", "command": "editor.action.inlineSuggest.showPrevious", "when": "inlineSuggestionVisible && neovim.mode == 'insert'" },
-      { "key": "alt+l", "command": "editor.action.inlineSuggest.commit", "when": "inlineSuggestionVisible && neovim.mode == 'insert'" },
-      { "key": "ctrl+j", "command": "selectNextSuggestion", "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible" },
-      { "key": "ctrl+k", "command": "selectPrevSuggestion", "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible" },
-      { "key": "ctrl+l", "command": "acceptSelectedSuggestion", "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus" },
-      { "key": "ctrl+d", "command": "selectNextPageSuggestion", "when": "suggestWidgetVisible" },
-      { "key": "ctrl+u", "command": "selectPrevPageSuggestion", "when": "suggestWidgetVisible" },
-
+      {
+        "key": "ctrl+i",
+        "command": "toggleSuggestionDetails",
+        "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus"
+      },
+      {
+        "key": "ctrl+space",
+        "command": "editor.action.triggerSuggest",
+        "when": "!suggestWidgetVisible && textInputFocus"
+      },
+      {
+        "key": "ctrl+space",
+        "command": "hideSuggestWidget",
+        "when": "suggestWidgetVisible && textInputFocus"
+      },
+      {
+        "key": "ctrl+shift+space",
+        "command": "editor.action.triggerParameterHints",
+        "when": "editorHasSignatureHelpProvider && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+space",
+        "command": "closeParameterHints",
+        "when": "editorFocus && parameterHintsVisible"
+      },
+      {
+        "key": "ctrl+alt+space",
+        "command": "toggleSuggestionFocus",
+        "when": "suggestWidgetVisible && textInputFocus"
+      },
+      {
+        "key": "alt+j",
+        "command": "editor.action.inlineSuggest.showNext",
+        "when": "inlineSuggestionVisible && neovim.mode == 'insert'"
+      },
+      {
+        "key": "alt+k",
+        "command": "editor.action.inlineSuggest.showPrevious",
+        "when": "inlineSuggestionVisible && neovim.mode == 'insert'"
+      },
+      {
+        "key": "alt+l",
+        "command": "editor.action.inlineSuggest.commit",
+        "when": "inlineSuggestionVisible && neovim.mode == 'insert'"
+      },
+      {
+        "key": "ctrl+j",
+        "command": "selectNextSuggestion",
+        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+      },
+      {
+        "key": "ctrl+k",
+        "command": "selectPrevSuggestion",
+        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+      },
+      {
+        "key": "ctrl+l",
+        "command": "acceptSelectedSuggestion",
+        "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
+      },
+      {
+        "key": "ctrl+d",
+        "command": "selectNextPageSuggestion",
+        "when": "suggestWidgetVisible"
+      },
+      {
+        "key": "ctrl+u",
+        "command": "selectPrevPageSuggestion",
+        "when": "suggestWidgetVisible"
+      },
       {
         "key": "alt+y",
         "command": "workbench.action.terminal.sendSequence",
-        "args": { "text": "yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi) \n" }
+        "args": {
+          "text": "yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi) \n"
+        }
       },
-      { "key": "alt+r", "command": "workbench.action.terminal.scrollToNextCommand", "when": "terminalFocus" },
-      { "key": "alt+w", "command": "workbench.action.terminal.scrollToPreviousCommand", "when": "terminalFocus" },
-      { "key": "alt+e", "command": "workbench.action.terminal.scrollUp", "when": "terminalFocus" },
-      { "key": "alt+d", "command": "workbench.action.terminal.scrollDown", "when": "terminalFocus" },
-      { "key": "alt+q", "command": "workbench.action.terminal.scrollUpPage", "when": "terminalFocus" },
-      { "key": "alt+a", "command": "workbench.action.terminal.scrollDownPage", "when": "terminalFocus" },
-      { "key": "alt+t", "command": "workbench.action.terminal.scrollToTop", "when": "terminalFocus" },
-      { "key": "alt+g", "command": "workbench.action.terminal.scrollToBottom", "when": "terminalFocus" },
-      { "key": "alt+left", "command": "workbench.action.terminal.resizePaneLeft", "when": "terminalFocus" },
-      { "key": "alt+right", "command": "workbench.action.terminal.resizePaneRight", "when": "terminalFocus" },
-      { "key": "alt+down", "command": "workbench.action.terminal.resizePaneDown", "when": "terminalFocus" },
-      { "key": "alt+up", "command": "workbench.action.terminal.resizePaneUp", "when": "terminalFocus" },
-      { "key": "alt+left", "command": "workbench.action.decreaseViewSize", "when": "neovim.mode != insert && !terminalFocus" },
-      { "key": "alt+right", "command": "workbench.action.increaseViewSize", "when": "neovim.mode != insert && !terminalFocus" },
-      { "key": "alt+down", "command": "vscode-neovim.send", "args": "<C-w>-", "when": "neovim.mode != insert && !terminalFocus" },
-      { "key": "alt+up", "command": "vscode-neovim.send", "args": "<C-w>+", "when": "neovim.mode != insert && !terminalFocus" },
-
+      {
+        "key": "alt+r",
+        "command": "workbench.action.terminal.scrollToNextCommand",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+w",
+        "command": "workbench.action.terminal.scrollToPreviousCommand",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+e",
+        "command": "workbench.action.terminal.scrollUp",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+d",
+        "command": "workbench.action.terminal.scrollDown",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+q",
+        "command": "workbench.action.terminal.scrollUpPage",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+a",
+        "command": "workbench.action.terminal.scrollDownPage",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+t",
+        "command": "workbench.action.terminal.scrollToTop",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+g",
+        "command": "workbench.action.terminal.scrollToBottom",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+left",
+        "command": "workbench.action.terminal.resizePaneLeft",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+right",
+        "command": "workbench.action.terminal.resizePaneRight",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+down",
+        "command": "workbench.action.terminal.resizePaneDown",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+up",
+        "command": "workbench.action.terminal.resizePaneUp",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+left",
+        "command": "workbench.action.decreaseViewSize",
+        "when": "neovim.mode != insert && !terminalFocus"
+      },
+      {
+        "key": "alt+right",
+        "command": "workbench.action.increaseViewSize",
+        "when": "neovim.mode != insert && !terminalFocus"
+      },
+      {
+        "key": "alt+down",
+        "command": "vscode-neovim.send",
+        "args": "<C-w>-",
+        "when": "neovim.mode != insert && !terminalFocus"
+      },
+      {
+        "key": "alt+up",
+        "command": "vscode-neovim.send",
+        "args": "<C-w>+",
+        "when": "neovim.mode != insert && !terminalFocus"
+      },
       {
         "key": "h",
         "command": "cursorLeft",
@@ -878,13 +2459,15 @@
         "command": "cursorRight",
         "when": "editorTextFocus && !(neovim.fullMode =~ /^(f|r)/) && neovim.mode != 'insert' && neovim.mode != 'visual' && ( isWindows || isWeb )"
       },
-
-      { "key": "ctrl+alt+right", "command": "cursorWordPartRightSelect" }
+      {
+        "key": "ctrl+alt+right",
+        "command": "cursorWordPartRightSelect"
+      }
     ]
   },
   "extensionPack": [
     "asvetliakov.vscode-neovim",
     "VSpaceCode.whichkey"
   ],
-  "extensionDependencies": [ ]
+  "extensionDependencies": []
 }
