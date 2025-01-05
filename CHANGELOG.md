@@ -19,6 +19,27 @@
 
 - `iex $env:editor` not opening on powershell
 
+## [0.2.0](https://github.com/YeferYV/RetroNvim/compare/v0.1.1...v0.2.0) (2025-01-05)
+
+
+### Features
+
+* **kanata:** repeat hjkl every 15 miliseconds ([f6d077e](https://github.com/YeferYV/RetroNvim/commit/f6d077ec9b52320618a22c81079e353bcfe2b16d))
+* **nvim:** adding mini.hipatterns with tailwind support ([18a843c](https://github.com/YeferYV/RetroNvim/commit/18a843c7395e031ae14d4addb076b85a69efe3e4))
+* **nvim:** configuring mason.nvim + nvim-lspconfig to stop depending on mason-lspconfig.nvim ([c418220](https://github.com/YeferYV/RetroNvim/commit/c41822039a2fabbdd93c17e7440271054ea60f60))
+* **nvim:** migrating to efm-language-server (which support formatters and linters) from none-ls ([e6f6b8b](https://github.com/YeferYV/RetroNvim/commit/e6f6b8b5191d9bb9514ce5d19f8b9af84f1bc18c))
+* **nvim:** migrating to supermaven since codeium is slow ([7d6a6ce](https://github.com/YeferYV/RetroNvim/commit/7d6a6cea019ff7cfe2c025d410a39c1e63027a57))
+* **nvim:** migrating to vim.snippets from luasnip ([50b6715](https://github.com/YeferYV/RetroNvim/commit/50b6715793cdceb77ba7a665a671a52fd5e8c566))
+* **package.json:** migrating to pnpm since npm is slow ([7ed02bb](https://github.com/YeferYV/RetroNvim/commit/7ed02bb11368d830b058bc68be1191bd473e5971))
+* **release.yml:** adding a github action to publish to vscode marketplace ([246c811](https://github.com/YeferYV/RetroNvim/commit/246c811208cfeef9ec6acc6d86028526d179a1d8))
+* **whichkey:** adding `Install jupyter and kaggle` entry ([8617a59](https://github.com/YeferYV/RetroNvim/commit/8617a594c8dd600bb95ac4decb19bae06c81254f))
+
+
+### Bug Fixes
+
+* **release.yml:** attemp using vsce as devDependency to fix `The user aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa is not authorized` ([ab2979d](https://github.com/YeferYV/RetroNvim/commit/ab2979d7154c8fa2b2e3cc349a6d944a910edc82))
+* **release.yml:** VSCE_TOKEN secret as global env should fix `The user aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa is not authorized` ([1bdd8ae](https://github.com/YeferYV/RetroNvim/commit/1bdd8aebee88dec5a53e2e82d4a1f9578315cd1e))
+
 ## v0.1.1 (06-09-2024)
 
 **Added**
