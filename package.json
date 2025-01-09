@@ -627,6 +627,8 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "vscode-neovim.lua",
                 "vscode-neovim.lua"
               ],
@@ -672,6 +674,8 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "vscode-neovim.lua",
                 "vscode-neovim.lua"
               ],
@@ -709,6 +713,8 @@
               "name": "install scoop, pixi and pnpm package managers (Windows 10/11)",
               "commands": [
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "vscode-neovim.lua",
                 "vscode-neovim.lua",
