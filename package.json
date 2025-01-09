@@ -46,7 +46,6 @@
   "contributes": {
     "configurationDefaults": {
       "accessibility.accessibleView.closeOnKeyPress": false,
-      "editor.linkedEditing": true,
       "editor.accessibilitySupport": "off",
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
@@ -878,7 +877,7 @@
                   "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          \n"
                 },
                 {
-                  "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            \n"
+                  "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            --install-extension formulahendry.auto-rename-tag \n"
                 },
                 "require('vscode-neovim').notify('extensions are installed for the default vscode profile')"
               ]
