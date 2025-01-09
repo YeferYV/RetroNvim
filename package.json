@@ -55,6 +55,7 @@
         "strings": "on"
       },
       "editor.renderWhitespace": "none",
+      "editor.suggest.selectionMode": "never",
       "editor.stickyScroll.enabled": false,
       "emmet.includeLanguages": {
         "javascript": "javascriptreact",
@@ -2460,8 +2461,26 @@
         "when": "editorTextFocus && !(neovim.fullMode =~ /^(f|r)/) && neovim.mode != 'insert' && neovim.mode != 'visual' && ( isWindows || isWeb )"
       },
       {
-        "key": "ctrl+alt+right",
-        "command": "cursorWordPartRightSelect"
+        "key": "enter",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "selectNextSuggestion",
+            "acceptSelectedSuggestion"
+          ]
+        },
+        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion"
+      },
+      {
+        "key": "tab",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "selectNextSuggestion",
+            "acceptSelectedSuggestion"
+          ]
+        },
+        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion && !isSnippetMode && !hasNextTabstop"
       }
     ]
   },
