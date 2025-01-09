@@ -13,7 +13,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 **[<kbd> <br> Wiki <br> </kbd>][Wiki]** 
 **[<kbd> <br> Dependencies <br> </kbd>][Dependencies]**
 
-[Install]: #terminal-dependencies-optional
+[Install]: #installation
 [Keyboard-Layout]: #if-touchcursor-keyboard-layout-started
 [Wiki]: https://github.com/YeferYV/RetroNvim/wiki
 [Dependencies]: https://github.com/YeferYV/RetroNvim/wiki/dependencies
@@ -41,7 +41,9 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 4. [zsh keymaps](#zsh-keymaps)
 5. [If Touchcursor Keyboard Layout Started](#if-touchcursor-keyboard-layout-started)
 6. Installation
-   - [terminal Dependencies (optional)](#terminal-dependencies-optional)
+   - [Install](#installation)
+   - [Trobleshotting](#troubleshooting)
+   - [Terminal Dependencies (optional)](#terminal-dependencies-optional)
    - [Treesitter Installation (optional)](#treesitter-installation-optional)
 7. [Vim Cheatsheets / Tutorials](#vim-cheatsheets--tutorials)
 8. [Related projects](#related-projects)
@@ -289,7 +291,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 | `gpaP` / `gnaP` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer @parameter                                                                                                          |
 | `gpaR` / `gnaR` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer @return                                                                                                             |
 | `gpaA` / `gnaA` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer @assignment                                                                                                         |
-| `gpa=` / `gna=` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer @assignment.lhs                                                                                                         |
+| `gpa=` / `gna=` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer @assignment.lhs                                                                                                     |
 | `gpa#` / `gna#` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer @number                                                                                                             |
 | `gpaf` / `gnaf` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer \_function                                                                                                          |
 | `gpah` / `gnah` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of outer \_htmlAttribute                                                                                                     |
@@ -307,7 +309,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 | `gpiP` / `gniP` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner @parameter                                                                                                          |
 | `gpiR` / `gniR` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner @return                                                                                                             |
 | `gpiA` / `gniA` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner @assignment                                                                                                         |
-| `gpi=` / `gni=` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner @assignment.rhs                                                                                                         |
+| `gpi=` / `gni=` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner @assignment.rhs                                                                                                     |
 | `gpi#` / `gni#` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner @number                                                                                                             |
 | `gpif` / `gnif` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner \_function                                                                                                          |
 | `gpih` / `gnih` | `n`,`o`,`x` | `;`forward `,`backward | previous/next of inner \_htmlAttribute                                                                                                     |
@@ -335,7 +337,6 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 | `[o`/`]o`/`[O`/`]O` | `n`,`o`,`x` | prev/next/first/last oldfile                         |
 | `[q`/`]q`/`[Q`/`]Q` | `n`,`o`,`x` | prev/next/first/last quickfix (only inside neovim)   |
 | `[t`/`]t`/`[T`/`]T` | `n`,`o`,`x` | prev/next/first/last treesitter                      |
-| `[u`/`]u`/`[U`/`]U` | `n`,`o`,`x` | prev/next/first/last undo                            |
 | `[w`/`]w`/`[W`/`]W` | `n`,`o`,`x` | prev/next/first/last window (only inside neovim)     |
 | `[y`/`]y`/`[Y`/`]Y` | `n`,`o`,`x` | prev/next/first/last yank                            |
 
@@ -597,14 +598,63 @@ _    _    _              _              _    _    _
 
 ---
 
+## Installation
+
+<details open><summary></summary>
+
+- On Windows 10/11 before installing `retronvim` extension you need to enable `Developer Mode` to be able to create the `~/.vscode/extensions/yeferyv.retronvim` symlink.
+  Go to `Settings` > `System` > `For Developers` > `Developer Mode` > `On` and relaunch vscode
+
+  <img src="https://github.com/user-attachments/assets/eeccfa84-32c1-4b81-bf89-804e08e97afa" alt="https://neacsu.net/posts/win_symlinks" width="700">
+
+**Manual Install**
+
+- Linux/MacOS:
+
+  ```bash
+  curl -L pixi.sh/install.sh | bash
+  source ~/.zshrc
+  pixi global install git nodejs nvim yazi
+  git clone --recursive https://github.com/yeferyv/retronvim
+  cd retronvim
+  npx vsce package --out retronvim.vsix
+  code --install-extension retronvim.vsix
+  ```
+
+  Windows 10/11:
+
+  ```powershell
+  winget install git.git openjs.nodejs neovim.neovim sxyazi.yazi microsoft.vcredist.2015+.x64 # microsoft.visualstudiocode # then relaunch terminal
+  git clone --recursive https://github.com/yeferyv/retronvim
+  cd retronvim
+  npx vsce package --out retronvim.vsix
+  code --install-extension retronvim.vsix
+  ```
+
+**VSCode Marketplace**
+
+- RetroNvim extension is shipped with `neovim`, `yazi` and `kanata` binaries and `neovim`'s extensions, `zsh`'s extensions, and `yazi`'s extensions as git-submodules
+
+- https://marketplace.visualstudio.com/items?itemName=YeferYV.retronvim
+
+</details>
+
+## Trobleshotting
+
+<details open><summary></summary>
+
+- remove the `~/.vscode/extensions/yeferyv.retronvim` symlink and relaunch vscode
+- remove `vscode-neovim.neovimExecutablePaths.linux` `vscode-neovim.neovimExecutablePaths.win32` `vscode-neovim.neovimExecutablePaths.darwin` from `settings.json` and relaunch vscode
+- open vscode command palette and type: `Output: Show Output Channels` > `vscode-neovim logs`
+
+</details>
+
 ## Terminal dependencies (optional)
 
 <details open><summary></summary>
 
-RetroNvim extension is shipped with `neovim`, `yazi` and `kanata` binaries and `neovim`'s extensions, `zsh`'s extensions, and `yazi`'s extensions as git-submodules
-
-To install terminal dependencies after installing retronvim extension, open
-`whichkey` > `+Install Dependencies` > `install <your package manager>` > `<your package manager> install lazygit startship zsh` > relaunch vscode
+- To install terminal dependencies after installing retronvim extension, open
+  `whichkey` > `+Install Dependencies` > `install <your package manager>` > `<your package manager> install lazygit startship zsh` > relaunch vscode
 
 </details>
 
@@ -612,18 +662,28 @@ To install terminal dependencies after installing retronvim extension, open
 
 <details open><summary></summary>
 
-Text objects that has a `@` prefix requires a treesitter parser, neovim version `0.10` or newer comes with treesitter parsers for
-`c`, `lua`, `markdown`.
-Install treesitter parser for your programming language with `:TSInstall <your programming language>`
-( on Windows 10/11 `:TSInstall` requires `scoop install zig` )( on MacOS `https://brew.sh` installs `gcc` which is required by `:TSInstall` ).
+- Text objects that has a `@` prefix requires a treesitter parser, neovim version `0.10` or newer comes with treesitter parsers for
+  `c`, `lua`, `markdown`.
+  Install treesitter parser for your programming language with `:TSInstall <your programming language>`
+  ( on Windows 10/11 `:TSInstall` requires `scoop install zig` )( on MacOS `https://brew.sh` installs `gcc` which is required by `:TSInstall` ).
 
-Example: in normal mode type `:` to open vim-command-line then type `TSInstall cpp`
+- Example: in normal mode type `:` to open vim-command-line then type `TSInstall cpp`
 
-Tip: for new retronvim releases you need to install again all your the treesitter parsers
+- Tip: for new retronvim releases you need to install again all your the treesitter parsers
 
-Tip: to make a clean tressitter parser installation remove the folder
-`rm -rf ~/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/plugins/site/pack/deps/opt/nvim-treesitter/parser` (on linux and mac),
-`rm -r -force ~/.vscode/extensions/yeferyv.retronvim-0.1.0/nvim/plugins/site/pack/deps/opt/nvim-treesitter/parser` (on Windows 10/11)
+- Tip: to make a clean tressitter parser installation remove the folder.
+
+  on linux and mac:
+
+  ```
+  rm -rf ~/.vscode/extensions/yeferyv.retronvim/nvim/plugins/site/pack/deps/opt/nvim-treesitter/parser
+  ```
+
+  on Windows 10/11:
+
+  ```
+  rm -r -force ~/.vscode/extensions/yeferyv.retronvim/nvim/plugins/site/pack/deps/opt/nvim-treesitter/parser
+  ```
 
 </details>
 

@@ -119,29 +119,33 @@ end
 -- │ Autocommands │
 -- ╰──────────────╯
 
-vim.cmd [[
+local autocmd = vim.api.nvim_create_autocmd
 
-  augroup _general_settings
-    autocmd!
-    autocmd TextYankPost * silent!lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 200})
-    autocmd BufEnter     * :set formatoptions-=cro
-    autocmd BufReadPost  * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-  augroup end
+-- stop comment prefix on new lines
+autocmd({ "BufEnter" }, { command = "set formatoptions-=cro" })
 
-  augroup _hightlight_whitespaces
-    autocmd!
-    autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-    highlight ExtraWhitespace ctermbg=red guibg=red
-    autocmd InsertLeave * redraw!
-    match ExtraWhitespace /\s\+$\| \+\ze\t/
-    autocmd BufWritePre * :%s/\s\+$//e
-  augroup end
+-- remember last position when re-opening a file
+autocmd({ "BufReadPost" }, { command = "normal! g'\"" })
 
-]]
+-- briefly highlight yanked text
+autocmd("TextYankPost", { callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = 200 }) end })
+
+-- Highlight trailing whitespace
+vim.api.nvim_set_hl(0, "ExtraWhitespace", { ctermbg = "red", bg = "red" })
+
+-- Ensure the highlight exists after a colorscheme change
+autocmd({ "ColorScheme" }, { command = "highlight ExtraWhitespace ctermbg=red guibg=red" })
+
+-- Refresh highlighting after leaving insert mode
+autocmd("InsertLeave", { command = "redraw!", })
+
+-- Apply the highlight to trailing spaces
+vim.fn.matchadd("ExtraWhitespace", [[\s\+$\| \+\ze\t]])
+
+-- Remove trailing spaces on save
+autocmd("BufWritePre", { command = [[%s/\s\+$//e]], })
 
 ------------------------------------------------------------------------------------------------------------------------
-
-local autocmd = vim.api.nvim_create_autocmd
 
 autocmd({ "TermEnter", "TermOpen" }, {
   callback = function()
@@ -488,7 +492,7 @@ require('mini.surround').setup({
 })
 
 require('mini.align').setup()
-require('mini.bracketed').setup()
+require('mini.bracketed').setup({ undo = { suffix = '' } })
 require('mini.operators').setup()
 require('mini.splitjoin').setup()
 
@@ -767,9 +771,9 @@ if not vim.g.vscode then
   require('mini.tabline').setup()
   MiniIcons.mock_nvim_web_devicons()
   MiniIcons.tweak_lsp_kind( --[[ "replace" ]])
-  vim.notify = MiniNotify.make_notify() -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
+  vim.notify = MiniNotify.make_notify()                                        -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
   vim.ui.select = MiniPick.ui_select
-  vim.opt.completeopt:append('fuzzy')   -- it should be after require("mini.completion").setup())
+  if vim.fn.has('nvim-0.11') == 1 then vim.opt.completeopt:append('fuzzy') end -- it should be after require("mini.completion").setup())
 end
 
 -- ╭────────────╮
@@ -986,6 +990,8 @@ if not vim.g.vscode then
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", ":set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", ":set showtabline=2<cr>", { desc = "Buffer Show" })
+  map("n", "<leader>um", ":SupermavenStop<cr>", { desc = "Supermaven stop" })
+  map("n", "<leader>uM", ":SupermavenStart<cr>", { desc = "Supermaven start" })
   map("n", "<leader>us", ":set laststatus=0<cr>", { desc = "StatusBar Hide" })
   map("n", "<leader>uS", ":set laststatus=3<cr>", { desc = "StatusBar Show" })
   map("n", "<leader>uh", function() M.EnableAutoNoHighlightSearch() end, { desc = "Enable AutoNoHighlightSearch" })

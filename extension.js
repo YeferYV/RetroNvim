@@ -7,6 +7,7 @@ function setNeovimPath(homeExtension) {
   // Construct the dynamic path
   const homeDirectory = os.homedir();
   const retronvimPath = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim');
+  const nvimPathPixi = path.join(homeDirectory, '.pixi/bin/nvim');
   const nvimPathLinux = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/linux-x64/nvim');
   const nvimPathMacOS = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin/nvim');
   const nvimPathWindows = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/win32-x64/nvim-win64/bin/nvim.exe');
@@ -32,11 +33,21 @@ function setNeovimPath(homeExtension) {
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
   config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
   config.update('window.customMenuBarAltFocus', false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
-  config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacOS, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
   config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)
 
+  if (fs.existsSync(nvimPathPixi)) {
+    config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathPixi, vscode.ConfigurationTarget.Global)
+    config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathPixi, vscode.ConfigurationTarget.Global)
+  }
+  if (fs.existsSync(nvimPathLinux)) {
+    config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
+  }
+  if (fs.existsSync(nvimPathMacOS)) {
+    config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacOS, vscode.ConfigurationTarget.Global)
+  }
+  if (fs.existsSync(nvimPathWindows)) {
+    config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
+  }
 }
 
 // You can call this function in your extension's activate function or based on certain events
