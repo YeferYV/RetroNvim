@@ -710,7 +710,7 @@
             },
             {
               "key": "s",
-              "name": "install scoop, pixi and pnpm package managers (Windows 10/11)",
+              "name": "install scoop, pixi and pnpm package managers (Windows 10/11 on powershell)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -2318,12 +2318,12 @@
       },
       {
         "key": "alt+j",
-        "command": "editor.action.inlineSuggest.showNext",
+        "command": "editor.action.inlineSuggest.acceptNextWord",
         "when": "inlineSuggestionVisible && neovim.mode == 'insert'"
       },
       {
         "key": "alt+k",
-        "command": "editor.action.inlineSuggest.showPrevious",
+        "command": "editor.action.inlineSuggest.acceptNextLine",
         "when": "inlineSuggestionVisible && neovim.mode == 'insert'"
       },
       {

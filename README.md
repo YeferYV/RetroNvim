@@ -451,8 +451,10 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |    `ctrl+space`    | `i`  | Toggle suggestion widget                   |
 | `ctrl+shift+space` | `i`  | Toggle parameter hints                     |
 |  `ctrl+alt+space`  | `i`  | Toggle suggestion focus                    |
-|      `alt+j`       | `i`  | Show next inline suggestion                |
-|      `alt+k`       | `i`  | Show previous inline suggestion            |
+|      `alt+]`       | `i`  | Show next inline suggestion                |
+|      `alt+[`       | `i`  | Show previous inline suggestion            |
+|      `alt+j`       | `i`  | inline suggestion accept next word         |
+|      `alt+k`       | `i`  | inline suggestion accept next line         |
 |      `alt+l`       | `i`  | Commit inline suggestion                   |
 |      `ctrl+j`      | `i`  | Select next suggestion                     |
 |      `ctrl+k`      | `i`  | Select previous suggestion                 |
