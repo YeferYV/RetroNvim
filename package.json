@@ -2334,12 +2334,12 @@
       {
         "key": "ctrl+j",
         "command": "selectNextSuggestion",
-        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+        "when": "editorTextFocus && suggestWidgetVisible"
       },
       {
         "key": "ctrl+k",
         "command": "selectPrevSuggestion",
-        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+        "when": "editorTextFocus && suggestWidgetVisible"
       },
       {
         "key": "ctrl+l",
@@ -2474,7 +2474,7 @@
             "acceptSelectedSuggestion"
           ]
         },
-        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion"
+        "when": "editorTextFocus && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion"
       },
       {
         "key": "tab",
@@ -2485,7 +2485,7 @@
             "acceptSelectedSuggestion"
           ]
         },
-        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion && !isSnippetMode && !hasNextTabstop"
+        "when": "editorTextFocus && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion && !isSnippetMode && !hasNextTabstop"
       },
       {
         "key": "tab",
