@@ -19,6 +19,18 @@
 
 - `iex $env:editor` not opening on powershell
 
+## [0.2.1](https://github.com/YeferYV/RetroNvim/compare/v0.2.0...v0.2.1) (2025-01-12)
+
+
+### Bug Fixes
+
+* **keybinding.json:** suggest widget blocks inline completion ([ec2424a](https://github.com/YeferYV/RetroNvim/commit/ec2424a3ff0ab86cf75412c3fefcb5486801de8a))
+* **keybindings.json:** `suggestWidgetMultipleSuggestions` unneeded for `enter` nor `tab` nor `ctrl+j` nor `ctrl+k` ([ec3e3ba](https://github.com/YeferYV/RetroNvim/commit/ec3e3bad6e3864e0544af2babe358c24c0a51ce4))
+* **keybindings.json:** disable &lt;tab&gt; inline completion which blocks <tab> snippet mode ([7593fda](https://github.com/YeferYV/RetroNvim/commit/7593fdaaa81c625fc950d29979ad79f26b20d37b))
+* **nvim:** vscode `undo` snippets conflicts with MiniBracketed.undo() ([c260f34](https://github.com/YeferYV/RetroNvim/commit/c260f340996a931511d316107791a34f867ce0bf))
+* **settings.json:** `formulahendry.auto-rename-tag` supports vscode-neovim "editor.linkedEditing" doesn't ([e741b34](https://github.com/YeferYV/RetroNvim/commit/e741b34ab0bcdadfbbe7dc54e403fe085a394c54))
+* **whichkey:** missing "workbench.action.terminal.sendsequence" for "install pixi and pnpm" ([1951852](https://github.com/YeferYV/RetroNvim/commit/1951852603a166331c308f0bd9457f3cbe43ba33))
+
 ## [0.2.0](https://github.com/YeferYV/RetroNvim/compare/v0.1.1...v0.2.0) (2025-01-05)
 
 
