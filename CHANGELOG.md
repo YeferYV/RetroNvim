@@ -1,24 +1,3 @@
-## v0.1.2 (27-12-2024)
-
-**Added**
-
-- adding `mini.hipatterns` with tailwind support
-- writing a minimal `mason-lspconfig`
-
-**Changed**
-
-- migrating to `supermaven` since `codeium` is slow
-- migrating to `pnpm` since `npm` is slow
-- migrating to `mini.ai` from `nvim-various-textobjs`
-- migrating to `vim.snippets` from `luasnip` and dropping `friendly-snippets` support
-- migrating to `efm-language-server` (which support formatters and linters) from `none-ls`
-- migrating to `yazi v0.4.2`
-- repeat `hjkl` every 15 miliseconds
-
-**Fixed**
-
-- `iex $env:editor` not opening on powershell
-
 ## [0.2.0](https://github.com/YeferYV/RetroNvim/compare/v0.1.1...v0.2.0) (2025-01-05)
 
 

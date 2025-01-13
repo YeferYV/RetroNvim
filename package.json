@@ -84,11 +84,13 @@
       ],
       "terminal.integrated.enableImages": true,
       "terminal.integrated.env.linux": {
-        "RETRONVIM_PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim",
+        "RETRONVIM_INIT": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
         "RETRONVIM_BIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64",
-        "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
-        "EDITOR_FZF": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick files'",
-        "EDITOR_RIPGREP": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick grep_live'",
+        "BAT_THEME": "base16",
+        "EDITOR": "nvim -u $RETRONVIM_INIT",
+        "EDITOR_FZF": "nvim -u $RETRONVIM_INIT -c 'Pick files'",
+        "EDITOR_RIPGREP": "nvim -u $RETRONVIM_INIT -c 'Pick grep_live'",
+        "FZF_DEFAULT_OPTS": "--preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
         "PNPM_HOME": "${env:HOME}/.local/share/pnpm",
         "VISUAL": "code",
@@ -98,11 +100,13 @@
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
       },
       "terminal.integrated.env.osx": {
-        "RETRONVIM_PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim",
+        "RETRONVIM_INIT": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
         "RETRONVIM_BIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64",
-        "EDITOR": "nvim -u $RETRONVIM_PATH/nvim/init.lua",
-        "EDITOR_FZF": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick files'",
-        "EDITOR_RIPGREP": "nvim -u $RETRONVIM_PATH/nvim/init.lua -c 'Pick grep_live'",
+        "BAT_THEME": "base16",
+        "EDITOR": "nvim -u $RETRONVIM_INIT",
+        "EDITOR_FZF": "nvim -u $RETRONVIM_INIT -c 'Pick files'",
+        "EDITOR_RIPGREP": "nvim -u $RETRONVIM_INIT -c 'Pick grep_live'",
+        "FZF_DEFAULT_OPTS": "--preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin:${env:HOME}/.pixi/bin:${env:HOME}/Library/pnpm:${env:PATH}",
         "PNPM_HOME": "${env:HOME}/Library/pnpm",
         "VISUAL": "code",
@@ -111,10 +115,12 @@
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
       },
       "terminal.integrated.env.windows": {
-        "RETRONVIM_PATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim",
-        "EDITOR": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua'",
-        "EDITOR_FZF": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick files'",
-        "EDITOR_RIPGREP": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -c 'Pick grep_live'",
+        "RETRONVIM_INIT": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
+        "BAT_THEME": "base16",
+        "EDITOR": "nvim --clean -c 'source $RETRONVIM_INIT'",
+        "EDITOR_FZF": "nvim --clean -c 'source $RETRONVIM_INIT' -c 'Pick files'",
+        "EDITOR_RIPGREP": "nvim --clean -c 'source $RETRONVIM_INIT' -c 'Pick grep_live'",
+        "FZF_DEFAULT_OPTS": "--preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
         "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
         "VISUAL": "code",
         "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml",
@@ -816,7 +822,7 @@
               "args": [
                 null,
                 {
-                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
+                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $HOME/.vscode/extensions/yeferyv.retronvim/kanata/simple.kbd &'; sleep 5; exit; \r"
                 }
               ]
             },
@@ -831,7 +837,7 @@
               "args": [
                 null,
                 {
-                  "text": "powershell -c 'conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd; Set-WinUserLanguageList -force en-US,es-US'; sleep 2; exit; \r"
+                  "text": "powershell -c 'conhost --headless kanata --cfg %HOMEPATH%/.vscode/extensions/yeferyv.retronvim/kanata/simple.kbd; Set-WinUserLanguageList -force en-US,es-US'; sleep 2; exit; \r"
                 },
                 "require('vscode').notify('`<windowskey-r>control keyboard` and `<windows>filter keys` to change keyboard repeat rate without relogin')"
               ]
@@ -1457,7 +1463,7 @@
               "args": [
                 null,
                 {
-                  "text": "nvim --clean -c 'source $RETRONVIM_PATH/nvim/init.lua' -cterm; exit\n"
+                  "text": "nvim --clean -c \"lua vim.cmd.source(vim.env.RETRONVIM_INIT)\" -cterm; exit\n"
                 }
               ]
             },

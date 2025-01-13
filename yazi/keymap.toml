@@ -38,6 +38,8 @@ prepend_keymap = [
 	{ on = [ "f", "z" ], run = "find_do '^z' --smart", desc = "find ^z" },
 
 	# Filter
+	{ on = [ "i" ], run = """ shell 'bat --paging always --wrap never "$@"' --block --confirm """, desc = "Bat (unix)" },
+	{ on = [ "I" ], run = """ shell 'bat --paging always --wrap never %*' --block --confirm """,   desc = "Bat (windows)" },
 	{ on = [ "F" ], run = "filter --smart", desc = "Filter" },
 
   # Shell
@@ -51,11 +53,12 @@ prepend_keymap = [
 	{ on = [ "s", "F" ], run = """ shell '%EDITOR_FZF%' --block --confirm """,                                                        desc = "Neovim pick files (windows)" },
 	{ on = [ "s", "G" ], run = """ shell '%EDITOR_RIPGREP%' --block --confirm """,                                                    desc = "Neovim pick grep (windows)" },
 	{ on = [ "s", "i" ], run = """ shell '$SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"' --block --confirm """,                       desc = "Swallow sxiv (linux)" },
-	{ on = [ "s", "l" ], run = """ shell "lazygit" --block --confirm """,                                                             desc = "Lazygit" },
+	{ on = [ "s", "l" ], run = """ shell "lazygit" --block --confirm """,                                                             desc = "Lazygit (unix)" },
+	{ on = [ "s", "L" ], run = """ shell "lazygit" --block --confirm """,                                                             desc = "Lazygit (windows)" },
 	{ on = [ "s", "n" ], run = """ shell 'nvim "$@"' --block --confirm """,                                                           desc = "Neovim open selected (unix)" },
 	{ on = [ "s", "N" ], run = """ shell 'nvim %*' --block --confirm """,                                                             desc = "Neovim open selected (windows)" },
 	{ on = [ "s", "p" ], run = """ shell '$SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"' --block --confirm """,                 desc = "Swallow zathura (linux)" },
-	{ on = [ "s", "r" ], run = """ shell 'ripdrag "$@" -x 2>/dev/null &' --confirm """,                                               desc = "Ripdrag (linux)" },
+	{ on = [ "s", "R" ], run = """ shell 'ripdrag "$@" -x 2>/dev/null &' --confirm """,                                               desc = "Ripdrag (linux)" },
 	{ on = [ "s", "s" ], run = """ shell "zsh" --block --confirm """,                                                                 desc = "Open zsh (zle unsupported)" },
 	{ on = [ "s", "S" ], run = """ shell "powershell" --block --confirm """,                                                          desc = "Open powershell" },
 	{ on = [ "s", "v" ], run = """ shell '$SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"' --block --confirm """,                         desc = "Swallow mpv (unix)" },
@@ -70,3 +73,14 @@ prepend_keymap = [
 	{ on = [ "'" ], run = "plugin bookmarks --args=jump",   desc = "bookmark jump" },
 	{ on = [ '"' ], run = "plugin bookmarks --args=delete", desc = "bookmark delete" },
 ]
+
+[[manager.append_keymap]]
+on = [ "s", "r" ]
+run = '''
+  shell
+  '
+    rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2}" --bind "enter:become(ya emit reveal {1} && nvim --clean -c \"lua vim.cmd.source(vim.env.RETRONVIM_INIT)\" {1} +{2})"
+  '
+  --block
+'''
+desc = "Ripgrep fzf"
