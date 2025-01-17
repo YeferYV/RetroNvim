@@ -70,6 +70,11 @@
       "json.format.keepLines": true,
       "multiDiffEditor.experimental.enabled": true,
       "scm.defaultViewMode": "tree",
+      "tailwindCSS.emmetCompletions": true,
+      "tailwindCSS.includeLanguages": {
+        "javascript": "javascript",
+        "typescript": "typescript"
+      },
       "terminal.integrated.commandsToSkipShell": [
         "whichkey.show",
         "workbench.action.openEditorAtIndex1",
