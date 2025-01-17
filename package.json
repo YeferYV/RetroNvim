@@ -2484,14 +2484,13 @@
       },
       {
         "key": "tab",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "selectNextSuggestion",
-            "acceptSelectedSuggestion"
-          ]
-        },
-        "when": "editorTextFocus && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion && !isSnippetMode && !hasNextTabstop"
+        "command": "selectNextSuggestion",
+        "when": "editorTextFocus && suggestWidgetVisible && !isSnippetMode && !hasNextTabstop"
+      },
+      {
+        "key": "shift+tab",
+        "command": "selectPrevSuggestion",
+        "when": "editorTextFocus && suggestWidgetVisible && !isSnippetMode && !hasNextTabstop"
       },
       {
         "key": "tab",
