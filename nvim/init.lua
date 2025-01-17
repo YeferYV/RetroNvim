@@ -807,7 +807,7 @@ if not vim.g.vscode then
   map({ "n" }, "<right>", ":bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", ":bprevious<CR>", { desc = "prev buffer" })
   map({ "n" }, "<leader>x", ":bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
-  map({ "n" }, "<leader>X", ":tabclose<CR>", { desc = "Close Tab" })
+  map({ "n" }, "<leader>;", ":buffer #<cr>", { desc = "Recent buffer" })
 end
 
 -- Quick quit/write
@@ -948,10 +948,11 @@ if not vim.g.vscode then
   map("n", "<leader>o", ":lua MiniFiles.open()<cr>", { desc = "Open Explorer (CWD)" })
   map("n", "<leader>O", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", { desc = "Open Explorer (CurrentFile)" })
   map("n", "<leader>f", "", { desc = "+Find" })
-  map("n", "<leader>f/", ":Pick files<cr>", { desc = "Pick Files (tab to preview)" })
-  map("n", "<leader>fF", ":Pick grep_live<cr>", { desc = "Pick Grep (tab to preview)" })
-  map("n", "<leader>f'", ":Pick marks<cr>", { desc = "Pick Marks (tab to preview)" })
-  map("n", "<leader>fR", ":Pick registers<cr>", { desc = "Pick register" })
+  map("n", "<leader>ff", ":Pick files<cr>", { desc = "Files (tab to preview)" })
+  map("n", "<leader>f/", ":Pick git_files<cr>", { desc = "Git/hidden files (tab to preview)" })
+  map("n", "<leader>fg", ":Pick grep_live<cr>", { desc = "Grep (tab to preview)" })
+  map("n", "<leader>f'", ":Pick marks<cr>", { desc = "Marks (tab to preview)" })
+  map("n", '<leader>f"', ":Pick registers<cr>", { desc = "register (:help quote)" })
   map("n", "<leader>fn", ":lua MiniNotify.show_history()<cr>", { desc = "Notify history" })
   map("n", "<leader>g", "", { desc = "+Git" })
   map("n", "<leader>gg", ":lua vim.cmd[[terminal lazygit]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "lazygit" })

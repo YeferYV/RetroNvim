@@ -30,8 +30,8 @@ yy () { yazi --cwd-file=$HOME/.yazi $@ < /dev/tty; cd "$(cat $HOME/.yazi)"; zle 
 zle -N yy          # creating `yy` keymap
 bindkey '\eo' 'yy' # \eo = alt + o
 
-source $RETRONVIM_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source $HOME/.vscode/extensions/yeferyv.retronvim/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source $HOME/.vscode/extensions/yeferyv.retronvim/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 which fzf      >/dev/null 2>&1 && source <(fzf --zsh)
 which eza      >/dev/null 2>&1 && alias ls="eza --all --icons --group-directories-first"
 which starship >/dev/null 2>&1 && eval "$(starship init zsh)"

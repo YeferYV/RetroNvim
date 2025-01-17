@@ -31,14 +31,15 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 2. Neovim GoTo
    - [Neovim Space TextObjects/Motions](#neovim-space-textobject-motions)
    - [Neovim Go to Previous / Next](#neovim-go-to-previous--next)
-   - [Neovim Mini.brackets](#neovim-minibrackets)
+   - [Neovim Mini.bracketed](#neovim-minibracketed)
    - [Native neovim ctrl keys](#native-neovim-ctrl-keys)
 3. keybindings.json
    - [File Explorer keymaps](#file-explorer-keymaps)
    - [Editor keymaps (keybindings.json)](#editor-keymaps-keybindingsjson)
    - [Suggestion keymaps](#suggestion-keymaps)
+4. Terminal
    - [Terminal keymaps](#terminal-keymaps)
-4. [zsh keymaps](#zsh-keymaps)
+   - [zsh keymaps](#zsh-keymaps)
 5. [If Touchcursor Keyboard Layout Started](#if-touchcursor-keyboard-layout-started)
 6. Installation
    - [Install](#installation)
@@ -319,7 +320,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 </details>
 
-## Neovim Mini.brackets
+## Neovim Mini.bracketed
 
 <details open><summary></summary>
 
@@ -355,6 +356,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |    `ctrl+i`     |   `n`   | jump to next in `:jumps`                                                                                                    |
 |    `ctrl+o`     |   `n`   | jump to previous in `:jumps`                                                                                                |
 |    `ctrl+r`     |   `n`   | redo (`u` to undo)                                                                                                          |
+|    `ctrl+s`     | `n`,`v` | replace text (using `sed` syntax)(only replaces selected region on visual mode)(neovim only)                                |
 |    `ctrl+u`     | `n`,`v` | scroll up by half page                                                                                                      |
 |    `ctrl+v`     | `n`,`v` | visual block mode                                                                                                           |
 |    `ctrl+w`     | `n`,`v` | See [vscode-window-commands.vim](https://github.com/vscode-neovim/vscode-neovim/blob/master/vim/vscode-window-commands.vim) |
@@ -406,6 +408,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |     Key Combination      |    mode     | Description                                              |
 | :----------------------: | :---------: | :------------------------------------------------------- |
 |         `ctrl+\`         |     `n`     | Toggle panel (terminal) visibility                       |
+|         `<esc>`          |     `n`     | clear search highlight                                   |
 |      `shift+space`       |     `n`     | Show whichkey menu (Windows, Linux, Mac)                 |
 |       `alt+space`        |     `n`     | Show whichkey menu (Linux, Mac)                          |
 |         `alt+.`          |     `n`     | Repeat most recent Whichkey action                       |
@@ -457,6 +460,8 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |      `alt+l`       | `i`  | Commit inline suggestion                   |
 |      `ctrl+j`      | `i`  | Select next suggestion                     |
 |      `ctrl+k`      | `i`  | Select previous suggestion                 |
+|       `tab`        | `i`  | go to next snippet stop or next suggestion |
+|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion |
 |      `ctrl+l`      | `i`  | Accept selected suggestion                 |
 |      `ctrl+d`      | `i`  | Select next page in suggestion details     |
 |      `ctrl+u`      | `i`  | Select previous page in suggestion details |

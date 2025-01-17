@@ -10,9 +10,9 @@ show_symlink   = false
 
 [opener]
 edit = [
-	# { run = '%EDITOR% %*',                                               block = true,  desc = "$EDITOR", for = "windows" },
-	# { run = 'nvim %*',                                                   block = true,  desc = "nvim",    for = "windows" },
-	{ run = 'nvim --clean -c "source $RETRONVIM_PATH/nvim/init.lua" %*', block = true,  desc = "$EDITOR", for = "windows" },
-	{ run = 'code %*',                                                   orphan = true, desc = "code",    for = "windows" },
-	{ run = 'eval ${EDITOR:-nvim} "$@"',                                 block = true,  desc = "$EDITOR", for = "unix" },
+	# { run = '%EDITOR% %*',                               block = true,  desc = "$EDITOR", for = "windows" },
+	# { run = 'nvim %*',                                   block = true,  desc = "nvim",    for = "windows" },
+	{ run = 'nvim --clean -c "source $RETRONVIM_INIT" %*', block = true,  desc = "$EDITOR", for = "windows" },
+	{ run = 'code %*',                                     orphan = true, desc = "code",    for = "windows" },
+	{ run = 'eval ${EDITOR:-nvim} "$@"',                   block = true,  desc = "$EDITOR", for = "unix" },
 ]
