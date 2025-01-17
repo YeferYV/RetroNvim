@@ -183,6 +183,39 @@ autocmd({ "TermClose", --[[ "BufWipeout" ]] }, {
   end,
 })
 
+--------------------------------------------------------------------------------------------------------------------
+
+-- https://www.reddit.com/r/neovim/comments/ww2oyu/toggle_terminal
+function ToggleTerminal()
+  local buf_exists = vim.fn.bufexists(te_buf) == 1
+  local win_exists = vim.fn.win_gotoid(te_win_id) == 1
+
+  if not buf_exists then
+    -- Terminal buffer doesn't exist, create it
+    vim.cmd("vsplit +term")
+    te_win_id = vim.fn.win_getid()
+    te_buf = vim.fn.bufnr()
+  elseif not win_exists then
+    -- Terminal buffer exists but not visible, show it
+    vim.cmd('vs | buffer' .. te_buf)
+    te_win_id = vim.fn.win_getid()
+  else
+    -- Terminal buffer exists and is visible, hide it
+    vim.cmd("hide")
+  end
+end
+
+function HideUnhideWindow()
+  if not Hidden then
+    Bufnr = vim.fn.bufnr()
+    vim.cmd('hide')
+    Hidden = true
+  else
+    vim.cmd('vs | buffer' .. Bufnr)
+    Hidden = false
+  end
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 
 -- vscode's keybinding.json with neovim.fullMode context for flash mode and replace mode
@@ -222,44 +255,6 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 local M = {}
-
--- https://thevaluable.dev/vim-create-text-objects
--- select indent by the same or mayor level:
-M.select_indent = function(skip_blank_line, skip_comment_line, same_indent, visual_mode)
-  local start_indent = vim.fn.indent(vim.fn.line('.'))
-  local get_comment_regex = "^%s*" .. string.gsub(vim.bo.commentstring, "%%s", ".*") .. "%s*$"
-  local is_blank_line = function(line) return string.match(vim.fn.getline(line), '^%s*$') end
-  local is_comment_line = function(line) return string.find(vim.fn.getline(line), get_comment_regex) end
-  local is_not_out_of_range = function(line) return vim.fn.indent(line) ~= -1 end
-  local has_not_same_indent = function(line) return vim.fn.indent(line) ~= start_indent end
-  local has_mayor_indent = function(line) return vim.fn.indent(line) >= start_indent end
-
-  vim.cmd [[ execute "normal \<esc>" ]] -- to exit visual mode
-
-  -- go up while having a same or mayor indent
-  local prev_line = vim.fn.line('.') - 1
-  while has_mayor_indent(prev_line) or (is_blank_line(prev_line) and is_not_out_of_range(prev_line)) do
-    if same_indent and has_not_same_indent(prev_line) and (not is_blank_line(prev_line)) then break end
-    if skip_blank_line and is_blank_line(prev_line) then break end
-    if skip_comment_line and is_comment_line(prev_line) then break end
-    vim.cmd('-')
-    prev_line = prev_line - 1
-  end
-
-  vim.cmd('normal! ' .. visual_mode)
-
-  -- go down while having a same or mayor indent
-  local next_line = vim.fn.line('.') + 1
-  while has_mayor_indent(next_line) or (is_blank_line(next_line) and is_not_out_of_range(next_line)) do
-    if same_indent and has_not_same_indent(next_line) and (not is_blank_line(next_line)) then break end
-    if skip_blank_line and is_blank_line(next_line) then break end
-    if skip_comment_line and is_comment_line(next_line) then break end
-    vim.cmd('+')
-    next_line = next_line + 1
-  end
-end
-
---------------------------------------------------------------------------------------------------------------------
 
 -- https://github.com/romgrk/columnMove.vim
 M.ColumnMove = function(direction)
@@ -310,39 +305,6 @@ M.ColumnMove = function(direction)
     vim.cmd.normal(lnum - direction .. "gg" .. colnum .. "|")
   else
     vim.cmd.normal(lnum .. "gg" .. colnum .. "|")
-  end
-end
-
---------------------------------------------------------------------------------------------------------------------
-
--- https://www.reddit.com/r/neovim/comments/ww2oyu/toggle_terminal
-function ToggleTerminal()
-  local buf_exists = vim.fn.bufexists(te_buf) == 1
-  local win_exists = vim.fn.win_gotoid(te_win_id) == 1
-
-  if not buf_exists then
-    -- Terminal buffer doesn't exist, create it
-    vim.cmd("vsplit +term")
-    te_win_id = vim.fn.win_getid()
-    te_buf = vim.fn.bufnr()
-  elseif not win_exists then
-    -- Terminal buffer exists but not visible, show it
-    vim.cmd('vs | buffer' .. te_buf)
-    te_win_id = vim.fn.win_getid()
-  else
-    -- Terminal buffer exists and is visible, hide it
-    vim.cmd("hide")
-  end
-end
-
-function HideUnhideWindow()
-  if not Hidden then
-    Bufnr = vim.fn.bufnr()
-    vim.cmd('hide')
-    Hidden = true
-  else
-    vim.cmd('vs | buffer' .. Bufnr)
-    Hidden = false
   end
 end
 
@@ -452,8 +414,53 @@ require("mini.ai").setup({
     o = { "%S()%s+()%S" },                                                                                                  -- whitespace textobj
     S = { { '%u[%l%d]+%f[^%l%d]', '%f[%S][%l%d]+%f[^%l%d]', '%f[%P][%l%d]+%f[^%l%d]', '^[%l%d]+%f[^%l%d]', }, '^().*()$' }, -- sub word textobj https://github.com/echasnovski/mini.nvim/blob/main/doc/mini-ai.txt
     u = { { "%b''", '%b""', '%b``' }, '^.().*().$' },                                                                       -- quote textobj
+
+    -- https://thevaluable.dev/vim-create-text-objects
+    -- select indent by the same or mayor level delimited by blank-lines
+    i = function()
+      local start_indent = vim.fn.indent(vim.fn.line('.'))
+
+      local prev_line = vim.fn.line('.') - 1
+      while vim.fn.indent(prev_line) >= start_indent do
+        prev_line = prev_line - 1
+      end
+
+      local next_line = vim.fn.line('.') + 1
+      while vim.fn.indent(next_line) >= start_indent do
+        next_line = next_line + 1
+      end
+
+      return { from = { line = prev_line + 1, col = 1 }, to = { line = next_line - 1, col = 100 }, vis_mode = 'V' }
+    end,
+
+    -- select indent by the same level delimited by comment-lines (outer: includes blank-lines)
+    y = function()
+      local start_indent = vim.fn.indent(vim.fn.line('.'))
+      local get_comment_regex = "^%s*" .. string.gsub(vim.bo.commentstring, "%%s", ".*") .. "%s*$"
+      local is_blank_line = function(line) return string.match(vim.fn.getline(line), '^%s*$') end
+      local is_comment_line = function(line) return string.find(vim.fn.getline(line), get_comment_regex) end
+      local is_out_of_range = function(line) return vim.fn.indent(line) == -1 end
+
+      local prev_line = vim.fn.line('.') - 1
+      while vim.fn.indent(prev_line) == start_indent or is_blank_line(prev_line) do
+        if is_out_of_range(prev_line) then break end
+        if is_comment_line(prev_line) then break end
+        if is_blank_line(prev_line) and _G.skip_blank_line then break end
+        prev_line = prev_line - 1
+      end
+
+      local next_line = vim.fn.line('.') + 1
+      while vim.fn.indent(next_line) == start_indent or is_blank_line(next_line) do
+        if is_out_of_range(next_line) then break end
+        if is_comment_line(next_line) then break end
+        if is_blank_line(next_line) and _G.skip_blank_line then break end
+        next_line = next_line + 1
+      end
+
+      return { from = { line = prev_line + 1, col = 1 }, to = { line = next_line - 1, col = 100 }, vis_mode = 'V' }
+    end
   },
-  n_lines = 500,                                                                                                            -- search range and required by functions less than 500 LOC
+  n_lines = 500, -- search range and required by functions less than 500 LOC
 })
 
 require('mini.surround').setup({
@@ -1080,10 +1087,26 @@ map({ "o", "x" }, "gF", "gN", { desc = "Prev find textobj" })
 
 map({ "o", "x" }, "iI", function() require("mini.indentscope").textobject(false) end, { desc = "indent blank" })
 map({ "o", "x" }, "aI", function() require("mini.indentscope").textobject(true) end, { desc = "indent blank" })
-map({ "x", "o" }, "ii", function() M.select_indent(true, true, false, "V") end, { desc = "indent" })
-map({ "x", "o" }, "ai", function() M.select_indent(true, true, false, "kV") end, { desc = "indent" })
-map({ "x", "o" }, "iy", function() M.select_indent(true, true, true, "V") end, { desc = "same_indent" })
-map({ "x", "o" }, "ay", function() M.select_indent(false, false, true, "V") end, { desc = "same_indent blank" })
+map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent" })
+map({ "o", "x" }, "ai", ":normal Viik<cr>", { desc = "indent" })
+map(
+  { "o", "x" },
+  "iy",
+  function()
+    _G.skip_blank_line = true
+    require("mini.ai").select_textobject("i", "y")
+  end,
+  { desc = "same_indent" }
+)
+map(
+  { "o", "x" },
+  "ay",
+  function()
+    _G.skip_blank_line = false
+    require("mini.ai").select_textobject("i", "y")
+  end,
+  { desc = "same_indent" }
+)
 map({ "x" }, "iz", ":<c-u>normal! [zjV]zk<cr>", { desc = "inner fold" })
 map({ "o" }, "iz", ":normal Viz<CR>", { desc = "inner fold" })
 map({ "x" }, "az", ":<c-u>normal! [zV]z<cr>", { desc = "outer fold" })
