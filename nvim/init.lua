@@ -361,7 +361,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       if pumvisible() then
         feedkeys '<C-n>'
         --  elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
-      elseif vim.snippets.active { direction = 1 } then
+      elseif vim.snippet.active { direction = 1 } then
         vim.snippet.jump(1)
       else
         feedkeys '<Tab>'
@@ -371,7 +371,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       if pumvisible() then
         feedkeys '<C-p>'
         -- elseif luasnip.jumpable(-1) then luasnip.jump(-1)
-      elseif vim.snippets.active { direction = -1 } then
+      elseif vim.snippet.active { direction = -1 } then
         vim.snippet.jump(-1)
       else
         feedkeys '<S-Tab>'
@@ -931,7 +931,7 @@ if not vim.g.vscode then
   map("n", "<leader>lC", function() vim.lsp.buf.outcoming_calls() end, { desc = "Outcoming Calls" })
   map("n", "<leader>ld", ":Pick lsp scope='definition'<cr>", { desc = "Goto Definition" })
   map("n", "<leader>lD", ":Pick lsp scope='declaration'<cr>", { desc = "Goto Declaration" })
-  map("n", "<leader>lF", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "Format (none-ls > lsp)" })
+  map("n", "<leader>lF", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "Format" })
   map("n", "<leader>lh", function() vim.lsp.buf.signature_help() end, { desc = "Signature" })
   map("n", "<leader>lH", function() vim.lsp.buf.hover() end, { desc = "Hover" })
   map("n", "<leader>lI", ":Pick lsp scope='implementation'<cr>", { desc = "Goto Implementation" })
@@ -945,19 +945,6 @@ if not vim.g.vscode then
   map("n", "<leader>ls", ":Pick lsp scope='document_symbol'<cr>", { desc = "Document symbols" })
   map("n", "<leader>ls", ":Pick lsp scope='workspace_symbol'<cr>", { desc = "Workspace symbol" })
   map("n", "<leader>lt", ":Pick lsp scope='type_definition'<cr>", { desc = "Goto TypeDefinition" })
-  map("n", "<leader>l0", ":LspStop<cr>", { desc = "lsp stop" })
-
-  map(
-    "n",
-    "<leader>l1",
-    function()
-      vim.defer_fn(function() vim.cmd("LspStop") end, 1)
-      vim.defer_fn(function() vim.cmd("LspRestart") end, 300)
-      vim.defer_fn(function() vim.cmd("LspStart") end, 600)
-    end,
-    { desc = "lsp start (none-ls < lsp)" }
-  )
-
   map("n", "<leader>o", ":lua MiniFiles.open()<cr>", { desc = "Open Explorer (CWD)" })
   map("n", "<leader>O", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", { desc = "Open Explorer (CurrentFile)" })
   map("n", "<leader>f", "", { desc = "+Find" })
