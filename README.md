@@ -260,7 +260,6 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 
 |      Keymap       |    Mode     |      repeater key      | Description                                |
 | :---------------: | :---------: | :--------------------: | :----------------------------------------- |
-|   `<leader>uU`    |     `n`     |          `.`           | Go to parent fold (only inside VSCode)     |
 | `<space><space>p` |   `n`,`x`   |          `.`           | Paste after (secondary clipboard)          |
 | `<space><space>P` |   `n`,`x`   |          `.`           | Paste before (secondary clipboard)         |
 | `<space><space>y` |   `n`,`x`   |                        | Yank (secondary clipboard)                 |

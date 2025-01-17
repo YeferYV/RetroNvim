@@ -223,29 +223,6 @@ end
 
 local M = {}
 
--- https://www.reddit.com/r/neovim/comments/zc720y/tip_to_manage_hlsearch/
-M.EnableAutoNoHighlightSearch = function()
-  vim.on_key(function(char)
-    if vim.fn.mode() == "n" then
-      local new_hlsearch = vim.tbl_contains({ "<Up>", "<Down>", "<CR>", "n", "N", "*", "#", "?", "/" },
-        vim.fn.keytrans(char))
-      if vim.opt.hlsearch:get() ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
-    end
-  end, vim.api.nvim_create_namespace "auto_hlsearch")
-end
-
-M.DisableAutoNoHighlightSearch = function()
-  vim.on_key(nil, vim.api.nvim_get_namespaces()["auto_hlsearch"])
-  vim.cmd [[ set hlsearch ]]
-end
-
-vim.api.nvim_create_user_command("EnableAutoNoHighlightSearch", M.EnableAutoNoHighlightSearch, {})
-vim.api.nvim_create_user_command("DisableAutoNoHighlightSearch", M.DisableAutoNoHighlightSearch, {})
-
-M.EnableAutoNoHighlightSearch() -- autostart
-
-------------------------------------------------------------------------------------------------------------------------
-
 -- https://thevaluable.dev/vim-create-text-objects
 -- select indent by the same or mayor level:
 M.select_indent = function(skip_blank_line, skip_comment_line, same_indent, visual_mode)
@@ -810,6 +787,7 @@ if not vim.g.vscode then
   map({ "n", "v", "t" }, "<M-Right>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
   map({ "n", "v", "t" }, "<M-Up>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
   map({ "n", "v", "t" }, "<M-Down>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
+  map({ "n" }, "<esc>", "<esc><cmd>lua vim.cmd.nohlsearch()<cr>", { desc = "escape and clear search highlight" })
   map({ "t" }, "<esc><esc>", "<C-\\><C-n>", { desc = "normal mode inside terminal" })
   map({ "n" }, "<C-s>", ":%s//g<Left><Left>", { desc = "Replace in Buffer" })
   map({ "x" }, "<C-s>", ":s//g<Left><Left>", { desc = "Replace in Visual_selected" })
@@ -994,8 +972,6 @@ if not vim.g.vscode then
   map("n", "<leader>uM", ":SupermavenStart<cr>", { desc = "Supermaven start" })
   map("n", "<leader>us", ":set laststatus=0<cr>", { desc = "StatusBar Hide" })
   map("n", "<leader>uS", ":set laststatus=3<cr>", { desc = "StatusBar Show" })
-  map("n", "<leader>uh", function() M.EnableAutoNoHighlightSearch() end, { desc = "Enable AutoNoHighlightSearch" })
-  map("n", "<leader>uH", function() M.DisableAutoNoHighlightSearch() end, { desc = "Disable AutoNoHighlightSearch" })
   map("n", "<leader>uu", HideUnhideWindow, { desc = "Hide/Unhide window (useful for terminal)" })
   map("n", "<leader>t", "", { desc = "+Terminal" })
   map("n", "<leader>tt", ":lua vim.cmd [[          terminal ]] <cr>", { desc = "buffer terminal" })
@@ -1003,16 +979,6 @@ if not vim.g.vscode then
   map("n", "<leader>v", ":lua vim.cmd [[ split  | terminal ]] <cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", ":lua vim.cmd [[ vsplit | terminal ]] <cr>", { desc = "horizontal terminal" })
 end
-
-map(
-  "n",
-  "<leader>uU",
-  function()
-    vscode.action("editor.gotoParentFold")
-    vscode.action("cursorHome")
-  end,
-  { desc = "goto parent fold (vscode only)" }
-)
 
 map("n", "<leader><leader>p", '"*p', { desc = "Paste after (second_clip)" })
 map("n", "<leader><leader>P", '"*P', { desc = "Paste before (second_clip)" })
