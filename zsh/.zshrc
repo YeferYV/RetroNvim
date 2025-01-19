@@ -13,7 +13,7 @@ zle-line-init() { echo -ne "\e[6 q"; } # use beam shape cursor after ctrl+c or e
 zle -N zle-line-init                   # overwriting zle-line-init
 zle -N zle-keymap-select               # overwriting zle-keymap-select
 
-export EXA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
+export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
 export HISTFILE="$HOME/.cache/.zsh_history"
 export LC_ALL=C.UTF-8 # `locale` lists all user's locale https://wiki.archlinux.org/title/Locale
 export SAVEHIST=10000

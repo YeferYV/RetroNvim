@@ -79,7 +79,7 @@ on = [ "s", "r" ]
 run = '''
   shell
   '
-    rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2}" --bind "enter:become(ya emit reveal {1} && nvim --clean -c \"lua vim.cmd.source(vim.env.RETRONVIM_INIT)\" {1} +{2})"
+    rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim --clean -c \"lua vim.cmd.source(vim.env.RETRONVIM_INIT)\" {1} +{2})"
   '
   --block
 '''
