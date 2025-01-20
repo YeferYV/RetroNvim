@@ -28,10 +28,12 @@ add { source = "nvim-treesitter/nvim-treesitter", checkout = "v0.9.3", }
 add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "ad8f0a472148c3e0ae9851e26a722ee4e29b1595" }
 
 if not vim.g.vscode then
-  -- completions
+  -- completions / UI
   add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
   add { source = "williamboman/mason.nvim", checkout = "v1.10.0", }
   add { source = "neovim/nvim-lspconfig", checkout = "v1.0.0" }
+  add { source = "nvim-tree/nvim-tree.lua", checkout = "v1.10.0" }
+  add { source = "folke/snacks.nvim", checkout = "v2.14.0" }
 end
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
@@ -51,6 +53,15 @@ later(
   end
 )
 
+later(
+  function()
+    require("nvim-treesitter.configs").setup {
+      indent = { enable = true },    -- https://www.reddit.com/r/neovim/comments/14n6iiy/if_you_have_treesitter_make_sure_to_disable_smartindent
+      highlight = { enable = true }, -- https://github.com/nvim-treesitter/nvim-treesitter/issues/5264
+    }
+  end
+)
+
 if not vim.g.vscode then
   later(
     function()
@@ -60,19 +71,105 @@ if not vim.g.vscode then
           clear_suggestion = "<A-k>",
           accept_word = "<A-j>",
         }
+        -- ignore_filetypes = { "NvimTree", "prompt", "snacks_input", "snacks_picker_input" }
       }
     end
   )
 end
 
-later(
-  function()
-    require("nvim-treesitter.configs").setup {
-      indent = { enable = true },    -- https://www.reddit.com/r/neovim/comments/14n6iiy/if_you_have_treesitter_make_sure_to_disable_smartindent
-      highlight = { enable = true }, -- https://github.com/nvim-treesitter/nvim-treesitter/issues/5264
-    }
-  end
-)
+if not vim.g.vscode then
+  later(
+    function()
+      require("nvim-tree").setup {
+        renderer = {
+          indent_markers = {
+            enable = true,
+            icons = {
+              corner = "│",
+              none = "│"
+            },
+          },
+        },
+        on_attach = function(bufnr)
+          local map = vim.keymap.set
+          local opts = function(desc) return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true } end
+          local api = require("nvim-tree.api")
+
+          api.config.mappings.default_on_attach(bufnr) -- default mappings
+
+          local function getparent_closenode()
+            local node = api.tree.get_node_under_cursor()
+            -- vim.notify(vim.inspect(node))
+
+            -- if focused node is a folder and it's expanded
+            if node.nodes and node.open then
+              -- close node
+              api.node.open.edit()
+            else
+              api.node.navigate.parent()
+            end
+          end
+
+          local function getchild_open()
+            local node = api.tree.get_node_under_cursor()
+
+            -- if focused node is a folder
+            if node.nodes then
+              if not node.open then
+                -- open folder
+                api.node.open.edit()
+              else
+                -- navigate to children node
+                vim.cmd.normal("j")
+              end
+            else
+              -- open file
+              api.node.open.edit()
+            end
+          end
+
+          map("n", "h", getparent_closenode, opts("Parent or collapse"))
+          map("n", "l", getchild_open, opts("Open file or folder"))
+          map("n", "L",
+            function()
+              api.node.open.edit()
+              api.tree.close()
+            end,
+            opts("quit on open")
+          )
+          map("n", "o",
+            function()
+              api.node.open.edit()
+              api.tree.focus()
+            end,
+            opts("open unfocus")
+          )
+        end
+      }
+    end
+  )
+end
+
+if not vim.g.vscode then
+  now(
+    function()
+      require("snacks").setup({
+        indent = { enabled = true },
+        picker = { enabled = true },
+        input = { enabled = true, },
+        styles = {
+          input = {
+            title_pos = "left",
+            relative = "cursor",
+            row = 1,
+            col = -1,
+            width = 30,
+          },
+        },
+      })
+    end
+  )
+end
 
 -- ╭──────╮
 -- │ Opts │
@@ -144,6 +241,11 @@ vim.fn.matchadd("ExtraWhitespace", [[\s\+$\| \+\ze\t]])
 
 -- Remove trailing spaces on save
 autocmd("BufWritePre", { command = [[%s/\s\+$//e]], })
+
+-- Disable mini.completion for a certain filetype (extracted from `:help mini.nvim`)
+local f = function(args) vim.b[args.buf].minicompletion_disable = true end
+vim.api.nvim_create_autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
+vim.api.nvim_create_autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -576,7 +678,7 @@ if not vim.g.vscode then
   require('mini.base16').setup({
     -- `:Inspect` to reverse engineering a colorscheme
     -- `:hi <@treesitter>` to view colors of `:Inspect` output
-    -- `:Pick hl_groups` to view generated colorscheme
+    -- `:lua require("snacks").picker.highlights()` to view generated colorscheme
     -- https://github.com/NvChad/base46/tree/v2.5/lua/base46/themes for popular colorscheme palettes
     -- https://github.com/echasnovski/mini.nvim/discussions/36 community palettes
     palette = {
@@ -745,18 +847,18 @@ if not vim.g.vscode then
   require('mini.cursorword').setup()
   require('mini.extra').setup()
   require('mini.icons').setup()
-  require('mini.indentscope').setup({ options = { indent_at_cursor = false, }, symbol = '│', })
+  require('mini.indentscope').setup({ options = { indent_at_cursor = false, }, symbol = '', })
   require('mini.misc').setup_auto_root()
   require('mini.notify').setup()
   require('mini.pairs').setup()
-  require('mini.pick').setup()
+  -- require('mini.pick').setup()
   require('mini.statusline').setup()
   require('mini.starter').setup()
   require('mini.tabline').setup()
   MiniIcons.mock_nvim_web_devicons()
   MiniIcons.tweak_lsp_kind( --[[ "replace" ]])
   vim.notify = MiniNotify.make_notify()                                        -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
-  vim.ui.select = MiniPick.ui_select
+  -- vim.ui.select = MiniPick.ui_select
   if vim.fn.has('nvim-0.11') == 1 then vim.opt.completeopt:append('fuzzy') end -- it should be after require("mini.completion").setup())
 end
 
@@ -929,50 +1031,61 @@ if not vim.g.vscode then
   map("n", "<leader>lA", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
   map("n", "<leader>lc", function() vim.lsp.buf.incoming_calls() end, { desc = "Incoming Calls" })
   map("n", "<leader>lC", function() vim.lsp.buf.outcoming_calls() end, { desc = "Outcoming Calls" })
-  map("n", "<leader>ld", ":Pick lsp scope='definition'<cr>", { desc = "Goto Definition" })
-  map("n", "<leader>lD", ":Pick lsp scope='declaration'<cr>", { desc = "Goto Declaration" })
+  map("n", "<leader>ld", function() require("snacks").picker.lsp_definitions() end, { desc = "Pick Definition" })
+  map("n", "<leader>lD", function() require("snacks").picker.lsp_declarations() end, { desc = "Pick Declaration" })
   map("n", "<leader>lF", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "Format" })
   map("n", "<leader>lh", function() vim.lsp.buf.signature_help() end, { desc = "Signature" })
   map("n", "<leader>lH", function() vim.lsp.buf.hover() end, { desc = "Hover" })
-  map("n", "<leader>lI", ":Pick lsp scope='implementation'<cr>", { desc = "Goto Implementation" })
+  map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = "Pick Implementation" })
   map("n", "<leader>lm", ":Mason<cr>", { desc = "Mason" })
+  map("n", "<leader>lM", ":LspInfo<cr>", { desc = "LspInfo" })
   map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
   map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = "Open Diagnostic" })
   map("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
-  map("n", "<leader>lq", ":Pick diagnostic<cr>", { desc = "Diagnostic List" })
-  map("n", "<leader>lr", ":Pick lsp scope='references'<cr>", { desc = "References" })
+  map("n", "<leader>lq", function() require("snacks").picker.loclist() end, { desc = "Pick LocList" })
+  map("n", "<leader>lr", function() require("snacks").picker.lsp_references() end, { desc = "Pick References" })
   map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
-  map("n", "<leader>ls", ":Pick lsp scope='document_symbol'<cr>", { desc = "Document symbols" })
-  map("n", "<leader>ls", ":Pick lsp scope='workspace_symbol'<cr>", { desc = "Workspace symbol" })
-  map("n", "<leader>lt", ":Pick lsp scope='type_definition'<cr>", { desc = "Goto TypeDefinition" })
-  map("n", "<leader>o", ":lua MiniFiles.open()<cr>", { desc = "Open Explorer (CWD)" })
-  map("n", "<leader>O", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", { desc = "Open Explorer (CurrentFile)" })
+  map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
+  map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
+  map("n", "<leader>m", ":lua MiniFiles.open()<cr>", { desc = "mini.files (CWD)" })
+  map("n", "<leader>M", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", { desc = "mini.files (CurrentFile)" })
   map("n", "<leader>f", "", { desc = "+Find" })
-  map("n", "<leader>ff", ":Pick files<cr>", { desc = "Files (tab to preview)" })
-  map("n", "<leader>f/", ":Pick git_files<cr>", { desc = "Git/hidden files (tab to preview)" })
-  map("n", "<leader>fg", ":Pick grep_live<cr>", { desc = "Grep (tab to preview)" })
-  map("n", "<leader>f'", ":Pick marks<cr>", { desc = "Marks (tab to preview)" })
-  map("n", '<leader>f"', ":Pick registers<cr>", { desc = "register (:help quote)" })
+  map("n", "<leader>fb", function() require("snacks").picker.grep() end, { desc = "buffers" })
+  map("n", "<leader>fB", function() require("snacks").picker.grep() end, { desc = "ripgrep on buffers" })
+  map("n", "<leader>fc", function() require("snacks").picker.colorscheme() end, { desc = "colorscheme" })
+  map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "keymaps" })
+  map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "files" })
+  map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "ripgrep" })
   map("n", "<leader>fn", ":lua MiniNotify.show_history()<cr>", { desc = "Notify history" })
+  map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "projects" })
+  map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quickfix list" })
+  map("n", "<leader>fr", function() require("snacks").picker.recent() end, { desc = "recent files" })
+  map("n", '<leader>f"', function() require("snacks").picker.registers() end, { desc = "register (:help quote)" })
+  map("n", "<leader>f/", function() require("snacks").picker.git_files() end, { desc = "find git (sorted) files" })
+  map("n", "<leader>f;", function() require("snacks").picker.jumps() end, { desc = "jumps" })
+  map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = "marks" })
+  map("n", "<leader>f.", function() require("snacks").picker.resume() end, { desc = "resume" })
   map("n", "<leader>g", "", { desc = "+Git" })
   map("n", "<leader>gg", ":lua vim.cmd[[terminal lazygit]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "lazygit" })
   map("n", "<leader>gp", ":Gitsigns preview_hunk<cr>", { silent = true, desc = "Preview GitHunk" })
   map("n", "<leader>gr", ":Gitsigns reset_hunk<cr>", { silent = true, desc = "Reset GitHunk" })
   map("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", { silent = true, desc = "Stage GitHunk" })
   map("n", "<leader>gS", ":Gitsigns undo_stage_hunk<cr>", { silent = true, desc = "Undo stage GitHunk" })
+  map("n", "<leader>o", ":NvimTreeFindFileToggle<cr>", { desc = "Nvimtree" })
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", ":set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", ":set showtabline=2<cr>", { desc = "Buffer Show" })
+  map("n", "<leader>ul", ":set cursorline!", { desc = "toggle cursorline" })
   map("n", "<leader>um", ":SupermavenStop<cr>", { desc = "Supermaven stop" })
   map("n", "<leader>uM", ":SupermavenStart<cr>", { desc = "Supermaven start" })
   map("n", "<leader>us", ":set laststatus=0<cr>", { desc = "StatusBar Hide" })
   map("n", "<leader>uS", ":set laststatus=3<cr>", { desc = "StatusBar Show" })
   map("n", "<leader>uu", HideUnhideWindow, { desc = "Hide/Unhide window (useful for terminal)" })
   map("n", "<leader>t", "", { desc = "+Terminal" })
-  map("n", "<leader>tt", ":lua vim.cmd [[          terminal ]] <cr>", { desc = "buffer terminal" })
-  map("n", "<leader>ty", ":lua vim.cmd[[terminal yazi]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "yazi" })
-  map("n", "<leader>v", ":lua vim.cmd [[ split  | terminal ]] <cr>", { desc = "vertical terminal" })
-  map("n", "<leader>V", ":lua vim.cmd [[ vsplit | terminal ]] <cr>", { desc = "horizontal terminal" })
+  map("n", "<leader>tt", ":lua vim.cmd [[ terminal         ]] <cr>", { desc = "buffer terminal" })
+  map("n", "<leader>ty", ":lua vim.cmd [[ terminal yazi    ]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "yazi" })
+  map("n", "<leader>v", ":lua vim.cmd [[ vsplit | terminal ]] <cr>", { desc = "vertical terminal" })
+  map("n", "<leader>V", ":lua vim.cmd [[ split  | terminal ]] <cr>", { desc = "horizontal terminal" })
 end
 
 map("n", "<leader><leader>p", '"*p', { desc = "Paste after (second_clip)" })

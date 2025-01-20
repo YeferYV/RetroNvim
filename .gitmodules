@@ -20,12 +20,18 @@
 [submodule "nvim/plugins/site/pack/deps/opt/nvim-lspconfig"]
 	path = nvim/plugins/site/pack/deps/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
+[submodule "nvim/plugins/site/pack/deps/opt/nvim-tree.lua"]
+	path = nvim/plugins/site/pack/deps/opt/nvim-tree.lua
+	url = https://github.com/nvim-tree/nvim-tree.lua
 [submodule "nvim/plugins/site/pack/deps/opt/nvim-treesitter"]
 	path = nvim/plugins/site/pack/deps/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
 [submodule "nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects"]
 	path = nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+[submodule "nvim/plugins/site/pack/deps/opt/snacks.nvim"]
+	path = nvim/plugins/site/pack/deps/opt/snacks.nvim
+	url = https://github.com/folke/snacks.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/supermaven-nvim"]
 	path = nvim/plugins/site/pack/deps/opt/supermaven-nvim
 	url = https://github.com/supermaven-inc/supermaven-nvim
