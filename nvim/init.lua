@@ -844,6 +844,46 @@ if not vim.g.vscode then
     },
   })
 
+  later(
+    function()
+      local function add_vscode_snippets_to_rtp()
+        local extensions_dir = vim.fs.joinpath(vim.env.HOME, '.vscode', 'extensions')
+
+        -- Get all snippet directories using glob
+        local snippet_dirs = vim.fn.globpath(
+          extensions_dir,
+          '*/snippets', -- Matches any extension/snippets directory
+          true,         -- recursive
+          true          -- return as list
+        )
+
+        -- Add to runtimepath (with nil checks)
+        for _, dir in ipairs(snippet_dirs) do
+          if vim.fn.isdirectory(dir) == 1 then
+            -- Normalize the path to handle OS-specific separators
+            local normalized_dir = vim.fs.normalize(dir)
+
+            local parent_dir = normalized_dir:gsub("/snippets$", "")
+            -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets no contains a valid JSON object
+            -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets no contains a valid JSON object
+            vim.opt.rtp:append(parent_dir)
+          end
+        end
+      end
+
+      add_vscode_snippets_to_rtp()
+      local gen_loader = require('mini.snippets').gen_loader
+      require('mini.snippets').setup({
+        snippets = { gen_loader.from_runtime("*") },
+        mappings = {
+          expand = '<a-;>',
+          jump_next = '<a-;>',
+          jump_prev = '<a-,>',
+        }
+      })
+    end
+  )
+
   require('mini.cursorword').setup()
   require('mini.extra').setup()
   require('mini.icons').setup()
