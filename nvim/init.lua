@@ -426,10 +426,14 @@ local function pumvisible()
   return tonumber(vim.fn.pumvisible()) ~= 0
 end
 
-vim.api.nvim_create_autocmd('LspAttach', {
+-- the `vi` zsh alias doesn't autostart lsp
+if not vim.g.vscode then
+  autocmd('VimEnter', { command = "LspStart" })
+end
+
+autocmd('LspAttach', {
 
   callback = function(args)
-    vim.cmd [[ LspStart ]] -- the `vi` zsh alias doesn't autostart lsp
     vim.lsp.completion.enable(true, args.data.client_id, args.buf, { autotrigger = true })
 
     -- Use enter to expand snippet or accept completions.
@@ -1092,7 +1096,7 @@ if not vim.g.vscode then
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.grep() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep() end, { desc = "ripgrep on buffers" })
-  map("n", "<leader>fc", function() require("snacks").picker.colorscheme() end, { desc = "colorscheme" })
+  map("n", "<leader>fc", function() require("snacks").picker.colorschemes() end, { desc = "colorscheme" })
   map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "keymaps" })
   map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "files" })
   map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "ripgrep" })
