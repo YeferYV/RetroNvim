@@ -38,9 +38,11 @@ prepend_keymap = [
 	{ on = [ "f", "z" ], run = "find_do '^z' --smart", desc = "find ^z" },
 
 	# Filter
-	{ on = [ "i" ], run = """ shell 'bat --paging always --wrap never "$@"' --block --confirm """, desc = "Bat (unix)" },
-	{ on = [ "I" ], run = """ shell 'bat --paging always --wrap never %*' --block --confirm """,   desc = "Bat (windows)" },
-	{ on = [ "F" ], run = "filter --smart", desc = "Filter" },
+	{ on = [ "F" ],      run = "filter --smart",                                                        desc = "Filter" },
+	{ on = [ "g", "d" ], run = "cd ~/Documents",                                                        desc = "Goto ~/Documents" },
+	{ on = [ "g", "D" ], run = "cd ~/Downloads",                                                        desc = "Goto ~/Downloads" },
+	{ on = [ "i" ],      run = """ shell 'bat --paging always --wrap never "$@"' --block --confirm """, desc = "Bat (unix)" },
+	{ on = [ "I" ],      run = """ shell 'bat --paging always --wrap never %*' --block --confirm """,   desc = "Bat (windows)" },
 
   # Shell
 	{ on = [ "s", "c" ], run = """ shell 'code "$@"' --block --confirm """,                                                           desc = "VScode open selected (unix)" },
@@ -53,8 +55,7 @@ prepend_keymap = [
 	{ on = [ "s", "F" ], run = """ shell '%EDITOR_FZF%' --block --confirm """,                                                        desc = "Neovim pick files (windows)" },
 	{ on = [ "s", "G" ], run = """ shell '%EDITOR_RIPGREP%' --block --confirm """,                                                    desc = "Neovim pick grep (windows)" },
 	{ on = [ "s", "i" ], run = """ shell '$SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"' --block --confirm """,                       desc = "Swallow sxiv (linux)" },
-	{ on = [ "s", "l" ], run = """ shell "lazygit" --block --confirm """,                                                             desc = "Lazygit (unix)" },
-	{ on = [ "s", "L" ], run = """ shell "lazygit" --block --confirm """,                                                             desc = "Lazygit (windows)" },
+	{ on = [ "s", "l" ], run = """ shell "lazygit" --block --confirm """,                                                             desc = "Lazygit" },
 	{ on = [ "s", "n" ], run = """ shell 'nvim "$@"' --block --confirm """,                                                           desc = "Neovim open selected (unix)" },
 	{ on = [ "s", "N" ], run = """ shell 'nvim %*' --block --confirm """,                                                             desc = "Neovim open selected (windows)" },
 	{ on = [ "s", "p" ], run = """ shell '$SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"' --block --confirm """,                 desc = "Swallow zathura (linux)" },

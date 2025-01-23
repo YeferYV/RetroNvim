@@ -3,6 +3,7 @@ bindkey -v '^?' backward-delete-char                           # enable vi-mode 
 setopt inc_append_history                                      # save to history after running a command
 setopt interactive_comments                                    # allow comments
 zstyle ":completion:*" menu select                             # <tab><tab> to enter menu completion
+# precmd () { printf "\033]0; $(basename ${PWD/~/\~}) \a" }    # tmux/wezterm CWD status/title
 
 # linux keyboard repeat rate, xset doesn't support wayland
 (xset b off r rate 190 70 2>/dev/null)
@@ -17,7 +18,7 @@ export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:
 export HISTFILE="$HOME/.cache/.zsh_history"
 export LC_ALL=C.UTF-8 # `locale` lists all user's locale https://wiki.archlinux.org/title/Locale
 export SAVEHIST=10000
-export EDITOR="nvim --clean -c 'source \$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua'"
+export EDITOR="nvim -u '\$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua'"
 
 # retronvim's neovim
 vi() { eval $EDITOR $@; }
