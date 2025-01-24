@@ -15,7 +15,7 @@ function setNeovimPath(homeExtension) {
 
   if (os.platform() == "win32") {
     var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
-    fs.mkdir(yaziBookmarkPath, { recursive: true }, (err) => { vscode.window.showErrorMessage(`${err.message}`) } );
+    fs.mkdir(yaziBookmarkPath, { recursive: true }, (err) => { if (err) { vscode.window.showErrorMessage(`${err.message}`) }} );
   } else {
     var pixiPath = "./.pixi/envs/default/bin/python"
   }
