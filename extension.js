@@ -6,6 +6,7 @@ const fs = require('fs');
 function setNeovimPath(homeExtension) {
   // Construct the dynamic path
   const homeDirectory = os.homedir();
+  const yaziBookmarkPath = path.join(homeDirectory, 'appdata/roaming/yazi/state');
   const retronvimPath = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim');
   const nvimPathPixi = path.join(homeDirectory, '.pixi/bin/nvim');
   const nvimPathLinux = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/linux-x64/nvim');
@@ -14,6 +15,7 @@ function setNeovimPath(homeExtension) {
 
   if (os.platform() == "win32") {
     var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
+    fs.mkdir(yaziBookmarkPath, { recursive: true }, (err) => { vscode.window.showErrorMessage(`${err.message}`) } );
   } else {
     var pixiPath = "./.pixi/envs/default/bin/python"
   }

@@ -660,7 +660,7 @@
             },
             {
               "key": "B",
-              "name": "brew install eza FiraCode-NF fzf git karabiner lazygit starship 7zip",
+              "name": "brew install bat eza FiraCode-NF fzf git karabiner lazygit starship 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -671,7 +671,7 @@
               "args": [
                 null,
                 {
-                  "text": "brew tap homebrew/cask-fonts && brew install eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship sevenzip; \n"
+                  "text": "brew tap homebrew/cask-fonts && brew install bat eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship sevenzip; \n"
                 },
                 {
                   "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n"
@@ -707,7 +707,7 @@
             },
             {
               "key": "N",
-              "name": "nixpkgs install eza FiraCode-NF fzf git lazygit ripdrag starship zsh 7zip",
+              "name": "nixpkgs install bat eza FiraCode-NF fzf git lazygit ripdrag starship zsh 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
@@ -715,7 +715,7 @@
               "args": [
                 null,
                 {
-                  "text": "nix-env -iA nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n"
+                  "text": "nix-env -iA nixpkgs.bat nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n"
                 }
               ]
             },
@@ -749,7 +749,7 @@
             },
             {
               "key": "S",
-              "name": "scoop install eza FiraCode-NF fzf git lazygit msys2 starship zig zsh 7zip",
+              "name": "scoop install bat eza FiraCode-NF fzf git lazygit msys2 starship zig zsh 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -758,7 +758,7 @@
               "args": [
                 null,
                 {
-                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install eza FiraCode-NF fzf lazygit msys2 starship zig 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
+                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install bat eza FiraCode-NF fzf lazygit msys2 starship zig 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
                 },
                 "require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]
