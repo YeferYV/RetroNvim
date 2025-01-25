@@ -93,13 +93,10 @@
         "RETRONVIM_BIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64",
         "BAT_THEME": "base16",
         "EDITOR": "nvim -u $RETRONVIM_INIT",
-        "EDITOR_FZF": "nvim -u $RETRONVIM_INIT -c 'lua Snacks.picker.files()'",
-        "EDITOR_RIPGREP": "nvim -u $RETRONVIM_INIT -c 'lua Snacks.picker.grep()'",
         "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
+        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
         "PNPM_HOME": "${env:HOME}/.local/share/pnpm",
         "VISUAL": "code",
-        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml",
         "SWALLOWER": "devour",
         "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi",
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
@@ -109,13 +106,9 @@
         "RETRONVIM_BIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64",
         "BAT_THEME": "base16",
         "EDITOR": "nvim -u $RETRONVIM_INIT",
-        "EDITOR_FZF": "nvim -u $RETRONVIM_INIT -c 'lua Snacks.picker.files()'",
-        "EDITOR_RIPGREP": "nvim -u $RETRONVIM_INIT -c 'lua Snacks.picker.grep()'",
-        "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin:${env:HOME}/.pixi/bin:${env:HOME}/Library/pnpm:${env:PATH}",
         "PNPM_HOME": "${env:HOME}/Library/pnpm",
         "VISUAL": "code",
-        "STARSHIP_CONFIG": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml",
         "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi",
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
       },
@@ -123,15 +116,13 @@
         "RETRONVIM_INIT": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
         "BAT_THEME": "base16",
         "EDITOR": "nvim -u ${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-        "EDITOR_FZF": "nvim -u ${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua -c 'lua Snacks.picker.files()'",
-        "EDITOR_RIPGREP": "nvim -u ${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua  -c 'lua Snacks.picker.grep()'",
         "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
         "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
         "VISUAL": "code",
-        "STARSHIP_CONFIG": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml",
         "YAZI_CONFIG_HOME": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/yazi",
         "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/zsh"
       },
+      "terminal.integrated.experimental.windowsUseConptyDll": true,
       "terminal.integrated.scrollback": 10000,
       "terminal.integrated.suggest.enabled": true,
       "terminal.integrated.profiles.windows": {
@@ -848,23 +839,17 @@
               ]
             },
             {
-              "key": "A",
-              "name": "Install ArchRice (retronvim's neovim extensions + extra extensions)",
+              "key": "r",
+              "name": "Install RetroNvim's nvim/yazi/zsh on any terminal",
               "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua",
                 "vscode-neovim.lua"
               ],
               "args": [
-                null,
-                {
-                  "text": "git clone --depth=1 https://github.com/yeferyv/archrice $HOME/.config/archrice \n"
-                },
-                {
-                  "text": "sh -c 'cp -r ~/.config/archrice/.config/nvim ${LOCALAPPDATA:-~/.config}' \n"
-                },
-                "require('vscode-neovim').notify('Windows requires `scoop install git`')"
+                "if vim.env.APPDATA then vim.cmd[[ !mklink /d \\%HOMEPATH\\%\\appdata\\local\\nvim           \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\nvim        ]] else vim.cmd[[ !ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/nvim       ~/.config ]] end",
+                "if vim.env.APPDATA then vim.cmd[[ !mklink /d \\%HOMEPATH\\%\\appdata\\roaming\\yazi\\config \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\yazi        ]] else vim.cmd[[ !ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/yazi       ~/.config ]] end",
+                "if vim.env.APPDATA then vim.cmd[[ !mklink    \\%HOMEPATH\\%\\.zshrc                         \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\zsh\\.zshrc ]] else vim.cmd[[ !ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc ~/.zshrc  ]] end"
               ]
             },
             {
@@ -1760,7 +1745,7 @@
               "args": [
                 null,
                 {
-                  "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }; y; clear\n"
+                  "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); }; y; clear\n"
                 }
               ]
             },
@@ -1777,7 +1762,7 @@
               "name": "print sequence to export `y` command (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
               "args": {
-                "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); printf '\\x1b[A\\x1b[K'; }"
+                "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); }"
               }
             },
             {
