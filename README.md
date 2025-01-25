@@ -465,6 +465,9 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |      `ctrl+l`      | `i`  | Accept selected suggestion                 |
 |      `ctrl+d`      | `i`  | Select next page in suggestion details     |
 |      `ctrl+u`      | `i`  | Select previous page in suggestion details |
+|      `alt+;`       | `i`  | expand or next snippet stop (neovim only)  |
+|      `alt+,`       | `i`  | previous snippet stop (neovim only)        |
+|      `ctrl+c`      | `i`  | exit snippet session (neovim only)         |
 
 </details>
 

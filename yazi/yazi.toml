@@ -10,11 +10,11 @@ show_symlink   = false
 
 [opener]
 edit = [
-	# { run = 'nvim %*',                    block = true,  desc = "nvim",    for = "windows" },
-	# { run = '%EDITOR% %*',                block = true,  desc = "$EDITOR", for = "windows" },
-	{ run = 'nvim -u "$RETRONVIM_INIT" %*', block = true,  desc = "$EDITOR", for = "windows" },
-	{ run = 'code %*',                      orphan = true, desc = "code",    for = "windows" },
-	{ run = 'eval ${EDITOR:-nvim} "$@"',    block = true,  desc = "$EDITOR", for = "unix" },
+	# { run = 'nvim %*',                                                                                  block = true,  desc = "nvim",    for = "windows" },
+	# { run = '%EDITOR% %*',                                                                              block = true,  desc = "$EDITOR", for = "windows" },
+	{ run = '%EDITOR% %* 2>nul || nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" %*', block = true,  desc = "$EDITOR", for = "windows" },
+	{ run = 'code %*',                                                                                    orphan = true, desc = "code",    for = "windows" },
+	{ run = 'eval ${EDITOR:-nvim} "$@"',                                                                  block = true,  desc = "$EDITOR", for = "unix" },
 ]
 
 [[plugin.prepend_fetchers]]
