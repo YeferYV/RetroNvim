@@ -63,17 +63,9 @@
 
 (deflayer touchcursor
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-  _    @¿   @sh  @vi  _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
-  _    del  spc  bspc @yaz @laz @🡠   @↓   @↑   @🡪   @ñ   _    _
-  _    @za  @zr  caps @cod @vim pgup home end  pgdn _    _
-  _    _    _              _              _    _    _
-)
-
-(deflayer yazi-find
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _ (macro / S-6 q ret) (macro / S-6 w ret) (macro / S-6 e ret) (macro / S-6 r ret) (macro / S-6 t ret) (macro / S-6 y ret) (macro / S-6 u ret) (macro / S-6 i ret) (macro / S-6 o ret) (macro / S-6 p ret) _    _    _
-  _ (macro / S-6 a ret) (macro / S-6 s ret) (macro / S-6 d ret) (macro / S-6 f ret) (macro / S-6 g ret) (macro / S-6 h ret) (macro / S-6 j ret) (macro / S-6 k ret) (macro / S-6 l ret)                _    _    _
-  _ (macro / S-6 z ret) (macro / S-6 x ret) (macro / S-6 c ret) (macro / S-6 v ret) (macro / S-6 b ret) (macro / S-6 n ret) (macro / S-6 m ret)                                              _    _    _    _
+  _    @¿   _    _    _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
+  _    del  spc  bspc @clr _    @🡠   @↓   @↑   @🡪   @yaz _    _
+  _    @ñ   _    caps _    _    pgup home end  pgdn _    _
   _    _    _              _              _    _    _
 )
 
@@ -105,13 +97,6 @@
   ;; tap for space, hold for oneshot in touchcursor layout
   spc (tap-hold 200 200 spc (one-shot 500 (layer-while-held touchcursor)))
 
-  ;; press one key in yazi layout
-  yaz (one-shot 500 (layer-while-held yazi-find))
-
-  ;; open shell inside yazi
-  2 2
-  sh (macro S-; s h spc - c spc ' S-4 S-(s h e l l) ' ret)
-
   ;; fast keyboard repeat rate emulation
   ;; (multi f24) fixes fast typing `vh`, `vj`, `vk` and `vl` not entering visual mode on neovim
   h (multi f24 (tap-hold 150 150 h     (macro-repeat h     15)))
@@ -123,30 +108,17 @@
   ↑ (multi f24 (tap-hold 150 150 up    (macro-repeat up    15)))
   🡪 (multi f24 (tap-hold 150 150 right (macro-repeat right 15)))
 
-  ;; open with neovim inside yazi
-  1 1
-  vim (macro S-; s h spc - c spc S-' t e s t spc S-4 S-(a p p d a t a) spc S-7 S-7 spc n v i m spc ' S-5 @1 ' spc S-\ S-\ spc n v i m spc S-4 S-8 S-' ret)
+  ;; open yazi_cd on any shell
+  yaz (macro y a z i spc S-4 S-(p w d) spc - - c w d - f i l e spc S-4 S-(h o m e) / . y a z i ; spc c d spc S-' S-4 S-9 c a t spc S-4 S-( h o m e) / . y a z i S-0 S-' ret)
 
-  ;; open with $EDITOR inside yazi
-  vi (macro S-; s h spc - c spc S-' t e s t spc S-4 S-(a p p d a t a) spc S-7 S-7 spc S-4 S-(e d i t o r) spc ' S-5 @1 ' spc S-\ S-\ spc S-4 S-(e d i t o r) spc S-4 S-8 S-' ret)
-
-  ;; open with code inside yazi
-  cod (macro ; s h spc - c spc S-' t e s t spc S-4 S-(a p p d a t a) spc S-7 S-7 spc c o d e spc ' S-5 @1 ' spc S-\ S-\ spc c o d e spc S-4 S-8 S-' ret)
-
-  ;; open lazygit inside yazi
-  laz (macro S-; l a z y g i t ret)
-
-  ;; zoxide add current working directory inside yazi
-  za (macro ; z o x i d e spc a d d spc . ret )
-
-  ;; zoxide remove current working directory inside yazi
-  zr (macro ; z o x i d e spc r e m o v e spc . ret )
-
-  ;; unicode outputs
-  ñ   (unicode ñ)
+  ;; clear screen on any shell
+  clr (macro c l e a r ret)
 
   ;; unicode outputs
   ¿   (unicode ¿)
+
+  ;; unicode outputs
+  ñ   (unicode ñ)
 
   ;; mouse scrolling <intervale> <distance>
   m↑ (mwheel-up 50 30)

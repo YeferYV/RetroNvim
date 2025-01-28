@@ -552,19 +552,9 @@ lctl lmet @alt           @spc           @sft rmet rctl
 
 ```
 _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-_    @¿   @sh  @vi  _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
-_    del  spc  bspc @yaz @laz @🡠   @↓   @↑   @🡪   @ñ   _    _
-_    @za  @zr  caps @cod @vim pgup home end  pgdn _    _
-_    _    _              _              _    _    _
-```
-
-**layer yazi-find** (press and release space+f to enter the layer)
-
-```
-_    _    _    _    _    _    _    _    _    _    _    _    _    _
-_    /^q  /^w  /^e  /^r  /^t  /^y  /^u  /^i  /^o  /^p  _    _    _
-_    /^a  /^s  /^d  /^f  /^g  /^h  /^j  /^k  /^l  _    _    _
-_    /^z  /^x  /^c  /^v  /^b  /^n  /^m  _    _    _    _
+_    @¿   _    _    _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
+_    del  spc  bspc @clr _    @🡠   @↓   @↑   @🡪   @yaz _    _
+_    @ñ   _    caps _    _    pgup home end  pgdn _    _
 _    _    _              _              _    _    _
 ```
 
@@ -575,16 +565,10 @@ _    _    _              _              _    _    _
 | @sft | tap for backspace, hold for LeftShift                                                     |         `RAlt+l = shift+l`         |
 | @alt | tap for middle click, hold for LeftAlt                                                    |         `LAlt+l = LAlt+l`          |
 | @spc | tap for space, hold for touchcursor layer, release for qwerty layer                       | `space+jj = DownArrow + DownArrow` |
-| @yaz | tap and release then press one key in yazi-find layer (timeout: 500ms)                    |     `space+f l = jump to file`     |
-| @sh  | open shell inside yazi                                                                    |             `space+w`              |
-| @vim | open with neovim inside yazi                                                              |             `space+b`              |
-| @vi  | open with $EDITOR inside yazi                                                             |             `space+e`              |
-| @cod | open with vscode inside yazi                                                              |             `space+v`              |
-| @laz | open lazygit inside yazi                                                                  |             `space+g`              |
-| @za  | zoxide add current working directory inside yazi                                          |             `space+z`              |
-| @zr  | zoxide remove current working directory inside yazi                                       |             `space+x`              |
-|  @ñ  | unicode ñ                                                                                 |             `space+;`              |
+| @yaz | open yazi_cd on any shell                                                                 |     `space+f l = jump to file`     |
+| @clr | clear screen on any shell                                                                 |             `space+f`              |
 |  @¿  | unicode ¿                                                                                 |             `space+q`              |
+|  @ñ  | unicode ñ                                                                                 |             `space+;`              |
 | @m🡠  | mouse scrolling left                                                                      |             `space+t`              |
 | @m🡪  | mouse scrolling right                                                                     |             `space+p`              |
 | @m↑  | mouse scrolling up                                                                        |             `space+i`              |

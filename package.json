@@ -2356,7 +2356,7 @@
         "key": "alt+y",
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-          "text": "yazi --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi) \n"
+          "text": "yazi $PWD --cwd-file=$HOME/.yazi; cd \"$(cat $HOME/.yazi)\" \n"
         }
       },
       {

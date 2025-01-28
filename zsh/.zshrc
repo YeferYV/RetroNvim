@@ -3,7 +3,7 @@ bindkey -v '^?' backward-delete-char                           # enable vi-mode 
 setopt inc_append_history                                      # save to history after running a command
 setopt interactive_comments                                    # allow comments
 zstyle ":completion:*" menu select                             # <tab><tab> to enter menu completion
-# precmd () { printf "\033]0; $(basename ${PWD/~/\~}) \a" }    # tmux/wezterm CWD status/title
+precmd () { printf "\033]0; $(basename ${PWD/~/\~}) \a" }      # tmux/wezterm CWD status/title
 
 # linux keyboard repeat rate, xset doesn't support wayland
 (xset b off r rate 190 70 2>/dev/null)
@@ -21,6 +21,7 @@ export HISTFILE="$HOME/.cache/.zsh_history"
 export PATH="$HOME/.pixi/bin:$HOME/.local/bin:$HOME/.local/share/pnpm:$HOME/Library/pnpm:$PATH"
 export SAVEHIST=10000
 export STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml"
+export RETRONVIM_INIT="$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" # used in yazi/keymap.toml
 export EDITOR='nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua"'
 
 # retronvim's neovim

@@ -1000,6 +1000,7 @@ if not vim.g.vscode then
     java_language_server = "java-language-server",
     jdtls = "jdtls",
     jsonls = "json-lsp",
+    kotlin_language_server = "kotlin-language-server",
     lua_ls = "lua-language-server",
     neocmake = "neocmakelsp",
     nginx_language_server = "nginx-language-server",
