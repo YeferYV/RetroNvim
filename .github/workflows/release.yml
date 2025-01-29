@@ -49,7 +49,7 @@ jobs:
           rm -rf ./nvim/plugins/site/pack/deps/start/mini.nvim/tests
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0-prerelease-1/kanata_cmd_allowed               --create-dirs --output  "./bin/linux-x64/kanata"                                                                                                                                  && chmod +x "./bin/linux-x64/kanata"
-          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage                               --create-dirs --output  "./bin/linux-x64/nvim"                                                                                                                                    && chmod +x "./bin/linux-x64/nvim"
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage                  --create-dirs --output  "./bin/linux-x64/nvim"                                                                                                                                    && chmod +x "./bin/linux-x64/nvim"
           curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-unknown-linux-gnu.zip              --create-dirs --output  "/tmp/yazi-linux.zip"   && unzip "/tmp/yazi-linux.zip" -d "/tmp"   && cp -r    /tmp/yazi-x86_64-unknown-linux-gnu/{yazi,ya}            "./bin/linux-x64"  && chmod +x  ./bin/linux-x64/{yazi,ya}
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0-prerelease-1/kanata_macos_cmd_allowed_x86_64  --create-dirs --output  "./bin/darwin-x64/kanata"                                                                                                                                 && chmod +x "./bin/darwin-x64/kanata"
