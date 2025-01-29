@@ -113,7 +113,7 @@ on = [ "s", "f" ]
 run = '''
   shell
   '
-    nvim -u NORC --cmd "lua if vim.env.RETRONVIM_INIT then vim.cmd.source(vim.env.RETRONVIM_INIT) elseif vim.env.APPDATA then vim.cmd.source(vim.env.HOME .. \"/appdata/local/nvim/init.lua\") else vim.cmd.source(vim.env.HOME .. \"/.config/nvim/init.lua\") end" -c "lua Snacks.picker.files()"
+    nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.files()"
   '
   --block
 '''
@@ -124,7 +124,7 @@ on = [ "s", "g" ]
 run = '''
   shell
   '
-    nvim -u NORC --cmd "lua if vim.env.RETRONVIM_INIT then vim.cmd.source(vim.env.RETRONVIM_INIT) elseif vim.env.APPDATA then vim.cmd.source(vim.env.HOME .. \"/appdata/local/nvim/init.lua\") else vim.cmd.source(vim.env.HOME .. \"/.config/nvim/init.lua\") end" -c "lua Snacks.picker.grep()"
+    nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.grep()"
   '
   --block
 '''
@@ -135,7 +135,7 @@ on = [ "s", "r" ]
 run = '''
   shell
   '
-    rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim -u NORC --cmd \"lua vim.cmd.source(vim.env.RETRONVIM_INIT)\" {1} +{2})"
+    rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim -u NORC --cmd \"lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))\" {1} +{2})"
   '
   --block
 '''

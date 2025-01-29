@@ -21,7 +21,6 @@ export HISTFILE="$HOME/.cache/.zsh_history"
 export PATH="$HOME/.pixi/bin:$HOME/.local/bin:$HOME/.local/share/pnpm:$HOME/Library/pnpm:$PATH"
 export SAVEHIST=10000
 export STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml"
-export RETRONVIM_INIT="$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" # used in yazi/keymap.toml
 export EDITOR='nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua"'
 
 # retronvim's neovim
