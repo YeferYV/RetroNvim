@@ -15,6 +15,7 @@ zle -N zle-line-init                   # overwriting zle-line-init
 zle -N zle-keymap-select               # overwriting zle-keymap-select
 
 # export LC_ALL=C.UTF-8 # `locale` lists all user's locale https://wiki.archlinux.org/title/Locale
+export BAT_THEME="base16"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
 export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview"'
 export HISTFILE="$HOME/.cache/.zsh_history"
@@ -40,5 +41,9 @@ which fzf      >/dev/null 2>&1 && source <(fzf --zsh)
 which eza      >/dev/null 2>&1 && alias ls="eza --all --icons --group-directories-first"
 which starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
-[[ -z "$SOURCE_ZSHRC" ]] && export SOURCE_ZSHRC=true && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc # && echo "sourced"
-[[ "$TERM_PROGRAM" == "vscode" ]] && source "$(code --locate-shell-integration-path zsh)"
+[[ -e "$HOME/.local/share/pnpm" ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
+[[ -e "$HOME/Library/pnpm"      ]] && export PNPM_HOME="$HOME/Library/pnpm"
+[[ -z "$SOURCE_ZSHRC"           ]] && export SOURCE_ZSHRC=true && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc # && echo "sourced"
+[[ "$TERM_PROGRAM" == "vscode"  ]] && source "$(code --locate-shell-integration-path zsh)"
+
+export ZDOTDIR="$HOME/.vscode/extensions/yeferyv.retronvim/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`

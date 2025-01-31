@@ -565,10 +565,10 @@ _    _    _              _              _    _    _
 | @sft | tap for backspace, hold for LeftShift                                                     |         `RAlt+l = shift+l`         |
 | @alt | tap for middle click, hold for LeftAlt                                                    |         `LAlt+l = LAlt+l`          |
 | @spc | tap for space, hold for touchcursor layer, release for qwerty layer                       | `space+jj = DownArrow + DownArrow` |
-| @yaz | open yazi_cd on any shell                                                                 |     `space+f l = jump to file`     |
+| @yaz | open yazi_cd on any shell                                                                 |             `space+;`              |
 | @clr | clear screen on any shell                                                                 |             `space+f`              |
 |  @¿  | unicode ¿                                                                                 |             `space+q`              |
-|  @ñ  | unicode ñ                                                                                 |             `space+;`              |
+|  @ñ  | unicode ñ                                                                                 |             `space+z`              |
 | @m🡠  | mouse scrolling left                                                                      |             `space+t`              |
 | @m🡪  | mouse scrolling right                                                                     |             `space+p`              |
 | @m↑  | mouse scrolling up                                                                        |             `space+i`              |
@@ -577,10 +577,10 @@ _    _    _              _              _    _    _
 | @M↓  | mouse fast scrolling down                                                                 |             `space+p`              |
 | spc  | space key                                                                                 |             `space+s`              |
 | bspc | backspace key                                                                             |             `space+d`              |
-| home | home key                                                                                  |             `space+s`              |
-| end  | end key                                                                                   |             `space+d`              |
-| pgup | pageup key                                                                                |             `space+s`              |
-| pgdn | pagedown key                                                                              |             `space+d`              |
+| home | home key                                                                                  |             `space+m`              |
+| end  | end key                                                                                   |             `space+,`              |
+| pgup | pageup key                                                                                |             `space+n`              |
+| pgdn | pagedown key                                                                              |             `space+.`              |
 |  @🡠  | left arrow key                                                                            |             `space+h`              |
 |  @↓  | down arrow key                                                                            |             `space+j`              |
 |  @↑  | up arrow key                                                                              |             `space+k`              |
