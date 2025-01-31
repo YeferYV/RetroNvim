@@ -1,3 +1,36 @@
+
+## [0.2.2](https://github.com/YeferYV/RetroNvim/compare/v0.2.1...v0.2.2) (2025-01-30)
+
+
+### Bug Fixes
+
+* **nvim:** mini.snippets now can read vscode snippet extensions automatically ([9bfee36](https://github.com/YeferYV/RetroNvim/commit/9bfee36f79a34e58b83d12217c42a64377da2c6f))
+* **nvim:** Windows needs a autocmd to LspStart ([5904712](https://github.com/YeferYV/RetroNvim/commit/590471210ccd670962db8b0e49e7e10fff3f6f51))
+* **whichkey:** bat requires less to scroll (when opening inside yazi on Windows) ([8cbf92c](https://github.com/YeferYV/RetroNvim/commit/8cbf92cfcbe478031a5421fa62de736a13025dbe))
+* **whichkey:** Install Retronvim's nvim/yazi/zsh on any terminal ([1278a0e](https://github.com/YeferYV/RetroNvim/commit/1278a0e8d1ce8d5e5c40f606e7a8bb2cf528fc5c))
+* **yazi:** if RETRONVIM_INIT not defined use `~/.config/nvim/init.lua` and `~/appdata/local/nvim/init.lua` as fallback ([1d0699a](https://github.com/YeferYV/RetroNvim/commit/1d0699a37b19b65e33b7acb8c042d6b06922a959))
+* **yazi:** open msys2's zsh ([a77eebd](https://github.com/YeferYV/RetroNvim/commit/a77eebd65c670c4c2c85094ff09cd9cd53d4ff83))
+* **yazi:** using mime-ext.yazi (which works in powershell) plugin falling back to file1 ([a3e9542](https://github.com/YeferYV/RetroNvim/commit/a3e95428a6d93e6f24a730b4026498bb6e9aabd8))
+* **zsh:** `nvim --clean` doesn't remember last cursor position ([f85087a](https://github.com/YeferYV/RetroNvim/commit/f85087a4075f6a265c0c638deb402dc473225bef))
+
+## [0.2.1](https://github.com/YeferYV/RetroNvim/compare/v0.2.0...v0.2.1) (2025-01-21)
+
+
+### Bug Fixes
+
+* **keybinding.json:** suggest widget blocks inline completion ([ec2424a](https://github.com/YeferYV/RetroNvim/commit/ec2424a3ff0ab86cf75412c3fefcb5486801de8a))
+* **keybindings.json:** `suggestWidgetMultipleSuggestions` unneeded for `enter` nor `tab` nor `ctrl+j` nor `ctrl+k` ([ec3e3ba](https://github.com/YeferYV/RetroNvim/commit/ec3e3bad6e3864e0544af2babe358c24c0a51ce4))
+* **keybindings.json:** disable &lt;tab&gt; inline completion which blocks <tab> snippet mode ([7593fda](https://github.com/YeferYV/RetroNvim/commit/7593fdaaa81c625fc950d29979ad79f26b20d37b))
+* **keybindings.json:** map `tab` to `selectNextSuggestion` and `shift+tab` to `selectPrevSuggestion` ([115e253](https://github.com/YeferYV/RetroNvim/commit/115e253792ca640af6bcab278a41216159ec0b87))
+* **nvim:** `attempt to index field 'snippets' (a nil value)` it was a typo ([4fea54a](https://github.com/YeferYV/RetroNvim/commit/4fea54a8e5b08b7561afa17e19f7a04c2f9be706))
+* **nvim:** migrating to snacks.picker (which supports preview) from mini.pick + new plugin nvim-tree ([5eda6e9](https://github.com/YeferYV/RetroNvim/commit/5eda6e904a1a63d1e0e66ce155ead99637bb66b5))
+* **nvim:** vscode `undo` snippets conflicts with MiniBracketed.undo() ([c260f34](https://github.com/YeferYV/RetroNvim/commit/c260f340996a931511d316107791a34f867ce0bf))
+* **settings.json:** `formulahendry.auto-rename-tag` supports vscode-neovim "editor.linkedEditing" doesn't ([e741b34](https://github.com/YeferYV/RetroNvim/commit/e741b34ab0bcdadfbbe7dc54e403fe085a394c54))
+* **settings.json:** now tailwind suggestions appears when writing emmet snippets ([4bd51b2](https://github.com/YeferYV/RetroNvim/commit/4bd51b21bc3556e9457715baa56c8aa173991048))
+* **whichkey:** missing "workbench.action.terminal.sendsequence" for "install pixi and pnpm" ([1951852](https://github.com/YeferYV/RetroNvim/commit/1951852603a166331c308f0bd9457f3cbe43ba33))
+* **yazi:** `yy` needs a `tty` + new command `Ripgrep fzf` ([5efea42](https://github.com/YeferYV/RetroNvim/commit/5efea42724296bd1795a588f6f708ee36ae83a86))
+* **yazi:** fzf match color highlight-reverse ([8748bd1](https://github.com/YeferYV/RetroNvim/commit/8748bd181f0253785304145c8c9363ad2e6ad3d2))
+
 ## [0.2.0](https://github.com/YeferYV/RetroNvim/compare/v0.1.1...v0.2.0) (2025-01-05)
 
 
@@ -18,24 +51,6 @@
 
 * **release.yml:** attemp using vsce as devDependency to fix `The user aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa is not authorized` ([ab2979d](https://github.com/YeferYV/RetroNvim/commit/ab2979d7154c8fa2b2e3cc349a6d944a910edc82))
 * **release.yml:** VSCE_TOKEN secret as global env should fix `The user aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa is not authorized` ([1bdd8ae](https://github.com/YeferYV/RetroNvim/commit/1bdd8aebee88dec5a53e2e82d4a1f9578315cd1e))
-
-## [0.2.1](https://github.com/YeferYV/RetroNvim/compare/v0.2.0...v0.2.1) (2025-01-21)
-
-
-### Bug Fixes
-
-* **keybinding.json:** suggest widget blocks inline completion ([ec2424a](https://github.com/YeferYV/RetroNvim/commit/ec2424a3ff0ab86cf75412c3fefcb5486801de8a))
-* **keybindings.json:** `suggestWidgetMultipleSuggestions` unneeded for `enter` nor `tab` nor `ctrl+j` nor `ctrl+k` ([ec3e3ba](https://github.com/YeferYV/RetroNvim/commit/ec3e3bad6e3864e0544af2babe358c24c0a51ce4))
-* **keybindings.json:** disable &lt;tab&gt; inline completion which blocks <tab> snippet mode ([7593fda](https://github.com/YeferYV/RetroNvim/commit/7593fdaaa81c625fc950d29979ad79f26b20d37b))
-* **keybindings.json:** map `tab` to `selectNextSuggestion` and `shift+tab` to `selectPrevSuggestion` ([115e253](https://github.com/YeferYV/RetroNvim/commit/115e253792ca640af6bcab278a41216159ec0b87))
-* **nvim:** `attempt to index field 'snippets' (a nil value)` it was a typo ([4fea54a](https://github.com/YeferYV/RetroNvim/commit/4fea54a8e5b08b7561afa17e19f7a04c2f9be706))
-* **nvim:** migrating to snacks.picker (which supports preview) from mini.pick + new plugin nvim-tree ([5eda6e9](https://github.com/YeferYV/RetroNvim/commit/5eda6e904a1a63d1e0e66ce155ead99637bb66b5))
-* **nvim:** vscode `undo` snippets conflicts with MiniBracketed.undo() ([c260f34](https://github.com/YeferYV/RetroNvim/commit/c260f340996a931511d316107791a34f867ce0bf))
-* **settings.json:** `formulahendry.auto-rename-tag` supports vscode-neovim "editor.linkedEditing" doesn't ([e741b34](https://github.com/YeferYV/RetroNvim/commit/e741b34ab0bcdadfbbe7dc54e403fe085a394c54))
-* **settings.json:** now tailwind suggestions appears when writing emmet snippets ([4bd51b2](https://github.com/YeferYV/RetroNvim/commit/4bd51b21bc3556e9457715baa56c8aa173991048))
-* **whichkey:** missing "workbench.action.terminal.sendsequence" for "install pixi and pnpm" ([1951852](https://github.com/YeferYV/RetroNvim/commit/1951852603a166331c308f0bd9457f3cbe43ba33))
-* **yazi:** `yy` needs a `tty` + new command `Ripgrep fzf` ([5efea42](https://github.com/YeferYV/RetroNvim/commit/5efea42724296bd1795a588f6f708ee36ae83a86))
-* **yazi:** fzf match color highlight-reverse ([8748bd1](https://github.com/YeferYV/RetroNvim/commit/8748bd181f0253785304145c8c9363ad2e6ad3d2))
 
 ## v0.1.1 (06-09-2024)
 
