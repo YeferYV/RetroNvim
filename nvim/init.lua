@@ -879,10 +879,10 @@ if not vim.g.vscode then
   map({ "t", "n" }, "<C-l>", "<C-\\><C-n><C-w>l", { desc = "right window" })
   map({ "t", "n" }, "<C-\\>", ToggleTerminal, { desc = "toggle window terminal" })
   map({ "t", "n" }, "<C-;>", "<C-\\><C-n><C-6>", { desc = "go to last buffer" })
-  map({ "n" }, "<right>", ":bnext<CR>", { desc = "next buffer" })
-  map({ "n" }, "<left>", ":bprevious<CR>", { desc = "prev buffer" })
-  map({ "n" }, "<leader>x", ":bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
-  map({ "n" }, "<leader>;", ":buffer #<cr>", { desc = "Recent buffer" })
+  map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })
+  map({ "n" }, "<left>", "<cmd>bprevious<CR>", { desc = "prev buffer" })
+  map({ "n" }, "<leader>x", "<cmd>bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
+  map({ "n" }, "<leader>;", "<cmd>buffer #<cr>", { desc = "Recent buffer" })
 end
 
 -- Quick quit/write
@@ -903,6 +903,7 @@ end
 
 if not vim.g.vscode then
   ---------------------------------------------------------------------------------------------------------------------
+  vim.diagnostic.config({ virtual_text = true, float = { border = "rounded", }, })
 
   -- https://neovim.io/doc/user/lsp.html#_quickstart
   vim.lsp.config('*', { root_markers = { '.git' }, })
@@ -1087,7 +1088,7 @@ if not vim.g.vscode then
   map("n", "<leader>lh", function() vim.lsp.buf.signature_help() end, { desc = "Signature" })
   map("n", "<leader>lH", function() vim.lsp.buf.hover() end, { desc = "Hover" })
   map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = "Pick Implementation" })
-  map("n", "<leader>lm", ":Mason<cr>", { desc = "Mason" })
+  map("n", "<leader>lm", function() vim.cmd("Mason") end, { desc = "Mason" })
   map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
   map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = "Open Diagnostic" })
   map("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
@@ -1096,8 +1097,8 @@ if not vim.g.vscode then
   map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
   map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
-  map("n", "<leader>m", ":lua MiniFiles.open()<cr>", { desc = "mini.files (CWD)" })
-  map("n", "<leader>M", ":lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>", { desc = "mini.files (CurrentFile)" })
+  map("n", "<leader>m", function() MiniFiles.open() end, { desc = "mini.files (CWD)" })
+  map("n", "<leader>M", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "mini.files CurrentFile" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.grep() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep() end, { desc = "ripgrep on buffers" })
@@ -1110,7 +1111,7 @@ if not vim.g.vscode then
     function() require("snacks").picker.grep({ layout = "ivy_split", filter = { cwd = true }, }) end,
     { desc = "ripgrep" }
   )
-  map("n", "<leader>fn", ":lua MiniNotify.show_history()<cr>", { desc = "Notify history" })
+  map("n", "<leader>fn", function() MiniNotify.show_history() end, { desc = "Notify history" })
   map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "projects" })
   map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quickfix list" })
   map("n", "<leader>fr", function() require("snacks").picker.recent() end, { desc = "recent files" })
@@ -1120,8 +1121,13 @@ if not vim.g.vscode then
   map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = "marks" })
   map("n", "<leader>f.", function() require("snacks").picker.resume() end, { desc = "resume" })
   map("n", "<leader>g", "", { desc = "+Git" })
-  map("n", "<leader>gg", ":lua vim.cmd[[terminal lazygit]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "lazygit" })
-
+  map("n", "<leader>gg", "<cmd>term lazygit<cr><cmd>set ft=terminal<cr>", { desc = "lazygit" })
+  map(
+    "n",
+    "<leader>gd",
+    "<cmd>diffthis | vertical new | diffthis | read !git show HEAD^:#<cr>",
+    { desc = "git difftool -t nvimdiff" }
+  )
   map(
     "n",
     "<leader>gp",
@@ -1142,30 +1148,31 @@ if not vim.g.vscode then
     end,
     { desc = "Preview GitHunk" }
   )
-
-  map("n", "<leader>gr", ":lua MiniDiff.textobject() vim.cmd.normal('gH')<cr>", { desc = "Reset GitHunk" })
-  map("n", "<leader>gs", ":lua MiniDiff.textobject() vim.cmd.normal('gh')<cr>", { desc = "Stage GitHunk" })
-  map("n", "<leader>e", ":lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
+  map("n", "<leader>gr", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gH')<cr>", { desc = "Reset GitHunk" })
+  map("n", "<leader>gs", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gh')<cr>", { desc = "Stage GitHunk" })
+  map("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
   map(
     "n",
     "<leader>o",
-    ":lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true }})<cr>",
+    function()
+      Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true } })
+    end,
     { desc = "Explorer with preview" }
   )
   map("n", "<leader>u", "", { desc = "+UI toggle" })
-  map("n", "<leader>u0", ":set showtabline=0<cr>", { desc = "Buffer Hide" })
-  map("n", "<leader>u2", ":set showtabline=2<cr>", { desc = "Buffer Show" })
-  map("n", "<leader>ul", ":set cursorline!", { desc = "toggle cursorline" })
-  map("n", "<leader>um", ":SupermavenStop<cr>", { desc = "Supermaven stop" })
-  map("n", "<leader>uM", ":SupermavenStart<cr>", { desc = "Supermaven start" })
-  map("n", "<leader>us", ":set laststatus=0<cr>", { desc = "StatusBar Hide" })
-  map("n", "<leader>uS", ":set laststatus=3<cr>", { desc = "StatusBar Show" })
+  map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
+  map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
+  map("n", "<leader>ul", "<cmd>set cursorline!", { desc = "toggle cursorline" })
+  map("n", "<leader>um", "<cmd>SupermavenStop<cr>", { desc = "Supermaven stop" })
+  map("n", "<leader>uM", "<cmd>SupermavenStart<cr>", { desc = "Supermaven start" })
+  map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "StatusBar Hide" })
+  map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "StatusBar Show" })
   map("n", "<leader>uu", HideUnhideWindow, { desc = "Hide/Unhide window (useful for terminal)" })
   map("n", "<leader>t", "", { desc = "+Terminal" })
-  map("n", "<leader>tt", ":lua vim.cmd [[ terminal         ]] <cr>", { desc = "buffer terminal" })
-  map("n", "<leader>ty", ":lua vim.cmd [[ terminal yazi    ]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "yazi" })
-  map("n", "<leader>v", ":lua vim.cmd [[ vsplit | terminal ]] <cr>", { desc = "vertical terminal" })
-  map("n", "<leader>V", ":lua vim.cmd [[ split  | terminal ]] <cr>", { desc = "horizontal terminal" })
+  map("n", "<leader>tt", "<cmd>terminal <cr>", { desc = "buffer terminal" })
+  map("n", "<leader>ty", "<cmd>terminal yazi<cr><cmd>set ft=terminal<cr>", { desc = "yazi" })
+  map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
+  map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
 end
 
 map("n", "<leader><leader>p", '"*p', { desc = "Paste after (second_clip)" })
@@ -1251,7 +1258,7 @@ end
 -- ╰───────────────────────────────────────╯
 
 map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
-map({ "o", "x" }, "gC", ":<c-u>lua require('mini.comment').textobject()<cr>", { desc = "BlockComment textobj" })
+map({ "o", "x" }, "gC", function() require('mini.comment').textobject() end, { desc = "BlockComment textobj" })
 map({ "o", "x" }, "g>", "gn", { desc = "Next find textobj" })
 map({ "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
 
@@ -1260,7 +1267,7 @@ map({ "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
 -- ╰───────────────────────────────────────╯
 
 map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent" })
-map({ "o", "x" }, "ai", ":normal Viik<cr>", { desc = "indent" })
+map({ "o", "x" }, "ai", "<cmd>normal Viik<cr>", { desc = "indent" })
 map(
   { "o", "x" },
   "iy",
@@ -1279,18 +1286,18 @@ map(
   end,
   { desc = "same_indent" }
 )
-map({ "x" }, "iz", ":<c-u>normal! [zjV]zk<cr>", { desc = "inner fold" })
-map({ "o" }, "iz", ":normal Viz<CR>", { desc = "inner fold" })
-map({ "x" }, "az", ":<c-u>normal! [zV]z<cr>", { desc = "outer fold" })
-map({ "o" }, "az", ":normal Vaz<cr>", { desc = "outer fold" })
+map({ "x" }, "iz", ":<c-u>normal! [zjV]z<cr>", { silent = true, desc = "inner fold" })
+map({ "o" }, "iz", ":normal Viz<CR>", { silent = true, desc = "inner fold" })
+map({ "x" }, "az", ":<c-u>normal! [zV]z<cr>", { silent = true, desc = "outer fold" })
+map({ "o" }, "az", ":normal Vaz<cr>", { silent = true, desc = "outer fold" })
 
 -- ╭──────────────────────────────────────────╮
 -- │ Repeatable Pair - motions using <leader> │
 -- ╰──────────────────────────────────────────╯
 
 -- _nvim-treesitter-textobjs_repeatable
-map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next, { silent = true, desc = "Next TS textobj" })
-map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { silent = true, desc = "Prev TS textobj" })
+map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next, { desc = "Next TS textobj" })
+map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { desc = "Prev TS textobj" })
 
 local next_columnmove, prev_columnmove = ts_repeat_move.make_repeatable_move_pair(
   function() M.ColumnMove(1) end,
@@ -1308,8 +1315,8 @@ if vim.g.vscode then
     function() vscode.call("editor.action.marker.next") end,
     function() vscode.call("editor.action.marker.prev") end
   )
-  map({ "n", "x", "o" }, "gnd", next_diagnostic, { silent = true, desc = "Next Diagnostic" })
-  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { silent = true, desc = "Prev Diagnostic" })
+  map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Next Diagnostic" })
+  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Prev Diagnostic" })
 
   local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(
     function() vscode.call("workbench.action.editor.nextChange") end,
@@ -1324,8 +1331,8 @@ if vim.g.vscode then
     function() vscode.call("editor.action.wordHighlight.next") end,
     function() vscode.call("editor.action.wordHighlight.prev") end
   )
-  map({ "n", "x", "o" }, "gnr", next_reference, { silent = true, desc = "Next Reference (vscode only)" })
-  map({ "n", "x", "o" }, "gpr", prev_reference, { silent = true, desc = "Prev Reference (vscode only)" })
+  map({ "n", "x", "o" }, "gnr", next_reference, { desc = "Next Reference (vscode only)" })
+  map({ "n", "x", "o" }, "gpr", prev_reference, { desc = "Prev Reference (vscode only)" })
 else
   local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(
     function() vim.diagnostic.jump({ count = 1, float = true }) end,
@@ -1338,8 +1345,8 @@ else
     function() require("mini.diff").goto_hunk('next') end,
     function() require("mini.diff").goto_hunk('prev') end
   )
-  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { silent = true, desc = "Next GitHunk" })
-  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { silent = true, desc = "Prev GitHunk" })
+  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk" })
+  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk" })
 end
 
 local next_comment, prev_comment = ts_repeat_move.make_repeatable_move_pair(
