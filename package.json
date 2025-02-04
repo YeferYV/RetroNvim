@@ -2360,12 +2360,12 @@
         }
       },
       {
-        "key": "alt+r",
+        "key": "alt+shift+d",
         "command": "workbench.action.terminal.scrollToNextCommand",
         "when": "terminalFocus"
       },
       {
-        "key": "alt+w",
+        "key": "alt+shift+e",
         "command": "workbench.action.terminal.scrollToPreviousCommand",
         "when": "terminalFocus"
       },

@@ -3,10 +3,10 @@
 prepend_keymap = [
 
   # Navigation
-	{ on = [ "<A-j>" ], run = "seek 5",    desc = "preview down 5 lines" },
-	{ on = [ "<A-k>" ], run = "seek -5",   desc = "preview up 5 lines" },
-	{ on = [   "K"   ], run = "arrow -10", desc = "Move cursor up 5 lines" },
-	{ on = [   "J"   ], run = "arrow 10",  desc = "Move cursor down 5 lines" },
+	{ on = [ "<A-j>" ], run = "seek 1",    desc = "preview down 3 lines" },
+	{ on = [ "<A-k>" ], run = "seek -1",   desc = "preview up 3 lines" },
+	{ on = [   "K"   ], run = "arrow -10", desc = "Move cursor up 10 lines" },
+	{ on = [   "J"   ], run = "arrow 10",  desc = "Move cursor down 10 lines" },
 	{ on = [   "R"   ], run = "refresh",   desc = "Refresh" },
 
 	# Search by First Char

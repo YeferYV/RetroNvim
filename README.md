@@ -408,7 +408,7 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |     Key Combination      |    mode     | Description                                              |
 | :----------------------: | :---------: | :------------------------------------------------------- |
 |         `ctrl+\`         |     `n`     | Toggle panel (terminal) visibility                       |
-|         `<esc>`          |     `n`     | clear search highlight                                   |
+|         `escape`         |     `n`     | clear search highlight                                   |
 |      `shift+space`       |     `n`     | Show whichkey menu (Windows, Linux, Mac)                 |
 |       `alt+space`        |     `n`     | Show whichkey menu (Linux, Mac)                          |
 |         `alt+.`          |     `n`     | Repeat most recent Whichkey action                       |
@@ -480,8 +480,8 @@ Neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + mini
 |      `alt+c`       | Copy selection in terminal                               |
 |      `alt+v`       | Paste in terminal                                        |
 |      `alt+y`       | send sequence to open yazi                               |
-|      `alt+r`       | Scroll terminal to next command                          |
-|      `alt+w`       | Scroll terminal to previous command                      |
+|   `alt+shift+d`    | Scroll terminal to next command                          |
+|   `alt+shift+e`    | Scroll terminal to previous command                      |
 |      `alt+e`       | Scroll terminal up                                       |
 |      `alt+d`       | Scroll terminal down                                     |
 |      `alt+q`       | Scroll terminal up by page                               |

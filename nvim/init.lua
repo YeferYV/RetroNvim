@@ -59,7 +59,7 @@ if not vim.g.vscode then
   )
 end
 
-if not vim.g.vscode then now(function() require("mason").setup() end) end
+if not vim.g.vscode then now(function() require("mason").setup({ ui = { border = "rounded" } }) end) end
 
 if not vim.g.vscode then
   now(
@@ -474,6 +474,15 @@ require("mini.ai").setup({
   n_lines = 500, -- search range and required by functions less than 500 LOC
 })
 
+require('mini.indentscope').setup({
+  options = { indent_at_cursor = false, },
+  mappings = {
+    object_scope = 'iI',
+    object_scope_with_border = 'aI',
+  },
+  symbol = '',
+})
+
 require('mini.surround').setup({
   mappings = {
     add = 'gza',            -- Add surrounding in Normal and Visual modes
@@ -813,7 +822,6 @@ if not vim.g.vscode then
   require('mini.cursorword').setup()
   require('mini.extra').setup()
   require('mini.icons').setup()
-  require('mini.indentscope').setup({ options = { indent_at_cursor = false, }, symbol = '', })
   require('mini.misc').setup_auto_root()
   require('mini.notify').setup()
   require('mini.pairs').setup()
@@ -1251,8 +1259,6 @@ map({ "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
 -- │ Text Objects with a/i (dot to repeat) │
 -- ╰───────────────────────────────────────╯
 
-map({ "o", "x" }, "iI", function() require("mini.indentscope").textobject(false) end, { desc = "indent blank" })
-map({ "o", "x" }, "aI", function() require("mini.indentscope").textobject(true) end, { desc = "indent blank" })
 map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent" })
 map({ "o", "x" }, "ai", ":normal Viik<cr>", { desc = "indent" })
 map(
