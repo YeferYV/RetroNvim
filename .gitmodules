@@ -4,18 +4,9 @@
 [submodule "nvim/plugins/site/pack/deps/opt/flash.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/flash.nvim
 	url = https://github.com/folke/flash.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/gitsigns.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/gitsigns.nvim
-	url = https://github.com/lewis6991/gitsigns.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/mason.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/mason.nvim
 	url = https://github.com/williamboman/mason.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/nvim-lspconfig"]
-	path = nvim/plugins/site/pack/deps/opt/nvim-lspconfig
-	url = https://github.com/neovim/nvim-lspconfig
-[submodule "nvim/plugins/site/pack/deps/opt/nvim-tree.lua"]
-	path = nvim/plugins/site/pack/deps/opt/nvim-tree.lua
-	url = https://github.com/nvim-tree/nvim-tree.lua
 [submodule "nvim/plugins/site/pack/deps/opt/nvim-treesitter"]
 	path = nvim/plugins/site/pack/deps/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter

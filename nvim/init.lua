@@ -23,7 +23,6 @@ local _, vscode = pcall(require, "vscode-neovim")
 
 -- text-objects
 add { source = "folke/flash.nvim", checkout = "v2.1.0" }
-add { source = "lewis6991/gitsigns.nvim", checkout = "v0.9.0", }
 add { source = "nvim-treesitter/nvim-treesitter", checkout = "v0.9.3", }
 add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "ad8f0a472148c3e0ae9851e26a722ee4e29b1595" }
 
@@ -31,27 +30,10 @@ if not vim.g.vscode then
   -- completions / UI
   add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
   add { source = "williamboman/mason.nvim", checkout = "v1.10.0", }
-  add { source = "neovim/nvim-lspconfig", checkout = "v1.0.0" }
-  add { source = "nvim-tree/nvim-tree.lua", checkout = "v1.10.0" }
-  add { source = "folke/snacks.nvim", checkout = "v2.14.0" }
+  add { source = "folke/snacks.nvim", checkout = "v2.18.0" }
 end
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
-
-later(
-  function()
-    require("gitsigns").setup {
-      signs = {
-        add          = { text = "│" },
-        change       = { text = "│" },
-        delete       = { text = "│" },
-        topdelete    = { text = "" },
-        changedelete = { text = "~" },
-        untracked    = { text = '┆' },
-      }
-    }
-  end
-)
 
 later(
   function()
@@ -77,78 +59,7 @@ if not vim.g.vscode then
   )
 end
 
-if not vim.g.vscode then
-  later(
-    function()
-      require("nvim-tree").setup {
-        renderer = {
-          indent_markers = {
-            enable = true,
-            icons = {
-              corner = "│",
-              none = "│"
-            },
-          },
-        },
-        on_attach = function(bufnr)
-          local map = vim.keymap.set
-          local opts = function(desc) return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true } end
-          local api = require("nvim-tree.api")
-
-          api.config.mappings.default_on_attach(bufnr) -- default mappings
-
-          local function getparent_closenode()
-            local node = api.tree.get_node_under_cursor()
-            -- vim.notify(vim.inspect(node))
-
-            -- if focused node is a folder and it's expanded
-            if node.nodes and node.open then
-              -- close node
-              api.node.open.edit()
-            else
-              api.node.navigate.parent()
-            end
-          end
-
-          local function getchild_open()
-            local node = api.tree.get_node_under_cursor()
-
-            -- if focused node is a folder
-            if node.nodes then
-              if not node.open then
-                -- open folder
-                api.node.open.edit()
-              else
-                -- navigate to children node
-                vim.cmd.normal("j")
-              end
-            else
-              -- open file
-              api.node.open.edit()
-            end
-          end
-
-          map("n", "h", getparent_closenode, opts("Parent or collapse"))
-          map("n", "l", getchild_open, opts("Open file or folder"))
-          map("n", "L",
-            function()
-              api.node.open.edit()
-              api.tree.close()
-            end,
-            opts("quit on open")
-          )
-          map("n", "o",
-            function()
-              api.node.open.edit()
-              api.tree.focus()
-            end,
-            opts("open unfocus")
-          )
-        end
-      }
-    end
-  )
-end
+if not vim.g.vscode then now(function() require("mason").setup() end) end
 
 if not vim.g.vscode then
   now(
@@ -187,7 +98,6 @@ vim.opt.tabstop = 2               -- insert 2 spaces for a tab
 vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.wrap = false              -- display lines as one long line
 vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
-vim.opt.iskeyword:append "-"      -- hyphenated words recognized by searches
 
 if not vim.g.vscode then
   vim.opt.cmdheight = 0                               -- more space in the neovim command line for displaying messages
@@ -424,11 +334,6 @@ end
 ---Is the completion menu open?
 local function pumvisible()
   return tonumber(vim.fn.pumvisible()) ~= 0
-end
-
--- the `vi` zsh alias doesn't autostart lsp
-if not vim.g.vscode then
-  autocmd('VimEnter', { command = "LspStart" })
 end
 
 autocmd('LspAttach', {
@@ -728,9 +633,9 @@ if not vim.g.vscode then
   -- poimandres custom colors
   vim.api.nvim_set_hl(0, "Comment", { fg = "#5c5c5c", })
   vim.api.nvim_set_hl(0, "Visual", { bg = "#2c2c2c" })
-  vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#009900" })
-  vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#3C3CFf" })
-  vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#990000" })
+  vim.api.nvim_set_hl(0, "MiniDiffSignAdd", { fg = "#009900" })
+  vim.api.nvim_set_hl(0, "MiniDiffSignChange", { fg = "#3C3CFf" })
+  vim.api.nvim_set_hl(0, "MiniDiffSignDelete", { fg = "#990000" })
 
   -- poimandres same as the original
   vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#D0679D" })
@@ -888,6 +793,23 @@ if not vim.g.vscode then
     end
   )
 
+  require('mini.diff').setup({
+    view = {
+      style = 'sign',
+      signs = {
+        add = '│',
+        change = '│',
+        delete = '│'
+      }
+    },
+    mappings = {
+      textobject = 'gH',
+    },
+    options = {
+      wrap_goto = true
+    }
+  })
+
   require('mini.cursorword').setup()
   require('mini.extra').setup()
   require('mini.icons').setup()
@@ -911,7 +833,6 @@ end
 -- ╰────────────╯
 
 local flash = require("flash")
-local gs = require("gitsigns")
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 
 map({ "i" }, "jk", "<ESC>")
@@ -973,104 +894,180 @@ end
 -- ╰────────────────╯
 
 if not vim.g.vscode then
-  -- LSP
-  require("mason").setup()
+  ---------------------------------------------------------------------------------------------------------------------
 
-  -- https://github.com/NvChad/ui/blob/v3.0/lua/nvchad/mason/names.lua
-  local masonames = {
-    angularls = "angular-language-server",
-    astro = "astro-language-server",
-    bashls = "bash-language-server",
-    cmake = "cmake-language-server",
-    csharp_ls = "csharp-language-server",
-    css_variables = "css-variables-language-server",
-    cssls = "css-lsp",
-    cssmodules_ls = "cssmodules-language-server",
-    denols = "deno",
-    docker_compose_language_service = "docker-compose-language-service",
-    dockerls = "dockerfile-language-server",
-    emmet_language_server = "emmet-language-server",
-    emmet_ls = "emmet-ls",
-    eslint = "eslint-lsp",
-    graphql = "graphql-language-service-cli",
-    gitlab_ci_ls = "gitlab-ci-ls",
-    gopls = "gopls",
-    html = "html-lsp",
-    htmx = "htmx-lsp",
-    java_language_server = "java-language-server",
-    jdtls = "jdtls",
-    jsonls = "json-lsp",
-    kotlin_language_server = "kotlin-language-server",
-    lua_ls = "lua-language-server",
-    neocmake = "neocmakelsp",
-    nginx_language_server = "nginx-language-server",
-    omnisharp = "omnisharp",
-    prismals = "prisma-language-server",
-    pylsp = "python-lsp-server",
-    pylyzer = "pylyzer",
-    quick_lint_js = "quick-lint-js",
-    r_language_server = "r-languageserver",
-    ruby_lsp = "ruby-lsp",
-    ruff_lsp = "ruff-lsp",
-    rust_analyzer = "rust-analyzer",
-    svelte = "svelte-language-server",
-    tailwindcss = "tailwindcss-language-server",
-    ts_ls = "typescript-language-server",
-    volar = "vue-language-server",
-    vuels = "vetur-vls",
-    yamlls = "yaml-language-server",
-  }
+  -- https://neovim.io/doc/user/lsp.html#_quickstart
+  vim.lsp.config('*', { root_markers = { '.git' }, })
 
-  -- extract installed lsp servers from mason.nvim
-  local servers = {}
-  local pkgs = require("mason-registry").get_installed_packages()
-  for _, pkgvalue in pairs(pkgs) do
-    if pkgvalue.spec.categories[1] == "LSP" then
-      table.insert(servers, pkgvalue.name)
-    end
-  end
-
-  -- update incompatible mason's lsp names according to nvim-lspconfig
-  -- https://github.com/NvChad/ui/blob/v3.0/lua/nvchad/mason/init.lua
-  for masonkey, masonvalue in pairs(masonames) do
-    for serverkey, servervalue in pairs(servers) do
-      if masonvalue == servervalue then
-        servers[serverkey] = masonkey
-      end
-    end
-  end
-
-  -- autoconfigure lsp servers installed by mason
-  for _, server in pairs(servers) do
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    local opts = { capabilities = capabilities }
-
-    require("lspconfig")[server].setup(opts)
-  end
-
-  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
-  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
-  if vim.tbl_contains(servers, "efm") then
-    require("lspconfig").efm.setup {
-      init_options = { documentFormatting = true },
-      settings = {
-        rootMarkers = { ".git/" },
-        languages = {
-          python = { { formatCommand = "black -", formatStdin = true } },
-          javascript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          javascriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          typescript = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          typescriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          css = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          html = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          json = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          markdown = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
-          yaml = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+  vim.lsp.config['luals']                   = {
+    cmd = { 'lua-language-server' },
+    filetypes = { 'lua' },
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = {
+            "vim"
+          }
         }
       }
     }
-  end
+  }
+
+  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
+  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
+  vim.lsp.config['efm']                     = {
+    cmd = { 'efm-langserver' },
+    filetypes = { 'python', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'html', 'json', 'markdown', 'yaml' },
+    init_options = { documentFormatting = true },
+    settings = {
+      rootMarkers = { ".git/" },
+      languages = {
+        python          = { { formatCommand = "black -", formatStdin = true } },
+        javascript      = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        javascriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        typescript      = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        typescriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        css             = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        html            = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        json            = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        markdown        = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        yaml            = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+      }
+    }
+  }
+
+  -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
+  vim.lsp.config['angularls']               = { cmd = { "ngserver", "--stdio" }, filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'htmlangular' } }
+  vim.lsp.config['ansiblels']               = { cmd = { 'ansible-language-server', '--stdio' }, filetypes = { 'yaml.ansible' } }
+  vim.lsp.config['arduino_language_server'] = { cmd = { 'arduino-language-server' }, filetypes = { 'arduino' } }
+  vim.lsp.config['astro']                   = { cmd = { 'astro-ls', '--stdio' }, filetypes = { 'astro' } }
+  vim.lsp.config['autotools_ls']            = { cmd = { 'autotools-language-server' }, filetypes = { 'config', 'automake', 'make' } }
+  vim.lsp.config['azure_pipelines_ls']      = { cmd = { 'azure-pipelines-language-server', '--stdio' }, filetypes = { 'yaml' } }
+  vim.lsp.config['basedpyright']            = { cmd = { 'basedpyright-langserver', '--stdio' }, filetypes = { 'python' } }
+  vim.lsp.config['bashls']                  = { cmd = { 'bash-language-server', 'start' }, filetypes = { 'bash', 'sh' } }
+  vim.lsp.config['biome']                   = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
+  vim.lsp.config['ccls']                    = { cmd = { 'ccls' }, filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' } }
+  vim.lsp.config['cmake']                   = { cmd = { 'cmake-language-server' }, filetypes = { 'cmake' } }
+  vim.lsp.config['csharp_ls']               = { cmd = { 'csharp-ls' }, filetypes = { 'cs' } }
+  vim.lsp.config['css_variables']           = { cmd = { 'css-variables-language-server', '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
+  vim.lsp.config['cssls']                   = { cmd = { 'vscode-css-language-server', '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
+  vim.lsp.config['cssmodules_ls']           = { cmd = { 'cssmodules-language-server' }, filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } }
+  vim.lsp.config['denols']                  = { cmd = { 'deno.cache' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
+  vim.lsp.config['docker_compose']          = { cmd = { 'docker-compose-langserver', '--stdio' }, filetypes = { 'yaml.docker-compose' } }
+  vim.lsp.config['dockerls']                = { cmd = { 'docker-langserver', '--stdio' }, filetypes = { 'dockerfile' } }
+  vim.lsp.config['dprint']                  = { cmd = { 'dprint', 'lsp' }, filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'json', 'jsonc', 'markdown', 'python', 'toml', 'rust', 'graphql' } }
+  vim.lsp.config['emmet_language_server']   = { cmd = { 'emmet-language-server', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
+  vim.lsp.config['emmet_ls']                = { cmd = { 'emmet-ls', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
+  vim.lsp.config['eslint']                  = { cmd = { 'vscode-eslint-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx', 'vue', 'svelte', 'astro' } }
+  vim.lsp.config['gh_actions_ls']           = { cmd = { 'gh-actions-language-server', '--stdio' }, filetypes = { 'yaml' }, }
+  vim.lsp.config['gitlab_ci_ls']            = { cmd = { 'gitlab-ci-ls' }, filetypes = { 'yaml.gitlab' } }
+  vim.lsp.config['golangci_lint_ls']        = { cmd = { 'golangci-lint-langserver' }, filetypes = { 'go', 'gomod' } }
+  vim.lsp.config['gopls']                   = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
+  vim.lsp.config['graphql']                 = { cmd = { 'graphql-lsp', 'server', '-m', 'stream' }, filetypes = { 'graphql', 'typescriptreact', 'javascriptreact' } }
+  vim.lsp.config['html']                    = { cmd = { 'vscode-html-language-server', '--stdio' }, filetypes = { 'html', 'templ' } }
+  vim.lsp.config['htmx']                    = { cmd = { 'htmx-lsp' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
+  vim.lsp.config['jsonls']                  = { cmd = { 'vscode-json-language-server', '--stdio' }, filetypes = { 'json', 'jsonc' } }
+  vim.lsp.config['lsp_ai']                  = { cmd = { 'lsp-ai' } }
+  vim.lsp.config['marksman']                = { cmd = { 'marksman' }, filetypes = { 'markdown', 'markdown.mdx' } }
+  vim.lsp.config['matlab_ls']               = { cmd = { 'matlab-language-server', '--stdio' }, filetypes = { 'matlab' } }
+  vim.lsp.config['neocmake']                = { cmd = { 'neocmakelsp', '--stdio' }, filetypes = { 'cmake' } }
+  vim.lsp.config['nginx_language_server']   = { cmd = { 'nginx-language-server' }, filetypes = { 'nginx' } }
+  vim.lsp.config['phpactor']                = { cmd = { 'phpactor', 'language-server' }, filetypes = { 'php' } }
+  vim.lsp.config['postgres_lsp']            = { cmd = { 'postgres_lsp' }, filetypes = { 'sql' }, }
+  vim.lsp.config['prismals']                = { cmd = { 'prisma-language-server', '--stdio' }, filetypes = { 'prisma' } }
+  vim.lsp.config['psalm']                   = { cmd = { 'psalm', '--language-server' }, filetypes = { 'php' } }
+  vim.lsp.config['pylsp']                   = { cmd = { 'pylsp' }, filetypes = { 'python' } }
+  vim.lsp.config['pylyzer']                 = { cmd = { 'pylyzer', '--server' }, filetypes = { 'python' } }
+  vim.lsp.config['pyre']                    = { cmd = { 'pyre', 'persistent' }, filetypes = { 'python' } }
+  vim.lsp.config['pyright']                 = { cmd = { 'pyright-langserver', '--stdio' }, filetypes = { 'python' } }
+  vim.lsp.config['quick_lint_js']           = { cmd = { 'quick-lint-js', '--lsp-server' }, filetypes = { 'javascript', 'typescript' } }
+  vim.lsp.config['r_language_server']       = { cmd = { 'R', '--no-echo', '-e', 'languageserver::run()' }, filetypes = { 'r', 'rmd' } }
+  vim.lsp.config['rls']                     = { cmd = { 'rls' }, filetypes = { 'rust' } }
+  vim.lsp.config['ruff']                    = { cmd = { 'ruff' }, filetypes = { 'python' } }
+  vim.lsp.config['ruff_lsp']                = { cmd = { 'ruff-lsp' }, filetypes = { 'python' } }
+  vim.lsp.config['rust_analyzer']           = { cmd = { 'rust-analyzer' }, filetypes = { 'rust' } }
+  vim.lsp.config['slint_lsp']               = { cmd = { 'slint-lsp' }, filetypes = { 'slint' } }
+  vim.lsp.config['sqlls']                   = { cmd = { 'sql-language-server', 'up', '--method', 'stdio' }, filetypes = { 'sql', 'mysql' } }
+  vim.lsp.config['sqls']                    = { cmd = { 'sqls' }, filetypes = { 'sql', 'mysql' } }
+  vim.lsp.config['svelte']                  = { cmd = { 'svelteserver', '--stdio' }, filetypes = { 'svelte' } }
+  vim.lsp.config['tailwindcss']             = { cmd = { 'tailwindcss-language-server', '--stdio' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
+  vim.lsp.config['templ']                   = { cmd = { 'templ', 'lsp' }, filetypes = { 'templ' } }
+  vim.lsp.config['terraform_lsp']           = { cmd = { 'terraform-lsp' }, filetypes = { 'terraform', 'hcl' } }
+  vim.lsp.config['terraformls']             = { cmd = { 'terraform-ls', 'serve' }, filetypes = { 'terraform', 'terraform-vars' } }
+  vim.lsp.config['tflint']                  = { cmd = { 'tflint', '--stdio' }, filetypes = { 'terraform' } }
+  vim.lsp.config['ts_ls']                   = { cmd = { 'typescript-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
+  vim.lsp.config['volar']                   = { cmd = { 'vue-language-server', '--stdio' }, filetypes = { 'vue' } }
+  vim.lsp.config['vtsls']                   = { cmd = { 'vtsls', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx', } }
+  vim.lsp.config['vuels']                   = { cmd = { 'vls' }, filetypes = { 'vue' } }
+  vim.lsp.config['yamlls']                  = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' } }
+
+  vim.lsp.enable('luals')
+  vim.lsp.enable('efm')
+  vim.lsp.enable('angularls')
+  vim.lsp.enable('ansiblels')
+  vim.lsp.enable('arduino_language_server')
+  vim.lsp.enable('astro')
+  vim.lsp.enable('autotools_ls')
+  vim.lsp.enable('azure_pipelines_ls')
+  vim.lsp.enable('basedpyright')
+  vim.lsp.enable('bashls')
+  vim.lsp.enable('biome')
+  vim.lsp.enable('ccls')
+  vim.lsp.enable('cmake')
+  vim.lsp.enable('csharp_ls')
+  vim.lsp.enable('css_variables')
+  vim.lsp.enable('cssls')
+  vim.lsp.enable('cssmodules_ls')
+  vim.lsp.enable('denols')
+  vim.lsp.enable('docker_compose')
+  vim.lsp.enable('dockerls')
+  vim.lsp.enable('dprint')
+  vim.lsp.enable('emmet_language_server')
+  vim.lsp.enable('emmet_ls')
+  vim.lsp.enable('eslint')
+  vim.lsp.enable('gh_actions_ls')
+  vim.lsp.enable('gitlab_ci_ls')
+  vim.lsp.enable('golangci_lint_ls')
+  vim.lsp.enable('gopls')
+  vim.lsp.enable('graphql')
+  vim.lsp.enable('html')
+  vim.lsp.enable('htmx')
+  vim.lsp.enable('jsonls')
+  vim.lsp.enable('lsp_ai')
+  vim.lsp.enable('marksman')
+  vim.lsp.enable('matlab_ls')
+  vim.lsp.enable('neocmake')
+  vim.lsp.enable('nginx_language_server')
+  vim.lsp.enable('phpactor')
+  vim.lsp.enable('postgres_lsp')
+  vim.lsp.enable('prismals')
+  vim.lsp.enable('psalm')
+  vim.lsp.enable('pylsp')
+  vim.lsp.enable('pylyzer')
+  vim.lsp.enable('pyre')
+  vim.lsp.enable('pyright')
+  vim.lsp.enable('quick_lint_js')
+  vim.lsp.enable('r_language_server')
+  vim.lsp.enable('rls')
+  vim.lsp.enable('ruff')
+  vim.lsp.enable('ruff_lsp')
+  vim.lsp.enable('rust_analyzer')
+  vim.lsp.enable('slint_lsp')
+  vim.lsp.enable('sqlls')
+  vim.lsp.enable('sqls')
+  vim.lsp.enable('svelte')
+  vim.lsp.enable('tailwindcss')
+  vim.lsp.enable('templ')
+  vim.lsp.enable('terraform_lsp')
+  vim.lsp.enable('terraformls')
+  vim.lsp.enable('tflint')
+  vim.lsp.enable('ts_ls')
+  vim.lsp.enable('volar')
+  vim.lsp.enable('vtsls')
+  vim.lsp.enable('vuels')
+  vim.lsp.enable('yamlls')
+
+  ------------------------------------------------------------------------------------------------------------------------
 
   map("n", "<leader>l", "", { desc = "+LSP" })
   map("n", "<leader>lA", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
@@ -1083,7 +1080,6 @@ if not vim.g.vscode then
   map("n", "<leader>lH", function() vim.lsp.buf.hover() end, { desc = "Hover" })
   map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = "Pick Implementation" })
   map("n", "<leader>lm", ":Mason<cr>", { desc = "Mason" })
-  map("n", "<leader>lM", ":LspInfo<cr>", { desc = "LspInfo" })
   map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
   map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = "Open Diagnostic" })
   map("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
@@ -1100,7 +1096,12 @@ if not vim.g.vscode then
   map("n", "<leader>fc", function() require("snacks").picker.colorschemes() end, { desc = "colorscheme" })
   map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "keymaps" })
   map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "files" })
-  map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "ripgrep" })
+  map(
+    "n",
+    "<leader>fg",
+    function() require("snacks").picker.grep({ layout = "ivy_split", filter = { cwd = true }, }) end,
+    { desc = "ripgrep" }
+  )
   map("n", "<leader>fn", ":lua MiniNotify.show_history()<cr>", { desc = "Notify history" })
   map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "projects" })
   map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quickfix list" })
@@ -1112,11 +1113,37 @@ if not vim.g.vscode then
   map("n", "<leader>f.", function() require("snacks").picker.resume() end, { desc = "resume" })
   map("n", "<leader>g", "", { desc = "+Git" })
   map("n", "<leader>gg", ":lua vim.cmd[[terminal lazygit]] vim.cmd[[set filetype=terminal]]<cr>", { desc = "lazygit" })
-  map("n", "<leader>gp", ":Gitsigns preview_hunk<cr>", { silent = true, desc = "Preview GitHunk" })
-  map("n", "<leader>gr", ":Gitsigns reset_hunk<cr>", { silent = true, desc = "Reset GitHunk" })
-  map("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", { silent = true, desc = "Stage GitHunk" })
-  map("n", "<leader>gS", ":Gitsigns undo_stage_hunk<cr>", { silent = true, desc = "Undo stage GitHunk" })
-  map("n", "<leader>o", ":NvimTreeFindFileToggle<cr>", { desc = "Nvimtree" })
+
+  map(
+    "n",
+    "<leader>gp",
+    function()
+      -- local curr_file = vim.fs.basename(vim.api.nvim_buf_get_name(0))
+      local curr_file = vim.fn.expand('%')
+      require("snacks").picker.git_diff({
+        on_show = function(picker)
+          for i, item in ipairs(picker:items()) do
+            if item.text:match(curr_file) then
+              picker.list:view(i)
+              break -- break at first match
+            end
+          end
+          vim.cmd('stopinsert') -- starts normal mode
+        end,
+      })
+    end,
+    { desc = "Preview GitHunk" }
+  )
+
+  map("n", "<leader>gr", ":lua MiniDiff.textobject() vim.cmd.normal('gH')<cr>", { desc = "Reset GitHunk" })
+  map("n", "<leader>gs", ":lua MiniDiff.textobject() vim.cmd.normal('gh')<cr>", { desc = "Stage GitHunk" })
+  map("n", "<leader>e", ":lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
+  map(
+    "n",
+    "<leader>o",
+    ":lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true }})<cr>",
+    { desc = "Explorer with preview" }
+  )
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", ":set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", ":set showtabline=2<cr>", { desc = "Buffer Show" })
@@ -1149,7 +1176,7 @@ map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward (second_clip)" })
 -- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
 map(
   { "n", "x" },
-  "gh",
+  "gT",
   function()
     local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
     local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
@@ -1165,7 +1192,7 @@ map(
 )
 map(
   { "n", "x" },
-  "gl",
+  "gt",
   function()
     local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
     local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
@@ -1209,13 +1236,6 @@ if vim.g.vscode then
     end,
     { desc = "EndOf Git hunk (vscode only)" }
   )
-else
-  map(
-    { "o", "x" },
-    "gh",
-    ":<c-u>Gitsigns select_hunk<cr>",
-    { desc = "Git hunk textobj" }
-  )
 end
 
 -- ╭───────────────────────────────────────╮
@@ -1224,8 +1244,8 @@ end
 
 map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
 map({ "o", "x" }, "gC", ":<c-u>lua require('mini.comment').textobject()<cr>", { desc = "BlockComment textobj" })
-map({ "o", "x" }, "gf", "gn", { desc = "Next find textobj" })
-map({ "o", "x" }, "gF", "gN", { desc = "Prev find textobj" })
+map({ "o", "x" }, "g>", "gn", { desc = "Next find textobj" })
+map({ "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
 
 -- ╭───────────────────────────────────────╮
 -- │ Text Objects with a/i (dot to repeat) │
@@ -1308,7 +1328,10 @@ else
   map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Next Diagnostic" })
   map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Prev Diagnostic" })
 
-  local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
+  local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(
+    function() require("mini.diff").goto_hunk('next') end,
+    function() require("mini.diff").goto_hunk('prev') end
+  )
   map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { silent = true, desc = "Next GitHunk" })
   map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { silent = true, desc = "Prev GitHunk" })
 end
