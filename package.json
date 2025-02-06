@@ -651,7 +651,7 @@
             },
             {
               "key": "B",
-              "name": "brew install bat eza fd FiraCode-NF fzf git karabiner lazygit starship ripgrep 7zip",
+              "name": "brew install bat eza fd font-fira-code-nerd-font fzf git karabiner lazygit starship ripgrep 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -698,7 +698,7 @@
             },
             {
               "key": "N",
-              "name": "nixpkgs install bat eza fd FiraCode-NF fzf git lazygit ripdrag ripgrep starship zsh 7zip",
+              "name": "nixpkgs install bat eza fd fira-code-nerdfont fzf git lazygit ripdrag ripgrep starship zsh 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
@@ -740,7 +740,7 @@
             },
             {
               "key": "S",
-              "name": "scoop install bat eza fd FiraCode-NF fzf git lazygit less msys2 starship ripgrep zig zsh 7zip",
+              "name": "scoop install bat eza fd FiraCode-NF fzf gcc git lazygit less msys2 starship ripgrep zsh 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -749,7 +749,7 @@
               "args": [
                 null,
                 {
-                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install bat eza fd FiraCode-NF fzf lazygit less msys2 starship ripgrep zig 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
+                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install bat eza fd FiraCode-NF fzf gcc lazygit less msys2 starship ripgrep 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
                 },
                 "require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]

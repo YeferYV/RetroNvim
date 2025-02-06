@@ -43,7 +43,7 @@ which starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
 [[ -e "$HOME/.local/share/pnpm" ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
 [[ -e "$HOME/Library/pnpm"      ]] && export PNPM_HOME="$HOME/Library/pnpm"
-[[ -z "$SOURCE_ZSHRC"           ]] && export SOURCE_ZSHRC=true && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc # && echo "sourced"
+[[ "$(readlink $HOME/.zshrc)" != "$HOME/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc" ]] && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc
 [[ "$TERM_PROGRAM" == "vscode"  ]] && source "$(code --locate-shell-integration-path zsh)"
 
 export ZDOTDIR="$HOME/.vscode/extensions/yeferyv.retronvim/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`

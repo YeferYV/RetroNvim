@@ -23,8 +23,8 @@ local _, vscode = pcall(require, "vscode-neovim")
 
 -- text-objects
 add { source = "folke/flash.nvim", checkout = "v2.1.0" }
-add { source = "nvim-treesitter/nvim-treesitter", checkout = "v0.9.3", }
-add { source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "ad8f0a472148c3e0ae9851e26a722ee4e29b1595" }
+add { source = "nvim-treesitter/nvim-treesitter", remote = "main", checkout = "921d281da8b27302b908203aa7f8796daf294c1d", }
+add { source = "nvim-treesitter/nvim-treesitter-textobjects", remote = "main", checkout = "4c17295385454be48a04b442e41f95d5c724c1ad" }
 
 if not vim.g.vscode then
   -- completions / UI
@@ -35,14 +35,7 @@ end
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
 
-later(
-  function()
-    require("nvim-treesitter.configs").setup {
-      indent = { enable = true },    -- https://www.reddit.com/r/neovim/comments/14n6iiy/if_you_have_treesitter_make_sure_to_disable_smartindent
-      highlight = { enable = true }, -- https://github.com/nvim-treesitter/nvim-treesitter/issues/5264
-    }
-  end
-)
+now(function() require("nvim-treesitter").setup() end)
 
 if not vim.g.vscode then
   later(
@@ -53,7 +46,7 @@ if not vim.g.vscode then
           clear_suggestion = "<A-k>",
           accept_word = "<A-j>",
         }
-        -- ignore_filetypes = { "NvimTree", "prompt", "snacks_input", "snacks_picker_input" }
+        -- ignore_filetypes = { "prompt", "snacks_input", "snacks_picker_input" }
       }
     end
   )
@@ -111,6 +104,7 @@ if not vim.g.vscode then
   vim.o.foldlevel = 99                                -- Disable folding at startup
   vim.o.foldmethod = "expr"                           -- expr = specify an expression to define folds
   vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- if folding using lsp then 'v:lua.vim.lsp.foldexpr()'
+  vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
   vim.o.statuscolumn =
   '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
@@ -119,7 +113,6 @@ if not vim.g.vscode then
   vim.fn.sign_define("DiagnosticSignWarn", { texthl = "DiagnosticSignWarn", text = "" })
   vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "" })
   vim.fn.sign_define("DiagnosticSignInfo", { texthl = "DiagnosticSignInfo", text = "" })
-  vim.cmd [[ TSEnable highlight ]]
 end
 
 -- ╭──────────────╮
@@ -841,7 +834,6 @@ end
 -- ╰────────────╯
 
 local flash = require("flash")
-local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 
 map({ "i" }, "jk", "<ESC>")
 map({ "i" }, "kj", "<ESC>")
@@ -1307,11 +1299,46 @@ map({ "o" }, "az", ":normal Vaz<cr>", { silent = true, desc = "outer fold" })
 -- │ Repeatable Pair - motions using <leader> │
 -- ╰──────────────────────────────────────────╯
 
--- _nvim-treesitter-textobjs_repeatable
-map({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next, { desc = "Next TS textobj" })
-map({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous, { desc = "Prev TS textobj" })
+M.last_move = {}
 
-local next_columnmove, prev_columnmove = ts_repeat_move.make_repeatable_move_pair(
+-- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/blob/master/lua/nvim-treesitter/textobjects/repeatable_move.lua
+M.repeat_last_move = function(opts_extend)
+  if M.last_move then
+    local opts = vim.tbl_deep_extend("force", {}, M.last_move.opts, opts_extend)
+    M.last_move.func(opts, unpack(M.last_move.additional_args))
+  end
+end
+
+map({ "n", "x", "o" }, ";", function() M.repeat_last_move { forward = true } end, { desc = "Next TS textobj" })
+map({ "n", "x", "o" }, ",", function() M.repeat_last_move { forward = false } end, { desc = "Prev TS textobj" })
+
+M.make_repeatable_move_pair = function(forward_move_fn, backward_move_fn)
+  local set_last_move = function(move_fn, opts, ...)
+    M.last_move = { func = move_fn, opts = vim.deepcopy(opts), additional_args = { ... } }
+  end
+
+  local general_repeatable_move_fn = function(opts, ...)
+    if opts.forward then
+      forward_move_fn(...)
+    else
+      backward_move_fn(...)
+    end
+  end
+
+  local repeatable_forward_move_fn = function(...)
+    set_last_move(general_repeatable_move_fn, { forward = true }, ...)
+    forward_move_fn(...)
+  end
+
+  local repeatable_backward_move_fn = function(...)
+    set_last_move(general_repeatable_move_fn, { forward = false }, ...)
+    backward_move_fn(...)
+  end
+
+  return repeatable_forward_move_fn, repeatable_backward_move_fn
+end
+
+local next_columnmove, prev_columnmove = M.make_repeatable_move_pair(
   function() M.ColumnMove(1) end,
   function() M.ColumnMove(-1) end
 )
@@ -1323,14 +1350,14 @@ map({ "n", "x", "o" }, "<leader><leader>k", prev_columnmove, { desc = "Prev Colu
 -- ╰──────────────────────────────────────────────────╯
 
 if vim.g.vscode then
-  local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(
+  local next_diagnostic, prev_diagnostic = M.make_repeatable_move_pair(
     function() vscode.call("editor.action.marker.next") end,
     function() vscode.call("editor.action.marker.prev") end
   )
   map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Next Diagnostic" })
   map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Prev Diagnostic" })
 
-  local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(
+  local next_hunk_repeat, prev_hunk_repeat = M.make_repeatable_move_pair(
     function() vscode.call("workbench.action.editor.nextChange") end,
     function() vscode.call("workbench.action.editor.previousChange") end
   )
@@ -1339,21 +1366,21 @@ if vim.g.vscode then
   map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "Next GitHunk" })
   map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "Prev GitHunk" })
 
-  local next_reference, prev_reference = ts_repeat_move.make_repeatable_move_pair(
+  local next_reference, prev_reference = M.make_repeatable_move_pair(
     function() vscode.call("editor.action.wordHighlight.next") end,
     function() vscode.call("editor.action.wordHighlight.prev") end
   )
   map({ "n", "x", "o" }, "gnr", next_reference, { desc = "Next Reference (vscode only)" })
   map({ "n", "x", "o" }, "gpr", prev_reference, { desc = "Prev Reference (vscode only)" })
 else
-  local next_diagnostic, prev_diagnostic = ts_repeat_move.make_repeatable_move_pair(
+  local next_diagnostic, prev_diagnostic = M.make_repeatable_move_pair(
     function() vim.diagnostic.jump({ count = 1, float = true }) end,
     function() vim.diagnostic.jump({ count = -1, float = true }) end
   )
   map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Next Diagnostic" })
   map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Prev Diagnostic" })
 
-  local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(
+  local next_hunk_repeat, prev_hunk_repeat = M.make_repeatable_move_pair(
     function() require("mini.diff").goto_hunk('next') end,
     function() require("mini.diff").goto_hunk('prev') end
   )
@@ -1361,14 +1388,14 @@ else
   map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk" })
 end
 
-local next_comment, prev_comment = ts_repeat_move.make_repeatable_move_pair(
+local next_comment, prev_comment = M.make_repeatable_move_pair(
   function() require("mini.bracketed").comment("forward") end,
   function() require("mini.bracketed").comment("backward") end
 )
 map({ "n", "x", "o" }, "gnc", next_comment, { desc = "Next Comment" })
 map({ "n", "x", "o" }, "gpc", prev_comment, { desc = "Prev Comment" })
 
-local next_fold, prev_fold = ts_repeat_move.make_repeatable_move_pair(
+local next_fold, prev_fold = M.make_repeatable_move_pair(
   function() vim.cmd([[ normal ]z ]]) end,
   function() vim.cmd([[ normal [z ]]) end
 )
@@ -1376,7 +1403,7 @@ map({ "n", "x", "o" }, "gnf", next_fold, { desc = "Fold ending" })
 map({ "n", "x", "o" }, "gpf", prev_fold, { desc = "Fold beginning" })
 
 local repeat_mini_ai = function(inner_or_around, key, desc)
-  local next, prev = ts_repeat_move.make_repeatable_move_pair(
+  local next, prev = M.make_repeatable_move_pair(
     function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "next" }) end,
     function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "prev" }) end
   )
