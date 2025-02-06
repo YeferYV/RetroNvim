@@ -131,8 +131,8 @@ local autocmd = vim.api.nvim_create_autocmd
 -- stop comment prefix on new lines
 autocmd({ "BufEnter" }, { command = "set formatoptions-=cro" })
 
--- remember last position when re-opening a file
-autocmd({ "BufReadPost" }, { command = "normal! g'\"" })
+-- remember last position when re-opening a file (`BufReadPost` event stops `v:lua.vim.treesitter.foldexpr()` )
+autocmd({ "Filetype" }, { command = "normal! g'\"" })
 
 -- briefly highlight yanked text
 autocmd("TextYankPost", { callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = 200 }) end })
@@ -154,8 +154,8 @@ autocmd("BufWritePre", { command = [[%s/\s\+$//e]], })
 
 -- Disable mini.completion for a certain filetype (extracted from `:help mini.nvim`)
 local f = function(args) vim.b[args.buf].minicompletion_disable = true end
-vim.api.nvim_create_autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
-vim.api.nvim_create_autocmd('Filetype', { pattern = 'snacks_input', callback = f })
+autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
+autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -906,7 +906,18 @@ if not vim.g.vscode then
   vim.diagnostic.config({ virtual_text = true, float = { border = "rounded", }, })
 
   -- https://neovim.io/doc/user/lsp.html#_quickstart
-  vim.lsp.config('*', { root_markers = { '.git' }, })
+  vim.lsp.config('*', {
+    -- https://www.reddit.com/r/neovim/comments/1ao6c5a/how_to_make_the_lsp_aware_of_changes_made_to/
+    -- `:=vim.lsp.protocol.make_client_capabilities()`
+    capabilities = {
+      workspace = {
+        didChangeWatchedFiles = {
+          dynamicRegistration = true, -- TODO: still not working/implemented (required by `next dev --turbo`)
+        }
+      }
+    },
+    root_markers = { '.git' },
+  })
 
   vim.lsp.config['luals']                   = {
     cmd = { 'lua-language-server' },
@@ -1089,6 +1100,7 @@ if not vim.g.vscode then
   map("n", "<leader>lH", function() vim.lsp.buf.hover() end, { desc = "Hover" })
   map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = "Pick Implementation" })
   map("n", "<leader>lm", function() vim.cmd("Mason") end, { desc = "Mason" })
+  map("n", "<leader>lM", function() vim.cmd("checkhealth vim.lsp") end, { desc = "LspInfo" })
   map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
   map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = "Open Diagnostic" })
   map("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
@@ -1162,7 +1174,7 @@ if not vim.g.vscode then
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
-  map("n", "<leader>ul", "<cmd>set cursorline!", { desc = "toggle cursorline" })
+  map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "toggle cursorline" })
   map("n", "<leader>um", "<cmd>SupermavenStop<cr>", { desc = "Supermaven stop" })
   map("n", "<leader>uM", "<cmd>SupermavenStart<cr>", { desc = "Supermaven start" })
   map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "StatusBar Hide" })
