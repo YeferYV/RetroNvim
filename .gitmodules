@@ -7,12 +7,6 @@
 [submodule "nvim/plugins/site/pack/deps/opt/mason.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/mason.nvim
 	url = https://github.com/williamboman/mason.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/nvim-treesitter"]
-	path = nvim/plugins/site/pack/deps/opt/nvim-treesitter
-	url = https://github.com/nvim-treesitter/nvim-treesitter
-[submodule "nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects"]
-	path = nvim/plugins/site/pack/deps/opt/nvim-treesitter-textobjects
-	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 [submodule "nvim/plugins/site/pack/deps/opt/snacks.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/snacks.nvim
 	url = https://github.com/folke/snacks.nvim

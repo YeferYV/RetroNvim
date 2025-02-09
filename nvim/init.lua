@@ -10,7 +10,7 @@ if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installing `mini.nvim`" | redraw')
   local clone_cmd = { 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.nvim', mini_path }
   vim.fn.system(clone_cmd)
-  -- vim.cmd('packadd mini.nvim | helptags ALL')
+  vim.cmd('packadd mini.nvim | helptags ALL')
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
@@ -23,8 +23,6 @@ local _, vscode = pcall(require, "vscode-neovim")
 
 -- text-objects
 add { source = "folke/flash.nvim", checkout = "v2.1.0" }
-add { source = "nvim-treesitter/nvim-treesitter", remote = "main", checkout = "921d281da8b27302b908203aa7f8796daf294c1d", }
-add { source = "nvim-treesitter/nvim-treesitter-textobjects", remote = "main", checkout = "4c17295385454be48a04b442e41f95d5c724c1ad" }
 
 if not vim.g.vscode then
   -- completions / UI
@@ -34,8 +32,6 @@ if not vim.g.vscode then
 end
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
-
-now(function() require("nvim-treesitter").setup() end)
 
 if not vim.g.vscode then
   later(
@@ -52,7 +48,7 @@ if not vim.g.vscode then
   )
 end
 
-if not vim.g.vscode then now(function() require("mason").setup({ ui = { border = "rounded" } }) end) end
+if not vim.g.vscode then later(function() require("mason").setup({ ui = { border = "rounded" } }) end) end
 
 if not vim.g.vscode then
   now(
@@ -93,18 +89,17 @@ vim.opt.wrap = false              -- display lines as one long line
 vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
 
 if not vim.g.vscode then
-  vim.opt.cmdheight = 0                               -- more space in the neovim command line for displaying messages
-  vim.opt.laststatus = 3                              -- laststatus=3 global status line (line between splits)
-  vim.opt.number = true                               -- set numbered lines
-  vim.opt.scrolloff = 8                               -- vertical scrolloff
-  vim.opt.sidescrolloff = 8                           -- horizontal scrolloff
-  vim.opt.virtualedit = "all"                         -- allow cursor bypass end of line
-  vim.g.mapleader = " "                               -- <leader> key
-  vim.o.foldcolumn = '1'                              -- if '1' will show clickable fold signs
-  vim.o.foldlevel = 99                                -- Disable folding at startup
-  vim.o.foldmethod = "expr"                           -- expr = specify an expression to define folds
-  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- if folding using lsp then 'v:lua.vim.lsp.foldexpr()'
-  vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  vim.opt.cmdheight = 0                       -- more space in the neovim command line for displaying messages
+  vim.opt.laststatus = 3                      -- laststatus=3 global status line (line between splits)
+  vim.opt.number = true                       -- set numbered lines
+  vim.opt.scrolloff = 8                       -- vertical scrolloff
+  vim.opt.sidescrolloff = 8                   -- horizontal scrolloff
+  vim.opt.virtualedit = "all"                 -- allow cursor bypass end of line
+  vim.g.mapleader = " "                       -- <leader> key
+  vim.o.foldcolumn = '1'                      -- if '1' will show clickable fold signs
+  vim.o.foldlevel = 99                        -- Disable folding at startup
+  vim.o.foldmethod = "expr"                   -- expr = specify an expression to define folds
+  vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()' -- if folding using treesitter then 'v:lua.vim.treesitter.foldexpr()'
   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
   vim.o.statuscolumn =
   '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
@@ -390,34 +385,20 @@ autocmd('LspAttach', {
 -- │ Mini │
 -- ╰──────╯
 
-local spec_treesitter = require("mini.ai").gen_spec.treesitter
 local gen_ai_spec = require('mini.extra').gen_ai_spec
 local mini_clue = require("mini.clue")
 
 require("mini.ai").setup({
   custom_textobjects = {
-    K = spec_treesitter({ a = "@block.outer", i = "@block.inner" }),
-    q = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
-    Q = spec_treesitter({ a = "@class.outer", i = "@class.inner" }),
-    g = spec_treesitter({ a = "@comment.outer", i = "@comment.inner" }),
-    G = spec_treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
-    F = spec_treesitter({ a = "@function.outer", i = "@function.inner" }),
-    L = spec_treesitter({ a = "@loop.outer", i = "@loop.inner" }),
-    P = spec_treesitter({ a = "@parameter.outer", i = "@parameter.inner" }),
-    R = spec_treesitter({ a = "@return.outer", i = "@return.inner" }),
-    ["A"] = spec_treesitter({ a = "@assignment.outer", i = "@assignment.inner" }),
-    ["="] = spec_treesitter({ a = "@assignment.rhs", i = "@assignment.lhs" }),
-    ["#"] = spec_treesitter({ a = "@number.outer", i = "@number.inner" }),
     d = gen_ai_spec.diagnostic(),                                                                                           -- diagnostic textobj
     e = gen_ai_spec.line(),                                                                                                 -- line textobj
     h = { { "<(%w-)%f[^<%w][^<>]->.-</%1>" }, { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" } },       -- html attribute textobj
     k = { { "\n.-[=:]", "^.-[=:]" }, "^%s*()().-()%s-()=?[!=<>\\+-\\*]?[=:]" },                                             -- key textobj
     v = { { "[=:]()%s*().-%s*()[;,]()", "[=:]=?()%s*().*()().$" } },                                                        -- value textobj
-    N = gen_ai_spec.number(),                                                                                               -- number(inside string) textobj { '[-+]?()%f[%d]%d+()%.?%d*' }
+    m = gen_ai_spec.number(),                                                                                               -- number(inside string) textobj { '[-+]?()%f[%d]%d+()%.?%d*' }
     x = { '#()%x%x%x%x%x%x()' },                                                                                            -- hexadecimal textobj
     o = { "%S()%s+()%S" },                                                                                                  -- whitespace textobj
-    S = { { '%u[%l%d]+%f[^%l%d]', '%f[%S][%l%d]+%f[^%l%d]', '%f[%P][%l%d]+%f[^%l%d]', '^[%l%d]+%f[^%l%d]', }, '^().*()$' }, -- sub word textobj https://github.com/echasnovski/mini.nvim/blob/main/doc/mini-ai.txt
-    u = { { "%b''", '%b""', '%b``' }, '^.().*().$' },                                                                       -- quote textobj
+    u = { { '%u[%l%d]+%f[^%l%d]', '%f[%S][%l%d]+%f[^%l%d]', '%f[%P][%l%d]+%f[^%l%d]', '^[%l%d]+%f[^%l%d]', }, '^().*()$' }, -- sub word textobj https://github.com/echasnovski/mini.nvim/blob/main/doc/mini-ai.txt
 
     -- https://thevaluable.dev/vim-create-text-objects
     -- select indent by the same or mayor level delimited by blank-lines
@@ -496,31 +477,31 @@ require('mini.splitjoin').setup()
 if not vim.g.vscode then
   require('mini.clue').setup({
     triggers = {
-      { mode = 'n', keys = '<Leader>' },
-      { mode = 'x', keys = '<Leader>' },
-      { mode = 'i', keys = '<C-x>' },
       { mode = 'o', keys = 'a' },
-      { mode = 'o', keys = 'i' },
       { mode = 'x', keys = 'a' },
+      { mode = 'o', keys = 'i' },
       { mode = 'x', keys = 'i' },
       { mode = 'o', keys = 'g' },
       { mode = 'n', keys = 'g' },
       { mode = 'x', keys = 'g' },
+      { mode = 'n', keys = 'z' },
+      { mode = 'x', keys = 'z' },
       { mode = 'n', keys = "'" },
-      { mode = 'n', keys = '`' },
       { mode = 'x', keys = "'" },
-      { mode = 'x', keys = '`' },
       { mode = 'n', keys = '"' },
       { mode = 'x', keys = '"' },
+      { mode = 'n', keys = '`' },
+      { mode = 'x', keys = '`' },
+      { mode = 'n', keys = '[' },
+      { mode = 'x', keys = '[' },
+      { mode = 'n', keys = ']' },
+      { mode = 'x', keys = ']' },
       { mode = 'i', keys = '<C-r>' },
       { mode = 'c', keys = '<C-r>' },
       { mode = 'n', keys = '<C-w>' },
-      { mode = 'n', keys = 'z' },
-      { mode = 'x', keys = 'z' },
-      { mode = 'n', keys = ']' },
-      { mode = 'n', keys = '[' },
-      { mode = 'x', keys = ']' },
-      { mode = 'x', keys = '[' },
+      { mode = 'i', keys = '<C-x>' },
+      { mode = 'n', keys = '<Leader>' },
+      { mode = 'x', keys = '<Leader>' },
     },
     clues = {
       mini_clue.gen_clues.builtin_completion(),
@@ -529,50 +510,82 @@ if not vim.g.vscode then
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
-      { desc = "@block.outer",       keys = "aK", mode = "o" },
-      { desc = "@block.outer",       keys = "aK", mode = "x" },
-      { desc = "@block.inner",       keys = "iK", mode = "o" },
-      { desc = "@block.inner",       keys = "iK", mode = "x" },
-      { desc = "@call.outer",        keys = "aC", mode = "o" },
-      { desc = "@call.outer",        keys = "aC", mode = "x" },
-      { desc = "@call.inner",        keys = "iC", mode = "o" },
-      { desc = "@call.inner",        keys = "iC", mode = "x" },
-      { desc = "@comment.outer",     keys = "aQ", mode = "o" },
-      { desc = "@comment.outer",     keys = "aQ", mode = "x" },
-      { desc = "@comment.inner",     keys = "iQ", mode = "o" },
-      { desc = "@comment.inner",     keys = "iQ", mode = "x" },
-      { desc = "@conditional.outer", keys = "aG", mode = "o" },
-      { desc = "@conditional.outer", keys = "aG", mode = "x" },
-      { desc = "@conditional.inner", keys = "iG", mode = "o" },
-      { desc = "@conditional.inner", keys = "iG", mode = "x" },
-      { desc = "@function.outer",    keys = "aF", mode = "o" },
-      { desc = "@function.outer",    keys = "aF", mode = "x" },
-      { desc = "@function.inner",    keys = "iF", mode = "o" },
-      { desc = "@function.inner",    keys = "iF", mode = "x" },
-      { desc = "@loop.outer",        keys = "aL", mode = "o" },
-      { desc = "@loop.outer",        keys = "aL", mode = "x" },
-      { desc = "@loop.inner",        keys = "iL", mode = "o" },
-      { desc = "@loop.inner",        keys = "iL", mode = "x" },
-      { desc = "@parameter.outer",   keys = "aP", mode = "o" },
-      { desc = "@parameter.outer",   keys = "aP", mode = "x" },
-      { desc = "@parameter.inner",   keys = "iP", mode = "o" },
-      { desc = "@parameter.inner",   keys = "iP", mode = "x" },
-      { desc = "@return.outer",      keys = "aR", mode = "o" },
-      { desc = "@return.outer",      keys = "aR", mode = "x" },
-      { desc = "@return.inner",      keys = "iR", mode = "o" },
-      { desc = "@return.inner",      keys = "iR", mode = "x" },
-      { desc = "@assignment.outer",  keys = "aA", mode = "o" },
-      { desc = "@assignment.outer",  keys = "aA", mode = "x" },
-      { desc = "@assignment.inner",  keys = "iA", mode = "o" },
-      { desc = "@assignment.inner",  keys = "iA", mode = "x" },
-      { desc = "@assignment.rhs",    keys = "a=", mode = "o" },
-      { desc = "@assignment.rhs",    keys = "a=", mode = "x" },
-      { desc = "@assignment.lhs",    keys = "i=", mode = "o" },
-      { desc = "@assignment.lhs",    keys = "i=", mode = "x" },
-      { desc = "@number.outer",      keys = "a#", mode = "o" },
-      { desc = "@number.outer",      keys = "a#", mode = "x" },
-      { desc = "@number.inner",      keys = "i#", mode = "o" },
-      { desc = "@number.inner",      keys = "i#", mode = "x" },
+      { desc = "argument",    keys = "aa", mode = "o" },
+      { desc = "argument",    keys = "aa", mode = "x" },
+      { desc = "argument",    keys = "ia", mode = "o" },
+      { desc = "argument",    keys = "ia", mode = "x" },
+      { desc = "braces",      keys = "ab", mode = "o" },
+      { desc = "braces",      keys = "ab", mode = "x" },
+      { desc = "braces",      keys = "ib", mode = "o" },
+      { desc = "braces",      keys = "ib", mode = "x" },
+      { desc = "line",        keys = "ae", mode = "o" },
+      { desc = "line",        keys = "ae", mode = "x" },
+      { desc = "line",        keys = "ie", mode = "o" },
+      { desc = "line",        keys = "ie", mode = "x" },
+      { desc = "func_call",   keys = "af", mode = "o" },
+      { desc = "func_call",   keys = "af", mode = "x" },
+      { desc = "func_call",   keys = "if", mode = "o" },
+      { desc = "func_call",   keys = "if", mode = "x" },
+      { desc = "html_atrib",  keys = "ah", mode = "o" },
+      { desc = "html_atrib",  keys = "ah", mode = "x" },
+      { desc = "html_atrib",  keys = "ih", mode = "o" },
+      { desc = "html_atrib",  keys = "ih", mode = "x" },
+      { desc = "key",         keys = "ak", mode = "o" },
+      { desc = "key",         keys = "ak", mode = "x" },
+      { desc = "key",         keys = "ik", mode = "o" },
+      { desc = "key",         keys = "ik", mode = "x" },
+      { desc = "number",      keys = "am", mode = "o" },
+      { desc = "number",      keys = "am", mode = "x" },
+      { desc = "number",      keys = "im", mode = "o" },
+      { desc = "number",      keys = "im", mode = "x" },
+      { desc = "whitespace",  keys = "ao", mode = "o" },
+      { desc = "whitespace",  keys = "ao", mode = "x" },
+      { desc = "whitespace",  keys = "io", mode = "o" },
+      { desc = "whitespace",  keys = "io", mode = "x" },
+      { desc = "paragraph",   keys = "ao", mode = "o" },
+      { desc = "paragraph",   keys = "ap", mode = "x" },
+      { desc = "paragraph",   keys = "ip", mode = "o" },
+      { desc = "paragraph",   keys = "ip", mode = "x" },
+      { desc = "quote",       keys = "aq", mode = "o" },
+      { desc = "quote",       keys = "aq", mode = "x" },
+      { desc = "quote",       keys = "iq", mode = "o" },
+      { desc = "quote",       keys = "iq", mode = "x" },
+      { desc = "sentence",    keys = "as", mode = "o" },
+      { desc = "sentence",    keys = "as", mode = "x" },
+      { desc = "sentence",    keys = "is", mode = "o" },
+      { desc = "sentence",    keys = "is", mode = "x" },
+      { desc = "tag",         keys = "at", mode = "o" },
+      { desc = "tag",         keys = "at", mode = "x" },
+      { desc = "tag",         keys = "it", mode = "o" },
+      { desc = "tag",         keys = "it", mode = "x" },
+      { desc = "subword",     keys = "au", mode = "o" },
+      { desc = "subword",     keys = "au", mode = "x" },
+      { desc = "subword",     keys = "iu", mode = "o" },
+      { desc = "subword",     keys = "iu", mode = "x" },
+      { desc = "value",       keys = "av", mode = "o" },
+      { desc = "value",       keys = "av", mode = "x" },
+      { desc = "value",       keys = "iv", mode = "o" },
+      { desc = "value",       keys = "iv", mode = "x" },
+      { desc = "word",        keys = "aw", mode = "o" },
+      { desc = "word",        keys = "aw", mode = "x" },
+      { desc = "word",        keys = "iw", mode = "o" },
+      { desc = "word",        keys = "iw", mode = "x" },
+      { desc = "WORD",        keys = "aW", mode = "o" },
+      { desc = "WORD",        keys = "aW", mode = "x" },
+      { desc = "WORD",        keys = "iW", mode = "o" },
+      { desc = "WORD",        keys = "iW", mode = "x" },
+      { desc = "hexadecimal", keys = "ax", mode = "o" },
+      { desc = "hexadecimal", keys = "ax", mode = "x" },
+      { desc = "hexadecimal", keys = "ix", mode = "o" },
+      { desc = "hexadecimal", keys = "ix", mode = "x" },
+      { desc = "same_indent", keys = "ay", mode = "o" },
+      { desc = "same_indent", keys = "ay", mode = "x" },
+      { desc = "same_indent", keys = "iy", mode = "o" },
+      { desc = "same_indent", keys = "iy", mode = "x" },
+      { desc = "user_prompt", keys = "a?", mode = "o" },
+      { desc = "user_prompt", keys = "a?", mode = "x" },
+      { desc = "user_prompt", keys = "i?", mode = "o" },
+      { desc = "user_prompt", keys = "i?", mode = "x" },
     },
   })
 
@@ -638,6 +651,13 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "MiniDiffSignAdd", { fg = "#009900" })
   vim.api.nvim_set_hl(0, "MiniDiffSignChange", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "MiniDiffSignDelete", { fg = "#990000" })
+  vim.api.nvim_set_hl(0, "diffAdded", { fg = "#009900" })
+  vim.api.nvim_set_hl(0, "diffChanged", { fg = "#3C3CFf" })
+  vim.api.nvim_set_hl(0, "diffRemoved", { fg = "#ff0000" })
+  vim.api.nvim_set_hl(0, "DiffAdd", { fg = "#009900" })
+  vim.api.nvim_set_hl(0, "DiffChange", { fg = "#3C3CFf" })
+  vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#990000" })
+  vim.api.nvim_set_hl(0, "DiffText", { bg = "#3C3CFf", fg = "#ffffff" })
 
   -- poimandres same as the original
   vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#D0679D" })
@@ -658,12 +678,6 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "Search", { fg = "#FFFFFF", bg = "#506477" })
   vim.api.nvim_set_hl(0, "CurSearch", { fg = "#171922", bg = "#ADD7FF" })
   vim.api.nvim_set_hl(0, "IncSearch", { fg = "#171922", bg = "#ADD7FF" })
-
-  -- poimandres treesitter same as the original
-  vim.api.nvim_set_hl(0, "@keyword.operator", { fg = "#5de4c7" })
-  vim.api.nvim_set_hl(0, "@keyword.return", { fg = "#5fb3a1" })
-  vim.api.nvim_set_hl(0, "@tag.delimiter", { fg = "#e4f0fb", })
-  vim.api.nvim_set_hl(0, "@type.builtin", { fg = "#A6ACCD", })
   vim.api.nvim_set_hl(0, "Special", { fg = "#767c9d" })
   vim.api.nvim_set_hl(0, "Type", { fg = "#a6accd" })
 
@@ -1270,8 +1284,8 @@ map({ "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
 -- │ Text Objects with a/i (dot to repeat) │
 -- ╰───────────────────────────────────────╯
 
-map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent" })
-map({ "o", "x" }, "ai", "<cmd>normal Viik<cr>", { desc = "indent" })
+map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent_noblanks" })
+map({ "o", "x" }, "ai", "<cmd>normal Viik<cr>", { desc = "indent_noblanks" })
 map(
   { "o", "x" },
   "iy",
@@ -1354,46 +1368,46 @@ if vim.g.vscode then
     function() vscode.call("editor.action.marker.next") end,
     function() vscode.call("editor.action.marker.prev") end
   )
-  map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Next Diagnostic" })
-  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Prev Diagnostic" })
+  map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Diagnostic" })
+  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Diagnostic" })
 
   local next_hunk_repeat, prev_hunk_repeat = M.make_repeatable_move_pair(
     function() vscode.call("workbench.action.editor.nextChange") end,
     function() vscode.call("workbench.action.editor.previousChange") end
   )
-  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk" })
-  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk" })
-  map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "Next GitHunk" })
-  map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "Prev GitHunk" })
+  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "GitHunk" })
+  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "GitHunk" })
+  map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "GitHunk" })
+  map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "GitHunk" })
 
   local next_reference, prev_reference = M.make_repeatable_move_pair(
     function() vscode.call("editor.action.wordHighlight.next") end,
     function() vscode.call("editor.action.wordHighlight.prev") end
   )
-  map({ "n", "x", "o" }, "gnr", next_reference, { desc = "Next Reference (vscode only)" })
-  map({ "n", "x", "o" }, "gpr", prev_reference, { desc = "Prev Reference (vscode only)" })
+  map({ "n", "x", "o" }, "gnr", next_reference, { desc = "Reference (vscode only)" })
+  map({ "n", "x", "o" }, "gpr", prev_reference, { desc = "Reference (vscode only)" })
 else
   local next_diagnostic, prev_diagnostic = M.make_repeatable_move_pair(
     function() vim.diagnostic.jump({ count = 1, float = true }) end,
     function() vim.diagnostic.jump({ count = -1, float = true }) end
   )
-  map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Next Diagnostic" })
-  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Prev Diagnostic" })
+  map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Diagnostic" })
+  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Diagnostic" })
 
   local next_hunk_repeat, prev_hunk_repeat = M.make_repeatable_move_pair(
     function() require("mini.diff").goto_hunk('next') end,
     function() require("mini.diff").goto_hunk('prev') end
   )
-  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "Next GitHunk" })
-  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "Prev GitHunk" })
+  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "GitHunk" })
+  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "GitHunk" })
 end
 
 local next_comment, prev_comment = M.make_repeatable_move_pair(
   function() require("mini.bracketed").comment("forward") end,
   function() require("mini.bracketed").comment("backward") end
 )
-map({ "n", "x", "o" }, "gnc", next_comment, { desc = "Next Comment" })
-map({ "n", "x", "o" }, "gpc", prev_comment, { desc = "Prev Comment" })
+map({ "n", "x", "o" }, "gnc", next_comment, { desc = "Comment" })
+map({ "n", "x", "o" }, "gpc", prev_comment, { desc = "Comment" })
 
 local next_fold, prev_fold = M.make_repeatable_move_pair(
   function() vim.cmd([[ normal ]z ]]) end,
@@ -1411,39 +1425,29 @@ local repeat_mini_ai = function(inner_or_around, key, desc)
   map({ "n", "x", "o" }, "gp" .. inner_or_around .. key, prev, { desc = desc })
 end
 
-repeat_mini_ai("i", "f", "function call")
-repeat_mini_ai("a", "f", "function call")
-repeat_mini_ai("i", "h", "html atrib")
-repeat_mini_ai("a", "h", "html atrib")
+repeat_mini_ai("i", "a", "argument")
+repeat_mini_ai("a", "a", "argument")
+repeat_mini_ai("i", "b", "brace")
+repeat_mini_ai("a", "b", "brace")
+repeat_mini_ai("i", "f", "func_call")
+repeat_mini_ai("a", "f", "func_call")
+repeat_mini_ai("i", "h", "html_atrib")
+repeat_mini_ai("a", "h", "html_atrib")
 repeat_mini_ai("i", "k", "key")
 repeat_mini_ai("a", "k", "key")
-repeat_mini_ai("i", "n", "number")
-repeat_mini_ai("a", "n", "number")
-repeat_mini_ai("i", "u", "quote")
-repeat_mini_ai("a", "u", "quote")
+repeat_mini_ai("i", "m", "number")
+repeat_mini_ai("a", "m", "number")
+repeat_mini_ai("i", "o", "whitespace")
+repeat_mini_ai("a", "o", "whitespace")
+repeat_mini_ai("i", "q", "quote")
+repeat_mini_ai("a", "q", "quote")
+repeat_mini_ai("i", "t", "tag")
+repeat_mini_ai("a", "t", "tag")
+repeat_mini_ai("i", "u", "subword")
+repeat_mini_ai("a", "u", "subword")
 repeat_mini_ai("i", "v", "value")
 repeat_mini_ai("a", "v", "value")
 repeat_mini_ai("i", "x", "hexadecimal")
 repeat_mini_ai("a", "x", "hexadecimal")
-repeat_mini_ai("i", "K", "@block.inner")
-repeat_mini_ai("a", "K", "@block.outer")
-repeat_mini_ai("i", "Q", "@call.inner")
-repeat_mini_ai("a", "Q", "@call.outer")
-repeat_mini_ai("i", "g", "@comment.inner")
-repeat_mini_ai("a", "g", "@comment.outer")
-repeat_mini_ai("i", "G", "@conditional.inner")
-repeat_mini_ai("a", "G", "@conditional.outer")
-repeat_mini_ai("i", "F", "@function.inner")
-repeat_mini_ai("a", "F", "@function.outer")
-repeat_mini_ai("i", "L", "@loop.inner")
-repeat_mini_ai("a", "L", "@loop.outer")
-repeat_mini_ai("i", "P", "@parameter.inner")
-repeat_mini_ai("a", "P", "@parameter.outer")
-repeat_mini_ai("i", "R", "@return.inner")
-repeat_mini_ai("a", "R", "@return.outer")
-repeat_mini_ai("i", "A", "@assignment.inner")
-repeat_mini_ai("a", "A", "@assignment.outer")
-repeat_mini_ai("i", "=", "@assignment.lhs")
-repeat_mini_ai("a", "=", "@assignment.rhs")
-repeat_mini_ai("i", "#", "@number.inner")
-repeat_mini_ai("a", "#", "@number.outer")
+repeat_mini_ai("i", "?", "user_prompt")
+repeat_mini_ai("a", "?", "user_prompt")

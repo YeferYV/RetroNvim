@@ -1,7 +1,7 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "neovim text objects from A-Z + LSP whichkey + touchcursor keyboard layout + minimal zsh / Msys2's zsh setup",
+  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi setup (zsh.exe supported)",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -20,20 +20,25 @@
     "Keymaps"
   ],
   "keywords": [
-    "retronvim",
     "vim",
     "neovim",
+    "astronvim",
     "lazyvim",
     "lunarvim",
+    "mini.nvim",
     "nvchad",
-    "astronvim",
+    "retronvim",
     "text objects",
     "LSP",
+    "whichkey",
     "touchcursor",
     "keyboard layout",
     "kanata",
     "Kmonad",
-    "QMK"
+    "QMK",
+    "yazi",
+    "zsh",
+    "msys2"
   ],
   "homepage": "https://marketplace.visualstudio.com/items?itemName=YeferYV.RetroNvim",
   "repository": {
