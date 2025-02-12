@@ -657,7 +657,7 @@
             },
             {
               "key": "B",
-              "name": "brew install bat eza font-fira-code-nerd-font fzf git karabiner lazygit starship ripgrep 7zip",
+              "name": "brew install bat eza font-fira-code-nerd-font fzf git karabiner lazygit starship ripgrep sevenzip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -668,7 +668,7 @@
               "args": [
                 null,
                 {
-                  "text": "brew tap homebrew/cask-fonts && brew install bat eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship ripgrep sevenzip; \n"
+                  "text": "brew tap homebrew/cask-fonts && brew install bat eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship ripgrep sevenzip zsh-autosuggestions zsh-fast-syntax-highlighting; \n"
                 },
                 {
                   "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n"
@@ -704,7 +704,7 @@
             },
             {
               "key": "N",
-              "name": "nixpkgs install bat eza fira-code-nerdfont fzf git lazygit ripdrag ripgrep starship zsh 7zip",
+              "name": "nixpkgs install bat eza fira-code-nerdfont fzf git lazygit ripdrag ripgrep starship zsh _7zz",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
@@ -712,7 +712,7 @@
               "args": [
                 null,
                 {
-                  "text": "nix-env -iA nixpkgs.bat nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.ripgrep nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n"
+                  "text": "nix-env -iA nixpkgs.bat nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.ripgrep nixpkgs.starship nixpkgs.zsh nixpkgs.zsh-autosuggestions nixpkgs.zsh-fast-syntax-highlighting nixpkgs._7zz; \n"
                 }
               ]
             },
@@ -750,12 +750,24 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "vscode-neovim.lua"
               ],
               "args": [
                 null,
                 {
                   "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install bat eza FiraCode-NF fzf lazygit less msys2 starship ripgrep 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
+                },
+                {
+                  "text": "mkdir -p $HOME/.config/zsh/plugins \n"
+                },
+                {
+                  "text": "git clone https://github.com/zsh-users/zsh-autosuggestions              $HOME/.config/zsh/plugins/zsh-autosuggestions \n"
+                },
+                {
+                  "text": "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting $HOME/.config/zsh/plugins/fast-syntax-highlighting \n"
                 },
                 "require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]

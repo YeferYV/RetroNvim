@@ -20,10 +20,3 @@
 [submodule "yazi/plugins/yazi-rs.plugins"]
 	path = yazi/plugins/yazi-rs.plugins
 	url = https://github.com/yazi-rs/plugins
-
-[submodule "zsh/plugins/fast-syntax-highlighting"]
-	path = zsh/plugins/fast-syntax-highlighting
-	url = https://github.com/zdharma-continuum/fast-syntax-highlighting
-[submodule "zsh/plugins/zsh-autosuggestions"]
-	path = zsh/plugins/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions

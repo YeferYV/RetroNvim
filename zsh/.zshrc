@@ -19,10 +19,11 @@ export BAT_THEME="base16"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
 export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview"'
 export HISTFILE="$HOME/.cache/.zsh_history"
-export PATH="$HOME/.pixi/bin:$HOME/.local/bin:$HOME/.local/share/pnpm:$HOME/Library/pnpm:$PATH"
 export SAVEHIST=10000
 export STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml"
 export EDITOR='nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua"'
+[[ "$TERM_PROGRAM" != "vscode"  ]] && [[ "$OSTYPE" == "linux-gnu"* ]] && export PATH="$HOME/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:$HOME/.pixi/bin:$HOME/.local/bin:$HOME/.local/share/pnpm:$PATH"
+[[ "$TERM_PROGRAM" != "vscode"  ]] && [[ "$OSTYPE" == "darwin"*    ]] && export PATH="$HOME/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64:$HOME/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin:$HOME/.pixi/bin:$HOME/Library/pnpm:$PATH"
 
 # retronvim's neovim
 vi() { eval $EDITOR $@; }
@@ -35,8 +36,12 @@ yy () { yazi --cwd-file=$HOME/.yazi $@ < /dev/tty; cd "$(cat $HOME/.yazi)"; zle 
 zle -N yy          # creating `yy` keymap
 bindkey '\eo' 'yy' # \eo = alt + o
 
-source $HOME/.vscode/extensions/yeferyv.retronvim/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-source $HOME/.vscode/extensions/yeferyv.retronvim/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+[[ -e $HOME/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh            ]] && source $HOME/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -e $HOME/.nix-profile/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh ]] && source $HOME/.nix-profile/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh
+[[ -e $HOMEBREW_PREFIX/share/zsh-autosuggestions                                      ]] && source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -e $HOMEBREW_PREFIX/opt/zsh-fast-syntax-highlighting                               ]] && source $HOMEBREW_PREFIX/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+[[ -e $HOME/.config/zsh/plugins/zsh-autosuggestions                                   ]] && source $HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+[[ -e $HOME/.config/zsh/plugins/fast-syntax-highlighting                              ]] && source $HOME/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 which fzf      >/dev/null 2>&1 && source <(fzf --zsh)
 which eza      >/dev/null 2>&1 && alias ls="eza --all --icons --group-directories-first"
 which starship >/dev/null 2>&1 && eval "$(starship init zsh)"
