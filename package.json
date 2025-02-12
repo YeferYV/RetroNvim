@@ -181,6 +181,7 @@
       "zenMode.fullScreen": false,
       "zenMode.hideLineNumbers": false,
       "workbench.colorTheme": "Tokyo Night Dark",
+      "workbench.iconTheme": "symbols",
       "workbench.colorCustomizations": {
         "[Tokyo Night Dark][Poimandres Alternate]": {
           "editor.lineHighlightBackground": "#00000000",
@@ -656,7 +657,7 @@
             },
             {
               "key": "B",
-              "name": "brew install bat eza fd font-fira-code-nerd-font fzf git karabiner lazygit starship ripgrep 7zip",
+              "name": "brew install bat eza font-fira-code-nerd-font fzf git karabiner lazygit starship ripgrep 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -667,7 +668,7 @@
               "args": [
                 null,
                 {
-                  "text": "brew tap homebrew/cask-fonts && brew install bat eza fd font-fira-code-nerd-font fzf git karabiner-elements lazygit starship ripgrep sevenzip; \n"
+                  "text": "brew tap homebrew/cask-fonts && brew install bat eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship ripgrep sevenzip; \n"
                 },
                 {
                   "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n"
@@ -703,7 +704,7 @@
             },
             {
               "key": "N",
-              "name": "nixpkgs install bat eza fd fira-code-nerdfont fzf git lazygit ripdrag ripgrep starship zsh 7zip",
+              "name": "nixpkgs install bat eza fira-code-nerdfont fzf git lazygit ripdrag ripgrep starship zsh 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
@@ -711,7 +712,7 @@
               "args": [
                 null,
                 {
-                  "text": "nix-env -iA nixpkgs.bat nixpkgs.eza nixpkgs.fd nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.ripgrep nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n"
+                  "text": "nix-env -iA nixpkgs.bat nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.ripgrep nixpkgs.starship nixpkgs.zsh nixpkgs._7zz; \n"
                 }
               ]
             },
@@ -730,13 +731,13 @@
               "args": [
                 null,
                 {
-                  "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
-                },
-                {
                   "text": "iwr -useb https://pixi.sh/install.ps1 | iex \n"
                 },
                 {
                   "text": "iwr -useb https://get.pnpm.io/install.ps1 | iex \n"
+                },
+                {
+                  "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
                 },
                 "require('vscode').notify('Relaunch vscode after installation')",
                 "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
@@ -745,7 +746,7 @@
             },
             {
               "key": "S",
-              "name": "scoop install bat eza fd FiraCode-NF fzf gcc git lazygit less msys2 starship ripgrep zsh 7zip",
+              "name": "scoop install bat eza FiraCode-NF fzf git lazygit less msys2 starship ripgrep zsh 7zip",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -754,7 +755,7 @@
               "args": [
                 null,
                 {
-                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install bat eza fd FiraCode-NF fzf gcc lazygit less msys2 starship ripgrep 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
+                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install bat eza FiraCode-NF fzf lazygit less msys2 starship ripgrep 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
                 },
                 "require('vscode').notify('Relaunch vscode after finishing the installation of dependencies')"
               ]
@@ -838,7 +839,7 @@
               "args": [
                 null,
                 {
-                  "text": "powershell -c 'conhost --headless kanata --cfg %HOMEPATH%/.vscode/extensions/yeferyv.retronvim/kanata/simple.kbd; Set-WinUserLanguageList -force en-US,es-US'; sleep 2; exit; \r"
+                  "text": "powershell -c 'Set-WinUserLanguageList -force en-US,es-US; conhost --headless kanata --cfg %HOMEPATH%/.vscode/extensions/yeferyv.retronvim/kanata/simple.kbd'; sleep 2; exit; \r"
                 },
                 "require('vscode').notify('`<windowskey-r>control keyboard` and `<windows>filter keys` to change keyboard repeat rate without relogin')"
               ]

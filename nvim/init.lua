@@ -10,12 +10,12 @@ if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installing `mini.nvim`" | redraw')
   local clone_cmd = { 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.nvim', mini_path }
   vim.fn.system(clone_cmd)
-  vim.cmd('packadd mini.nvim | helptags ALL')
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
 vim.opt.rtp:prepend(mini_path)
 require('mini.deps').setup({ path = { package = path_package } })
+vim.cmd('packadd mini.nvim | helptags ALL')
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local _, vscode = pcall(require, "vscode-neovim")
 
@@ -28,7 +28,7 @@ if not vim.g.vscode then
   -- completions / UI
   add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
   add { source = "williamboman/mason.nvim", checkout = "v1.10.0", }
-  add { source = "folke/snacks.nvim", checkout = "v2.18.0" }
+  add { source = "folke/snacks.nvim", checkout = "v2.21.0" }
 end
 
 later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
@@ -48,15 +48,17 @@ if not vim.g.vscode then
   )
 end
 
-if not vim.g.vscode then later(function() require("mason").setup({ ui = { border = "rounded" } }) end) end
+if not vim.g.vscode then now(function() require("mason").setup({ ui = { border = "rounded" } }) end) end -- now() because of vim.lsp.enable()
 
 if not vim.g.vscode then
   now(
     function()
       require("snacks").setup({
-        indent = { enabled = true },
-        picker = { enabled = true },
-        input = { enabled = true, },
+        explorer = { replace_netrw = true },
+        image = {},
+        indent = {},
+        input = {},
+        -- picker = { sources = { explorer = { hidden = true } } },
         styles = {
           input = {
             title_pos = "left",
@@ -119,26 +121,8 @@ local autocmd = vim.api.nvim_create_autocmd
 -- stop comment prefix on new lines
 autocmd({ "BufEnter" }, { command = "set formatoptions-=cro" })
 
--- remember last position when re-opening a file (`BufReadPost` event stops `v:lua.vim.treesitter.foldexpr()` )
-autocmd({ "Filetype" }, { command = "normal! g'\"" })
-
 -- briefly highlight yanked text
 autocmd("TextYankPost", { callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = 200 }) end })
-
--- Highlight trailing whitespace
-vim.api.nvim_set_hl(0, "ExtraWhitespace", { ctermbg = "red", bg = "red" })
-
--- Ensure the highlight exists after a colorscheme change
-autocmd({ "ColorScheme" }, { command = "highlight ExtraWhitespace ctermbg=red guibg=red" })
-
--- Refresh highlighting after leaving insert mode
-autocmd("InsertLeave", { command = "redraw!", })
-
--- Apply the highlight to trailing spaces
-vim.fn.matchadd("ExtraWhitespace", [[\s\+$\| \+\ze\t]])
-
--- Remove trailing spaces on save
-autocmd("BufWritePre", { command = [[%s/\s\+$//e]], })
 
 -- Disable mini.completion for a certain filetype (extracted from `:help mini.nvim`)
 local f = function(args) vim.b[args.buf].minicompletion_disable = true end
@@ -149,17 +133,13 @@ autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
 autocmd({ "TermEnter", "TermOpen" }, {
   callback = function()
-    vim.cmd [[ setlocal nocursorline ]]
-    vim.cmd [[ setlocal nonumber ]]
-    vim.cmd [[ setlocal signcolumn=no ]]
     vim.cmd.startinsert()
-    vim.cmd.highlight("ExtraWhitespace guibg=none")
 
     -- hide bufferline if `nvim -cterm`
     if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 then
-      vim.cmd("set showtabline=0")
+      vim.opt.showtabline = 0
     else
-      vim.cmd("set showtabline=2")
+      vim.opt.showtabline = 2
     end
   end,
 })
@@ -202,17 +182,6 @@ function ToggleTerminal()
   else
     -- Terminal buffer exists and is visible, hide it
     vim.cmd("hide")
-  end
-end
-
-function HideUnhideWindow()
-  if not Hidden then
-    Bufnr = vim.fn.bufnr()
-    vim.cmd('hide')
-    Hidden = true
-  else
-    vim.cmd('vs | buffer' .. Bufnr)
-    Hidden = false
   end
 end
 
@@ -260,8 +229,7 @@ local M = {}
 M.ColumnMove = function(direction)
   local lnum = vim.fn.line('.')
   local colnum = vim.fn.virtcol('.')
-  local remove_extraline = false
-  local pattern1, pattern2
+  local pattern1, pattern2, remove_extraline
   local match_char = function(lnum, pattern) return vim.fn.getline(lnum):sub(colnum, colnum):match(pattern) end
 
   if match_char(lnum, '%S') then
@@ -287,25 +255,14 @@ M.ColumnMove = function(direction)
   end
 
   while lnum >= 0 and lnum <= vim.fn.line('$') do
-    if match_char(lnum, pattern1) then
-      break
-    end
-
-    if pattern2 then
-      if match_char(lnum, pattern2) then
-        break
-      end
-    end
+    if pattern1 and match_char(lnum, pattern1) then break end
+    if pattern2 and match_char(lnum, pattern2) then break end
 
     lnum = lnum + direction
   end
 
-  -- If the match was at the end of the line, return the previous line number and the current column number
-  if remove_extraline then
-    vim.cmd.normal(lnum - direction .. "gg" .. colnum .. "|")
-  else
-    vim.cmd.normal(lnum .. "gg" .. colnum .. "|")
-  end
+  -- If the match was at the end of the line, return the previous line number
+  vim.fn.cursor(remove_extraline and lnum - direction or lnum, colnum)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -473,6 +430,7 @@ require('mini.align').setup()
 require('mini.bracketed').setup({ undo = { suffix = '' } })
 require('mini.operators').setup()
 require('mini.splitjoin').setup()
+require('mini.trailspace').setup()
 
 if not vim.g.vscode then
   require('mini.clue').setup({
@@ -589,16 +547,6 @@ if not vim.g.vscode then
     },
   })
 
-  require("mini.files").setup({
-    windows = {
-      max_number = math.huge,
-      preview = true,
-      width_focus = 30,
-      width_nofocus = 15,
-      width_preview = 60,
-    },
-  })
-
   require('mini.base16').setup({
     -- `:Inspect` to reverse engineering a colorscheme
     -- `:hi <@treesitter>` to view colors of `:Inspect` output
@@ -633,9 +581,6 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "MsgArea", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniClueBorder", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniClueTitle", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "MiniFilesBorder", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "MiniFilesTitle", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "MiniFilesTitleFocused", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniClueDescSingle", { link = "Pmenu" })
   vim.api.nvim_set_hl(0, "MiniStatuslineFilename", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { underline = false, bg = "#1c1c2c" })
@@ -830,16 +775,15 @@ if not vim.g.vscode then
   require('mini.extra').setup()
   require('mini.icons').setup()
   require('mini.misc').setup_auto_root()
+  require('mini.misc').setup_restore_cursor()
   require('mini.notify').setup()
   require('mini.pairs').setup()
-  -- require('mini.pick').setup()
   require('mini.statusline').setup()
   require('mini.starter').setup()
   require('mini.tabline').setup()
   MiniIcons.mock_nvim_web_devicons()
   MiniIcons.tweak_lsp_kind( --[[ "replace" ]])
   vim.notify = MiniNotify.make_notify()                                        -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
-  -- vim.ui.select = MiniPick.ui_select
   if vim.fn.has('nvim-0.11') == 1 then vim.opt.completeopt:append('fuzzy') end -- it should be after require("mini.completion").setup())
 end
 
@@ -894,7 +838,8 @@ end
 -- Quick quit/write
 if not vim.g.vscode then
   map({ "n" }, "Q", "<cmd>lua vim.cmd('quit')<cr>")
-  map({ "n" }, "R", "<cmd>lua vim.lsp.buf.format({ timeout_ms = 5000 }) vim.cmd('silent write') <cr>")
+  map({ "n" }, "R",
+    "<cmd>lua vim.lsp.buf.format({ timeout_ms = 5000 }) MiniTrailspace.trim() vim.cmd('silent write') <cr>")
 else
   map({ "n" }, "Q", function() vscode.call('workbench.action.closeActiveEditor') end)
   map({ "n" }, "R", function()
@@ -1115,8 +1060,6 @@ if not vim.g.vscode then
   map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
   map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
-  map("n", "<leader>m", function() MiniFiles.open() end, { desc = "mini.files (CWD)" })
-  map("n", "<leader>M", function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end, { desc = "mini.files CurrentFile" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.grep() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep() end, { desc = "ripgrep on buffers" })
@@ -1180,17 +1123,21 @@ if not vim.g.vscode then
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
+  map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent" })
+  map("n", "<leader>uF", "<cmd>lua vim.o.foldmethod='expr'<cr>", { desc = "fold by lsp" })
   map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "toggle cursorline" })
   map("n", "<leader>um", "<cmd>SupermavenStop<cr>", { desc = "Supermaven stop" })
   map("n", "<leader>uM", "<cmd>SupermavenStart<cr>", { desc = "Supermaven start" })
   map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "StatusBar Hide" })
   map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "StatusBar Show" })
-  map("n", "<leader>uu", HideUnhideWindow, { desc = "Hide/Unhide window (useful for terminal)" })
   map("n", "<leader>t", "", { desc = "+Terminal" })
   map("n", "<leader>tt", "<cmd>terminal <cr>", { desc = "buffer terminal" })
   map("n", "<leader>ty", "<cmd>terminal yazi<cr><cmd>set ft=terminal<cr>", { desc = "yazi" })
   map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
+  map("n", "<leader>w", "", { desc = "+Window" })
+  map("n", "<leader>wv", "<cmd>vsplit<cr>", { desc = "vertical window" })
+  map("n", "<leader>wV", "<cmd>split<cr>", { desc = "horizontal window" })
 end
 
 map("n", "<leader><leader>p", '"*p', { desc = "Paste after (second_clip)" })

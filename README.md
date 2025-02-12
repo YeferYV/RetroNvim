@@ -264,7 +264,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 | :-------------: | :---------: | :--------------------: | :----------------------------------------------------------------------------------------------------------------------------------------- |
 |  `gpc` / `gnc`  | `n`,`o`,`x` | `;`forward `,`backward | previous/next comment                                                                                                                      |
 |  `gpd` / `gnd`  | `n`,`o`,`x` | `;`forward `,`backward | previous/next diagnostic                                                                                                                   |
-|  `gpf` / `gnf`  | `n`,`o`,`x` | `;`forward `,`backward | previous/next fold                                                                                                                         |
+|  `gpf` / `gnf`  | `n`,`o`,`x` | `;`forward `,`backward | previous/next fold (only inside neovim)                                                                                                    |
 |  `gph` / `gnh`  | `n`,`o`,`x` | `;`forward `,`backward | previous/next git hunk ([no supported on Windows10](https://github.com/YeferYV/RetroNvim/wiki/Recipies/#gnh-gph-not-working-on-windows10)) |
 |  `gpH` / `gnH`  | `n`,`o`,`x` | `;`forward `,`backward | previous/next git hunk (supported on Windows10)                                                                                            |
 |  `gpr` / `gnr`  | `n`,`o`,`x` | `;`forward `,`backward | previous/next reference (only inside vscode)                                                                                               |
