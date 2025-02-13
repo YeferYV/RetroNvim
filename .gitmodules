@@ -14,9 +14,6 @@
 	path = nvim/plugins/site/pack/deps/opt/supermaven-nvim
 	url = https://github.com/supermaven-inc/supermaven-nvim
 
-[submodule "yazi/plugins/bookmarks.yazi"]
-	path = yazi/plugins/bookmarks.yazi
-	url = https://github.com/dedukun/bookmarks.yazi
 [submodule "yazi/plugins/yazi-rs.plugins"]
 	path = yazi/plugins/yazi-rs.plugins
 	url = https://github.com/yazi-rs/plugins
