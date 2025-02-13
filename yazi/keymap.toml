@@ -64,16 +64,11 @@ prepend_keymap = [
 	{ on = [ "s", "Z" ], run = """ shell ' unzip "$0"                                                                            ' --block """, desc = "Unzip hovered file (unix)" },
 
   # Plugins
-	{ on = [ "l" ], run = "plugin yazi-rs.plugins/smart-enter", desc = "open directory or file" },
-	{ on = [ "m" ], run = "plugin bookmarks --args=save",       desc = "bookmark create" },
-	{ on = [ "'" ], run = "plugin bookmarks --args=jump",       desc = "bookmark jump" },
-	{ on = [ '"' ], run = "plugin bookmarks --args=delete",     desc = "bookmark delete" },
+	{ on = [ "l" ], run = "plugin smart-enter",             desc = "open directory or file" },
+	{ on = [ "m" ], run = "plugin bookmarks --args=save",   desc = "bookmark create" },
+	{ on = [ "'" ], run = "plugin bookmarks --args=jump",   desc = "bookmark jump" },
+	{ on = [ '"' ], run = "plugin bookmarks --args=delete", desc = "bookmark delete" },
 ]
-
-# [[manager.append_keymap]]
-# on   = "T"
-# run  = "plugin yazi-rs.plugins/max-preview"
-# desc = "Maximize or restore preview"
 
 [[manager.append_keymap]]
 on = [ "s", "E" ]

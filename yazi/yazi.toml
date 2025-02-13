@@ -4,10 +4,6 @@ scrolloff      = 10
 show_hidden    = true
 show_symlink   = false
 
-# [preview]
-# max_width       = 800
-# max_height      = 500
-
 [opener]
 edit = [
 	# { run = 'nvim %*',                                                                                  block = true,  desc = "nvim",    for = "windows" },
@@ -16,20 +12,3 @@ edit = [
 	{ run = 'code %*',                                                                                    orphan = true, desc = "code",    for = "windows" },
 	{ run = 'eval ${EDITOR:-nvim} "$@"',                                                                  block = true,  desc = "$EDITOR", for = "unix" },
 ]
-
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*"
-run  = "yazi-rs.plugins/git"
-
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*/"
-run  = "yazi-rs.plugins/git"
-
-[[plugin.prepend_fetchers]]
-id   = "mime"
-if   = "!(mime|dummy)"
-name = "*"
-run  = "yazi-rs.plugins/mime-ext"
-prio = "high"

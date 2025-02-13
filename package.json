@@ -101,7 +101,6 @@
         "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
         "PNPM_HOME": "${env:HOME}/.local/share/pnpm",
-        "VISUAL": "code",
         "SWALLOWER": "devour",
         "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi",
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
@@ -113,7 +112,6 @@
         "EDITOR": "nvim -u $RETRONVIM_INIT",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin:${env:HOME}/.pixi/bin:${env:HOME}/Library/pnpm:${env:PATH}",
         "PNPM_HOME": "${env:HOME}/Library/pnpm",
-        "VISUAL": "code",
         "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi",
         "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
       },
@@ -123,8 +121,8 @@
         "EDITOR": "nvim -u ${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
         "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
         "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
-        "VISUAL": "code",
         "YAZI_CONFIG_HOME": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/yazi",
+        "YAZI_FILE_ONE": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/bin/win32-x64/file1/usr/bin/file.exe",
         "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/zsh"
       },
       "terminal.integrated.experimental.windowsUseConptyDll": true,
@@ -635,7 +633,9 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "vscode-neovim.lua",
                 "vscode-neovim.lua"
@@ -645,9 +645,11 @@
                 {
                   "text": "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n"
                 },
+                null,
                 {
                   "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n"
                 },
+                null,
                 {
                   "text": "curl -fsSL https://pixi.sh/install.sh | bash \n"
                 },
@@ -682,7 +684,9 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "vscode-neovim.lua",
                 "vscode-neovim.lua"
@@ -692,9 +696,11 @@
                 {
                   "text": "yes | sh <(curl -L https://nixos.org/nix/install) --daemon \n"
                 },
+                null,
                 {
                   "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n"
                 },
+                null,
                 {
                   "text": "curl -fsSL https://pixi.sh/install.sh | bash \n"
                 },
@@ -722,7 +728,9 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "vscode-neovim.lua",
                 "vscode-neovim.lua",
@@ -731,13 +739,15 @@
               "args": [
                 null,
                 {
+                  "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
+                },
+                null,
+                {
                   "text": "iwr -useb https://pixi.sh/install.ps1 | iex \n"
                 },
+                null,
                 {
                   "text": "iwr -useb https://get.pnpm.io/install.ps1 | iex \n"
-                },
-                {
-                  "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
                 },
                 "require('vscode').notify('Relaunch vscode after installation')",
                 "require('vscode').notify('cheatsheet: https://pixi.sh/latest/basic_usage & https://github.com/YeferYV/RetroNvim/wiki/Recipies#pixi-virtual-environment. create a virtual environment with `pixi init; pixi add python; pixi run zsh` and select it (view vscode statusbar and click to change) (relaunch vscode on Windows10)')",
@@ -862,12 +872,17 @@
               "commands": [
                 "vscode-neovim.lua",
                 "vscode-neovim.lua",
+                "vscode-neovim.lua",
+                "vscode-neovim.lua",
                 "vscode-neovim.lua"
               ],
+              "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
               "args": [
                 "if vim.env.APPDATA then vim.cmd[[ !mklink /d \\%HOMEPATH\\%\\appdata\\local\\nvim           \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\nvim        ]] else vim.cmd[[ !ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/nvim       ~/.config ]] end",
                 "if vim.env.APPDATA then vim.cmd[[ !mklink /d \\%HOMEPATH\\%\\appdata\\roaming\\yazi\\config \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\yazi        ]] else vim.cmd[[ !ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/yazi       ~/.config ]] end",
-                "if vim.env.APPDATA then vim.cmd[[ !mklink    \\%HOMEPATH\\%\\.zshrc                         \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\zsh\\.zshrc ]] else vim.cmd[[ !ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc ~/.zshrc  ]] end"
+                "if vim.env.APPDATA then vim.cmd[[ !mklink    \\%HOMEPATH\\%\\.zshrc                         \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\zsh\\.zshrc ]] else vim.cmd[[ !ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc ~/.zshrc  ]] end",
+                "if vim.env.APPDATA then vim.cmd[[ !setx         YAZI_FILE_ONE                               \\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\file1\\usr\\bin\\file.exe                                                                  ]] end",
+                "if vim.env.APPDATA then vim.cmd[[ !setx         PATH                            \"\\%PATH\\%\\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;\\%HOMEPATH\\%\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin\"   ]] end"
               ]
             },
             {

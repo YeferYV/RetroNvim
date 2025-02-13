@@ -45,7 +45,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         run: |
           git submodule update --init;
-          rm -rf ./nvim/plugins/site/pack/deps/opt/{flash.nvim,gitsigns.nvim,mason.nvim,nvim-lspconfig,nvim-treesitter,nvim-treesitter-textobjects}/tests
+          rm -rf ./nvim/plugins/site/pack/deps/opt/{flash.nvim,mason.nvim,snacks.nvim}/tests
           rm -rf ./nvim/plugins/site/pack/deps/start/mini.nvim/tests
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0/kanata_cmd_allowed                            --create-dirs --output  "./bin/linux-x64/kanata"                                                                                                                                  && chmod +x "./bin/linux-x64/kanata"
@@ -64,6 +64,11 @@ jobs:
           curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                              --create-dirs --output  "/tmp/nvim-windows.zip" && unzip "/tmp/nvim-windows.zip" -d "./bin/win32-x64"
           curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-pc-windows-msvc.zip                --create-dirs --output  "/tmp/yazi-windows.zip" && unzip "/tmp/yazi-windows.zip" -d "/tmp" && cp -r     /tmp/yazi-x86_64-pc-windows-msvc/{yazi.exe,ya.exe}     "./bin/win32-x64"
           curl -L https://repo.prefix.dev/conda-forge/win-64/vc14_runtime-14.42.34433-he29a5d6_23.conda                  --create-dirs --output  "/tmp/vc14-runtime.zip" && unzip "/tmp/vc14-runtime.zip" -d "/tmp" && tar -xvf "/tmp/pkg-vc14_runtime-14.42.34433-he29a5d6_23.tar.zst" --directory="/tmp" && cp "/tmp/vcruntime140.dll" "./bin/win32-x64/nvim-win64/bin"
+
+          mkdir /tmp/git-for-windows
+          curl -L https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.tar.bz2   | tar -xjf- --directory "/tmp/git-for-windows"  && mkdir -p ./bin/win32-x64/file1/usr/{bin,share/misc}
+          cp    /tmp/git-for-windows/usr/bin/{file.exe,msys-2.0.dll,msys-bz2-1.dll,msys-lzma-5.dll,msys-magic-1.dll,msys-z.dll,msys-zstd-1.dll}                                      ./bin/win32-x64/file1/usr/bin
+          cp    /tmp/git-for-windows/usr/share/misc/magic.mgc                                                                                                                        ./bin/win32-x64/file1/usr/share/misc
 
           rm -rf ./bin/win32-x64/nvim-win64/bin/{nvim.pdb,dbghelp.dll}
           yes | npx vsce package --target win32-x64

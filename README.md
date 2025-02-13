@@ -602,7 +602,7 @@ _    _    _              _              _    _    _
 
 **VSCode Marketplace**
 
-- RetroNvim extension is shipped with `neovim`, `yazi` and `kanata` binaries and `neovim`'s extensions, `zsh`'s extensions, and `yazi`'s extensions as git-submodules
+- RetroNvim extension is shipped with `neovim`, `yazi` and `kanata` binaries and `neovim`'s extensions as git-submodules
 
 - https://marketplace.visualstudio.com/items?itemName=YeferYV.retronvim
 
