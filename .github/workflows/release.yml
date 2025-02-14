@@ -50,11 +50,11 @@ jobs:
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0/kanata_cmd_allowed                            --create-dirs --output  "./bin/linux-x64/kanata"                                                                                                                                  && chmod +x "./bin/linux-x64/kanata"
           curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage                  --create-dirs --output  "./bin/linux-x64/nvim"                                                                                                                                    && chmod +x "./bin/linux-x64/nvim"
-          curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-unknown-linux-gnu.zip              --create-dirs --output  "/tmp/yazi-linux.zip"   && unzip "/tmp/yazi-linux.zip" -d "/tmp"   && cp -r    /tmp/yazi-x86_64-unknown-linux-gnu/{yazi,ya}            "./bin/linux-x64"  && chmod +x  ./bin/linux-x64/{yazi,ya}
+          curl -L https://github.com/sxyazi/yazi/releases/download/v25.2.11/yazi-x86_64-unknown-linux-gnu.zip            --create-dirs --output  "/tmp/yazi-linux.zip"   && unzip "/tmp/yazi-linux.zip" -d "/tmp"   && cp -r    /tmp/yazi-x86_64-unknown-linux-gnu/{yazi,ya}            "./bin/linux-x64"  && chmod +x  ./bin/linux-x64/{yazi,ya}
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0/kanata_macos_cmd_allowed_x86_64               --create-dirs --output  "./bin/darwin-x64/kanata"                                                                                                                                 && chmod +x "./bin/darwin-x64/kanata"
           curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-x86_64.tar.gz                    | tar -xzf- --directory "./bin/darwin-x64"
-          curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-apple-darwin.zip                   --create-dirs --output  "/tmp/yazi-macos.zip" && unzip "/tmp/yazi-macos.zip" -d "/tmp"     && cp -r    /tmp/yazi-x86_64-apple-darwin/{yazi,ya}                 "./bin/darwin-x64" && chmod +x  ./bin/darwin-x64/{yazi,ya}
+          curl -L https://github.com/sxyazi/yazi/releases/download/v25.2.11/yazi-x86_64-apple-darwin.zip                 --create-dirs --output  "/tmp/yazi-macos.zip" && unzip "/tmp/yazi-macos.zip" -d "/tmp"     && cp -r    /tmp/yazi-x86_64-apple-darwin/{yazi,ya}                 "./bin/darwin-x64" && chmod +x  ./bin/darwin-x64/{yazi,ya}
 
           yes | npx vsce package
           npx vsce publish # --pre-release
@@ -62,7 +62,7 @@ jobs:
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0/kanata_cmd_allowed.exe                        --create-dirs --output  "./bin/win32-x64/kanata.exe"
           curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                              --create-dirs --output  "/tmp/nvim-windows.zip" && unzip "/tmp/nvim-windows.zip" -d "./bin/win32-x64"
-          curl -L https://github.com/sxyazi/yazi/releases/download/v0.4.2/yazi-x86_64-pc-windows-msvc.zip                --create-dirs --output  "/tmp/yazi-windows.zip" && unzip "/tmp/yazi-windows.zip" -d "/tmp" && cp -r     /tmp/yazi-x86_64-pc-windows-msvc/{yazi.exe,ya.exe}     "./bin/win32-x64"
+          curl -L https://github.com/sxyazi/yazi/releases/download/v25.2.11/yazi-x86_64-pc-windows-msvc.zip              --create-dirs --output  "/tmp/yazi-windows.zip" && unzip "/tmp/yazi-windows.zip" -d "/tmp" && cp -r     /tmp/yazi-x86_64-pc-windows-msvc/{yazi.exe,ya.exe}     "./bin/win32-x64"
           curl -L https://repo.prefix.dev/conda-forge/win-64/vc14_runtime-14.42.34433-he29a5d6_23.conda                  --create-dirs --output  "/tmp/vc14-runtime.zip" && unzip "/tmp/vc14-runtime.zip" -d "/tmp" && tar -xvf "/tmp/pkg-vc14_runtime-14.42.34433-he29a5d6_23.tar.zst" --directory="/tmp" && cp "/tmp/vcruntime140.dll" "./bin/win32-x64/nvim-win64/bin"
 
           mkdir /tmp/git-for-windows

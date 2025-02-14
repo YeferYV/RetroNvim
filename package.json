@@ -1348,11 +1348,6 @@
               "command": "workbench.action.terminal.moveToTerminalPanel"
             },
             {
-              "key": "c",
-              "name": "Create terminal group",
-              "command": "workbench.action.terminal.newInActiveWorkspace"
-            },
-            {
               "key": ";",
               "name": "Quick OpenTerm",
               "command": "workbench.action.quickOpenTerm"
@@ -1499,6 +1494,16 @@
               "key": "W",
               "name": "New Tab terminal (Separated window group)",
               "command": "workbench.action.createTerminalEditorSide"
+            },
+            {
+              "key": "y",
+              "name": "New panel terminal (dafault shell)",
+              "command": "workbench.action.terminal.newInActiveWorkspace"
+            },
+            {
+              "key": "Y",
+              "name": "New panel terminal (choose shell)",
+              "command": "workbench.action.terminal.newWithProfile"
             },
             {
               "key": "/",

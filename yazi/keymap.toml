@@ -65,19 +65,17 @@ prepend_keymap = [
 
   # Plugins
 	{ on = [ "l" ], run = "plugin smart-enter",             desc = "open directory or file" },
-	{ on = [ "m" ], run = "plugin bookmarks --args=save",   desc = "bookmark create" },
-	{ on = [ "'" ], run = "plugin bookmarks --args=jump",   desc = "bookmark jump" },
-	{ on = [ '"' ], run = "plugin bookmarks --args=delete", desc = "bookmark delete" },
+	{ on = [ "m" ], run = "plugin bookmarks save",   desc = "bookmark create" },
+	{ on = [ "'" ], run = "plugin bookmarks jump",   desc = "bookmark jump" },
+	{ on = [ '"' ], run = "plugin bookmarks delete", desc = "bookmark delete" },
 ]
 
 [[manager.append_keymap]]
 on = [ "s", "E" ]
 run = '''
   shell
-  '
-    if not %EDITOR% == "" (nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" %*) else (%EDITOR% %*)
-  '
   --block
+  -- %EDITOR% %* 2>nul || nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" %*
 '''
 desc = "$EDITOR open selected (windows)"
 
@@ -85,10 +83,8 @@ desc = "$EDITOR open selected (windows)"
 on = [ "s", "S" ]
 run = '''
   shell
-  "
-    bash -c 'y() { yazi --cwd-file=$HOME/.yazi; cd \"$(cat $HOME/.yazi)\"; }; export -f y; stty echo; bash -o vi'
-  "
   --block
+  -- bash -c 'y() { yazi --cwd-file=$HOME/.yazi; cd \"$(cat $HOME/.yazi)\"; }; export -f y; stty echo; bash -o vi'
 '''
 desc = "open bash"
 
@@ -96,10 +92,8 @@ desc = "open bash"
 on = [ "s", "W" ]
 run = '''
   shell
-  '
-    powershell -noexit -c "set-psreadlineoption -editmode vi; function y() { yazi $PWD --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); };"
-  '
   --block
+  -- powershell -noexit -c "set-psreadlineoption -editmode vi; function y() { yazi $PWD --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); };"
 '''
 desc = "open powershell"
 
@@ -107,10 +101,8 @@ desc = "open powershell"
 on = [ "s", "f" ]
 run = '''
   shell
-  '
-    nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.files()"
-  '
   --block
+  -- nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.files()"
 '''
 desc = "Neovim fzf"
 
@@ -118,10 +110,8 @@ desc = "Neovim fzf"
 on = [ "s", "g" ]
 run = '''
   shell
-  '
-    nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.grep()"
-  '
   --block
+  -- nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.grep()"
 '''
 desc = "Neovim ripgrep"
 
@@ -129,9 +119,7 @@ desc = "Neovim ripgrep"
 on = [ "s", "r" ]
 run = '''
   shell
-  '
-    rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim -u NORC --cmd \"lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))\" {1} +{2})"
-  '
   --block
+  -- rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim -u NORC --cmd \"lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))\" {1} +{2})"
 '''
 desc = "Ripgrep fzf"
