@@ -59,28 +59,29 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 |         text-object keymap         | repeater key | finds and autojumps? | text-object name | description                                                                               | inner / outer                                                                 |
 | :--------------------------------: | :----------: | :------------------: | :--------------- | :---------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------- |
-|             `ia`, `aa`             |     `.`      |         yes          | \_argument       | whole argument/parameter of a function                                                    | outer includes braces                                                         |
-|             `ib`, `ab`             |     `.`      |         yes          | \_braces         | find the nearest inside of () [] {}                                                       | outer includes braces                                                         |
+|             `ia`, `aa`             |     `.`      |         yes          | \_argument       | whole argument/parameter of a function                                                    | outer includes comma                                                          |
+|             `ib`, `ab`             |     `.`      |         yes          | \_braces         | find the nearest inside of `()` `[]` `{}`                                                 | outer includes braces                                                         |
+|             `iB`, `aB`             |     `.`      |         yes          | \_brackets       | find the nearest inside of `{}` `:help iB`                                                | outer includes brackets                                                       |
 |             `ie`, `ae`             |     `.`      |                      | line             | from start to end of line without beginning whitespaces (line wise)                       | outer includes begining whitespaces                                           |
 |             `if`, `af`             |     `.`      |         yes          | \_function_call  | like `function args` but only when a function is called                                   | outer includes the function called                                            |
 |             `ih`, `ah`             |     `.`      |         yes          | \_html_attribute | attribute in html/xml like `href="foobar.com"`                                            | inner is only the value inside the quotes trailing comma and space            |
 |             `ii`, `ai`             |     `.`      |                      | indent_noblanks  | surrounding lines with same or higher indentation delimited by blanklines                 | outer includes line above                                                     |
 |             `iI`, `aI`             |     `.`      |                      | indent           | surrounding lines with same or higher indentation                                         | outer includes line above and below                                           |
 |             `ik`, `ak`             |     `.`      |         yes          | \_key            | key of key-value pair, or left side of a assignment                                       | outer includes spaces                                                         |
-|             `il`, `al`             |     `.`      |         yes          | +last            | go to last mini.ai text-object (which start with @ or \_)                                 | requires `i`/`a` example `vilk`                                               |
-|             `in`, `an`             |     `.`      |         yes          | +next            | go to Next mini.ai text-object (which start with @ or \_)                                 | requires `i`/`a` example `viNk`                                               |
-|             `im`, `aN`             |     `.`      |         yes          | \_number         | numbers, similar to `<C-a>`                                                               | inner: only pure digits, outer: number including minus sign and decimal point |
+|             `il`, `al`             |     `.`      |         yes          | +last            | go to last mini.ai text-object (which start with `_`)                                     | requires `i`/`a` example `vilk`                                               |
+|             `in`, `an`             |     `.`      |         yes          | +next            | go to Next mini.ai text-object (which start with `_`)                                     | requires `i`/`a` example `viNk`                                               |
+|             `im`, `am`             |     `.`      |         yes          | \_number         | numbers, similar to `<C-a>`                                                               | inner: only pure digits, outer: number including minus sign and decimal point |
 |             `io`, `ao`             |     `.`      |         yes          | \_whitespaces    | whitespace beetween characters                                                            | outer includes surroundings                                                   |
 |             `ip`, `ap`             |     `.`      |                      | paragraph        | blanklines can also be treat as paragraphs when focused on a blankline                    | outer includes below lines                                                    |
-|             `iq`, `aq`             |     `.`      |         yes          | \_quotes         | inside of `` '' ""                                                                        | outer includes openning and closing quotes                                    |
-|             `is`, `as`             |     `.`      |                      | sentence         | sentence delimited by dots of blanklines                                                  | outer includes spaces                                                         |
+|             `iq`, `aq`             |     `.`      |         yes          | \_quotes         | inside of `` ` ` `` or `' '` or `" "`                                                     | outer includes openning and closing quotes                                    |
+|             `is`, `as`             |     `.`      |                      | sentence         | sentence delimited by dots of blanklines `:help sentence`                                 | outer includes spaces                                                         |
 |             `it`, `at`             |     `.`      |         yes          | \_tag            | inside of a html/jsx tag                                                                  | outer includes openning and closing tags                                      |
 |             `iu`, `au`             |     `.`      |                      | \_subword        | like `iw`, but treating `-`, `_`, and `.` as word delimiters _and_ only part of camelCase | outer includes trailing `_`,`-`, or space                                     |
 |             `iv`, `av`             |     `.`      |         yes          | \_value          | value of key-value pair, or right side of a assignment                                    | outer includes trailing commas or semicolons or spaces                        |
-|             `iw`, `aw`             |     `.`      |                      | word             | from cursor to end of word (delimited by punctuation or space)                            | outer includes start of word                                                  |
-|             `iW`, `aW`             |     `.`      |                      | WORD             | from cursor to end of WORD (includes punctuation)                                         | outer includes start of word                                                  |
+|             `iw`, `aw`             |     `.`      |                      | word             | from cursor to end of word (delimited by punctuation or space)                            | outer includes whitespace ending                                              |
+|             `iW`, `aW`             |     `.`      |                      | WORD             | from cursor to end of WORD (includes punctuation)                                         | outer includes whitespace ending                                              |
 |             `ix`, `ax`             |     `.`      |         yes          | \_Hex            | hexadecimal number or color                                                               | outer includes hash `#`                                                       |
-|             `iy`, `ay`             |     `.`      |                      | same_indent      | surrounding lines with only same indentation (delimited by blankspaces)                   | outer includes blankspaces                                                    |
+|             `iy`, `ay`             |     `.`      |                      | same_indent      | surrounding lines with only same indent (delimited by blankspaces or commented lines)     | outer includes blankspaces                                                    |
 |             `i?`, `a?`             |     `.`      |         yes          | \_user_prompt    | will ask you for enter the delimiters of a text object (useful for dot repeteability)     | outer includes surroundings                                                   |
 |       `i(`, `i)`, `a(`, `a)`       |     `.`      |         yes          | `(` or `)`       | inside `()`                                                                               | outer includes surroundings                                                   |
 |       `i[`, `i]`, `a[`, `a]`       |     `.`      |         yes          | `[` or `]`       | inside `[]`                                                                               | outer includes surroundings                                                   |
@@ -214,7 +215,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |          `>`           | `n`,`x` |          `.`           | +indent right                                             |                                    yes                                     | `>ip` indents to right a paragraph                       |
 |          `<`           | `n`,`x` |          `.`           | +indent left                                              |                                    yes                                     | `<ip` indents to left a paragraph                        |
 |          `$`           | `n`,`x` |                        | end of line                                               |                                                                            |                                                          |
-|          `%`           | `n`,`x` |                        | matching character: '()', '{}', '[]'                      |                                                                            |                                                          |
+|          `%`           | `n`,`x` |                        | matching character: `()`, `{}`, `[]`                      |                                                                            |                                                          |
 |          `0`           | `n`,`x` |                        | start of line                                             |                                                                            |                                                          |
 |          `^`           | `n`,`x` |                        | start of line (non-blank)                                 |                                                                            |                                                          |
 |          `(`           | `n`,`x` |                        | previous sentence                                         |                                                                            |                                                          |
@@ -387,7 +388,6 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |         `escape`         |     `n`     | clear search highlight                                   |
 |      `shift+space`       |     `n`     | Show whichkey menu (Windows, Linux, Mac)                 |
 |       `alt+space`        |     `n`     | Show whichkey menu (Linux, Mac)                          |
-|         `alt+.`          |     `n`     | Repeat most recent Whichkey action                       |
 |         `alt+c`          |     `i`     | Copy                                                     |
 |         `alt+v`          |     `i`     | Paste                                                    |
 |           `jk`           |     `i`     | send Escape                                              |
@@ -441,7 +441,8 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `ctrl+l`      | `i`  | Accept selected suggestion                 |
 |      `ctrl+d`      | `i`  | Select next page in suggestion details     |
 |      `ctrl+u`      | `i`  | Select previous page in suggestion details |
-|      `alt+;`       | `i`  | expand or next snippet stop (neovim only)  |
+|      `alt+.`       | `i`  | expand snippet (neovim only)               |
+|      `alt+;`       | `i`  | next snippet stop (neovim only)            |
 |      `alt+,`       | `i`  | previous snippet stop (neovim only)        |
 |      `ctrl+c`      | `i`  | exit snippet session (neovim only)         |
 
@@ -645,8 +646,8 @@ _    _    _              _              _    _    _
 
 <details open><summary></summary>
 
-- [yeferyv/archrice](https://github.com/yeferyv/archrice) (RetroNvim's linux distro) comes with retronvim's neovim extensions + extra extensions, based on [mini.nvim](https://github.com/echasnovski/mini.nvim)
-- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) (terminal version of RetroNvim) neovim with text objects from A-Z, based on [lazyvim](https://github.com/LazyVim/LazyVim)
+- [yeferyv/archrice](https://github.com/yeferyv/archrice) (RetroNvim's linux distro) neovim IDE using only [mini.nvim](https://github.com/echasnovski/mini.nvim), [mason.nvim](https://github.com/williamboman/mason.nvim), [snacks.nvim](https://github.com/folke/snacks.nvim), [flash.nvim](https://github.com/folke/flash.nvim) and [supermaven-nvim](https://github.com/supermaven-inc/supermaven-nvim)
+- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) (terminal version of RetroNvim) neovim with text objects, based on [lazyvim](https://github.com/LazyVim/LazyVim)
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) vscode vim extension with some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
 - [vspacecode](https://github.com/vspacecode/vspacecode) vscode vim extension with some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
 

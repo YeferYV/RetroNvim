@@ -39,7 +39,7 @@
 ;;
 ;; There are currently a maximum of 25 layers allowed.
 (deflayer qwerty
-  @grl 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @grl 1    2    3    4    5    6    7    8    9    0    -    =    @bsp
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   @cap a    s    d    f    g    @h   @j   @k   @l   ;    '    ret
   lsft z    x    c    v    b    n    m    ,    .    /    rsft
@@ -64,7 +64,7 @@
 (deflayer touchcursor
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    @¿   _    _    _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
-  _    del  spc  bspc @clr _    @🡠   @↓   @↑   @🡪   @yaz _    _
+  _    del  spc  @bsp @clr _    @🡠   @↓   @↑   @🡪   @yaz _    _
   _    @ñ   _    caps _    _    pgup home end  pgdn _    _
   _    _    _              _              _    _    _
 )
@@ -99,14 +99,15 @@
 
   ;; fast keyboard repeat rate emulation
   ;; (multi f24) fixes fast typing `vh`, `vj`, `vk` and `vl` not entering visual mode on neovim
-  h (multi f24 (tap-hold 150 150 h     (macro-repeat h     15)))
-  j (multi f24 (tap-hold 150 150 j     (macro-repeat j     15)))
-  k (multi f24 (tap-hold 150 150 k     (macro-repeat k     15)))
-  l (multi f24 (tap-hold 150 150 l     (macro-repeat l     15)))
-  🡠 (multi f24 (tap-hold 150 150 left  (macro-repeat left  15)))
-  ↓ (multi f24 (tap-hold 150 150 down  (macro-repeat down  15)))
-  ↑ (multi f24 (tap-hold 150 150 up    (macro-repeat up    15)))
-  🡪 (multi f24 (tap-hold 150 150 right (macro-repeat right 15)))
+  h   (multi f24 (tap-hold 150 150 h     (macro-repeat h     15)))
+  j   (multi f24 (tap-hold 150 150 j     (macro-repeat j     15)))
+  k   (multi f24 (tap-hold 150 150 k     (macro-repeat k     15)))
+  l   (multi f24 (tap-hold 150 150 l     (macro-repeat l     15)))
+  🡠   (multi f24 (tap-hold 150 150 left  (macro-repeat left  15)))
+  ↓   (multi f24 (tap-hold 150 150 down  (macro-repeat down  15)))
+  ↑   (multi f24 (tap-hold 150 150 up    (macro-repeat up    15)))
+  🡪   (multi f24 (tap-hold 150 150 right (macro-repeat right 15)))
+  bsp (multi f24 (tap-hold 150 150 bspc  (macro-repeat bspc  15)))
 
   ;; open yazi_cd on any shell
   yaz (macro y a z i spc S-4 S-(p w d) spc - - c w d - f i l e spc S-4 S-(h o m e) / . y a z i ; spc c d spc S-' S-4 S-9 c a t spc S-4 S-( h o m e) / . y a z i S-0 S-' ret)

@@ -2191,11 +2191,6 @@
         "command": "whichkey.show"
       },
       {
-        "key": "alt+.",
-        "command": "whichkey.repeatMostRecent",
-        "when": "editorTextFocus && neovim.mode == normal"
-      },
-      {
         "key": "alt+c",
         "command": "editor.action.clipboardCopyAction",
         "when": "!terminalFocus && neovim.mode == 'insert'"

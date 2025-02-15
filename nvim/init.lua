@@ -58,7 +58,7 @@ if not vim.g.vscode then
         image = {},
         indent = {},
         input = {},
-        -- picker = { sources = { explorer = { hidden = true } } },
+        picker = { sources = { explorer = { hidden = true, --[[ ignored = true ]] } } },
         styles = {
           input = {
             title_pos = "left",
@@ -746,7 +746,7 @@ if not vim.g.vscode then
       require('mini.snippets').setup({
         snippets = { gen_loader.from_runtime("*") },
         mappings = {
-          expand = '<a-;>',
+          expand = '<a-.>',
           jump_next = '<a-;>',
           jump_prev = '<a-,>',
         }
