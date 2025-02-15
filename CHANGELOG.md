@@ -1,3 +1,12 @@
+## [0.2.3](https://github.com/YeferYV/RetroNvim/compare/v0.2.2...v0.2.3) (2025-02-15)
+
+### Bug Fixes
+
+- **nvim:** removing nvim-treesitter since LSP supports semantic token colorization and foldexpr ([94915f0](https://github.com/YeferYV/RetroNvim/commit/94915f021eb5522753818438575687f3c829e6f2))
+- **nvim:** `v:lua.vim.treesitter.foldexpr()` stops working on new opened buffers ([17b4006](https://github.com/YeferYV/RetroNvim/commit/17b40063823e3265208da221877d7d0c48d0538e))
+- **nvim:** `<cmd>` is `{ silent = true}` (`:` is not) to prevent confirmation on small screen ([e307cee](https://github.com/YeferYV/RetroNvim/commit/e307ceea6227668d18c6cdd73abd352572191d0e))
+- **nvim:** indent_at_cursor = false (inside vscode) ([2b906d6](https://github.com/YeferYV/RetroNvim/commit/2b906d6cc3fb1c38d0032eee01cd598cdf85c9e3))
+- **zsh:** ZDOTDIR is overwrited by `code --locate-shell-integration-path` ([20ff9c0](https://github.com/YeferYV/RetroNvim/commit/20ff9c04651f80e9da829bd9416ae2966f122eea))
 
 ## [0.2.2](https://github.com/YeferYV/RetroNvim/compare/v0.2.1...v0.2.2) (2025-01-30)
 
