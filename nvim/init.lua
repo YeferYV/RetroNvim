@@ -26,7 +26,6 @@ add { source = "folke/flash.nvim", checkout = "v2.1.0" }
 
 if not vim.g.vscode then
   -- completions / UI
-  add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
   add { source = "folke/snacks.nvim", checkout = "v2.21.0" }
 end
 
@@ -35,7 +34,10 @@ later(function() require("flash").setup { modes = { search = { enabled = true } 
 if not vim.g.vscode then
   later(
     function()
-      require("supermaven-nvim").setup {
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
+      local ok, supermaven = pcall(require, "supermaven-nvim")
+      if not ok then return end
+      supermaven.setup {
         keymaps = {
           accept_suggestion = "<A-l>",
           clear_suggestion = "<A-k>",
@@ -1065,6 +1067,23 @@ if not vim.g.vscode then
   map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
   map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
+  map(
+    "n",
+    "<leader>lz",
+    function()
+      vim.cmd("DepsAdd supermaven-inc/supermaven-nvim")
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
+      require("supermaven-nvim").setup {
+        keymaps = {
+          accept_suggestion = "<A-l>",
+          clear_suggestion = "<A-k>",
+          accept_word = "<A-j>",
+        }
+      }
+    end,
+    { desc = "Supermaven enable" }
+  )
+  map("n", "<leader>lZ", "<cmd>SupermavenStop<cr>", { desc = "Supermaven disable" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.grep() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep() end, { desc = "ripgrep on buffers" })
@@ -1131,8 +1150,6 @@ if not vim.g.vscode then
   map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent" })
   map("n", "<leader>uF", "<cmd>lua vim.o.foldmethod='expr'<cr>", { desc = "fold by lsp" })
   map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "toggle cursorline" })
-  map("n", "<leader>um", "<cmd>SupermavenStop<cr>", { desc = "Supermaven stop" })
-  map("n", "<leader>uM", "<cmd>SupermavenStart<cr>", { desc = "Supermaven start" })
   map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "StatusBar Hide" })
   map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "StatusBar Show" })
   map("n", "<leader>t", "", { desc = "+Terminal" })
