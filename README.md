@@ -646,7 +646,7 @@ _    _    _              _              _    _    _
 
 <details open><summary></summary>
 
-- [yeferyv/archrice](https://github.com/yeferyv/archrice) (RetroNvim's linux distro) neovim IDE using only [mini.nvim](https://github.com/echasnovski/mini.nvim), [mason.nvim](https://github.com/williamboman/mason.nvim), [snacks.nvim](https://github.com/folke/snacks.nvim), [flash.nvim](https://github.com/folke/flash.nvim) and [supermaven-nvim](https://github.com/supermaven-inc/supermaven-nvim)
+- [yeferyv/archrice](https://github.com/yeferyv/archrice) (RetroNvim's linux distro) comes with extended keybindings for [bspwm](https://github.com/baskerville/bspwm)
 - [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) (terminal version of RetroNvim) neovim with text objects, based on [lazyvim](https://github.com/LazyVim/LazyVim)
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) vscode vim extension with some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
 - [vspacecode](https://github.com/vspacecode/vspacecode) vscode vim extension with some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps

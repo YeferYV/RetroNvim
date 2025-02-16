@@ -1,10 +1,35 @@
-format = "($battery)($sudo)($username)($directory)($git_branch)($git_status)($cmd_duration)($status)($character)"
+format = "($battery)($sudo)($username)($custom)($git_branch)($git_status)($cmd_duration)($status)($character)"
 add_newline = false
 command_timeout = 60000
+
+[custom.home]
+when = """ test "$HOME" = "$PWD" """
+format = ""
+
+[custom.gitroot]
+when = """ test "$HOME" != "$PWD" """
+command = """
+[ "${PWD:A}" = "$PWD" ] &&
+{
+  GIT_ROOT=$(git rev-parse --show-toplevel)
+  DIR="$GIT_ROOT:t${${PWD}#$GIT_ROOT}"
+}||
+{
+  DIR=$PWD
+}
+echo ${DIR/$HOME/\\~}
+"""
+# format = """[$output](bold fg:#555555) """
+format = """[$output](bold fg:#5555cc) """
 
 [cmd_duration]
 min_time = 60000
 
-[directory]
-style = "bold fg:#5555cc"
-truncation_length = 9
+[character] # The name of the module we are configuring is "character"
+success_symbol = "[󰞷 ](bold green)" # The "success_symbol" segment is being set to "󰞷 " with the color "bold green"
+error_symbol = "[󰞷 ](bold red)"
+vimcmd_symbol =	"[󰞷 ](bold green)"
+vimcmd_replace_one_symbol =	"[󰞷 ](bold purple)"
+vimcmd_replace_symbol =	"[󰞷 ](bold purple)"
+vimcmd_visual_symbol =	"[󰞷 ](bold yellow)"
+format = "$symbol"

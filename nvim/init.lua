@@ -554,34 +554,31 @@ if not vim.g.vscode then
     -- https://github.com/NvChad/base46/tree/v2.5/lua/base46/themes for popular colorscheme palettes
     -- https://github.com/echasnovski/mini.nvim/discussions/36 community palettes
     palette = {
-      -- nvchad poimandres
-      base00 = "#1b1e28", -- default bg, terminal_color_0
-      base01 = "#171922", -- line number bg, popup bg
-      base02 = "#32384a", -- statusline bg, tabline bg, selection bg
-      base03 = "#3b4258", -- line number fg, comments, terminal_color_8
-      base04 = "#48506a", -- statusline fg, tabline inactive fg
-      base05 = "#A6ACCD", -- default fg, tabline fg, terminal_color_7
-      base06 = "#b6d7f4", -- unused
-      base07 = "#ffffff", -- terminal_color_15
-      base08 = "#A6ACCD", -- return, Diff delete, Diagnostic Error
-      base09 = "#D0679D", -- integers, booleans, constants, search
-      base0A = "#5DE4C7", -- classes, search, tag signs/attributes
-      base0B = "#5DE4C7", -- strings, Diff added
-      base0C = "#89DDFF", -- builtins, Diagnostic Info
-      base0D = "#ADD7FF", -- functions, Diagnostic Hint
-      base0E = "#91B4D5", -- keywords (def, for), Diff changed, Diagnostic Warn
-      base0F = "#FFFFFF", -- punctuation, regex, indentscope
+      -- nvchad tokyonight
+      base00 = "#1a1b26", -- default bg
+      base01 = "#16161e", -- line number bg
+      base02 = "#2f3549", -- statusline bg, selection bg
+      base03 = "#444b6a", -- line number fg, comments
+      base04 = "#787c99", -- statusline fg
+      base05 = "#a9b1d6", -- default fg, delimiters
+      base06 = "#cbccd1", -- light fg (not often used)
+      base07 = "#d5d6db", -- light bg (not often used)
+      base08 = "#7aa2f7", -- variables, tags, Diff delete
+      base09 = "#ff9e64", -- integers, booleans, constants, search fg
+      base0A = "#0db9d7", -- classes, search bg
+      base0B = "#73daca", -- strings, Diff insert
+      base0C = "#2ac3de", -- builtins, regex
+      base0D = "#7aa2f7", -- functions
+      base0E = "#bb9af7", -- keywords, Diff changed
+      base0F = "#7aa2f7", -- punctuation, indentscope
     },
     use_cterm = true,     -- required if `vi -c 'Pick files'`
   })
 
-  -- poimandres transparency
+  -- adding tokyonight transparency
   vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "MsgArea", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "MiniClueBorder", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "MiniClueTitle", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "MiniClueDescSingle", { link = "Pmenu" })
+  vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniStatuslineFilename", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { underline = false, bg = "#1c1c2c" })
   vim.api.nvim_set_hl(0, "MiniCursorword", { bg = "#1c1c2c" })
@@ -589,10 +586,6 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "Statusline", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "StatuslineNC", { bg = "NONE" })
-
-  -- poimandres custom colors
-  vim.api.nvim_set_hl(0, "Comment", { fg = "#5c5c5c", })
-  vim.api.nvim_set_hl(0, "Visual", { bg = "#2c2c2c" })
   vim.api.nvim_set_hl(0, "MiniDiffSignAdd", { fg = "#009900" })
   vim.api.nvim_set_hl(0, "MiniDiffSignChange", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "MiniDiffSignDelete", { fg = "#990000" })
@@ -603,28 +596,21 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "DiffChange", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#990000" })
   vim.api.nvim_set_hl(0, "DiffText", { bg = "#3C3CFf", fg = "#ffffff" })
-
-  -- poimandres same as the original
-  vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#D0679D" })
-  vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#89DDFF" })
-  vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#91B4D5" })
-  vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#FFFAC2" })
-  vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = "#D0679D" })
-  vim.api.nvim_set_hl(0, "DiagnosticSignHint", { fg = "#89DDFF" })
-  vim.api.nvim_set_hl(0, "DiagnosticSignInfo", { fg = "#91B4D5" })
-  vim.api.nvim_set_hl(0, "DiagnosticSignWarn", { fg = "#FFFAC2" })
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true, sp = "#D0679D" })
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#89DDFF" })
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#91B4D5" })
-  vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#FFFAC2" })
-  vim.api.nvim_set_hl(0, "Number", { fg = "#5de4c7" })
-  vim.api.nvim_set_hl(0, "Constant", { fg = "#5de4c7" })
-  vim.api.nvim_set_hl(0, "Boolean", { fg = "#5de4c7" })
-  vim.api.nvim_set_hl(0, "Search", { fg = "#FFFFFF", bg = "#506477" })
-  vim.api.nvim_set_hl(0, "CurSearch", { fg = "#171922", bg = "#ADD7FF" })
-  vim.api.nvim_set_hl(0, "IncSearch", { fg = "#171922", bg = "#ADD7FF" })
-  vim.api.nvim_set_hl(0, "Special", { fg = "#767c9d" })
-  vim.api.nvim_set_hl(0, "Type", { fg = "#a6accd" })
+  vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#db4b4b" })
+  vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#1abc9c" })
+  vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#0db9d7" })
+  vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#e0af68" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = "#db4b4b" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignHint", { fg = "#1abc9c" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignInfo", { fg = "#0db9d7" })
+  vim.api.nvim_set_hl(0, "DiagnosticSignWarn", { fg = "#e0af68" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true, sp = "#db4b4b" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#1abc9c" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#0db9d7" })
+  vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#e0af68" })
+  vim.api.nvim_set_hl(0, "PmenuSel", { fg = "NONE", bg = "#2c2c2c" })
+  vim.api.nvim_set_hl(0, "Search", { fg = "#c0caf5", bg = "#3d59a1" })
+  vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#c0caf5", bg = "#FF007C" })
 
   M.hl = {}
   M.colors = {
