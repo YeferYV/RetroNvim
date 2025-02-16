@@ -27,7 +27,6 @@ add { source = "folke/flash.nvim", checkout = "v2.1.0" }
 if not vim.g.vscode then
   -- completions / UI
   add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
-  add { source = "williamboman/mason.nvim", checkout = "v1.10.0", }
   add { source = "folke/snacks.nvim", checkout = "v2.21.0" }
 end
 
@@ -48,7 +47,17 @@ if not vim.g.vscode then
   )
 end
 
-if not vim.g.vscode then now(function() require("mason").setup({ ui = { border = "rounded" } }) end) end -- now() because of vim.lsp.enable()
+if not vim.g.vscode then
+  -- now() because of vim.lsp.enable()
+  now(
+    function()
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/mason.nvim')
+      local ok, mason = pcall(require, "mason")
+      if not ok then return end
+      mason.setup({ ui = { border = "rounded" } })
+    end
+  )
+end
 
 if not vim.g.vscode then
   now(
@@ -1036,7 +1045,17 @@ if not vim.g.vscode then
   map("n", "<leader>lh", function() vim.lsp.buf.signature_help() end, { desc = "Signature" })
   map("n", "<leader>lH", function() vim.lsp.buf.hover() end, { desc = "Hover" })
   map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = "Pick Implementation" })
-  map("n", "<leader>lm", function() vim.cmd("Mason") end, { desc = "Mason" })
+  map(
+    "n",
+    "<leader>lm",
+    function()
+      vim.cmd("DepsAdd williamboman/mason.nvim")
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/mason.nvim')
+      require("mason").setup()
+      vim.cmd("Mason")
+    end,
+    { desc = "Mason" }
+  )
   map("n", "<leader>lM", function() vim.cmd("checkhealth vim.lsp") end, { desc = "LspInfo" })
   map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
   map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = "Open Diagnostic" })
