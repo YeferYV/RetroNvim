@@ -21,38 +21,14 @@ local _, vscode = pcall(require, "vscode-neovim")
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- text-objects
-add { source = "folke/flash.nvim", checkout = "v2.1.0" }
-
 if not vim.g.vscode then
-  -- UI
   add { source = "folke/snacks.nvim", checkout = "v2.21.0" }
-end
 
-later(function() require("flash").setup { modes = { search = { enabled = true } } } end)
-
-if not vim.g.vscode then
-  later(
-    function()
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
-      local ok, supermaven = pcall(require, "supermaven-nvim")
-      if not ok then return end
-      supermaven.setup {
-        keymaps = {
-          accept_suggestion = "<A-l>",
-          clear_suggestion = "<A-k>",
-          accept_word = "<A-j>",
-        }
-        -- ignore_filetypes = { "prompt", "snacks_input", "snacks_picker_input" }
-      }
-    end
-  )
-end
-
-if not vim.g.vscode then
   now(
     function()
-      require("snacks").setup({
+      local ok, snacks = pcall(require, "snacks")
+      if not ok then return end
+      snacks.setup({
         explorer = { replace_netrw = true },
         image = {},
         indent = {},
@@ -68,6 +44,24 @@ if not vim.g.vscode then
           },
         },
       })
+    end
+  )
+end
+
+if not vim.g.vscode then
+  later(
+    function()
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
+      local ok, supermaven = pcall(require, "supermaven-nvim")
+      if not ok then return end
+      supermaven.setup {
+        keymaps = {
+          accept_suggestion = "<A-l>",
+          clear_suggestion = "<A-k>",
+          accept_word = "<A-j>",
+        }
+        -- ignore_filetypes = { "prompt", "snacks_input", "snacks_picker_input" }
+      }
     end
   )
 end
@@ -162,10 +156,133 @@ autocmd({ "TermClose", --[[ "BufWipeout" ]] }, {
   end,
 })
 
+------------------------------------------------------------------------------------------------------------------------
+
+local M = {}
+
+local ns = vim.api.nvim_create_namespace("flash")
+
+vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#c0caf5", bg = "#FF007C" })
+
+M.labels = {
+  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
+  "y", "z",
+  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+  "Y", "Z"
+}
+
+M.results = {}
+M.cmdline = ""
+
+-- For replacing certain <C-x>... keymaps.
+function M.press(key)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), "nt", true)
+end
+
+-- get search results in a table
+function M.search(search)
+  local view = vim.fn.winsaveview()
+  vim.api.nvim_win_set_cursor(0, { 1, 0 })
+
+  local pos = vim.api.nvim_win_get_cursor(0)
+
+  local matches = {}
+  while true do
+    if vim.fn.search(search, "W") == 0 then
+      break
+    end
+    local start = vim.api.nvim_win_get_cursor(0)
+    vim.fn.search(search, "ceW")
+
+    local new_pos = vim.api.nvim_win_get_cursor(0)
+    if new_pos[1] == pos[1] and new_pos[2] == pos[2] then
+      break
+    end
+    pos = new_pos
+
+    local line = vim.api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)[1] or ""
+    table.insert(matches, {
+      row = pos[1],
+      col = pos[2],
+      pos = start,
+      next = line:sub(pos[2] + 2, pos[2] + 2),
+    })
+  end
+  vim.fn.winrestview(view)
+  return matches
+end
+
+-- https://github.com/folke/flash.nvim/blob/22913c65a1c960e3449c813824351abbdb327c7b/lua/flash/init.lua
+function M.flash()
+  local info = { line = vim.fn.getcmdline() }
+  vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+
+  for char, match in pairs(M.results) do
+    if info.line == M.cmdline .. char then
+      local pos = match.pos
+      if vim.v.operator ~= "" then
+        local s = ("\\%%%dl\\%%%dc."):format(pos[1], pos[2] + 1)
+        vim.fn.setcmdline(s)
+        M.press("<CR>")
+      else
+        M.press("<esc>")
+        vim.schedule(function()
+          vim.api.nvim_win_set_cursor(0, pos)
+        end)
+      end
+      return
+    end
+  end
+  M.cmdline = info.line
+  local matches = M.search(info.line)
+
+  ---@type table<string, boolean>
+  local next_chars = {}
+  for _, match in ipairs(matches) do
+    next_chars[match.next] = true
+  end
+
+  M.results = {}
+
+  local l = 0
+  for _, match in ipairs(matches) do
+    l = l + 1
+    while M.labels[l] and next_chars[M.labels[l]] do
+      l = l + 1
+    end
+    if not M.labels[l] then
+      break
+    end
+    match.label = M.labels[l]
+    M.results[match.label] = match
+
+    vim.api.nvim_buf_set_extmark(0, ns, match.row - 1, 0, {
+      virt_text = { { match.label, "FlashLabel" } },
+      virt_text_pos = "overlay",
+      virt_text_win_col = match.col + 1,
+    })
+  end
+end
+
+autocmd("CmdlineChanged", {
+  callback = function()
+    if vim.fn.getcmdtype() == "/" or vim.fn.getcmdtype() == "?" then
+      M.flash()
+    end
+  end,
+})
+
+autocmd("CmdlineLeave", {
+  callback = function()
+    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1) -- clear extmarks
+  end,
+})
+
 --------------------------------------------------------------------------------------------------------------------
 
 -- https://www.reddit.com/r/neovim/comments/ww2oyu/toggle_terminal
 function ToggleTerminal()
+  local te_win_id, te_buf
   local buf_exists = vim.fn.bufexists(te_buf) == 1
   local win_exists = vim.fn.win_gotoid(te_win_id) == 1
 
@@ -186,7 +303,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- vscode's keybinding.json with neovim.fullMode context for flash mode and replace mode
+-- vscode's keybinding.json with neovim.fullMode context for replace mode (for folke/flash.nvim see https://github.com/YeferYV/RetroNvim/commit/ab5ff6bceeba )
 -- https://github.com/vscode-neovim/vscode-neovim/issues/1718
 
 -- to view which keypresses is mapped to, run:
@@ -195,18 +312,7 @@ end
 
 if vim.g.vscode then
   vim.on_key(function(key)
-    local esc_termcode = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
     local key_termcode = vim.api.nvim_replace_termcodes(key, true, false, true)
-
-    if key_termcode:find("X.*g") then
-      -- vim.print("f_mode_enter");
-      vscode.call("setContext", { args = { "neovim.fullMode", "f" }, })
-    end
-
-    if (vim.api.nvim_get_mode().mode == "n" and key_termcode:find("'")) or key_termcode:find(esc_termcode) or key_termcode:find("X.*h") then
-      -- vim.print("f_mode_exit");
-      vscode.call("setContext", { args = { "neovim.fullMode", "n" }, })
-    end
 
     if vim.api.nvim_get_mode().mode == "n" and key_termcode:find("r") then
       -- vim.print("r_mode_enter");
@@ -221,8 +327,6 @@ if vim.g.vscode then
 end
 
 ------------------------------------------------------------------------------------------------------------------------
-
-local M = {}
 
 -- https://github.com/romgrk/columnMove.vim
 M.ColumnMove = function(direction)
@@ -269,12 +373,6 @@ end
 -- https://www.reddit.com/r/neovim/comments/1d7j0c1/a_small_gist_to_use_the_new_builtin_completion/
 local map = vim.keymap.set
 
----For replacing certain <C-x>... keymaps.
----@param keys string
-local function feedkeys(keys)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
-end
-
 ---Is the completion menu open?
 local function pumvisible()
   return tonumber(vim.fn.pumvisible()) ~= 0
@@ -289,47 +387,47 @@ autocmd('LspAttach', {
     map('i', '<cr>', function()
       -- if luasnip.expandable() then luasnip.expand()
       if pumvisible() then
-        feedkeys '<C-y>'
+        M.press('<C-y>')
       else
-        feedkeys '<cr>'
+        M.press('<cr>')
       end
     end)
 
     -- complete placeholder (if selecting snippet expand it with <cr>)
     map('i', '<down>', function()
       if pumvisible() then
-        feedkeys '<C-n>'
+        M.press('<C-n>')
       else
-        feedkeys '<down>'
+        M.press('<down>')
       end
     end)
     map('i', '<up>', function()
       if pumvisible() then
-        feedkeys '<C-p>'
+        M.press('<C-p>')
       else
-        feedkeys '<up>'
+        M.press('<up>')
       end
     end)
 
     -- to navigate between completion list or snippet tabstops,
     map({ 'i', 's' }, '<Tab>', function()
       if pumvisible() then
-        feedkeys '<C-n>'
+        M.press('<C-n>')
         --  elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
       elseif vim.snippet.active { direction = 1 } then
         vim.snippet.jump(1)
       else
-        feedkeys '<Tab>'
+        M.press('<Tab>')
       end
     end)
     map({ 'i', 's' }, '<S-Tab>', function()
       if pumvisible() then
-        feedkeys '<C-p>'
+        M.press('<C-p>')
         -- elseif luasnip.jumpable(-1) then luasnip.jump(-1)
       elseif vim.snippet.active { direction = -1 } then
         vim.snippet.jump(-1)
       else
-        feedkeys '<S-Tab>'
+        M.press('<S-Tab>')
       end
     end)
   end
@@ -413,22 +511,12 @@ require('mini.indentscope').setup({
   symbol = '',
 })
 
-require('mini.surround').setup({
-  mappings = {
-    add = 'gza',            -- Add surrounding in Normal and Visual modes
-    delete = 'gzd',         -- Delete surrounding
-    find = 'gzf',           -- Find surrounding (to the right)
-    find_left = 'gzF',      -- Find surrounding (to the left)
-    highlight = 'gzh',      -- Highlight surrounding
-    replace = 'gzr',        -- Replace surrounding
-    update_n_lines = 'gzn', -- Update `n_lines`
-  },
-})
-
 require('mini.align').setup()
 require('mini.bracketed').setup({ undo = { suffix = '' } })
+require('mini.jump').setup({ repeat_jump = 'f' })
 require('mini.operators').setup()
 require('mini.splitjoin').setup()
+require('mini.surround').setup()
 require('mini.trailspace').setup()
 
 if not vim.g.vscode then
@@ -609,7 +697,6 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#e0af68" })
   vim.api.nvim_set_hl(0, "PmenuSel", { fg = "NONE", bg = "#2c2c2c" })
   vim.api.nvim_set_hl(0, "Search", { fg = "#c0caf5", bg = "#3d59a1" })
-  vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#c0caf5", bg = "#FF007C" })
 
   M.hl = {}
   M.colors = {
@@ -775,8 +862,6 @@ end
 -- ╭────────────╮
 -- │ Navigation │
 -- ╰────────────╯
-
-local flash = require("flash")
 
 map({ "i" }, "jk", "<ESC>")
 map({ "i" }, "kj", "<ESC>")
@@ -1169,11 +1254,6 @@ map(
   { expr = true, desc = "End of TextObj" }
 )
 
-map({ "n", "x", "o" }, "s", function() flash.jump() end, { desc = "Flash" })
-map({ "n", "x", "o" }, "S", function() flash.treesitter() end, { desc = "Flash Treesitter" })
-map({ "n", "x", "o" }, "<cr>", function() flash.jump({ continue = true }) end, { desc = "Continue Flash search" })
-map({ "x", "o" }, "R", function() flash.treesitter_search() end, { desc = "Treesitter Flash Search" })
-map({ "c" }, "<c-s>", function() flash.toggle() end, { desc = "Toggle Flash Search" })
 map({ "n", "x" }, "gb", '"_d', { desc = "Blackhole Motion/Selected (dot to repeat)" })
 map({ "n", "x" }, "gB", '"_D', { desc = "Blackhole Linewise (dot to repeat)" })
 map({ "n", "o", "x" }, "g.", "`.", { desc = "go to last change" })
@@ -1206,8 +1286,8 @@ end
 
 map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
 map({ "o", "x" }, "gC", function() require('mini.comment').textobject() end, { desc = "BlockComment textobj" })
-map({ "o", "x" }, "g>", "gn", { desc = "Next find textobj" })
-map({ "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
+map({ "n", "o", "x" }, "g>", "gn", { desc = "Next find textobj" })
+map({ "n", "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
 
 -- ╭───────────────────────────────────────╮
 -- │ Text Objects with a/i (dot to repeat) │
