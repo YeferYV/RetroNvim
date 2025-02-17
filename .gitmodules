@@ -4,12 +4,6 @@
 [submodule "nvim/plugins/site/pack/deps/opt/flash.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/flash.nvim
 	url = https://github.com/folke/flash.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/mason.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/mason.nvim
-	url = https://github.com/williamboman/mason.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/snacks.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/snacks.nvim
 	url = https://github.com/folke/snacks.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/supermaven-nvim"]
-	path = nvim/plugins/site/pack/deps/opt/supermaven-nvim
-	url = https://github.com/supermaven-inc/supermaven-nvim

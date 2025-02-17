@@ -45,7 +45,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         run: |
           git submodule update --init;
-          rm -rf ./nvim/plugins/site/pack/deps/opt/{flash.nvim,mason.nvim,snacks.nvim}/tests
+          rm -rf ./nvim/plugins/site/pack/deps/opt/{flash.nvim,snacks.nvim}/tests
           rm -rf ./nvim/plugins/site/pack/deps/start/mini.nvim/tests
 
           curl -L https://github.com/jtroo/kanata/releases/download/v1.8.0/kanata_cmd_allowed                            --create-dirs --output  "./bin/linux-x64/kanata"                                                                                                                                  && chmod +x "./bin/linux-x64/kanata"
