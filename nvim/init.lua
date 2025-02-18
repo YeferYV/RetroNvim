@@ -98,11 +98,6 @@ if not vim.g.vscode then
   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
   vim.o.statuscolumn =
   '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
-
-  vim.fn.sign_define("DiagnosticSignError", { texthl = "DiagnosticSignError", text = "" })
-  vim.fn.sign_define("DiagnosticSignWarn", { texthl = "DiagnosticSignWarn", text = "" })
-  vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "" })
-  vim.fn.sign_define("DiagnosticSignInfo", { texthl = "DiagnosticSignInfo", text = "" })
 end
 
 -- ╭──────────────╮
@@ -924,7 +919,18 @@ end
 
 if not vim.g.vscode then
   ---------------------------------------------------------------------------------------------------------------------
-  vim.diagnostic.config({ virtual_text = true, float = { border = "rounded", }, })
+  vim.diagnostic.config({
+    virtual_text = true,
+    float = { border = "rounded" },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = "",
+        [vim.diagnostic.severity.WARN] = "",
+        [vim.diagnostic.severity.HINT] = "",
+        [vim.diagnostic.severity.INFO] = "",
+      },
+    },
+  })
 
   -- https://neovim.io/doc/user/lsp.html#_quickstart
   vim.lsp.config('*', {
@@ -1130,8 +1136,8 @@ if not vim.g.vscode then
   )
   map("n", "<leader>lZ", "<cmd>SupermavenStop<cr>", { desc = "Supermaven disable" })
   map("n", "<leader>f", "", { desc = "+Find" })
-  map("n", "<leader>fb", function() require("snacks").picker.grep() end, { desc = "buffers" })
-  map("n", "<leader>fB", function() require("snacks").picker.grep() end, { desc = "ripgrep on buffers" })
+  map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
+  map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })
   map("n", "<leader>fc", function() require("snacks").picker.colorschemes() end, { desc = "colorscheme" })
   map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "keymaps" })
   map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "files" })

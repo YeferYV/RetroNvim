@@ -558,7 +558,8 @@ _    _    _              _              _    _    _
 
 **VSCode Marketplace**
 
-- RetroNvim extension is shipped with `neovim`, `yazi` and `kanata` binaries and `neovim`'s extensions as git-submodules
+- RetroNvim extension is shipped with [`neovim`](https://neovim.io), [`yazi`](https://github.com/sxyazi/yazi) and [`kanata`](https://github.com/jtroo/kanata) binaries and
+  [`mini.nvim`](https://github.com/echasnovski/mini.nvim) and [`snacks.nvim`](https://github.com/folke/snacks.nvim) as git-submodules
 
 - https://marketplace.visualstudio.com/items?itemName=YeferYV.retronvim
 

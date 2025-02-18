@@ -212,27 +212,6 @@
       "whichkey.bindings": [
         {
           "key": " ",
-          "name": "terminal copy mode",
-          "command": "runCommands",
-          "args": {
-            "commands": [
-              {
-                "command": "workbench.action.terminal.selectAll"
-              },
-              {
-                "command": "editor.action.clipboardCopyAction"
-              },
-              {
-                "command": "workbench.action.files.newUntitledFile"
-              },
-              {
-                "command": "editor.action.clipboardPasteAction"
-              }
-            ]
-          }
-        },
-        {
-          "key": ".",
           "name": "Repeat Which-key",
           "command": "whichkey.repeatMostRecent"
         },
@@ -1287,6 +1266,27 @@
           "bindings": [
             {
               "key": " ",
+              "name": "terminal copy mode",
+              "command": "runCommands",
+              "args": {
+                "commands": [
+                  {
+                    "command": "workbench.action.terminal.selectAll"
+                  },
+                  {
+                    "command": "editor.action.clipboardCopyAction"
+                  },
+                  {
+                    "command": "workbench.action.files.newUntitledFile"
+                  },
+                  {
+                    "command": "editor.action.clipboardPasteAction"
+                  }
+                ]
+              }
+            },
+            {
+              "key": ":",
               "name": "Scrollback Buffer",
               "command": "workbench.action.terminal.focusAccessibleBuffer"
             },
@@ -1538,24 +1538,6 @@
               "key": "f",
               "name": "Toggle full screen",
               "command": "workbench.action.toggleFullScreen"
-            },
-            {
-              "key": "F",
-              "name": "Toggle flash search",
-              "command": "vscode-neovim.send",
-              "args": "<cmd>lua require('flash').toggle()<cr>"
-            },
-            {
-              "key": "h",
-              "name": "Enable AutoNoHighlightSearch",
-              "command": "vscode-neovim.send",
-              "args": "<cmd>EnableAutoNoHighlightSearch<cr>"
-            },
-            {
-              "key": "H",
-              "name": "Disable AutoNoHighlightSearch",
-              "command": "vscode-neovim.send",
-              "args": "<cmd>DisableAutoNoHighlightSearch<cr>"
             },
             {
               "key": "k",
