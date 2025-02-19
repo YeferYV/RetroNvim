@@ -8,6 +8,15 @@
 - **nvim:** indent_at_cursor = false (inside vscode) ([2b906d6](https://github.com/YeferYV/RetroNvim/commit/2b906d6cc3fb1c38d0032eee01cd598cdf85c9e3))
 - **zsh:** ZDOTDIR is overwrited by `code --locate-shell-integration-path` ([20ff9c0](https://github.com/YeferYV/RetroNvim/commit/20ff9c04651f80e9da829bd9416ae2966f122eea))
 
+## [0.2.4](https://github.com/YeferYV/RetroNvim/compare/v0.2.3...v0.2.4) (2025-02-19)
+
+
+### Bug Fixes
+
+* **nvim:** new minimal Lsp Installer since `:Mason` has no configured lsp ([0703563](https://github.com/YeferYV/RetroNvim/commit/07035637034b6a3dd8a250f4d8fb597236728226))
+* **nvim:** rewriting a minimal flash.nvim since plugins tends to change (gets broken) ([9f70a5c](https://github.com/YeferYV/RetroNvim/commit/9f70a5cd7d3dea675d34fd260887c14c687fd5d6))
+* **nvim:** vim.fn.sign_define() will be deprecated in neovim v0.12 ([05b2c5e](https://github.com/YeferYV/RetroNvim/commit/05b2c5ecc1f4c21bfb917a25f4acb036f1cc868d))
+
 ## [0.2.2](https://github.com/YeferYV/RetroNvim/compare/v0.2.1...v0.2.2) (2025-01-30)
 
 
