@@ -22,7 +22,7 @@ local _, vscode = pcall(require, "vscode-neovim")
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  add { source = "folke/snacks.nvim", checkout = "v2.21.0" }
+  add { source = "folke/snacks.nvim", checkout = "v2.22.0" }
 
   now(
     function()
@@ -186,6 +186,7 @@ function M.search(search)
     if vim.fn.search(search, "W") == 0 then
       break
     end
+
     local start = vim.api.nvim_win_get_cursor(0)
     vim.fn.search(search, "ceW")
 
@@ -203,6 +204,7 @@ function M.search(search)
       next = line:sub(pos[2] + 2, pos[2] + 2),
     })
   end
+
   vim.fn.winrestview(view)
   return matches
 end
@@ -212,9 +214,13 @@ function M.flash()
   local info = { line = vim.fn.getcmdline() }
   vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 
+  -- press label and jump
   for char, match in pairs(M.results) do
     if info.line == M.cmdline .. char then
       local pos = match.pos
+
+      -- For operator pending mode, set the search pattern to the first character on the match position
+      -- \%5l\%11c.  match in line 5 at column 11 `.` matches any character
       if vim.v.operator ~= "" then
         local s = ("\\%%%dl\\%%%dc."):format(pos[1], pos[2] + 1)
         vim.fn.setcmdline(s)
@@ -225,29 +231,38 @@ function M.flash()
           vim.api.nvim_win_set_cursor(0, pos)
         end)
       end
+
       return
     end
   end
+
   M.cmdline = info.line
   local matches = M.search(info.line)
+  -- vim.notify(vim.inspect(matches))
 
   ---@type table<string, boolean>
   local next_chars = {}
   for _, match in ipairs(matches) do
     next_chars[match.next] = true
+    next_chars[match.next:lower()] = true -- lower() to skip lowercase label of the char if next char is Uppercase
   end
 
   M.results = {}
 
+  -- create virtual text with labels
   local l = 0
   for _, match in ipairs(matches) do
     l = l + 1
+
+    -- Skip labels that match next characters
     while M.labels[l] and next_chars[M.labels[l]] do
       l = l + 1
     end
+
     if not M.labels[l] then
       break
     end
+
     match.label = M.labels[l]
     M.results[match.label] = match
 
@@ -298,31 +313,6 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- vscode's keybinding.json with neovim.fullMode context for replace mode (for folke/flash.nvim see https://github.com/YeferYV/RetroNvim/commit/ab5ff6bceeba )
--- https://github.com/vscode-neovim/vscode-neovim/issues/1718
-
--- to view which keypresses is mapped to, run:
--- :lua vim.on_key(function(key) vim.notify(key .. vim.api.nvim_get_mode().mode) end)
--- :lua vim.on_key(function(key) vim.print({ key, vim.api.nvim_get_mode().mode }) end)
-
-if vim.g.vscode then
-  vim.on_key(function(key)
-    local key_termcode = vim.api.nvim_replace_termcodes(key, true, false, true)
-
-    if vim.api.nvim_get_mode().mode == "n" and key_termcode:find("r") then
-      -- vim.print("r_mode_enter");
-      vscode.call("setContext", { args = { "neovim.fullMode", "r" }, })
-    end
-
-    if vim.api.nvim_get_mode().mode == "R" then
-      -- vim.print("r_mode_exit");
-      vscode.call("setContext", { args = { "neovim.fullMode", "n" }, })
-    end
-  end)
-end
-
-------------------------------------------------------------------------------------------------------------------------
-
 -- https://github.com/romgrk/columnMove.vim
 M.ColumnMove = function(direction)
   local lnum = vim.fn.line('.')
@@ -362,71 +352,6 @@ M.ColumnMove = function(direction)
   -- If the match was at the end of the line, return the previous line number
   vim.fn.cursor(remove_extraline and lnum - direction or lnum, colnum)
 end
-
-------------------------------------------------------------------------------------------------------------------------
-
--- https://www.reddit.com/r/neovim/comments/1d7j0c1/a_small_gist_to_use_the_new_builtin_completion/
-local map = vim.keymap.set
-
----Is the completion menu open?
-local function pumvisible()
-  return tonumber(vim.fn.pumvisible()) ~= 0
-end
-
-autocmd('LspAttach', {
-
-  callback = function(args)
-    vim.lsp.completion.enable(true, args.data.client_id, args.buf, { autotrigger = true })
-
-    -- Use enter to expand snippet or accept completions.
-    map('i', '<cr>', function()
-      -- if luasnip.expandable() then luasnip.expand()
-      if pumvisible() then
-        M.press('<C-y>')
-      else
-        M.press('<cr>')
-      end
-    end)
-
-    -- complete placeholder (if selecting snippet expand it with <cr>)
-    map('i', '<down>', function()
-      if pumvisible() then
-        M.press('<C-n>')
-      else
-        M.press('<down>')
-      end
-    end)
-    map('i', '<up>', function()
-      if pumvisible() then
-        M.press('<C-p>')
-      else
-        M.press('<up>')
-      end
-    end)
-
-    -- to navigate between completion list or snippet tabstops,
-    map({ 'i', 's' }, '<Tab>', function()
-      if pumvisible() then
-        M.press('<C-n>')
-        --  elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
-      elseif vim.snippet.active { direction = 1 } then
-        vim.snippet.jump(1)
-      else
-        M.press('<Tab>')
-      end
-    end)
-    map({ 'i', 's' }, '<S-Tab>', function()
-      if pumvisible() then
-        M.press('<C-p>')
-        -- elseif luasnip.jumpable(-1) then luasnip.jump(-1)
-      elseif vim.snippet.active { direction = -1 } then
-        vim.snippet.jump(-1)
-      else
-        M.press('<S-Tab>')
-      end
-    end)
-  end
-})
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -830,9 +755,6 @@ if not vim.g.vscode then
         delete = '│'
       }
     },
-    mappings = {
-      textobject = 'gH',
-    },
     options = {
       wrap_goto = true
     }
@@ -857,6 +779,8 @@ end
 -- ╭────────────╮
 -- │ Navigation │
 -- ╰────────────╯
+
+local map = vim.keymap.set
 
 map({ "i" }, "jk", "<ESC>")
 map({ "i" }, "kj", "<ESC>")
@@ -1091,7 +1015,7 @@ if not vim.g.vscode then
   map("n", "<leader>Lta", ":!pnpm install -g @tailwindcss/language-server <cr>", { desc = "tailwindcss" })
   map("n", "<leader>Lte", ":!pixi global install terraform-ls <cr>", { desc = "terraformls" })
   map("n", "<leader>Ltf", ":!pixi global install tflint <cr>", { desc = "tflint" })
-  map("n", "<leader>Lts", ":!pnpm install -g typescript-language-server <cr>", { desc = "ts_ls" })
+  map("n", "<leader>Lts", ":!pnpm install -g typescript typescript-language-server <cr>", { desc = "ts_ls" })
   map("n", "<leader>Lv", ":!pnpm install -g @vue/language-server <cr>", { desc = "volar" })
   map("n", "<leader>LV", ":!pnpm install -g @vtsls/language-server <cr>", { desc = "vtsls" })
   map("n", "<leader>LU", ":!npm install -g vls <cr>", { desc = "vuels" })
@@ -1134,7 +1058,7 @@ if not vim.g.vscode then
     end,
     { desc = "Supermaven enable" }
   )
-  map("n", "<leader>lZ", "<cmd>SupermavenStop<cr>", { desc = "Supermaven disable" })
+  map("n", "<leader>lZ", "<cmd>DepsClean<cr>", { desc = "Supermaven disable" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })
@@ -1157,7 +1081,7 @@ if not vim.g.vscode then
   map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = "marks" })
   map("n", "<leader>f.", function() require("snacks").picker.resume() end, { desc = "resume" })
   map("n", "<leader>g", "", { desc = "+Git" })
-  map("n", "<leader>gg", "<cmd>term lazygit<cr><cmd>set ft=terminal<cr>", { desc = "lazygit" })
+  map("n", "<leader>gg", "<cmd>term lazygit<cr><cmd>set ft=terminal<cr>", { desc = "lazygit (msys2 not supported)" })
   map(
     "n",
     "<leader>gd",
@@ -1205,7 +1129,7 @@ if not vim.g.vscode then
   map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "StatusBar Show" })
   map("n", "<leader>t", "", { desc = "+Terminal" })
   map("n", "<leader>tt", "<cmd>terminal <cr>", { desc = "buffer terminal" })
-  map("n", "<leader>ty", "<cmd>terminal yazi<cr><cmd>set ft=terminal<cr>", { desc = "yazi" })
+  map("n", "<leader>ty", "<cmd>terminal yazi<cr><cmd>set ft=terminal<cr>", { desc = "yazi (msys2 not supported)" })
   map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
   map("n", "<leader>w", "", { desc = "+Window" })
@@ -1226,40 +1150,6 @@ map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward (second_clip)" })
 -- │ Operator / Motions │
 -- ╰────────────────────╯
 
--- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
-map(
-  { "n", "x" },
-  "gT",
-  function()
-    local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
-    local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
-    if not ok1 then return end
-    if not ok2 then return end
-    local cmd = ":normal v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`<"
-    if vim.fn.mode() ~= "n" then
-      cmd = "<esc>:normal m'v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`<v`'"
-    end
-    return cmd
-  end,
-  { expr = true, desc = "Start of TextObj" }
-)
-map(
-  { "n", "x" },
-  "gt",
-  function()
-    local ok1, tobj_id1 = pcall(vim.fn.getcharstr)
-    local ok2, tobj_id2 = pcall(vim.fn.getcharstr)
-    if not ok1 then return end
-    if not ok2 then return end
-    local cmd = ":normal v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`>"
-    if vim.fn.mode() ~= "n" then
-      cmd = ":<c-u>normal m'v" .. tobj_id1 .. tobj_id2 .. "o<cr><esc>`'v`>"
-    end
-    return cmd
-  end,
-  { expr = true, desc = "End of TextObj" }
-)
-
 map({ "n", "x" }, "gb", '"_d', { desc = "Blackhole Motion/Selected (dot to repeat)" })
 map({ "n", "x" }, "gB", '"_D', { desc = "Blackhole Linewise (dot to repeat)" })
 map({ "n", "o", "x" }, "g.", "`.", { desc = "go to last change" })
@@ -1274,24 +1164,27 @@ map({ "x" }, "g<Down>", "g<c-x>", { desc = "numbers descending" })
 map({ "n", "x" }, "g+", "<C-a>", { desc = "Increment number (dot to repeat)" })
 map({ "n", "x" }, "g-", "<C-x>", { desc = "Decrement number (dot to repeat)" })
 
-if vim.g.vscode then
-  map(
-    { "n", "x" },
-    "gH",
-    function()
-      vscode.action("editor.action.dirtydiff.next")
-      vscode.action("closeDirtyDiff")
-    end,
-    { desc = "EndOf Git hunk (vscode only)" }
-  )
-end
-
 -- ╭───────────────────────────────────────╮
 -- │ Text Objects with "g" (dot to repeat) │
 -- ╰───────────────────────────────────────╯
 
+if vim.g.vscode then
+  map(
+    { "n", "x" },
+    "gD",
+    function()
+      vscode.action("editor.action.dirtydiff.next")
+      vscode.action("closeQuickDiff")
+    end,
+    { desc = "go to hunk ending (vscode only)" }
+  )
+else
+  map({ "n", "o", "x" }, "gD", function() require('mini.diff').textobject() end, { desc = "select diff/hunk" })
+end
+
+map({ "n" }, "vgh", "<cmd>lua require('mini.diff').textobject()<cr>", { desc = "select diff/hunk" })
 map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
-map({ "o", "x" }, "gC", function() require('mini.comment').textobject() end, { desc = "BlockComment textobj" })
+map({ "n", "o", "x" }, "gC", function() require('mini.comment').textobject() end, { desc = "select BlockComment" })
 map({ "n", "o", "x" }, "g>", "gn", { desc = "Next find textobj" })
 map({ "n", "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
 
@@ -1430,6 +1323,64 @@ local next_fold, prev_fold = M.make_repeatable_move_pair(
 )
 map({ "n", "x", "o" }, "gnf", next_fold, { desc = "Fold ending" })
 map({ "n", "x", "o" }, "gpf", prev_fold, { desc = "Fold beginning" })
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+-- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
+local end_of_textobj, start_of_textobj = M.make_repeatable_move_pair(
+
+  function(inner_outer_key, motion_key)
+    vim.cmd.exec([["normal \<esc>v]] .. inner_outer_key .. motion_key .. [[\<esc>"]])
+    vim.cmd("normal! `>") -- end of latest visual selection
+    vim.cmd(_G.reselect_textobj)
+  end,
+
+  function(inner_outer_key, motion_key)
+    vim.cmd.exec([["normal \<esc>v]] .. inner_outer_key .. motion_key .. [[\<esc>"]])
+    vim.cmd("normal! `<") -- start of latest visual selection
+    vim.cmd(_G.reselect_textobj)
+  end
+)
+
+map(
+  { "n", "x" },
+  "gT",
+  function()
+    local _, inner_outer_key = pcall(vim.fn.getcharstr)
+    local _, motion_key = pcall(vim.fn.getcharstr)
+    _G.reselect_textobj = ""
+
+    if vim.fn.mode() ~= "n" then
+      vim.cmd.exec([["normal \<esc>"]])
+      vim.cmd.normal([[mT`>mS`T]]) -- create [S]tart mark
+      _G.reselect_textobj = "normal! v`So"
+    end
+
+    start_of_textobj(inner_outer_key, motion_key)
+  end,
+  { desc = "Start of TextObj" }
+)
+
+map(
+  { "n", "x" },
+  "gt",
+  function()
+    local _, inner_outer_key = pcall(vim.fn.getcharstr)
+    local _, motion_key = pcall(vim.fn.getcharstr)
+    _G.reselect_textobj = ""
+
+    if vim.fn.mode() ~= "n" then
+      vim.cmd.exec([["normal \<esc>"]])
+      vim.cmd.normal([[mT`<mS`T]]) -- create [S]tart mark
+      _G.reselect_textobj = "normal! v`So"
+    end
+
+    end_of_textobj(inner_outer_key, motion_key)
+  end,
+  { desc = "End of TextObj" }
+)
+
+---------------------------------------------------------------------------------------------------------------------------------------
 
 local repeat_mini_ai = function(inner_or_around, key, desc)
   local next, prev = M.make_repeatable_move_pair(

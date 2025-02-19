@@ -19,14 +19,15 @@ alias	apt="sudo apt -y"
 alias	cht="cht.sh"                       # nix-env -iA nixpkgs.cht-sh
 alias grep="grep --color=auto"
 alias ll="ls -l"
-alias pacman="sudo pacman --noconfirm"
 alias svim="NVIM_APPNAME=sixelrice nvim" # git clone https://github.com/yeferyv/sixelrice ~/.config/sixelrice
+[[ "$OSTYPE" != "msys" ]] && alias pacman="sudo pacman --noconfirm"
 
 # export LC_ALL=C.UTF-8 # `locale` lists all user's locale https://wiki.archlinux.org/title/Locale
 export BAT_THEME="base16"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
 export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview"'
 export HISTFILE="$HOME/.cache/.zsh_history"
+export LESSKEYIN="$HOME/.vscode/extensions/yeferyv.retronvim/yazi/lesskey"
 export SAVEHIST=10000
 [[ -z $STARSHIP_CONFIG                                             ]] && export STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml"
 [[ -z $EDITOR                                                      ]] && export EDITOR='nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua"'

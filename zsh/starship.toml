@@ -26,7 +26,8 @@ format = """[$output](bold fg:#5555cc) """
 min_time = 60000
 
 [character] # The name of the module we are configuring is "character"
-success_symbol = "[󰞷 ](bold green)" # The "success_symbol" segment is being set to "󰞷 " with the color "bold green"
+# success_symbol = "[ ](bold green)"
+success_symbol = "[󰞷 ](bold green)" # vscode's "workbench.action.terminal.sendSequence" gets omited due to `󰞷` inside msys2
 error_symbol = "[󰞷 ](bold red)"
 vimcmd_symbol =	"[󰞷 ](bold green)"
 vimcmd_replace_one_symbol =	"[󰞷 ](bold purple)"
