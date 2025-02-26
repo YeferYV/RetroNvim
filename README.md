@@ -26,7 +26,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 1. Neovim keymaps
    - [Neovim text object that starts with a/i](#neovim-text-object-that-starts-with-ai)
-   - [Neovim text-object/motions that starts with g](#neovim-textobjectmotions-that-starts-with-g)
+   - [Neovim text-object/motions that starts with g](#neovim-text-objectmotions-that-starts-with-g)
    - [Native neovim ctrl keys](#native-neovim-ctrl-keys)
 2. Keybindings.json
    - [File Explorer keymaps](#file-explorer-keymaps)
@@ -152,6 +152,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 | `<space><space>Y`  | vscode-neovim |   `n`,`x`   |                   |                        | yank until end of line (secondary clipboard)                              |                                          |                        | uses selection               | `v<space><space>Y` yanks until end of line using the second clipboard        |
 | `<space><space>j`  | vscode-neovim | `n`,`x`,`o` |                   | `;`forward `,`backward | prev ColumnMove                                                           | jumps                                    |                        | uses selection               | `v<space><space>j` selects until start of column                             |
 | `<space><space>k`  | vscode-neovim | `n`,`x`,`o` |                   | `;`forward `,`backward | next ColumnMove                                                           | jumps                                    |                        | uses selection               | `v<space><space>k` selects until end of coumn                                |
+|     `<space>o`     |               |     `n`     |                   |                        | focus file explorer                                                       | jumps                                    |                        |                              | `<space>o` focus explorer when normal mode                                   |
 
 </details>
 
@@ -162,11 +163,9 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 | Key Combination |  mode   | Description                                                                                                                                        |
 | :-------------: | :-----: | :------------------------------------------------------------------------------------------------------------------------------------------------- |
 |    `ctrl+a`     | `n`,`v` | increase number under cursor                                                                                                                       |
-|    `ctrl+b`     | `n`,`v` | scroll down by page (in `vim insert mode` uses default vscode `toggle sidebar`)                                                                    |
 |    `ctrl+c`     |   `v`   | stops selection                                                                                                                                    |
 |    `ctrl+d`     | `n`,`v` | scroll down by half page                                                                                                                           |
 |    `ctrl+e`     | `n`,`v` | scroll down by line                                                                                                                                |
-|    `ctrl+f`     | `n`,`v` | scroll up by page (in `vim insert mode` uses default vscode `find`)                                                                                |
 |    `ctrl+i`     |   `n`   | jump to next in `:jumps`                                                                                                                           |
 |    `ctrl+o`     |   `n`   | jump to previous in `:jumps`                                                                                                                       |
 |    `ctrl+r`     |   `n`   | redo (`u` to undo)                                                                                                                                 |

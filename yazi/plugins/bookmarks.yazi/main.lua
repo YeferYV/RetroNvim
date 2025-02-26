@@ -73,7 +73,7 @@ return {
     end
 
     if action == "jump" then
-      ya.manager_emit("reveal", { bookmarks[selected].desc })
+      ya.mgr_emit("reveal", { bookmarks[selected].desc })
     end
 
     if action == "delete" then

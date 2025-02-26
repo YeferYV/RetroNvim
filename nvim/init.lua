@@ -82,6 +82,7 @@ vim.opt.tabstop = 2               -- insert 2 spaces for a tab
 vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.wrap = false              -- display lines as one long line
 vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
+vim.g.mapleader = " "             -- <leader> key
 
 if not vim.g.vscode then
   vim.opt.cmdheight = 0                       -- more space in the neovim command line for displaying messages
@@ -90,7 +91,6 @@ if not vim.g.vscode then
   vim.opt.scrolloff = 8                       -- vertical scrolloff
   vim.opt.sidescrolloff = 8                   -- horizontal scrolloff
   vim.opt.virtualedit = "all"                 -- allow cursor bypass end of line
-  vim.g.mapleader = " "                       -- <leader> key
   vim.o.foldcolumn = '1'                      -- if '1' will show clickable fold signs
   vim.o.foldlevel = 99                        -- Disable folding at startup
   vim.o.foldmethod = "expr"                   -- expr = specify an expression to define folds
@@ -1111,14 +1111,6 @@ if not vim.g.vscode then
   map("n", "<leader>gr", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gH')<cr>", { desc = "Reset GitHunk" })
   map("n", "<leader>gs", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gh')<cr>", { desc = "Stage GitHunk" })
   map("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
-  map(
-    "n",
-    "<leader>o",
-    function()
-      Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true } })
-    end,
-    { desc = "Explorer with preview" }
-  )
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
@@ -1135,6 +1127,26 @@ if not vim.g.vscode then
   map("n", "<leader>w", "", { desc = "+Window" })
   map("n", "<leader>wv", "<cmd>vsplit<cr>", { desc = "vertical window" })
   map("n", "<leader>wV", "<cmd>split<cr>", { desc = "horizontal window" })
+end
+
+if vim.g.vscode then
+  map(
+    "n",
+    "<leader>o",
+    function()
+      vscode.action("workbench.files.action.focusFilesExplorer")
+    end,
+    { desc = "focus explorer" }
+  )
+else
+  map(
+    "n",
+    "<leader>o",
+    function()
+      Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true } })
+    end,
+    { desc = "Explorer with preview" }
+  )
 end
 
 map("n", "<leader><leader>p", '"*p', { desc = "Paste after (second_clip)" })

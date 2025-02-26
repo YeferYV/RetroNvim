@@ -200,6 +200,15 @@
       "vim.normalModeKeyBindingsNonRecursive": [
         {
           "before": [
+            "<space>",
+            "o"
+          ],
+          "commands": [
+            "workbench.files.action.focusFilesExplorer"
+          ]
+        },
+        {
+          "before": [
             "<esc>"
           ],
           "commands": [
@@ -276,6 +285,8 @@
       ],
       "vim.leader": "<space>",
       "vim.handleKeys": {
+        "<C-b>": false,
+        "<C-f>": false,
         "<C-g>": false,
         "<C-h>": false,
         "<C-j>": false,
@@ -300,11 +311,9 @@
       "vscode-neovim.ctrlKeysForInsertMode": [],
       "vscode-neovim.ctrlKeysForNormalMode": [
         "a",
-        "b",
         "c",
         "d",
         "e",
-        "f",
         "i",
         "o",
         "r",
@@ -2040,7 +2049,7 @@
       {
         "key": "shift+u",
         "command": "whichkey.repeatMostRecent",
-        "when": "editorTextFocus && (vim.mode == 'Normal' || neovim.mode == 'normal')"
+        "when": "filesExplorerFocus || (editorTextFocus && (vim.mode == 'Normal' || neovim.mode == 'normal'))"
       },
       {
         "key": "/",
@@ -2237,13 +2246,13 @@
             "<esc>"
           ]
         },
-        "when": "inputFocus && (vim.mode == 'Insert' || vim.mode == 'Visual' || vim.mode == 'VisualLine' || vim.mode == 'VisualBlock)"
+        "when": "editorTextFocus && (vim.mode == 'Insert' || vim.mode == 'Visual' || vim.mode == 'VisualLine' || vim.mode == 'VisualBlock)"
       },
       {
         "key": "alt+h",
         "command": "vscode-neovim.send",
         "args": "<esc><cmd>noh<cr>",
-        "when": "inputFocus && neovim.mode == 'insert' || neovim.mode == 'visual'"
+        "when": "editorTextFocus && neovim.mode == 'insert' || neovim.mode == 'visual'"
       },
       {
         "key": "alt+k",
