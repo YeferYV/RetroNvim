@@ -8,6 +8,13 @@
 - **nvim:** indent_at_cursor = false (inside vscode) ([2b906d6](https://github.com/YeferYV/RetroNvim/commit/2b906d6cc3fb1c38d0032eee01cd598cdf85c9e3))
 - **zsh:** ZDOTDIR is overwrited by `code --locate-shell-integration-path` ([20ff9c0](https://github.com/YeferYV/RetroNvim/commit/20ff9c04651f80e9da829bd9416ae2966f122eea))
 
+## [0.3.0](https://github.com/YeferYV/RetroNvim/compare/v0.2.4...v0.3.0) (2025-02-27)
+
+
+### Features
+
+* **package.json:** migrating to vscodevim since neovim someday will crash as always (vim.lsp.completion.enable() stops being compatible with mini.completion) ([3b127f8](https://github.com/YeferYV/RetroNvim/commit/3b127f8038826dbbf5ffe40c3725996c00d60920))
+
 ## [0.2.4](https://github.com/YeferYV/RetroNvim/compare/v0.2.3...v0.2.4) (2025-02-19)
 
 
