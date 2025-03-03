@@ -25,7 +25,7 @@ alias svim="NVIM_APPNAME=sixelrice nvim" # git clone https://github.com/yeferyv/
 # export LC_ALL=C.UTF-8 # `locale` lists all user's locale https://wiki.archlinux.org/title/Locale
 export BAT_THEME="base16"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
-export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview"'
+export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview" --multi --bind "ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}"'
 export HISTFILE="$HOME/.cache/.zsh_history"
 export LESSKEYIN="$HOME/.vscode/extensions/yeferyv.retronvim/yazi/lesskey"
 export SAVEHIST=10000

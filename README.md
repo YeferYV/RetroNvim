@@ -56,6 +56,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |             `ia`, `aa`             |               |        `.`        |         yes          | \_argument       | whole argument/parameter of a function                                                    | outer includes comma                                                          |
 |             `ib`, `ab`             |               |        `.`        |         yes          | \_braces         | find the nearest inside of `()` `[]` `{}`                                                 | outer includes braces                                                         |
 |             `iB`, `aB`             |               |        `.`        |         yes          | \_brackets       | find the nearest inside of `{}` `:help iB`                                                | outer includes brackets                                                       |
+|             `id`, `ad`             | neovim        |        `.`        |         yes          | diagnostic       | find errors, warnings, info or hints (only works inside neovim and requires LSP)          | outer same as inner                                                           |
 |             `ie`, `ae`             | vscode-neovim |        `.`        |                      | line             | from start to end of line without beginning whitespaces (line wise)                       | outer includes begining whitespaces                                           |
 |             `if`, `af`             | vscode-neovim |        `.`        |         yes          | \_function_call  | like `function args` but only when a function is called                                   | outer includes the function called                                            |
 |             `ih`, `ah`             | vscode-neovim |        `.`        |         yes          | \_html_attribute | attribute in html/xml like `href="foobar.com"`                                            | inner is only the value inside the quotes trailing comma and space            |
@@ -152,7 +153,6 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 | `<space><space>Y`  | vscode-neovim |   `n`,`x`   |                   |                        | yank until end of line (secondary clipboard)                              |                                          |                        | uses selection               | `v<space><space>Y` yanks until end of line using the second clipboard        |
 | `<space><space>j`  | vscode-neovim | `n`,`x`,`o` |                   | `;`forward `,`backward | prev ColumnMove                                                           | jumps                                    |                        | uses selection               | `v<space><space>j` selects until start of column                             |
 | `<space><space>k`  | vscode-neovim | `n`,`x`,`o` |                   | `;`forward `,`backward | next ColumnMove                                                           | jumps                                    |                        | uses selection               | `v<space><space>k` selects until end of coumn                                |
-|     `<space>o`     |               |     `n`     |                   |                        | focus file explorer                                                       | jumps                                    |                        |                              | `<space>o` focus explorer when normal mode                                   |
 
 </details>
 
@@ -164,7 +164,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 | :-------------: | :-----: | :------------------------------------------------------------------------------------------------------------------------------------------------- |
 |    `ctrl+a`     | `n`,`v` | increase number under cursor                                                                                                                       |
 |    `ctrl+c`     |   `v`   | stops selection                                                                                                                                    |
-|    `ctrl+d`     | `n`,`v` | scroll down by half page                                                                                                                           |
+|    `ctrl+d`     | `n`,`v` | scroll down by half page (vscodevim maps to multi-cursor mode)                                                                                     |
 |    `ctrl+e`     | `n`,`v` | scroll down by line                                                                                                                                |
 |    `ctrl+i`     |   `n`   | jump to next in `:jumps`                                                                                                                           |
 |    `ctrl+o`     |   `n`   | jump to previous in `:jumps`                                                                                                                       |
@@ -218,8 +218,10 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 |     Key Combination      |    mode     | Description                                      |
 | :----------------------: | :---------: | :----------------------------------------------- |
+|        `<space>o`        |     `n`     | view file explorer                               |
 |         `ctrl+\`         |   `n`,`i`   | Toggle panel (terminal) visibility               |
 |         `escape`         |     `n`     | clear search highlight                           |
+|      `shift+escape`      |     `n`     | close any popup window like diff/diagnostic etc  |
 |      `shift+space`       |     `n`     | Show whichkey menu (Windows, Linux, Mac)         |
 |       `alt+space`        |     `n`     | Show whichkey menu (Linux, Mac)                  |
 |         `alt+c`          |     `i`     | Copy                                             |
@@ -231,15 +233,15 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |   `alt+k` or `shift+k`   |     `n`     | cursorUp `10` times                              |
 |   `alt+l` or `shift+l`   |     `n`     | cursorRigth `10` times                           |
 |         `alt+v`          |     `n`     | Type `V`                                         |
-|    `alt+s` or `left`     |     `n`     | Go to previous editor                            |
-|    `alt+f` or `right`    |     `n`     | Go to next editor                                |
+|    `alt+s` or `left`     |     `n`     | Go to previous tab                               |
+|    `alt+f` or `right`    |     `n`     | Go to next tab                                   |
 | `alt+left` or `alt+down` |     `n`     | Decrease view size of current window or terminal |
 | `alt+right` or `alt+up`  |     `n`     | Increase view size of current window or terminal |
 |         `ctrl+h`         |     `n`     | Navigate to left window                          |
 |         `ctrl+j`         |     `n`     | Navigate to down window                          |
 |         `ctrl+k`         |     `n`     | Navigate to up window                            |
 |         `ctrl+l`         |     `n`     | Navigate to right window                         |
-|        `shift+q`         |     `n`     | Close active editor                              |
+|        `shift+q`         |     `n`     | Close active tab                                 |
 |        `shift+r`         |     `n`     | Format and save                                  |
 |     `ctrl+alt+left`      | `n`,`i`,`x` | select left word (on multi cursor)               |
 |     `ctrl+alt+right`     | `n`,`i`,`x` | select right word (on multi cursor)              |
@@ -262,16 +264,16 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `ctrl+j`      | `i`  | Select next suggestion                            |
 |      `ctrl+k`      | `i`  | Select prev suggestion                            |
 |      `ctrl+l`      | `i`  | Accept selected suggestion                        |
-|       `tab`        | `i`  | go to next snippet stop or next suggestion        |
-|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion        |
 |      `alt+]`       | `i`  | Show next inline suggestion                       |
 |      `alt+[`       | `i`  | Show previous inline suggestion                   |
 |      `alt+j`       | `i`  | inline suggestion accept next word                |
 |      `alt+k`       | `i`  | inline suggestion accept next line                |
 |      `alt+l`       | `i`  | Commit inline suggestion                          |
+|       `tab`        | `i`  | go to next snippet stop or next suggestion        |
+|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion        |
+|      `alt+;`       | `i`  | go to next snippet stop (neovim only)             |
+|      `alt+,`       | `i`  | go to prev snippet stop (neovim only)             |
 |      `alt+.`       | `i`  | expand snippet (neovim only)                      |
-|      `alt+;`       | `i`  | next snippet stop (neovim only)                   |
-|      `alt+,`       | `i`  | previous snippet stop (neovim only)               |
 |      `ctrl+c`      | `i`  | exit snippet session (neovim only)                |
 
 </details>
@@ -326,10 +328,10 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 | `alt+h` or `<esc>` | enter vim-mode                                             |
 |      `alt+j`       | previous history and enter vim-mode                        |
 |      `alt+k`       | next history and enter vim-mode                            |
-|      `alt+l`       | complete suggestion and enter vim-mode                     |
+|      `alt+l`       | complete inline/ghost suggestion and enter vim-mode        |
 |      `ctrl+r`      | search history with fzf                                    |
 |      `ctrl+l`      | clear screen                                               |
-|    `ctrl+alt+l`    | clear screen (inside neovim terminal)                      |
+|    `ctrl+alt+l`    | clear screen (inside neovim terminal or vscode terminal)   |
 
 </details>
 
@@ -433,7 +435,7 @@ _    _    _              _              _    _    _
 
 **VSCode Marketplace**
 
-- RetroNvim extension is shipped with [`neovim`](https://neovim.io), [`yazi`](https://github.com/sxyazi/yazi) and [`kanata`](https://github.com/jtroo/kanata) binaries and
+- RetroNvim extension is shipped with [`neovim`](https://neovim.io), [`yazi`](https://github.com/sxyazi/yazi) and [`kanata`](https://github.com/jtroo/kanata) binaries [using github-actions](https://github.com/YeferYV/retronvim/tree/main/.github/workflows/release.yml) and
   [`mini.nvim`](https://github.com/echasnovski/mini.nvim) and [`snacks.nvim`](https://github.com/folke/snacks.nvim) as git-submodules
 
 - https://marketplace.visualstudio.com/items?itemName=YeferYV.retronvim

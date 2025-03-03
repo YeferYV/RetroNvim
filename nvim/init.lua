@@ -33,7 +33,19 @@ if not vim.g.vscode then
         image = {},
         indent = {},
         input = {},
-        picker = { sources = { explorer = { hidden = true, --[[ ignored = true ]] } } },
+        picker = {
+          sources = { explorer = { hidden = true, --[[ ignored = true ]] } },
+          win = {
+            list = {
+              keys = {
+                ["K"] = { "preview_scroll_up", mode = { "i", "n" } },
+                ["J"] = { "preview_scroll_down", mode = { "i", "n" } },
+                ["M"] = "toggle_maximize",
+                -- ["<S-CR>"] = { "close", mode = { "n", "i" } }, -- <S-CR> already closes the picker
+              },
+            },
+          },
+        },
         styles = {
           input = {
             title_pos = "left",
@@ -116,6 +128,10 @@ autocmd("TextYankPost", { callback = function() vim.highlight.on_yank({ higroup 
 local f = function(args) vim.b[args.buf].minicompletion_disable = true end
 autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
 autocmd('Filetype', { pattern = 'snacks_input', callback = f })
+
+-- right click menu
+vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true }, on_show = function(picker) Snacks.picker.actions.toggle_maximize(picker) end })<cr> ]]
+vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -292,7 +308,6 @@ autocmd("CmdlineLeave", {
 
 -- https://www.reddit.com/r/neovim/comments/ww2oyu/toggle_terminal
 function ToggleTerminal()
-  local te_win_id, te_buf
   local buf_exists = vim.fn.bufexists(te_buf) == 1
   local win_exists = vim.fn.win_gotoid(te_win_id) == 1
 
@@ -483,6 +498,10 @@ if not vim.g.vscode then
       { desc = "braces",      keys = "ab", mode = "x" },
       { desc = "braces",      keys = "ib", mode = "o" },
       { desc = "braces",      keys = "ib", mode = "x" },
+      { desc = "diagnostic",  keys = "ad", mode = "o" },
+      { desc = "dignostic",   keys = "ad", mode = "x" },
+      { desc = "dignostic",   keys = "id", mode = "o" },
+      { desc = "dignostic",   keys = "id", mode = "x" },
       { desc = "line",        keys = "ae", mode = "o" },
       { desc = "line",        keys = "ae", mode = "x" },
       { desc = "line",        keys = "ie", mode = "o" },
@@ -670,42 +689,6 @@ if not vim.g.vscode then
     }
   })
 
-  -- TODO: remove it when mini.snippets available
-  local H = {}
-
-  -- extracted from https://github.com/echasnovski/mini.nvim/blob/main/lua/mini/completion.lua
-  H.table_get = function(t, id)
-    if type(id) ~= 'table' then return H.table_get(t, { id }) end
-    local success, res = true, t
-    for _, i in ipairs(id) do
-      success, res = pcall(function() return res[i] end)
-      if not success or res == nil then return end
-    end
-    return res
-  end
-
-  -- Completion word (textEdit.newText > insertText > label)
-  H.get_completion_word = function(item)
-    return H.table_get(item, { 'textEdit', 'newText' }) or item.insertText or item.label or ''
-  end
-
-  -- skip snippets filter
-  -- press <c-x><c-o> if snippet not showing (e.g using lua-ls when configured with `require('mini.completion').setup()` )
-  require('mini.completion').setup({
-    lsp_completion = {
-      process_items = function(items, base)
-        local res = vim.tbl_filter(function(item)
-          -- Keep items which match the base
-          local text = item.filterText or H.get_completion_word(item)
-          return vim.startswith(text, base)
-        end, items)
-
-        table.sort(res, function(a, b) return (a.sortText or a.label) < (b.sortText or b.label) end)
-        return res
-      end,
-    },
-  })
-
   later(
     function()
       local function add_vscode_snippets_to_rtp()
@@ -760,6 +743,7 @@ if not vim.g.vscode then
     }
   })
 
+  require('mini.completion').setup()
   require('mini.cursorword').setup()
   require('mini.extra').setup()
   require('mini.icons').setup()
@@ -772,8 +756,8 @@ if not vim.g.vscode then
   require('mini.tabline').setup()
   MiniIcons.mock_nvim_web_devicons()
   MiniIcons.tweak_lsp_kind( --[[ "replace" ]])
-  vim.notify = MiniNotify.make_notify()                                        -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
-  if vim.fn.has('nvim-0.11') == 1 then vim.opt.completeopt:append('fuzzy') end -- it should be after require("mini.completion").setup())
+  vim.notify = MiniNotify.make_notify() -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
+  vim.opt.completeopt:append('fuzzy')   -- it should be after require("mini.completion").setup())
 end
 
 -- ╭────────────╮
@@ -1024,7 +1008,7 @@ if not vim.g.vscode then
   ------------------------------------------------------------------------------------------------------------------------
 
   map("n", "<leader>l", "", { desc = "+LSP" })
-  map("n", "<leader>lA", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
+  map("n", "<leader>la", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
   map("n", "<leader>lc", function() vim.lsp.buf.incoming_calls() end, { desc = "Incoming Calls" })
   map("n", "<leader>lC", function() vim.lsp.buf.outcoming_calls() end, { desc = "Outcoming Calls" })
   map("n", "<leader>ld", function() require("snacks").picker.lsp_definitions() end, { desc = "Pick Definition" })
@@ -1114,11 +1098,29 @@ if not vim.g.vscode then
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
+  map("n", "<leader>ud", "<cmd>lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())<cr>",
+    { desc = "toggle diagnostic" })
   map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent" })
   map("n", "<leader>uF", "<cmd>lua vim.o.foldmethod='expr'<cr>", { desc = "fold by lsp" })
   map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "toggle cursorline" })
+  map("n", "<leader>up", "<cmd>popup PopUp<cr>", { desc = "Toggle Mouse PopUp" })
   map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "StatusBar Hide" })
   map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "StatusBar Show" })
+  map(
+    "n",
+    "<leader>uu",
+    function()
+      if not Hidden then
+        Bufnr = vim.fn.bufnr()
+        vim.cmd.hide()
+        Hidden = true
+      else
+        vim.cmd('split | buffer' .. Bufnr)
+        Hidden = false
+      end
+    end,
+    { desc = "Hide/Unhide window (useful for terminal)" }
+  )
   map("n", "<leader>t", "", { desc = "+Terminal" })
   map("n", "<leader>tt", "<cmd>terminal <cr>", { desc = "buffer terminal" })
   map("n", "<leader>ty", "<cmd>terminal yazi<cr><cmd>set ft=terminal<cr>", { desc = "yazi (msys2 not supported)" })
@@ -1394,6 +1396,7 @@ map(
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+-- TODO: remove it when https://github.com/echasnovski/mini.nvim/issues/1077 available
 local repeat_mini_ai = function(inner_or_around, key, desc)
   local next, prev = M.make_repeatable_move_pair(
     function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "next" }) end,

@@ -52,16 +52,22 @@
     "configurationDefaults": {
       "accessibility.accessibleView.closeOnKeyPress": false,
       "editor.accessibilitySupport": "off",
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "always",
+        "source.addMissingImports": "always"
+      },
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
       "editor.minimap.enabled": false,
       "editor.quickSuggestions": {
         "strings": "on"
       },
+      "editor.renderLineHighlight": "none",
       "editor.renderWhitespace": "none",
       "editor.suggest.insertMode": "replace",
       "editor.suggest.selectionMode": "never",
       "editor.stickyScroll.enabled": false,
+      "editor.tabSize": 2,
       "emmet.includeLanguages": {
         "javascript": "javascriptreact",
         "typescript": "typescriptreact"
@@ -99,7 +105,7 @@
         "RETRONVIM_BIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64",
         "BAT_THEME": "base16",
         "EDITOR": "nvim -u $RETRONVIM_INIT",
-        "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
+        "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'",
         "LESSKEYIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi/lesskey",
         "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
         "PNPM_HOME": "${env:HOME}/.local/share/pnpm",
@@ -122,7 +128,7 @@
         "RETRONVIM_INIT": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
         "BAT_THEME": "base16",
         "EDITOR": "nvim -u ${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-        "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview'",
+        "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'",
         "LESSKEYIN": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/yazi/lesskey",
         "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
         "YAZI_CONFIG_HOME": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/yazi",
@@ -334,8 +340,6 @@
       "workbench.iconTheme": "symbols",
       "workbench.colorCustomizations": {
         "[Tokyo Night Dark][Poimandres Alternate]": {
-          "editor.lineHighlightBackground": "#00000000",
-          "editor.lineHighlightBorder": "#00000000",
           "editorGroup.border": "#25252566",
           "editorSuggestWidget.selectedBackground": "#20222c",
           "panel.border": "#25252566",
@@ -605,28 +609,33 @@
           "name": "+Git",
           "bindings": [
             {
+              "key": "a",
+              "name": "Commit All (Amend)",
+              "command": "git.commitAllAmend"
+            },
+            {
               "key": "A",
               "name": "Commit Staged (Amend)",
               "command": "git.commitStagedAmend"
             },
             {
               "key": "b",
-              "name": "Create Branch From",
-              "command": "git.branchFrom"
-            },
-            {
-              "key": "B",
-              "name": "Delete Branch",
-              "command": "git.deleteBranch"
-            },
-            {
-              "key": "c",
               "name": "Checkout Branch",
               "command": "git.checkout"
             },
             {
+              "key": "B",
+              "name": "Create Branch From",
+              "command": "git.branchFrom"
+            },
+            {
+              "key": "c",
+              "name": "Commit All Changes",
+              "command": "git.commitAll"
+            },
+            {
               "key": "C",
-              "name": "Commit Changes",
+              "name": "Commit Staged Changes",
               "command": "git.commit"
             },
             {
@@ -636,8 +645,8 @@
             },
             {
               "key": "D",
-              "name": "Toggle Diff view",
-              "command": "toggle.diff.renderSideBySide"
+              "name": "Delete Branch",
+              "command": "git.deleteBranch"
             },
             {
               "key": "f",
@@ -706,8 +715,18 @@
             },
             {
               "key": "S",
+              "name": "Stage selected range",
+              "command": "git.stageSelectedRanges"
+            },
+            {
+              "key": "u",
               "name": "Unstage current file",
               "command": "git.unstage"
+            },
+            {
+              "key": "U",
+              "name": "Unstage selected range",
+              "command": "git.unstageSelectedRanges"
             },
             {
               "key": "v",
@@ -718,6 +737,11 @@
               "key": "V",
               "name": "View All Changes",
               "command": "git.viewChanges"
+            },
+            {
+              "key": "w",
+              "name": "Toggle Diff view",
+              "command": "toggle.diff.renderSideBySide"
             },
             {
               "key": "<",
@@ -1083,7 +1107,7 @@
           "bindings": [
             {
               "key": "a",
-              "name": "Auto Fix",
+              "name": "Code Action Auto Fix",
               "command": "editor.action.autoFix"
             },
             {
@@ -1133,13 +1157,18 @@
             },
             {
               "key": "n",
-              "name": "Next Problem",
-              "command": "editor.action.marker.next"
+              "name": "Next Problem (vscodevim)",
+              "commands": [
+                "toggleVim",
+                "editor.action.marker.next",
+                "toggleVim",
+                "extension.vim_escape"
+              ]
             },
             {
               "key": "N",
-              "name": "Next Problem (Proj)",
-              "command": "editor.action.marker.nextInFiles"
+              "name": "Next Problem (vscode-neovim)",
+              "command": "editor.action.marker.next"
             },
             {
               "key": "o",
@@ -1148,13 +1177,18 @@
             },
             {
               "key": "p",
-              "name": "Prev Problem",
-              "command": "editor.action.marker.prev"
+              "name": "Prev Problem (vscodevim)",
+              "commands": [
+                "toggleVim",
+                "editor.action.marker.prev",
+                "toggleVim",
+                "extension.vim_escape"
+              ]
             },
             {
               "key": "P",
-              "name": "Prev Problem (Proj)",
-              "command": "editor.action.marker.prevInFiles"
+              "name": "Prev Problem (vscode-neovim)",
+              "command": "editor.action.marker.prev"
             },
             {
               "key": "q",
@@ -1163,7 +1197,7 @@
             },
             {
               "key": "Q",
-              "name": "Quick Fix",
+              "name": "Quick Fix aka Code Action",
               "command": "editor.action.quickFix"
             },
             {
@@ -2240,35 +2274,30 @@
       },
       {
         "key": "alt+h",
-        "command": "vim.remap",
-        "args": {
-          "after": [
-            "<esc>"
-          ]
-        },
+        "command": "extension.vim_escape",
         "when": "editorTextFocus && (vim.mode == 'Insert' || vim.mode == 'Visual' || vim.mode == 'VisualLine' || vim.mode == 'VisualBlock)"
       },
       {
         "key": "alt+h",
         "command": "vscode-neovim.send",
-        "args": "<esc><cmd>noh<cr>",
+        "args": "<esc>",
         "when": "editorTextFocus && neovim.mode == 'insert' || neovim.mode == 'visual'"
       },
       {
-        "key": "alt+k",
+        "key": "alt+h",
         "command": "runCommands",
         "args": {
           "commands": [
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp"
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft",
+            "cursorLeft"
           ]
         },
         "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
@@ -2293,20 +2322,20 @@
         "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
       },
       {
-        "key": "alt+h",
+        "key": "alt+k",
         "command": "runCommands",
         "args": {
           "commands": [
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft"
+            "cursorUp",
+            "cursorUp",
+            "cursorUp",
+            "cursorUp",
+            "cursorUp",
+            "cursorUp",
+            "cursorUp",
+            "cursorUp",
+            "cursorUp",
+            "cursorUp"
           ]
         },
         "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
