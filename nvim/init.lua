@@ -580,31 +580,52 @@ if not vim.g.vscode then
     -- https://github.com/NvChad/base46/tree/v2.5/lua/base46/themes for popular colorscheme palettes
     -- https://github.com/echasnovski/mini.nvim/discussions/36 community palettes
     palette = {
-      -- nvchad tokyonight
-      base00 = "#1a1b26", -- default bg
-      base01 = "#16161e", -- line number bg
-      base02 = "#2f3549", -- statusline bg, selection bg
-      base03 = "#444b6a", -- line number fg, comments
-      base04 = "#787c99", -- statusline fg
-      base05 = "#a9b1d6", -- default fg, delimiters
-      base06 = "#cbccd1", -- light fg (not often used)
-      base07 = "#d5d6db", -- light bg (not often used)
-      base08 = "#7aa2f7", -- variables, tags, Diff delete
-      base09 = "#ff9e64", -- integers, booleans, constants, search fg
-      base0A = "#0db9d7", -- classes, search bg
-      base0B = "#73daca", -- strings, Diff insert
-      base0C = "#2ac3de", -- builtins, regex
-      base0D = "#7aa2f7", -- functions
-      base0E = "#bb9af7", -- keywords, Diff changed
-      base0F = "#7aa2f7", -- punctuation, indentscope
+      -- BAT_THEME=base16 -- tokyonight -- description
+      base00 = "#000000", -- "#1a1b26", -- default bg
+      base01 = "#111111", -- "#16161e", -- line number bg
+      base02 = "#2c2c2c", -- "#2f3549", -- statusline bg, selection bg
+      base03 = "#444b6a", -- "#444b6a", -- line number fg, comments
+      base04 = "#787c99", -- "#787c99", -- statusline fg
+      base05 = "#a9b1d6", -- "#a9b1d6", -- default fg, delimiters
+      base06 = "#cbccd1", -- "#cbccd1", -- light fg (not often used)
+      base07 = "#d5d6db", -- "#d5d6db", -- light bg (not often used)
+      base08 = "#5555cc", -- "#7aa2f7", -- variables, tags, Diff delete
+      base09 = "#999900", -- "#ff9e64", -- integers, booleans, constants, search fg
+      base0A = "#ff0000", -- "#0db9d7", -- classes, search bg
+      base0B = "#009900", -- "#73daca", -- strings, Diff insert
+      base0C = "#3c3cff", -- "#2ac3de", -- builtins, regex
+      base0D = "#5FB3A1", -- "#7aa2f7", -- functions
+      base0E = "#8855ff", -- "#bb9af7", -- keywords, Diff changed
+      base0F = "#a0a0a0", -- "#7aa2f7", -- punctuation, indentscope
     },
     use_cterm = true,     -- required if `vi -c 'Pick files'`
   })
 
+  -- neovim terminal colors
+  vim.g.terminal_color_0 = "#3c3c3c"
+  vim.g.terminal_color_1 = "#990000"
+  vim.g.terminal_color_2 = "#009900"
+  vim.g.terminal_color_3 = "#999900"
+  vim.g.terminal_color_4 = "#5555cc"
+  vim.g.terminal_color_5 = "#8855ff"
+  vim.g.terminal_color_6 = "#5FB3A1"
+  vim.g.terminal_color_7 = "#a0a0a0"
+  vim.g.terminal_color_8 = "#6c6c6c"
+  vim.g.terminal_color_9 = "#ff0000"
+  vim.g.terminal_color_10 = "#00ff00"
+  vim.g.terminal_color_11 = "#ffff00"
+  vim.g.terminal_color_12 = "#1c1cff"
+  vim.g.terminal_color_13 = "#8844bb"
+  vim.g.terminal_color_14 = "#5DE4C7"
+  vim.g.terminal_color_15 = "#ffffff"
+
   -- adding tokyonight transparency
-  vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "Normal", { fg = "#787c99", bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#787c99" })
+  vim.api.nvim_set_hl(0, "SnacksPickerDirectory", { fg = "#5555cc" })
+  vim.api.nvim_set_hl(0, "MiniIconsAzure", { fg = "#5555cc" })
   vim.api.nvim_set_hl(0, "MiniStatuslineFilename", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { underline = false, bg = "#1c1c2c" })
   vim.api.nvim_set_hl(0, "MiniCursorword", { bg = "#1c1c2c" })
@@ -635,6 +656,7 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#0db9d7" })
   vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#e0af68" })
   vim.api.nvim_set_hl(0, "PmenuSel", { fg = "NONE", bg = "#2c2c2c" })
+  vim.api.nvim_set_hl(0, "PmenuMatch", { bold = true, fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "Search", { fg = "#c0caf5", bg = "#3d59a1" })
 
   M.hl = {}
@@ -847,7 +869,7 @@ if not vim.g.vscode then
     capabilities = {
       workspace = {
         didChangeWatchedFiles = {
-          dynamicRegistration = true, -- TODO: still not working/implemented (required by `next dev --turbo`)
+          dynamicRegistration = true, -- requires `nix-env -iA nixpkgs.inotify-tools` (required by `next dev --turbo`)
         }
       }
     },
@@ -935,6 +957,7 @@ if not vim.g.vscode then
   vim.lsp.config['vuels']                 = { cmd = { 'vls' }, filetypes = { 'vue' } }
   vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' } }
 
+  -- FIX: pyright not working
   vim.lsp.enable({
     'angularls', 'astro',
     'bashls', 'biome',
