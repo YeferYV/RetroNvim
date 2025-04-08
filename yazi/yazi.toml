@@ -10,5 +10,5 @@ edit = [
 	# { run = '%EDITOR% %*',                                                                              block = true,  desc = "$EDITOR", for = "windows" },
 	{ run = '%EDITOR% %* 2>nul || nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" %*', block = true,  desc = "$EDITOR", for = "windows" },
 	{ run = 'code %*',                                                                                    orphan = true, desc = "code",    for = "windows" },
-	{ run = 'eval ${EDITOR:-nvim} "$@"',                                                                  block = true,  desc = "$EDITOR", for = "unix" },
+	{ run = '${EDITOR:-nvim} "$@"',                                                                       block = true,  desc = "$EDITOR", for = "unix" },
 ]

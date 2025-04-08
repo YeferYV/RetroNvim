@@ -3,10 +3,10 @@
 prepend_keymap = [
 
   # Navigation
-	{ on = [ "<A-j>" ], run = "seek 1",    desc = "preview down 3 lines" },
-	{ on = [ "<A-k>" ], run = "seek -1",   desc = "preview up 3 lines" },
-	{ on = [   "K"   ], run = "arrow -10", desc = "Move cursor up 10 lines" },
-	{ on = [   "J"   ], run = "arrow 10",  desc = "Move cursor down 10 lines" },
+	{ on = [   "J"   ], run = "seek 1",    desc = "preview down 3 lines" },
+	{ on = [   "K"   ], run = "seek -1",   desc = "preview up 3 lines" },
+	{ on = [ "<A-j>" ], run = "arrow 10",  desc = "Move cursor down 10 lines" },
+	{ on = [ "<A-k>" ], run = "arrow -10", desc = "Move cursor up 10 lines" },
 	{ on = [   "R"   ], run = "refresh",   desc = "Refresh" },
 
 	# Search by First Char
@@ -38,30 +38,30 @@ prepend_keymap = [
 	{ on = [ "f", "z" ], run = "find_do '^z' --smart", desc = "find ^z" },
 
 	# Filter
-	{ on = [ "F" ],      run = """ filter --smart                                          """, desc = "Filter" },
-	{ on = [ "g", "d" ], run = """ cd ~/Documents                                          """, desc = "Goto ~/Documents" },
-	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                          """, desc = "Goto ~/Downloads" },
-	{ on = [ "i" ],      run = """ shell ' bat --paging always --wrap never "$@" ' --block """, desc = "Bat (unix)" },
-	{ on = [ "I" ],      run = """ shell ' bat --paging always --wrap never %*   ' --block """, desc = "Bat (windows)" },
+	{ on = [ "F" ],      run = """ filter --smart                                          """,                  desc = "Filter" },
+	{ on = [ "g", "d" ], run = """ cd ~/Documents                                          """,                  desc = "Goto ~/Documents" },
+	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                          """,                  desc = "Goto ~/Downloads" },
+	{ on = [ "i" ],      run = """ shell ' bat --paging always --wrap never "$@" ' --block """, for = "unix",    desc = "Bat open selected" },
+	{ on = [ "i" ],      run = """ shell ' bat --paging always --wrap never %*   ' --block """, for = "windows", desc = "Bat open selected" },
 
   # Shell
-	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                                             ' --block """, desc = "VScode open selected (unix)" },
-	{ on = [ "s", "C" ], run = """ shell ' code %*                                                                               ' --block """, desc = "VScode open selected (windows)" },
-	{ on = [ "s", "D" ], run = """ search fd                                                                                               """, desc = "Search by content using fd" },
-	{ on = [ "s", "e" ], run = """ shell ' eval ${EDITOR:-nvim -u $HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua} "$@" ' --block """, desc = "$EDITOR open selected (unix)" },
-	{ on = [ "s", "i" ], run = """ shell ' $SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"                                         ' --block """, desc = "Swallow sxiv (linux)" },
-	{ on = [ "s", "l" ], run = """ shell ' lazygit                                                                               ' --block """, desc = "Lazygit" },
-	{ on = [ "s", "n" ], run = """ shell ' nvim "$@"                                                                             ' --block """, desc = "Neovim open selected (unix)" },
-	{ on = [ "s", "N" ], run = """ shell ' nvim %*                                                                               ' --block """, desc = "Neovim open selected (windows)" },
-	{ on = [ "s", "p" ], run = """ shell ' $SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"                                   ' --block """, desc = "Swallow zathura (linux)" },
-	{ on = [ "s", "R" ], run = """ shell ' ripdrag "$@" -x 2>/dev/null &                                                         '         """, desc = "Ripdrag (linux)" },
-	{ on = [ "s", "s" ], run = """ shell ' zsh                                                                                   ' --block """, desc = "Open zsh" },
-	{ on = [ "s", "v" ], run = """ shell ' $SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"                                           ' --block """, desc = "Swallow mpv (unix)" },
-	{ on = [ "s", "V" ], run = """ shell ' mpv %*                                                                                ' --block """, desc = "Mpv open selected (powershell)" },
-	{ on = [ "s", "w" ], run = """ shell ' set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh                         ' --block """, desc = "Open msys2's zsh'" },
-	{ on = [ "s", "x" ], run = """ shell ' $SWALLOWER xdg-open "$1" 2>/dev/null || xdg-open "$1"                                 ' --block """, desc = "Swallow xdg-open (linux)" },
-	{ on = [ "s", "z" ], run = """ shell ' printf "Your Name:"; read name; zip "$name.zip" $(basename -a "$@")                   ' --block """, desc = "Zip selected (unix)" },
-	{ on = [ "s", "Z" ], run = """ shell ' unzip "$0"                                                                            ' --block """, desc = "Unzip hovered file (unix)" },
+	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                                             ' --block """, for = "unix",    desc = "VScode open selected" },
+	{ on = [ "s", "c" ], run = """ shell ' code %*                                                                               ' --block """, for = "windows", desc = "VScode open selected" },
+	{ on = [ "s", "D" ], run = """ search fd                                                                                               """,                  desc = "Search by content using fd" },
+	{ on = [ "s", "e" ], run = """ shell ' eval ${EDITOR:-nvim -u $HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua} "$@" ' --block """, for = "unix",    desc = "$EDITOR open selected" },
+	{ on = [ "s", "i" ], run = """ shell ' $SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"                                         ' --block """, for = "unix",    desc = "Swallow sxiv (linux)" },
+	{ on = [ "s", "l" ], run = """ shell ' lazygit                                                                               ' --block """,                  desc = "Lazygit" },
+	{ on = [ "s", "n" ], run = """ shell ' nvim "$@"                                                                             ' --block """, for = "unix",    desc = "Neovim open selected" },
+	{ on = [ "s", "n" ], run = """ shell ' nvim %*                                                                               ' --block """, for = "windows", desc = "Neovim open selected" },
+	{ on = [ "s", "p" ], run = """ shell ' $SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"                                   ' --block """, for = "unix",    desc = "Swallow zathura (linux)" },
+	{ on = [ "s", "R" ], run = """ shell ' ripdrag "$@" -x 2>/dev/null &                                                         '         """, for = "unix",    desc = "Ripdrag (linux)" },
+	{ on = [ "s", "s" ], run = """ shell ' zsh                                                                                   ' --block """, for = "unix",    desc = "Open zsh" },
+	{ on = [ "s", "s" ], run = """ shell ' set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh                         ' --block """, for = "windows", desc = "Open msys2's zsh'" },
+	{ on = [ "s", "v" ], run = """ shell ' $SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"                                           ' --block """, for = "unix",    desc = "Swallow mpv" },
+	{ on = [ "s", "v" ], run = """ shell ' mpv %*                                                                                ' --block """, for = "windows", desc = "Mpv open selected" },
+	{ on = [ "s", "x" ], run = """ shell ' $SWALLOWER xdg-open "$1" 2>/dev/null || xdg-open "$1"                                 ' --block """, for = "unix",    desc = "Swallow xdg-open (linux)" },
+	{ on = [ "s", "z" ], run = """ shell ' printf "Your Name:"; read name; zip "$name.zip" $(basename -a "$@")                   ' --block """, for = "unix",    desc = "Zip selected" },
+	{ on = [ "s", "Z" ], run = """ shell ' unzip "$0"                                                                            ' --block """, for = "unix",    desc = "Unzip hovered file" },
 
   # Plugins
 	{ on = [ "l" ], run = "plugin smart-enter",             desc = "open directory or file" },
@@ -71,31 +71,14 @@ prepend_keymap = [
 ]
 
 [[manager.append_keymap]]
-on = [ "s", "E" ]
+on = [ "s", "e" ]
 run = '''
   shell
   --block
   -- %EDITOR% %* 2>nul || nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" %*
 '''
-desc = "$EDITOR open selected (windows)"
-
-[[manager.append_keymap]]
-on = [ "s", "S" ]
-run = '''
-  shell
-  --block
-  -- bash -c 'y() { yazi --cwd-file=$HOME/.yazi; cd \"$(cat $HOME/.yazi)\"; }; export -f y; stty echo; bash -o vi'
-'''
-desc = "open bash"
-
-[[manager.append_keymap]]
-on = [ "s", "W" ]
-run = '''
-  shell
-  --block
-  -- powershell -noexit -c "set-psreadlineoption -editmode vi; function y() { yazi $PWD --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); };"
-'''
-desc = "open powershell"
+for = "windows"
+desc = "$EDITOR open selected"
 
 [[manager.append_keymap]]
 on = [ "s", "f" ]
@@ -122,4 +105,23 @@ run = '''
   --block
   -- rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim -u NORC --cmd \"lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))\" {1} +{2})"
 '''
-desc = "Ripgrep fzf"
+desc = "Ripgrep fzf (󰘶 ↓ scrolls preview)"
+
+[[manager.append_keymap]]
+on = [ "s", "S" ]
+run = '''
+  shell
+  --block
+  -- bash -c 'y() { yazi --cwd-file=$HOME/.yazi; cd \"$(cat $HOME/.yazi)\"; }; export -f y; stty echo; bash -o vi'
+'''
+desc = "open bash"
+
+[[manager.append_keymap]]
+on = [ "s", "w" ]
+run = '''
+  shell
+  --block
+  -- powershell -noexit -c "set-psreadlineoption -editmode vi; function y() { yazi $PWD --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); };"
+'''
+for = "windows"
+desc = "open powershell"
