@@ -864,7 +864,7 @@ if not vim.g.vscode then
 
   -- https://neovim.io/doc/user/lsp.html#_quickstart
   vim.lsp.config('*', {
-    -- https://www.reddit.com/r/neovim/comments/1ao6c5a/how_to_make_the_lsp_aware_of_changes_made_to/
+    -- https://www.reddit.com/r/neovim/comments/1ao6c5a/how_to_make_the_lsp_aware_of_changes_made_to_background_buffers
     -- `:=vim.lsp.protocol.make_client_capabilities()`
     capabilities = {
       workspace = {
@@ -888,6 +888,13 @@ if not vim.g.vscode then
         }
       }
     }
+  }
+
+  -- https://www.reddit.com/r/neovim/comments/1jn3rjw/help_me_understand/
+  vim.lsp.config['pyright']               = {
+    cmd = { 'pyright-langserver', '--stdio' },
+    filetypes = { 'python' },
+    settings = { python = {} } -- provides default settings
   }
 
   -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
@@ -941,7 +948,6 @@ if not vim.g.vscode then
   vim.lsp.config['psalm']                 = { cmd = { 'psalm', '--language-server' }, filetypes = { 'php' } }
   vim.lsp.config['pylsp']                 = { cmd = { 'pylsp' }, filetypes = { 'python' } }
   vim.lsp.config['pylyzer']               = { cmd = { 'pylyzer', '--server' }, filetypes = { 'python' } }
-  vim.lsp.config['pyright']               = { cmd = { 'pyright-langserver', '--stdio' }, filetypes = { 'python' } }
   vim.lsp.config['ruff']                  = { cmd = { 'ruff' }, filetypes = { 'python' } }
   vim.lsp.config['ruff_lsp']              = { cmd = { 'ruff-lsp' }, filetypes = { 'python' } }
   vim.lsp.config['rust_analyzer']         = { cmd = { 'rust-analyzer' }, filetypes = { 'rust' } }
@@ -957,7 +963,6 @@ if not vim.g.vscode then
   vim.lsp.config['vuels']                 = { cmd = { 'vls' }, filetypes = { 'vue' } }
   vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' } }
 
-  -- FIX: pyright not working
   vim.lsp.enable({
     'angularls', 'astro',
     'bashls', 'biome',
