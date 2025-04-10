@@ -17,7 +17,8 @@
   ],
   "main": "./extension.js",
   "categories": [
-    "Keymaps"
+    "Keymaps",
+    "Themes"
   ],
   "keywords": [
     "vim",
@@ -38,7 +39,8 @@
     "QMK",
     "yazi",
     "zsh",
-    "msys2"
+    "msys2",
+    "base16"
   ],
   "homepage": "https://marketplace.visualstudio.com/items?itemName=YeferYV.RetroNvim",
   "repository": {
@@ -49,6 +51,13 @@
     "url": "https://github.com/YeferYV/RetroNvim/issues"
   },
   "contributes": {
+    "themes": [
+      {
+        "label": "bat_base16_tmTheme",
+        "uiTheme": "vs-dark",
+        "path": "./themes/bat_base16_tmTheme.json"
+      }
+    ],
     "configurationDefaults": {
       "accessibility.accessibleView.closeOnKeyPress": false,
       "editor.accessibilitySupport": "off",
@@ -336,12 +345,12 @@
       "zenMode.centerLayout": false,
       "zenMode.fullScreen": false,
       "zenMode.hideLineNumbers": false,
-      "workbench.colorTheme": "Tokyo Night Dark",
+      "workbench.colorTheme": "bat_base16_tmTheme",
       "workbench.iconTheme": "symbols",
       "workbench.colorCustomizations": {
-        "[Tokyo Night Dark][Poimandres Alternate]": {
+        "[bat_base16_tmTheme][Tokyo Night Dark][Poimandres Alternate]": {
           "editorGroup.border": "#25252566",
-          "editorSuggestWidget.selectedBackground": "#20222c",
+          "editorSuggestWidget.selectedBackground": "#2c2c2c",
           "panel.border": "#25252566",
           "terminal.border": "#25252566",
           "terminal.ansiBlack": "#3c3c3c",
