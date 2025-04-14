@@ -34,14 +34,36 @@ if not vim.g.vscode then
         indent = {},
         input = {},
         picker = {
+          layouts = {
+            -- https://www.reddit.com/r/neovim/comments/1jv6u2y/replicating_nvchads_telescope_look_for_snacks/
+            big_preview = {
+              layout = {
+                box = "horizontal",
+                width = 0.8,  -- vim.o.columns
+                min_width = 120,
+                height = 0.8, -- vim.o.lines
+                {
+                  box = "vertical",
+                  border = "rounded",
+                  title = "{title} {live} {flags}",
+                  { win = "input", height = 1,     border = "bottom" },
+                  { win = "list",  border = "none" },
+                },
+                { win = "preview", title = "{preview}", border = "rounded", width = 2 / 3 },
+              },
+            }
+          },
           sources = { explorer = { hidden = true, --[[ ignored = true ]] } },
           win = {
+            preview = { keys = { ["<space><space><space>"] = { "cycle_win", mode = { "n" } } } },
+            input = { keys = { ["<space><space>"] = { "cycle_win", mode = { "i", "n" } } } },
             list = {
               keys = {
-                ["K"] = { "preview_scroll_up", mode = { "i", "n" } },
-                ["J"] = { "preview_scroll_down", mode = { "i", "n" } },
-                ["M"] = "toggle_maximize",
-                -- ["<S-CR>"] = { "close", mode = { "n", "i" } }, -- <S-CR> already closes the picker
+                ["K"] = { "preview_scroll_up" },
+                ["J"] = { "preview_scroll_down" },
+                ["M"] = { "toggle_maximize" },
+                ["<space>"] = { "cycle_win" },
+                -- ["<S-CR>"] = { "close", mode = { "n", "i" } }, -- <S-CR> already closes the picker if a folder is hovered
               },
             },
           },
@@ -130,7 +152,7 @@ autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
 autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
 -- right click menu
-vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true }, on_show = function(picker) Snacks.picker.actions.toggle_maximize(picker) end })<cr> ]]
+vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
 vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -166,6 +188,28 @@ autocmd({ "TermClose", --[[ "BufWipeout" ]] }, {
     end)
   end,
 })
+
+--------------------------------------------------------------------------------------------------------------------
+
+-- https://www.reddit.com/r/neovim/comments/ww2oyu/toggle_terminal
+function ToggleTerminal()
+  local buf_exists = vim.fn.bufexists(te_buf) == 1
+  local win_exists = vim.fn.win_gotoid(te_win_id) == 1
+
+  if not buf_exists then
+    -- Terminal buffer doesn't exist, create it
+    vim.cmd("vsplit +term")
+    te_win_id = vim.fn.win_getid()
+    te_buf = vim.fn.bufnr()
+  elseif not win_exists then
+    -- Terminal buffer exists but not visible, show it
+    vim.cmd('vs | buffer' .. te_buf)
+    te_win_id = vim.fn.win_getid()
+  else
+    -- Terminal buffer exists and is visible, hide it
+    vim.cmd("hide")
+  end
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -303,28 +347,6 @@ autocmd("CmdlineLeave", {
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1) -- clear extmarks
   end,
 })
-
---------------------------------------------------------------------------------------------------------------------
-
--- https://www.reddit.com/r/neovim/comments/ww2oyu/toggle_terminal
-function ToggleTerminal()
-  local buf_exists = vim.fn.bufexists(te_buf) == 1
-  local win_exists = vim.fn.win_gotoid(te_win_id) == 1
-
-  if not buf_exists then
-    -- Terminal buffer doesn't exist, create it
-    vim.cmd("vsplit +term")
-    te_win_id = vim.fn.win_getid()
-    te_buf = vim.fn.bufnr()
-  elseif not win_exists then
-    -- Terminal buffer exists but not visible, show it
-    vim.cmd('vs | buffer' .. te_buf)
-    te_win_id = vim.fn.win_getid()
-  else
-    -- Terminal buffer exists and is visible, hide it
-    vim.cmd("hide")
-  end
-end
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -731,8 +753,9 @@ if not vim.g.vscode then
             local normalized_dir = vim.fs.normalize(dir)
 
             local parent_dir = normalized_dir:gsub("/snippets$", "")
-            -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets no contains a valid JSON object
-            -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets no contains a valid JSON object
+            -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work
+            -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work
+            -- ~/.vscode/extensions/acchu99.firebase-react-snippets-1.0.4/snippets                      File is absent or not readable  so delete the file to make mini.snippet work
             vim.opt.rtp:append(parent_dir)
           end
         end
@@ -748,6 +771,7 @@ if not vim.g.vscode then
           jump_prev = '<a-,>',
         }
       })
+      MiniSnippets.start_lsp_server() -- vscode snippets inside mini.completion (uninstall the vscode snippet extensions that you don't want to be sourced into mini.completion)
     end
   )
 
@@ -1042,8 +1066,8 @@ if not vim.g.vscode then
   map("n", "<leader>ld", function() require("snacks").picker.lsp_definitions() end, { desc = "Pick Definition" })
   map("n", "<leader>lD", function() require("snacks").picker.lsp_declarations() end, { desc = "Pick Declaration" })
   map("n", "<leader>lF", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "Format" })
-  map("n", "<leader>lh", function() vim.lsp.buf.signature_help() end, { desc = "Signature" })
-  map("n", "<leader>lH", function() vim.lsp.buf.hover() end, { desc = "Hover" })
+  map("n", "<leader>lh", function() vim.lsp.buf.hover() end, { desc = "Hover" })
+  map("n", "<leader>lH", function() vim.lsp.buf.signature_help() end, { desc = "Signature" })
   map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = "Pick Implementation" })
   map("n", "<leader>lM", function() vim.cmd("checkhealth vim.lsp") end, { desc = "LspInfo" })
   map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
@@ -1053,6 +1077,7 @@ if not vim.g.vscode then
   map("n", "<leader>lr", function() require("snacks").picker.lsp_references() end, { desc = "Pick References" })
   map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
   map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
+  map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end, { desc = "Pick workspace symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
   map(
     "n",
@@ -1173,7 +1198,7 @@ else
     "n",
     "<leader>o",
     function()
-      Snacks.explorer.open({ auto_close = true, layout = { preset = 'default', preview = true } })
+      Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true } })
     end,
     { desc = "Explorer with preview" }
   )

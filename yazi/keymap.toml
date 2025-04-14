@@ -5,8 +5,8 @@ prepend_keymap = [
   # Navigation
 	{ on = [   "J"   ], run = "seek 1",    desc = "preview down 3 lines" },
 	{ on = [   "K"   ], run = "seek -1",   desc = "preview up 3 lines" },
-	{ on = [   "j"   ], run = "arrow 1",   desc = "preview down 3 lines" },
-	{ on = [   "k"   ], run = "arrow -1",  desc = "preview up 3 lines" },
+	{ on = [   "j"   ], run = "arrow 1",   desc = "down until end of list" },
+	{ on = [   "k"   ], run = "arrow -1",  desc = "up until start of list " },
 	{ on = [ "<A-j>" ], run = "arrow 10",  desc = "Move cursor down 10 lines" },
 	{ on = [ "<A-k>" ], run = "arrow -10", desc = "Move cursor up 10 lines" },
 	{ on = [   "R"   ], run = "refresh",   desc = "Refresh" },
