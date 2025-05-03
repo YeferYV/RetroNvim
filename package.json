@@ -1419,7 +1419,7 @@
               "key": "b",
               "name": "open flowbite.com/docs/components",
               "command": "vscode.open",
-              "args": "https://flowbite.com/docs/components/forms
+              "args": "https://flowbite.com/docs/components/forms"
             },
             {
               "key": "c",
