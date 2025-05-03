@@ -964,12 +964,11 @@ if not vim.g.vscode then
   vim.lsp.config['graphql']               = { cmd = { 'graphql-lsp', 'server', '-m', 'stream' }, filetypes = { 'graphql', 'typescriptreact', 'javascriptreact' } }
   vim.lsp.config['html']                  = { cmd = { 'vscode-html-language-server', '--stdio' }, filetypes = { 'html', 'templ' } }
   vim.lsp.config['htmx']                  = { cmd = { 'htmx-lsp' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
+  vim.lsp.config['intelephense']          = { cmd = { 'intelephense', '--stdio' }, filetypes = { 'php' } }
   vim.lsp.config['jsonls']                = { cmd = { 'vscode-json-language-server', '--stdio' }, filetypes = { 'json', 'jsonc' } }
   vim.lsp.config['marksman']              = { cmd = { 'marksman' }, filetypes = { 'markdown', 'markdown.mdx' } }
   vim.lsp.config['neocmake']              = { cmd = { 'neocmakelsp', '--stdio' }, filetypes = { 'cmake' } }
-  vim.lsp.config['phan']                  = { cmd = { 'phan', '-m', 'json', '--language-server-on-stdin' }, filetypes = { 'php' } }
   vim.lsp.config['prismals']              = { cmd = { 'prisma-language-server', '--stdio' }, filetypes = { 'prisma' } }
-  vim.lsp.config['psalm']                 = { cmd = { 'psalm', '--language-server' }, filetypes = { 'php' } }
   vim.lsp.config['pylsp']                 = { cmd = { 'pylsp' }, filetypes = { 'python' } }
   vim.lsp.config['pylyzer']               = { cmd = { 'pylyzer', '--server' }, filetypes = { 'python' } }
   vim.lsp.config['ruff']                  = { cmd = { 'ruff' }, filetypes = { 'python' } }
@@ -995,11 +994,12 @@ if not vim.g.vscode then
     'efm', 'emmet_language_server', 'emmet_ls', 'eslint',
     'gh_actions_ls', 'gitlab_ci_ls', 'gopls', 'graphql',
     'html', 'htmx',
+    'intelephense',
     'jsonls',
     'luals',
     'marksman',
     'neocmake',
-    'phan', 'prismals', 'psalm', 'pylsp', 'pylyzer', 'pyright',
+    'prismals', 'pylsp', 'pylyzer', 'pyright',
     'ruff', 'ruff_lsp', 'rust_analyzer',
     'sqlls', 'sqls', 'svelte',
     'tailwindcss', 'terraformls', 'tflint', 'ts_ls',
@@ -1012,50 +1012,50 @@ if not vim.g.vscode then
   map("n", "<leader>LA", ":!pnpm install -g @astrojs/language-server <cr>", { desc = "astro" })
   map("n", "<leader>Lb", ":!pnpm install -g bash-language-server <cr>", { desc = "bashls" })
   map("n", "<leader>LB", ":!pnpm install -g @biomejs/biome <cr>", { desc = "biome" })
-  map("n", "<leader>Lc", ":!pixi global install cmake-language-server <cr>", { desc = "cmake" })
-  map("n", "<leader>LC", ":!dotnet tool install --global csharp-ls <cr>", { desc = "csharp_ls (dotnet)" })
+  map("n", "<leader>Lcl", ":!pixi global install clangd <cr>", { desc = "clangd" })
+  map("n", "<leader>Lcm", ":!pixi global install cmake-language-server <cr>", { desc = "cmake" })
+  map("n", "<leader>Lcs", ":!dotnet tool install --global csharp-ls <cr>", { desc = "csharp_ls (dotnet)" })
   map("n", "<leader>Ld", ":!pnpm install -g @microsoft/compose-language-service <cr>", { desc = "docker_compose" })
-  map("n", "<leader>Ld", ":!pnpm install -g dockerfile-language-server-nodejs <cr>", { desc = "dockerls" })
-  map("n", "<leader>Le", ":!pnpm install -g @olrtg/emmet-language-server <cr>", { desc = "emmet_language_server" })
-  map("n", "<leader>LE", ":!pnpm install -g npm install -g emmet-ls <cr>", { desc = "emmet_ls" })
-  map("n", "<leader>Lf", ":!pixi global install efm-langserver <cr>", { desc = "efm" })
-  map("n", "<leader>Lg", ":!pixi global install gopls <cr>", { desc = "gopls" })
-  map("n", "<leader>LG", ":!pnpm install -g graphql-language-service-cli <cr>", { desc = "graphql" })
-  map("n", "<leader>Lk", ":!pixi global install black <cr>", { desc = "black" })
-  map("n", "<leader>Li", ":!pnpm install -g gh-actions-language-server <cr>", { desc = "gh_actions_ls" })
-  map("n", "<leader>LI", ":!pixi global install gitlab-ci-ls <cr>", { desc = "gitlab_ci_ls" })
+  map("n", "<leader>LD", ":!pnpm install -g dockerfile-language-server-nodejs <cr>", { desc = "dockerls" })
+  map("n", "<leader>Lef", ":!pixi global install efm-langserver <cr>", { desc = "efm" })
+  map("n", "<leader>Lem", ":!pnpm install -g @olrtg/emmet-language-server <cr>", { desc = "emmet_language_server" })
+  map("n", "<leader>LeM", ":!pnpm install -g npm install -g emmet-ls <cr>", { desc = "emmet_ls" })
+  map("n", "<leader>Lgh", ":!pnpm install -g gh-actions-language-server <cr>", { desc = "gh_actions_ls" })
+  map("n", "<leader>Lgi", ":!pixi global install gitlab-ci-ls <cr>", { desc = "gitlab_ci_ls" })
+  map("n", "<leader>Lgo", ":!pixi global install gopls <cr>", { desc = "gopls" })
+  map("n", "<leader>Lgr", ":!pnpm install -g graphql-language-service-cli <cr>", { desc = "graphql" })
   map("n", "<leader>Lh", ":!pixi global install htmx-lsp <cr>", { desc = "htmx" })
+  map("n", "<leader>Li", ":!pnpm install -g intelephense <cr>", { desc = "intelephense" })
   map("n", "<leader>Lj", ":!pnpm install -g vscode-langservers-extracted <cr>", { desc = "cssls/eslint/html/jsonls" })
-  map("n", "<leader>Ll", "", { desc = "+luals" })
-  map("n", "<leader>Lll", ":!nix-env -iA nixpkgs.lua-language-server <cr>", { desc = "luals linux (nixpkgs)" })
-  map("n", "<leader>Llm", ":!brew install lua-language-server <cr>", { desc = "luals mac (brew)" })
-  map("n", "<leader>Llw", ":!scoop install lua-language-server <cr>", { desc = "luals windows (scoop)" })
+  map("n", "<leader>Lk", ":!pixi global install black <cr>", { desc = "black" })
+  map("n", "<leader>LL", "", { desc = "+luals" })
+  map("n", "<leader>LLl", ":!nix-env -iA nixpkgs.lua-language-server <cr>", { desc = "luals linux (nixpkgs)" })
+  map("n", "<leader>LLm", ":!brew install lua-language-server <cr>", { desc = "luals mac (brew)" })
+  map("n", "<leader>LLw", ":!scoop install lua-language-server <cr>", { desc = "luals windows (scoop)" })
   map("n", "<leader>Lm", ":!pixi global install marksman <cr>", { desc = "marksman" })
   map("n", "<leader>Ln", ":!pixi global install neocmakelsp <cr>", { desc = "neocmake" })
-  map("n", "<leader>Lph", ":!composer require phan/phan <cr>", { desc = "phan (composer)" })
   map("n", "<leader>Lpr", ":!pnpm install -g @prisma/language-server <cr>", { desc = "prismals" })
   map("n", "<leader>LpR", ":!pnpm install -g prettier <cr>", { desc = "prettier" })
-  map("n", "<leader>Lps", ":!composer global require vimeo/psalm <cr>", { desc = "psalm (composer)" })
-  map("n", "<leader>Lpy", ":!pixi global install python-lsp-server <cr>", { desc = "pylsp" })
+  map("n", "<leader>Lpy", ":!pixi global install pyright <cr>", { desc = "pyright" })
+  map("n", "<leader>LpY", ":!pixi global install python-lsp-server <cr>", { desc = "pylsp" })
   map("n", "<leader>Lpz", ":!pixi global install pylyzer <cr>", { desc = "pylyzer" })
-  map("n", "<leader>LpY", ":!pixi global install pyright <cr>", { desc = "pyright" })
   map("n", "<leader>Lr", ":!pixi global install ruff <cr>", { desc = "ruff" })
   map("n", "<leader>LR", ":!pixi global install ruff-lsp <cr>", { desc = "ruff-lsp" })
-  map("n", "<leader>Lu", "", { desc = "+rust_analyzer" })
-  map("n", "<leader>Lul", ":!nix-env -iA nixpkgs.rust_analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
-  map("n", "<leader>Lum", ":!brew install rust_analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
-  map("n", "<leader>Luw", ":!scoop install rust_analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
-  map("n", "<leader>Ls", ":!pnpm install -g sql-language-server <cr>", { desc = "sqlls" })
-  map("n", "<leader>LS", ":!pixi global install sqls <cr>", { desc = "sqls" })
-  map("n", "<leader>LV", ":!pnpm install -g svelte-language-server <cr>", { desc = "svelte" })
+  map("n", "<leader>Lsq", ":!pnpm install -g sql-language-server <cr>", { desc = "sqlls" })
+  map("n", "<leader>LsQ", ":!pixi global install sqls <cr>", { desc = "sqls" })
+  map("n", "<leader>Lsv", ":!pnpm install -g svelte-language-server <cr>", { desc = "svelte" })
   map("n", "<leader>Lta", ":!pnpm install -g @tailwindcss/language-server <cr>", { desc = "tailwindcss" })
   map("n", "<leader>Lte", ":!pixi global install terraform-ls <cr>", { desc = "terraformls" })
   map("n", "<leader>Ltf", ":!pixi global install tflint <cr>", { desc = "tflint" })
   map("n", "<leader>Lts", ":!pnpm install -g typescript typescript-language-server <cr>", { desc = "ts_ls" })
-  map("n", "<leader>Lv", ":!pnpm install -g @vue/language-server <cr>", { desc = "volar" })
-  map("n", "<leader>LV", ":!pnpm install -g @vtsls/language-server <cr>", { desc = "vtsls" })
-  map("n", "<leader>LU", ":!npm install -g vls <cr>", { desc = "vuels" })
-  map("n", "<leader>Lw", ":!pnpm install -g yaml-language-server <cr>", { desc = "yamlls" })
+  map("n", "<leader>LU", "", { desc = "+rust_analyzer" })
+  map("n", "<leader>LUl", ":!nix-env -iA nixpkgs.rust_analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
+  map("n", "<leader>LUm", ":!brew install rust_analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
+  map("n", "<leader>LUw", ":!scoop install rust_analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
+  map("n", "<leader>Lvu", ":!npm install -g vls <cr>", { desc = "vuels" })
+  map("n", "<leader>Lvt", ":!pnpm install -g @vtsls/language-server <cr>", { desc = "vtsls" })
+  map("n", "<leader>Lvo", ":!pnpm install -g @vue/language-server <cr>", { desc = "volar" })
+  map("n", "<leader>Ly", ":!pnpm install -g yaml-language-server <cr>", { desc = "yamlls" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
@@ -1077,7 +1077,8 @@ if not vim.g.vscode then
   map("n", "<leader>lr", function() require("snacks").picker.lsp_references() end, { desc = "Pick References" })
   map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
   map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
-  map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end, { desc = "Pick workspace symbols" })
+  map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end,
+    { desc = "Pick workspace symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
   map(
     "n",
