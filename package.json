@@ -927,6 +927,18 @@
               ]
             },
             {
+              "key": "F",
+              "name": "Install FigmaToCode and AutoHTML",
+              "commands": [
+                "vscode.open",
+                "vscode.open"
+              ],
+              "args": [
+                "https://www.figma.com/community/plugin/842128343887142055/figma-to-code-html-tailwind-flutter-swiftui",
+                "https://www.figma.com/community/plugin/1077172952654000760/autohtml-components-to-code"
+              ]
+            },
+            {
               "key": "i",
               "name": "Increase keyboard repeat rate on MacOS ",
               "commands": [
@@ -1008,19 +1020,19 @@
               "args": [
                 null,
                 {
-                  "text": "code --install-extension alefragnani.Bookmarks        --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark      --install-extension lamartire.git-indicators         --install-extension  DanielPriestley.poimandres-alternate \n"
+                  "text": "code --install-extension alefragnani.Bookmarks        --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark      --install-extension lamartire.git-indicators         --install-extension DanielPriestley.poimandres-alternate           \n"
                 },
                 {
-                  "text": "code --install-extension WallabyJs.console-ninja      --install-extension bradlc.vscode-tailwindcss          --install-extension emranweb.daisyui-snippet     --install-extension imgildev.vscode-nextjs-generator \n"
+                  "text": "code --install-extension WallabyJs.console-ninja      --install-extension bradlc.vscode-tailwindcss          --install-extension emranweb.daisyui-snippet     --install-extension imgildev.vscode-nextjs-generator --install-extension supabase-snippets.supabase-javascript-snippets \n"
                 },
                 {
-                  "text": "code --install-extension esbenp.prettier-vscode       --install-extension prisma.prisma                      --install-extension rangav.vscode-thunder-client --install-extension usernamehw.errorlens             \n"
+                  "text": "code --install-extension esbenp.prettier-vscode       --install-extension prisma.prisma                      --install-extension rangav.vscode-thunder-client --install-extension usernamehw.errorlens             --install-extension acchu99.firebase-react-snippets                \n"
                 },
                 {
-                  "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          \n"
+                  "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          --install-extension a-smiggle.chills                               \n"
                 },
                 {
-                  "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            --install-extension formulahendry.auto-rename-tag         \n"
+                  "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            --install-extension formulahendry.auto-rename-tag                  \n"
                 }
               ]
             },
@@ -1403,6 +1415,18 @@
           "key": "s",
           "name": "+Search",
           "bindings": [
+            {
+              "key": "b",
+              "name": "open flowbite.com/docs/components",
+              "command": "vscode.open",
+              "args": "https://flowbite.com/docs/components/forms
+            },
+            {
+              "key": "c",
+              "name": "open chatgpt.com",
+              "command": "vscode.open",
+              "args": "https://chatgpt.com"
+            },
             {
               "key": "f",
               "name": "Find and replace",
