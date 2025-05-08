@@ -8,6 +8,25 @@
 - **nvim:** indent_at_cursor = false (inside vscode) ([2b906d6](https://github.com/YeferYV/RetroNvim/commit/2b906d6cc3fb1c38d0032eee01cd598cdf85c9e3))
 - **zsh:** ZDOTDIR is overwrited by `code --locate-shell-integration-path` ([20ff9c0](https://github.com/YeferYV/RetroNvim/commit/20ff9c04651f80e9da829bd9416ae2966f122eea))
 
+## [0.3.0](https://github.com/YeferYV/RetroNvim/compare/v0.2.4...v0.3.0) (2025-05-08)
+
+
+### Features
+
+* **nvim:** big_preview layout for snacks.explorer + mini.completion now support vscode snippets ([7d84929](https://github.com/YeferYV/RetroNvim/commit/7d84929641ea73a551b3c8ddaca7e458407d8cd9))
+* **nvim:** intelephense installer for php's lsp ([326e432](https://github.com/YeferYV/RetroNvim/commit/326e432b37b2e637857f8841a1e0bb1282b48732))
+* **nvim:** migrating to bat's base16 theme from tokyonight ([d3e7641](https://github.com/YeferYV/RetroNvim/commit/d3e7641c43043d22682b27379bb401b222ab1c82))
+* **nvim:** mini.completion now supports lsp snippets but still not MiniSnippets.mock_lsp_server ([b4d0319](https://github.com/YeferYV/RetroNvim/commit/b4d0319df537b1f66048b9fd404faf63210af99d))
+* **package.json:** bat's base16 theme ([3746495](https://github.com/YeferYV/RetroNvim/commit/374649535064bc6b72836d8126445e82716ab2a5))
+* **package.json:** migrating to vscodevim since neovim someday will crash as always (vim.lsp.completion.enable() stops being compatible with mini.completion) ([3b127f8](https://github.com/YeferYV/RetroNvim/commit/3b127f8038826dbbf5ffe40c3725996c00d60920))
+* **whichkey:** FigmaToCode and AutoHTML installer link + open flowbite.com and chatgpt.com ([aad684d](https://github.com/YeferYV/RetroNvim/commit/aad684dd8cf11919cd0295730ef2ccff72cb9208))
+* **yazi:** Platform-Specific Key Binding ([145a1e6](https://github.com/YeferYV/RetroNvim/commit/145a1e603b10f650cfe5143bde71fa9a38a3de23))
+
+
+### Bug Fixes
+
+* **nvim:** pyright requires a empty lsp setting ([fcb124d](https://github.com/YeferYV/RetroNvim/commit/fcb124d85815ab85a59bdfbf5fa02d8608a49cc1))
+
 ## [0.2.4](https://github.com/YeferYV/RetroNvim/compare/v0.2.3...v0.2.4) (2025-02-19)
 
 
