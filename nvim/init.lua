@@ -900,6 +900,16 @@ if not vim.g.vscode then
     root_markers = { '.git' },
   })
 
+  vim.lsp.config['astro']                 = {
+    cmd = { 'astro-ls', '--stdio' },
+    init_options = {
+      typescript = {
+        tsdk = vim.env.PNPM_HOME .. '/global/5/node_modules/typescript/lib'
+      },
+    },
+    filetypes = { 'astro' }
+  }
+
   vim.lsp.config['luals']                 = {
     cmd = { 'lua-language-server' },
     filetypes = { 'lua' },
@@ -919,6 +929,19 @@ if not vim.g.vscode then
     cmd = { 'pyright-langserver', '--stdio' },
     filetypes = { 'python' },
     settings = { python = {} } -- provides default settings
+  }
+
+  vim.lsp.config['volar']                 = {
+    cmd = { 'vue-language-server', '--stdio' },
+    filetypes = { 'vue' },
+    init_options = {
+      typescript = {
+        tsdk = vim.env.PNPM_HOME .. '/global/5/node_modules/typescript/lib'
+      },
+      vue = {
+        hybridMode = false, -- allows typescript inside .vue files
+      },
+    },
   }
 
   -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
@@ -945,7 +968,6 @@ if not vim.g.vscode then
   }
 
   -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
-  vim.lsp.config['astro']                 = { cmd = { 'astro-ls', '--stdio' }, filetypes = { 'astro' } }
   vim.lsp.config['bashls']                = { cmd = { 'bash-language-server', 'start' }, filetypes = { 'bash', 'sh' } }
   vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
   vim.lsp.config['ccls']                  = { cmd = { 'ccls' }, filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' } }
@@ -979,7 +1001,6 @@ if not vim.g.vscode then
   vim.lsp.config['terraformls']           = { cmd = { 'terraform-ls', 'serve' }, filetypes = { 'terraform', 'terraform-vars' } }
   vim.lsp.config['tflint']                = { cmd = { 'tflint', '--stdio' }, filetypes = { 'terraform' } }
   vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
-  vim.lsp.config['volar']                 = { cmd = { 'vue-language-server', '--stdio' }, filetypes = { 'vue' } }
   vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' } }
 
   vim.lsp.enable({
@@ -1004,7 +1025,7 @@ if not vim.g.vscode then
   })
 
   map("n", "<leader>L", "", { desc = "+LSP installer" })
-  map("n", "<leader>La", ":!pnpm install -g @astrojs/language-server <cr>", { desc = "astro" })
+  map("n", "<leader>La", ":!pnpm install -g @astrojs/language-server typescript <cr>", { desc = "astro" })
   map("n", "<leader>Lb", ":!pnpm install -g bash-language-server <cr>", { desc = "bashls" })
   map("n", "<leader>LB", ":!pnpm install -g @biomejs/biome <cr>", { desc = "biome" })
   map("n", "<leader>Lcl", ":!pixi global install clangd <cr>", { desc = "clangd" })
@@ -1047,7 +1068,7 @@ if not vim.g.vscode then
   map("n", "<leader>LUl", ":!nix-env -iA nixpkgs.rust_analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
   map("n", "<leader>LUm", ":!brew install rust_analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
   map("n", "<leader>LUw", ":!scoop install rust_analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
-  map("n", "<leader>Lv", ":!pnpm install -g @vue/language-server <cr>", { desc = "volar" })
+  map("n", "<leader>Lv", ":!pnpm install -g @vue/language-server typescript <cr>", { desc = "volar" })
   map("n", "<leader>Ly", ":!pnpm install -g yaml-language-server <cr>", { desc = "yamlls" })
 
   ------------------------------------------------------------------------------------------------------------------------
