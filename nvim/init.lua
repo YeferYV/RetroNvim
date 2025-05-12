@@ -945,7 +945,6 @@ if not vim.g.vscode then
   }
 
   -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
-  vim.lsp.config['angularls']             = { cmd = { "ngserver", "--stdio" }, filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'htmlangular' } }
   vim.lsp.config['astro']                 = { cmd = { 'astro-ls', '--stdio' }, filetypes = { 'astro' } }
   vim.lsp.config['bashls']                = { cmd = { 'bash-language-server', 'start' }, filetypes = { 'bash', 'sh' } }
   vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
@@ -957,7 +956,6 @@ if not vim.g.vscode then
   vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver', '--stdio' }, filetypes = { 'dockerfile' } }
   vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
   vim.lsp.config['emmet_ls']              = { cmd = { 'emmet-ls', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
-  vim.lsp.config['eslint']                = { cmd = { 'vscode-eslint-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx', 'vue', 'svelte', 'astro' } }
   vim.lsp.config['gh_actions_ls']         = { cmd = { 'gh-actions-language-server', '--stdio' }, filetypes = { 'yaml' }, }
   vim.lsp.config['gitlab_ci_ls']          = { cmd = { 'gitlab-ci-ls' }, filetypes = { 'yaml.gitlab' } }
   vim.lsp.config['gopls']                 = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
@@ -982,16 +980,14 @@ if not vim.g.vscode then
   vim.lsp.config['tflint']                = { cmd = { 'tflint', '--stdio' }, filetypes = { 'terraform' } }
   vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
   vim.lsp.config['volar']                 = { cmd = { 'vue-language-server', '--stdio' }, filetypes = { 'vue' } }
-  vim.lsp.config['vtsls']                 = { cmd = { 'vtsls', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx', } }
-  vim.lsp.config['vuels']                 = { cmd = { 'vls' }, filetypes = { 'vue' } }
   vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' } }
 
   vim.lsp.enable({
-    'angularls', 'astro',
+    'astro',
     'bashls', 'biome',
     'clangd', 'cmake', 'csharp_ls',
     'docker_compose', 'dockerls',
-    'efm', 'emmet_language_server', 'emmet_ls', 'eslint',
+    'efm', 'emmet_language_server', 'emmet_ls',
     'gh_actions_ls', 'gitlab_ci_ls', 'gopls', 'graphql',
     'html', 'htmx',
     'intelephense',
@@ -1003,13 +999,12 @@ if not vim.g.vscode then
     'ruff', 'ruff_lsp', 'rust_analyzer',
     'sqlls', 'sqls', 'svelte',
     'tailwindcss', 'terraformls', 'tflint', 'ts_ls',
-    'volar', 'vtsls', 'vuels',
+    'volar',
     'yamlls'
   })
 
   map("n", "<leader>L", "", { desc = "+LSP installer" })
-  map("n", "<leader>La", ":!pnpm install -g @angular/language-server <cr>", { desc = "angularls" })
-  map("n", "<leader>LA", ":!pnpm install -g @astrojs/language-server <cr>", { desc = "astro" })
+  map("n", "<leader>La", ":!pnpm install -g @astrojs/language-server <cr>", { desc = "astro" })
   map("n", "<leader>Lb", ":!pnpm install -g bash-language-server <cr>", { desc = "bashls" })
   map("n", "<leader>LB", ":!pnpm install -g @biomejs/biome <cr>", { desc = "biome" })
   map("n", "<leader>Lcl", ":!pixi global install clangd <cr>", { desc = "clangd" })
@@ -1026,7 +1021,7 @@ if not vim.g.vscode then
   map("n", "<leader>Lgr", ":!pnpm install -g graphql-language-service-cli <cr>", { desc = "graphql" })
   map("n", "<leader>Lh", ":!pixi global install htmx-lsp <cr>", { desc = "htmx" })
   map("n", "<leader>Li", ":!pnpm install -g intelephense <cr>", { desc = "intelephense" })
-  map("n", "<leader>Lj", ":!pnpm install -g vscode-langservers-extracted <cr>", { desc = "cssls/eslint/html/jsonls" })
+  map("n", "<leader>Lj", ":!pnpm install -g vscode-langservers-extracted <cr>", { desc = "cssls/html/jsonls" })
   map("n", "<leader>Lk", ":!pixi global install black <cr>", { desc = "black" })
   map("n", "<leader>LL", "", { desc = "+luals" })
   map("n", "<leader>LLl", ":!nix-env -iA nixpkgs.lua-language-server <cr>", { desc = "luals linux (nixpkgs)" })
@@ -1052,9 +1047,7 @@ if not vim.g.vscode then
   map("n", "<leader>LUl", ":!nix-env -iA nixpkgs.rust_analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
   map("n", "<leader>LUm", ":!brew install rust_analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
   map("n", "<leader>LUw", ":!scoop install rust_analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
-  map("n", "<leader>Lvu", ":!npm install -g vls <cr>", { desc = "vuels" })
-  map("n", "<leader>Lvt", ":!pnpm install -g @vtsls/language-server <cr>", { desc = "vtsls" })
-  map("n", "<leader>Lvo", ":!pnpm install -g @vue/language-server <cr>", { desc = "volar" })
+  map("n", "<leader>Lv", ":!pnpm install -g @vue/language-server <cr>", { desc = "volar" })
   map("n", "<leader>Ly", ":!pnpm install -g yaml-language-server <cr>", { desc = "yamlls" })
 
   ------------------------------------------------------------------------------------------------------------------------
