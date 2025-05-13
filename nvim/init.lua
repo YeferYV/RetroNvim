@@ -983,7 +983,6 @@ if not vim.g.vscode then
   vim.lsp.config['gh_actions_ls']         = { cmd = { 'gh-actions-language-server', '--stdio' }, filetypes = { 'yaml' }, }
   vim.lsp.config['gitlab_ci_ls']          = { cmd = { 'gitlab-ci-ls' }, filetypes = { 'yaml.gitlab' } }
   vim.lsp.config['gopls']                 = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
-  vim.lsp.config['graphql']               = { cmd = { 'graphql-lsp', 'server', '-m', 'stream' }, filetypes = { 'graphql', 'typescriptreact', 'javascriptreact' } }
   vim.lsp.config['html']                  = { cmd = { 'vscode-html-language-server', '--stdio' }, filetypes = { 'html', 'templ' } }
   vim.lsp.config['htmx']                  = { cmd = { 'htmx-lsp' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
   vim.lsp.config['intelephense']          = { cmd = { 'intelephense', '--stdio' }, filetypes = { 'php' } }
@@ -992,9 +991,7 @@ if not vim.g.vscode then
   vim.lsp.config['neocmake']              = { cmd = { 'neocmakelsp', '--stdio' }, filetypes = { 'cmake' } }
   vim.lsp.config['prismals']              = { cmd = { 'prisma-language-server', '--stdio' }, filetypes = { 'prisma' } }
   vim.lsp.config['pylsp']                 = { cmd = { 'pylsp' }, filetypes = { 'python' } }
-  vim.lsp.config['pylyzer']               = { cmd = { 'pylyzer', '--server' }, filetypes = { 'python' } }
-  vim.lsp.config['ruff']                  = { cmd = { 'ruff' }, filetypes = { 'python' } }
-  vim.lsp.config['ruff_lsp']              = { cmd = { 'ruff-lsp' }, filetypes = { 'python' } }
+  vim.lsp.config['ruff']                  = { cmd = { 'ruff', 'server' }, filetypes = { 'python' } }
   vim.lsp.config['rust_analyzer']         = { cmd = { 'rust-analyzer' }, filetypes = { 'rust' } }
   vim.lsp.config['sqlls']                 = { cmd = { 'sql-language-server', 'up', '--method', 'stdio' }, filetypes = { 'sql', 'mysql' } }
   vim.lsp.config['sqls']                  = { cmd = { 'sqls' }, filetypes = { 'sql', 'mysql' } }
@@ -1010,15 +1007,15 @@ if not vim.g.vscode then
     'clangd', 'cmake', 'csharp_ls',
     'docker_compose', 'dockerls',
     'efm', 'emmet_language_server', 'emmet_ls',
-    'gh_actions_ls', 'gitlab_ci_ls', 'gopls', 'graphql',
+    'gh_actions_ls', 'gitlab_ci_ls', 'gopls',
     'html', 'htmx',
     'intelephense',
     'jsonls',
     'luals',
     'marksman',
     'neocmake',
-    'prismals', 'pylsp', 'pylyzer', 'pyright',
-    'ruff', 'ruff_lsp', 'rust_analyzer',
+    'prismals', 'pylsp', 'pyright',
+    'ruff', 'rust_analyzer',
     'sqlls', 'sqls', 'svelte',
     'tailwindcss', 'terraformls', 'ts_ls',
     'volar',
@@ -1031,16 +1028,15 @@ if not vim.g.vscode then
   map("n", "<leader>LB", ":!pnpm install -g @biomejs/biome <cr>", { desc = "biome" })
   map("n", "<leader>Lcl", ":!pixi global install clang-tools <cr>", { desc = "clangd" })
   map("n", "<leader>Lcm", ":!pixi global install cmake-language-server <cr>", { desc = "cmake" })
-  map("n", "<leader>Lcs", ":!dotnet tool install --global csharp-ls <cr>", { desc = "csharp_ls (dotnet)" })
+  map("n", "<leader>Lcs", ":!dotnet tool install --global csharp-ls <cr>", { desc = "csharp_ls (dotnet & symlink PATH)" })
   map("n", "<leader>Ld", ":!pnpm install -g @microsoft/compose-language-service <cr>", { desc = "docker_compose" })
   map("n", "<leader>LD", ":!pnpm install -g dockerfile-language-server-nodejs <cr>", { desc = "dockerls" })
   map("n", "<leader>Lef", ":!pixi global install efm-langserver <cr>", { desc = "efm" })
   map("n", "<leader>Lem", ":!pnpm install -g @olrtg/emmet-language-server <cr>", { desc = "emmet_language_server" })
-  map("n", "<leader>LeM", ":!pnpm install -g npm install -g emmet-ls <cr>", { desc = "emmet_ls" })
+  map("n", "<leader>LeM", ":!pnpm install -g emmet-ls <cr>", { desc = "emmet_ls" })
   map("n", "<leader>Lgh", ":!pnpm install -g gh-actions-language-server <cr>", { desc = "gh_actions_ls" })
   map("n", "<leader>Lgi", ":!pixi global install gitlab-ci-ls <cr>", { desc = "gitlab_ci_ls" })
   map("n", "<leader>Lgo", ":!pixi global install gopls <cr>", { desc = "gopls" })
-  map("n", "<leader>Lgr", ":!pnpm install -g graphql-language-service-cli <cr>", { desc = "graphql" })
   map("n", "<leader>Lh", ":!pixi global install htmx-lsp <cr>", { desc = "htmx" })
   map("n", "<leader>Li", ":!pnpm install -g intelephense <cr>", { desc = "intelephense" })
   map("n", "<leader>Lj", ":!pnpm install -g vscode-langservers-extracted <cr>", { desc = "cssls/html/jsonls" })
@@ -1054,20 +1050,18 @@ if not vim.g.vscode then
   map("n", "<leader>Lpr", ":!pnpm install -g @prisma/language-server <cr>", { desc = "prismals" })
   map("n", "<leader>LpR", ":!pnpm install -g prettier <cr>", { desc = "prettier" })
   map("n", "<leader>Lpy", ":!pixi global install pyright <cr>", { desc = "pyright" })
-  map("n", "<leader>LpY", ":!pixi global install python-lsp-server <cr>", { desc = "pylsp" })
-  map("n", "<leader>Lpz", ":!pixi global install pylyzer <cr>", { desc = "pylyzer" })
+  map("n", "<leader>LpY", ":!pixi global install python-lsp-server <cr>", { desc = "pylsp (symlink to PATH)" })
   map("n", "<leader>Lr", ":!pixi global install ruff <cr>", { desc = "ruff" })
-  map("n", "<leader>LR", ":!pixi global install ruff-lsp <cr>", { desc = "ruff-lsp" })
+  map("n", "<leader>LR", "", { desc = "+rust_analyzer" })
+  map("n", "<leader>LRl", ":!nix-env -iA nixpkgs.rust-analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
+  map("n", "<leader>LRm", ":!brew install rust-analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
+  map("n", "<leader>LRw", ":!scoop install rust-analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
   map("n", "<leader>Lsq", ":!pnpm install -g sql-language-server <cr>", { desc = "sqlls" })
   map("n", "<leader>LsQ", ":!pixi global install sqls <cr>", { desc = "sqls" })
   map("n", "<leader>Lsv", ":!pnpm install -g svelte-language-server <cr>", { desc = "svelte" })
   map("n", "<leader>Lta", ":!pnpm install -g @tailwindcss/language-server <cr>", { desc = "tailwindcss" })
   map("n", "<leader>Lte", ":!pixi global install terraform-ls <cr>", { desc = "terraformls" })
   map("n", "<leader>Lts", ":!pnpm install -g typescript typescript-language-server <cr>", { desc = "ts_ls" })
-  map("n", "<leader>LU", "", { desc = "+rust_analyzer" })
-  map("n", "<leader>LUl", ":!nix-env -iA nixpkgs.rust-analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
-  map("n", "<leader>LUm", ":!brew install rust-analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
-  map("n", "<leader>LUw", ":!scoop install rust-analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
   map("n", "<leader>Lv", ":!pnpm install -g @vue/language-server typescript <cr>", { desc = "volar" })
   map("n", "<leader>Ly", ":!pnpm install -g yaml-language-server <cr>", { desc = "yamlls" })
 
