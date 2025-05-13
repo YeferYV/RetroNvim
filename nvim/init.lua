@@ -154,6 +154,12 @@ autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 -- https://www.reddit.com/r/neovim/comments/1hd8qv5/docker_compose_file_not_getting_recognized
 vim.filetype.add({ filename = { ["docker-compose.yaml"] = "yaml.docker-compose", ["compose.yaml"] = "yaml.docker-compose", }, })
 
+-- https://github.com/lttb/gh-actions-language-server
+vim.filetype.add({ pattern = { ['.*/%.github[%w/]+workflows[%w/]+.*%.ya?ml'] = 'yaml.github', }, })
+
+-- https://github.com/alesbrelih/gitlab-ci-ls
+vim.filetype.add({ pattern = { ["*.gitlab-ci*.{yml,yaml}"] = 'yaml.gitlab', }, })
+
 -- right click menu
 vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
 vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
@@ -913,6 +919,14 @@ if not vim.g.vscode then
     filetypes = { 'astro' }
   }
 
+  -- https://www.youtube.com/watch?v=IMpBpGWkEQk
+  vim.lsp.config['gh_actions_ls']         = {
+    cmd = { 'gh-actions-language-server', '--stdio' },
+    filetypes = { 'yaml.github' },
+    -- root_dir = vim.fn.getcwd(),
+    init_options = { sessionToken = "" }
+  }
+
   vim.lsp.config['luals']                 = {
     cmd = { 'lua-language-server' },
     filetypes = { 'lua' },
@@ -980,7 +994,6 @@ if not vim.g.vscode then
   vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver', '--stdio' }, filetypes = { 'dockerfile' } }
   vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
   vim.lsp.config['emmet_ls']              = { cmd = { 'emmet-ls', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
-  vim.lsp.config['gh_actions_ls']         = { cmd = { 'gh-actions-language-server', '--stdio' }, filetypes = { 'yaml' }, }
   vim.lsp.config['gitlab_ci_ls']          = { cmd = { 'gitlab-ci-ls' }, filetypes = { 'yaml.gitlab' } }
   vim.lsp.config['gopls']                 = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
   vim.lsp.config['html']                  = { cmd = { 'vscode-html-language-server', '--stdio' }, filetypes = { 'html', 'templ' } }
