@@ -151,15 +151,6 @@ local f = function(args) vim.b[args.buf].minicompletion_disable = true end
 autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
 autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
--- https://www.reddit.com/r/neovim/comments/1hd8qv5/docker_compose_file_not_getting_recognized
-vim.filetype.add({ filename = { ["docker-compose.yaml"] = "yaml.docker-compose", ["compose.yaml"] = "yaml.docker-compose", }, })
-
--- https://github.com/lttb/gh-actions-language-server
-vim.filetype.add({ pattern = { ['.*/%.github[%w/]+workflows[%w/]+.*%.ya?ml'] = 'yaml.github', }, })
-
--- https://github.com/alesbrelih/gitlab-ci-ls
-vim.filetype.add({ pattern = { ["*.gitlab-ci*.{yml,yaml}"] = 'yaml.gitlab', }, })
-
 -- right click menu
 vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
 vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
@@ -919,12 +910,28 @@ if not vim.g.vscode then
     filetypes = { 'astro' }
   }
 
-  -- https://www.youtube.com/watch?v=IMpBpGWkEQk
-  vim.lsp.config['gh_actions_ls']         = {
-    cmd = { 'gh-actions-language-server', '--stdio' },
-    filetypes = { 'yaml.github' },
-    -- root_dir = vim.fn.getcwd(),
-    init_options = { sessionToken = "" }
+  -- https://github.com/LunarVim/Neovim-from-scratch/blob/master/lua/user/lsp/settings/jsonls.lua
+  -- to have intellisense for your-file.json add `"$schema": "https://json.schemastore.org/<your-file>.json"`
+  -- tutorial: https://www.youtube.com/watch?v=m30JiCuW42U
+  vim.lsp.config['jsonls']                = {
+    cmd = { 'vscode-json-language-server', '--stdio' },
+    filetypes = { 'json', 'jsonc' },
+    settings = {
+      json = {
+        schemas = {
+          {
+            description = "NPM configuration file",
+            fileMatch = {
+              "package.json",
+            },
+            url = "https://json.schemastore.org/package.json",
+          },
+        },
+        validate = {
+          enable = true, -- to show errors since we are rewritting json settings
+        }
+      },
+    }
   }
 
   vim.lsp.config['luals']                 = {
@@ -961,6 +968,29 @@ if not vim.g.vscode then
     },
   }
 
+  -- to have intellisense for your-file.yaml add `# yaml-language-server: $schema=https://json.schemastore.org/<your-file>.json`
+  -- example: https://gist.github.com/doitian/4c849956f5c97bd1115351142d446853
+  -- yaml-language-server downloads https://schemastore.org's schemas and detects files like .gitlab-ci.yaml, .github/worksflows/*, docker-compose.yaml ... by default
+  -- `:vim.lsp.buf.hover()` to see which schema is using
+  vim.lsp.config['yamlls']                = {
+    cmd = { 'yaml-language-server', '--stdio' },
+    filetypes = { 'yaml' },
+    settings = {
+      yaml = {
+        schemas = {
+          -- ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+          -- ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = "/.gitlab-ci*",
+          -- ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/docker-compose.yaml",
+          ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.1-standalone-strict/all.json"] =
+          "/*.k8s.yaml",
+        },
+        format = {
+          enable = true
+        }
+      }
+    }
+  }
+
   -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
   -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
   vim.lsp.config['efm']                   = {
@@ -990,16 +1020,14 @@ if not vim.g.vscode then
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
   vim.lsp.config['cmake']                 = { cmd = { 'cmake-language-server' }, filetypes = { 'cmake' } }
   vim.lsp.config['csharp_ls']             = { cmd = { 'csharp-ls' }, filetypes = { 'cs' } }
-  vim.lsp.config['docker_compose']        = { cmd = { 'docker-compose-langserver', '--stdio' }, filetypes = { 'yaml.docker-compose' } }
+  vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server', '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
   vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver', '--stdio' }, filetypes = { 'dockerfile' } }
   vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
   vim.lsp.config['emmet_ls']              = { cmd = { 'emmet-ls', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
-  vim.lsp.config['gitlab_ci_ls']          = { cmd = { 'gitlab-ci-ls' }, filetypes = { 'yaml.gitlab' } }
   vim.lsp.config['gopls']                 = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
   vim.lsp.config['html']                  = { cmd = { 'vscode-html-language-server', '--stdio' }, filetypes = { 'html', 'templ' } }
   vim.lsp.config['htmx']                  = { cmd = { 'htmx-lsp' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
   vim.lsp.config['intelephense']          = { cmd = { 'intelephense', '--stdio' }, filetypes = { 'php' } }
-  vim.lsp.config['jsonls']                = { cmd = { 'vscode-json-language-server', '--stdio' }, filetypes = { 'json', 'jsonc' } }
   vim.lsp.config['marksman']              = { cmd = { 'marksman' }, filetypes = { 'markdown', 'markdown.mdx' } }
   vim.lsp.config['neocmake']              = { cmd = { 'neocmakelsp', '--stdio' }, filetypes = { 'cmake' } }
   vim.lsp.config['prismals']              = { cmd = { 'prisma-language-server', '--stdio' }, filetypes = { 'prisma' } }
@@ -1012,15 +1040,14 @@ if not vim.g.vscode then
   vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server', '--stdio' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
   vim.lsp.config['terraformls']           = { cmd = { 'terraform-ls', 'serve' }, filetypes = { 'terraform', 'terraform-vars' } }
   vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
-  vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' } }
 
   vim.lsp.enable({
     'astro',
     'bashls', 'biome',
-    'clangd', 'cmake', 'csharp_ls',
-    'docker_compose', 'dockerls',
+    'clangd', 'cmake', 'csharp_ls', 'cssls',
+    'dockerls',
     'efm', 'emmet_language_server', 'emmet_ls',
-    'gh_actions_ls', 'gitlab_ci_ls', 'gopls',
+    'gopls',
     'html', 'htmx',
     'intelephense',
     'jsonls',
@@ -1042,14 +1069,11 @@ if not vim.g.vscode then
   map("n", "<leader>Lcl", ":!pixi global install clang-tools <cr>", { desc = "clangd" })
   map("n", "<leader>Lcm", ":!pixi global install cmake-language-server <cr>", { desc = "cmake" })
   map("n", "<leader>Lcs", ":!dotnet tool install --global csharp-ls <cr>", { desc = "csharp_ls (dotnet & symlink PATH)" })
-  map("n", "<leader>Ld", ":!pnpm install -g @microsoft/compose-language-service <cr>", { desc = "docker_compose" })
-  map("n", "<leader>LD", ":!pnpm install -g dockerfile-language-server-nodejs <cr>", { desc = "dockerls" })
+  map("n", "<leader>Ld", ":!pnpm install -g dockerfile-language-server-nodejs <cr>", { desc = "dockerls" })
   map("n", "<leader>Lef", ":!pixi global install efm-langserver <cr>", { desc = "efm" })
   map("n", "<leader>Lem", ":!pnpm install -g @olrtg/emmet-language-server <cr>", { desc = "emmet_language_server" })
   map("n", "<leader>LeM", ":!pnpm install -g emmet-ls <cr>", { desc = "emmet_ls" })
-  map("n", "<leader>Lgh", ":!pnpm install -g gh-actions-language-server <cr>", { desc = "gh_actions_ls" })
-  map("n", "<leader>Lgi", ":!pixi global install gitlab-ci-ls <cr>", { desc = "gitlab_ci_ls" })
-  map("n", "<leader>Lgo", ":!pixi global install gopls <cr>", { desc = "gopls" })
+  map("n", "<leader>Lg", ":!pixi global install gopls <cr>", { desc = "gopls" })
   map("n", "<leader>Lh", ":!pixi global install htmx-lsp <cr>", { desc = "htmx" })
   map("n", "<leader>Li", ":!pnpm install -g intelephense <cr>", { desc = "intelephense" })
   map("n", "<leader>Lj", ":!pnpm install -g vscode-langservers-extracted <cr>", { desc = "cssls/html/jsonls" })
