@@ -151,6 +151,9 @@ local f = function(args) vim.b[args.buf].minicompletion_disable = true end
 autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
 autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
+-- https://www.reddit.com/r/neovim/comments/1hd8qv5/docker_compose_file_not_getting_recognized
+vim.filetype.add({ filename = { ["docker-compose.yaml"] = "yaml.docker-compose", ["compose.yaml"] = "yaml.docker-compose", }, })
+
 -- right click menu
 vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
 vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
@@ -970,7 +973,6 @@ if not vim.g.vscode then
   -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
   vim.lsp.config['bashls']                = { cmd = { 'bash-language-server', 'start' }, filetypes = { 'bash', 'sh' } }
   vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
-  vim.lsp.config['ccls']                  = { cmd = { 'ccls' }, filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' } }
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
   vim.lsp.config['cmake']                 = { cmd = { 'cmake-language-server' }, filetypes = { 'cmake' } }
   vim.lsp.config['csharp_ls']             = { cmd = { 'csharp-ls' }, filetypes = { 'cs' } }
@@ -999,7 +1001,6 @@ if not vim.g.vscode then
   vim.lsp.config['svelte']                = { cmd = { 'svelteserver', '--stdio' }, filetypes = { 'svelte' } }
   vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server', '--stdio' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
   vim.lsp.config['terraformls']           = { cmd = { 'terraform-ls', 'serve' }, filetypes = { 'terraform', 'terraform-vars' } }
-  vim.lsp.config['tflint']                = { cmd = { 'tflint', '--stdio' }, filetypes = { 'terraform' } }
   vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
   vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' } }
 
@@ -1019,7 +1020,7 @@ if not vim.g.vscode then
     'prismals', 'pylsp', 'pylyzer', 'pyright',
     'ruff', 'ruff_lsp', 'rust_analyzer',
     'sqlls', 'sqls', 'svelte',
-    'tailwindcss', 'terraformls', 'tflint', 'ts_ls',
+    'tailwindcss', 'terraformls', 'ts_ls',
     'volar',
     'yamlls'
   })
@@ -1028,7 +1029,7 @@ if not vim.g.vscode then
   map("n", "<leader>La", ":!pnpm install -g @astrojs/language-server typescript <cr>", { desc = "astro" })
   map("n", "<leader>Lb", ":!pnpm install -g bash-language-server <cr>", { desc = "bashls" })
   map("n", "<leader>LB", ":!pnpm install -g @biomejs/biome <cr>", { desc = "biome" })
-  map("n", "<leader>Lcl", ":!pixi global install clangd <cr>", { desc = "clangd" })
+  map("n", "<leader>Lcl", ":!pixi global install clang-tools <cr>", { desc = "clangd" })
   map("n", "<leader>Lcm", ":!pixi global install cmake-language-server <cr>", { desc = "cmake" })
   map("n", "<leader>Lcs", ":!dotnet tool install --global csharp-ls <cr>", { desc = "csharp_ls (dotnet)" })
   map("n", "<leader>Ld", ":!pnpm install -g @microsoft/compose-language-service <cr>", { desc = "docker_compose" })
@@ -1062,12 +1063,11 @@ if not vim.g.vscode then
   map("n", "<leader>Lsv", ":!pnpm install -g svelte-language-server <cr>", { desc = "svelte" })
   map("n", "<leader>Lta", ":!pnpm install -g @tailwindcss/language-server <cr>", { desc = "tailwindcss" })
   map("n", "<leader>Lte", ":!pixi global install terraform-ls <cr>", { desc = "terraformls" })
-  map("n", "<leader>Ltf", ":!pixi global install tflint <cr>", { desc = "tflint" })
   map("n", "<leader>Lts", ":!pnpm install -g typescript typescript-language-server <cr>", { desc = "ts_ls" })
   map("n", "<leader>LU", "", { desc = "+rust_analyzer" })
-  map("n", "<leader>LUl", ":!nix-env -iA nixpkgs.rust_analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
-  map("n", "<leader>LUm", ":!brew install rust_analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
-  map("n", "<leader>LUw", ":!scoop install rust_analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
+  map("n", "<leader>LUl", ":!nix-env -iA nixpkgs.rust-analyzer <cr>", { desc = "rust_analyzer linux (nixpkgs)" })
+  map("n", "<leader>LUm", ":!brew install rust-analyzer <cr>", { desc = "rust_analyzer mac (brew)" })
+  map("n", "<leader>LUw", ":!scoop install rust-analyzer <cr>", { desc = "rust_analyzer windows (scoop)" })
   map("n", "<leader>Lv", ":!pnpm install -g @vue/language-server typescript <cr>", { desc = "volar" })
   map("n", "<leader>Ly", ":!pnpm install -g yaml-language-server <cr>", { desc = "yamlls" })
 
