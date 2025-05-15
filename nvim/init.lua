@@ -337,7 +337,7 @@ end
 
 autocmd("CmdlineChanged", {
   callback = function()
-    if vim.fn.getcmdtype() == "/" or vim.fn.getcmdtype() == "?" then
+    if vim.fn.getcmdtype() == "/" or vim.fn.getcmdtype() == "?" then -- if stuck press `/` many times
       M.flash()
     end
   end,
@@ -737,42 +737,43 @@ if not vim.g.vscode then
   later(
     function()
       local function add_vscode_snippets_to_rtp()
-        local extensions_dir = vim.fs.joinpath(vim.env.HOME, '.vscode', 'extensions')
+        local extensions_dir = vim.fs.joinpath(vim.env.HOME, '.vscode', 'extensions') -- alternative `:h vim.fs.normalize()`
 
-        -- Get all snippet directories using glob
-        local snippet_dirs = vim.fn.globpath(
-          extensions_dir,
-          '*/snippets', -- Matches any extension/snippets directory
-          true,         -- recursive
-          true          -- return as list
+        -- using vim.uv it may be simpler, see https://github.com/luvit/luv/blob/master/docs.md
+        local snippet_dirs = vim.fs.find(
+          { "snippets" },
+          {
+            limit = math.huge, -- number of matches
+            type  = "directory",
+            path  = extensions_dir,
+          }
         )
 
-        -- Add to runtimepath (with nil checks)
+        -- Add snippets to runtimepath
         for _, dir in ipairs(snippet_dirs) do
-          if vim.fn.isdirectory(dir) == 1 then
-            -- Normalize the path to handle OS-specific separators
-            local normalized_dir = vim.fs.normalize(dir)
-
-            local parent_dir = normalized_dir:gsub("/snippets$", "")
+          if vim.fn.globpath(dir, '*code-snippets') ~= '' then
             -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work
             -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work
             -- ~/.vscode/extensions/acchu99.firebase-react-snippets-1.0.4/snippets                      File is absent or not readable  so delete the file to make mini.snippet work
-            vim.opt.rtp:append(parent_dir)
+            vim.opt.rtp:append(vim.fs.dirname(dir))
           end
         end
       end
 
       add_vscode_snippets_to_rtp()
-      local gen_loader = require('mini.snippets').gen_loader
+
       require('mini.snippets').setup({
-        snippets = { gen_loader.from_runtime("*") },
+        snippets = { require('mini.snippets').gen_loader.from_runtime("*") },
         mappings = {
           expand = '<a-.>',
           jump_next = '<a-;>',
           jump_prev = '<a-,>',
         }
       })
-      MiniSnippets.start_lsp_server() -- vscode snippets inside mini.completion (uninstall the vscode snippet extensions that you don't want to be sourced into mini.completion)
+
+      -- vscode snippets inside mini.completion (uninstall the vscode snippet extensions that you don't want to be sourced into mini.completion)
+      -- race condition with lsp completion when pressing `.` causing showing only mini.snippets entries, example in python: `import os; os.`
+      MiniSnippets.start_lsp_server()
     end
   )
 
