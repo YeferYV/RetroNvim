@@ -903,10 +903,10 @@ if not vim.g.vscode then
   })
 
   vim.lsp.config['astro']                 = {
-    cmd = { 'astro-ls', '--stdio' },
+    cmd = { 'astro-ls' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, -- pnpm packages on Windows 11 requires `.cmd`
     init_options = {
       typescript = {
-        tsdk = vim.env.HOME .. '/.pixi/envs/typescript/lib/node_modules/typescript/lib'
+        tsdk = vim.env.PNPM_HOME .. '/global/5/node_modules/typescript/lib'
       },
     },
     filetypes = { 'astro' }
@@ -916,7 +916,7 @@ if not vim.g.vscode then
   -- to have intellisense for your-file.json add `"$schema": "https://json.schemastore.org/<your-file>.json"`
   -- tutorial: https://www.youtube.com/watch?v=m30JiCuW42U
   vim.lsp.config['jsonls']                = {
-    cmd = { 'vscode-json-language-server', '--stdio' },
+    cmd = { 'vscode-json-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, -- pnpm packages on Windows 11 requires `.cmd`
     filetypes = { 'json', 'jsonc' },
     settings = {
       json = {
@@ -934,11 +934,6 @@ if not vim.g.vscode then
         }
       },
     }
-  }
-
-  vim.lsp.config['intelephense']          = {
-    cmd = { 'intelephense' .. (vim.env.APPNAME and '.cmd' or ''), '--stdio' }, -- pnpm packages on Windows 11 requires `.cmd`
-    filetypes = { 'php' }
   }
 
   vim.lsp.config['luals']                 = {
@@ -963,11 +958,11 @@ if not vim.g.vscode then
   }
 
   vim.lsp.config['volar']                 = {
-    cmd = { 'vue-language-server', '--stdio' },
+    cmd = { 'vue-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, -- pnpm packages on Windows 11 requires `.cmd`
     filetypes = { 'vue' },
     init_options = {
       typescript = {
-        tsdk = vim.env.HOME .. '/.pixi/envs/typescript/lib/node_modules/typescript/lib'
+        tsdk = vim.env.PNPM_HOME .. '/global/5/node_modules/typescript/lib'
       },
       vue = {
         hybridMode = false, -- allows typescript inside .vue files
@@ -980,7 +975,7 @@ if not vim.g.vscode then
   -- yaml-language-server downloads https://schemastore.org's schemas and detects files like .gitlab-ci.yaml, .github/worksflows/*, docker-compose.yaml ... by default
   -- `:lua vim.lsp.buf.hover()` to see which schema is using
   vim.lsp.config['yamlls']                = {
-    cmd = { 'yaml-language-server', '--stdio' },
+    cmd = { 'yaml-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, -- pnpm packages on Windows 11 requires `.cmd`
     filetypes = { 'yaml' },
     settings = {
       yaml = {
@@ -1022,32 +1017,33 @@ if not vim.g.vscode then
   }
 
   -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
-  vim.lsp.config['bashls']                = { cmd = { 'bash-language-server', 'start' }, filetypes = { 'bash', 'sh' } }
+  vim.lsp.config['bashls']                = { cmd = { 'bash-language-server' .. (vim.env.APPDATA and '.cmd' or ''), 'start' }, filetypes = { 'bash', 'sh' } }
   vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
   vim.lsp.config['cmake']                 = { cmd = { 'cmake-language-server' }, filetypes = { 'cmake' } }
   vim.lsp.config['csharp_ls']             = { cmd = { 'csharp-ls' }, filetypes = { 'cs' } }
-  vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server', '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
-  vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver', '--stdio' }, filetypes = { 'dockerfile' } }
-  vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
-  vim.lsp.config['emmet_ls']              = { cmd = { 'emmet-ls', '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
+  vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
+  vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'dockerfile' } }
+  vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
+  vim.lsp.config['emmet_ls']              = { cmd = { 'emmet-ls' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
   vim.lsp.config['gopls']                 = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
-  vim.lsp.config['html']                  = { cmd = { 'vscode-html-language-server', '--stdio' }, filetypes = { 'html', 'templ' } }
+  vim.lsp.config['html']                  = { cmd = { 'vscode-html-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'html', 'templ' } }
   vim.lsp.config['htmx']                  = { cmd = { 'htmx-lsp' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } } -- conflicts with svelteserver completion
+  vim.lsp.config['intelephense']          = { cmd = { 'intelephense' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'php' } }
   vim.lsp.config['jdtls']                 = { cmd = { 'jdtls', }, filetypes = { 'java' }, }
   vim.lsp.config['marksman']              = { cmd = { 'marksman' }, filetypes = { 'markdown', 'markdown.mdx' } }
   vim.lsp.config['neocmake']              = { cmd = { 'neocmakelsp', '--stdio' }, filetypes = { 'cmake' } }
-  vim.lsp.config['prismals']              = { cmd = { 'prisma-language-server', '--stdio' }, filetypes = { 'prisma' } }
+  vim.lsp.config['prismals']              = { cmd = { 'prisma-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'prisma' } }
   vim.lsp.config['pylsp']                 = { cmd = { 'pylsp' }, filetypes = { 'python' } }
   vim.lsp.config['ruff']                  = { cmd = { 'ruff', 'server' }, filetypes = { 'python' } }
   vim.lsp.config['rust_analyzer']         = { cmd = { 'rust-analyzer' }, filetypes = { 'rust' } }
-  vim.lsp.config['sqlls']                 = { cmd = { 'sql-language-server', 'up', '--method', 'stdio' }, filetypes = { 'sql', 'mysql' } }
+  vim.lsp.config['sqlls']                 = { cmd = { 'sql-language-server' .. (vim.env.APPDATA and '.cmd' or ''), 'up', '--method', 'stdio' }, filetypes = { 'sql', 'mysql' } }
   vim.lsp.config['sqls']                  = { cmd = { 'sqls' }, filetypes = { 'sql', 'mysql' } }
-  vim.lsp.config['svelte']                = { cmd = { 'svelteserver', '--stdio' }, filetypes = { 'svelte' } }
-  vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server', '--stdio' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
+  vim.lsp.config['svelte']                = { cmd = { 'svelteserver' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'svelte' } }
+  vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
   vim.lsp.config['taplo']                 = { cmd = { 'taplo', 'lsp', 'stdio' }, filetypes = { 'toml' } }
   vim.lsp.config['terraformls']           = { cmd = { 'terraform-ls', 'serve' }, filetypes = { 'terraform', 'terraform-vars' } }
-  vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server', '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
+  vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
 
   vim.lsp.enable({
     'astro',
@@ -1078,37 +1074,42 @@ if not vim.g.vscode then
 
   -- zsh.exe and bash.exe doesn't support `:!pixi global install lua-language-server` on Windows use powershell.exe or cmd.exe though `:lua os.execute('pixi global install lua-language-server')` works
   map("n", "<leader>L", "", { desc = "+LSP installer" }) -- relaunch nvim to autostart the new installed lsp
-  map("n", "<leader>La", function() sendSequence('pixi global install astro-ls typescript') end, { desc = "astro" })
-  map("n", "<leader>Lb", function() sendSequence('pixi global install bash-language-server') end, { desc = "bashls" })
+  map("n", "<leader>La", function() sendSequence('pnpm install -g @astrojs/language-server') end, { desc = "astro" })
+  map("n", "<leader>Lb", function() sendSequence('pnpm install -g bash-language-server') end, { desc = "bashls" })
   map("n", "<leader>LB", function() sendSequence('pixi global install biome') end, { desc = "biome (for eslint)" })
   map("n", "<leader>Lcl", function() sendSequence('pixi global install clang-tools') end, { desc = "clangd" })
   map("n", "<leader>Lcm", function() sendSequence('pixi global install cmake-language-server') end, { desc = "cmake" })
   map("n", "<leader>Lcs",
     function() sendSequence('dotnet tool install --global csharp-ls; # symlink csharp-ls to PATH') end,
     { desc = "csharp_ls (symlink PATH)" })
-  map("n", "<leader>Ld", function() sendSequence('pixi global install dockerfile-language-server-nodejs') end,
+  map("n", "<leader>Ld", function() sendSequence('pnpm install -g dockerfile-language-server-nodejs') end,
     { desc = "dockerls" })
   map("n", "<leader>Lef", function() sendSequence('pixi global install efm-langserver') end, { desc = "efm (formatter)" })
-  map("n", "<leader>Lem", function() sendSequence('pixi global install emmet-language-server') end,
-    { desc = "emmet_language_server" })
-  map("n", "<leader>LeM", function() sendSequence('pixi global install emmet-ls') end, { desc = "emmet_ls" })
+  map("n", "<leader>Lem", function() sendSequence('pnpm install -g @olrtg/emmet-language-server') end,
+    { desc = "emmet_language_server" }) -- suggests <autoclose-this-tag> but not </close-some-open-tag> like vscode-html-language-server
+  map("n", "<leader>LeM", function() sendSequence('pnpm install -g emmet-ls') end, { desc = "emmet_ls (autoclose tag)" })
   map("n", "<leader>Lg", function() sendSequence('pixi global install gopls') end, { desc = "gopls (golang)" })
   map("n", "<leader>Lh", function() sendSequence('pixi global install htmx-lsp') end, { desc = "htmx" })
   map("n", "<leader>Li", function() sendSequence('pnpm install -g intelephense') end, { desc = "intelephense (php)" })
   map("n", "<leader>Lj", function() sendSequence('pixi global install jdtls') end, { desc = "jdtls (java)" })
-  map("n", "<leader>LJ", function() sendSequence('pixi global install vscode-langservers-extracted') end,
+  map("n", "<leader>LJ", function() sendSequence('pnpm install -g vscode-langservers-extracted') end,
     { desc = "cssls/html/jsonls" })
   map("n", "<leader>Lk", function() sendSequence('pixi global install black') end, { desc = "black (efm required)" })
-  map("n", "<leader>Ll", function() sendSequence('pixi global install lua-language-server') end, { desc = "luals" })
+  map("n", "<leader>LL", "", { desc = "+luals" })
+  map("n", "<leader>LLl", function() sendSequence('nix-env -iA nixpkgs.lua-language-server') end,
+    { desc = "luals linux (nixpkgs)" })
+  map("n", "<leader>LLm", function() sendSequence('brew install lua-language-server') end, { desc = "luals mac (brew)" })
+  map("n", "<leader>LLw", function() sendSequence('scoop install lua-language-server') end,
+    { desc = "luals windows (scoop)" })
   map("n", "<leader>Lm", function() sendSequence('pixi global install marksman') end, { desc = "marksman (markdown)" })
   map("n", "<leader>Ln", function() sendSequence('pixi global install neocmakelsp') end, { desc = "neocmake" })
-  map("n", "<leader>Lpr", function() sendSequence('pixi global install prisma-language-server') end,
+  map("n", "<leader>Lpr", function() sendSequence('pnpm install -g @prisma/language-server') end,
     { desc = "prismals" })
   map("n", "<leader>LpR", function() sendSequence('pixi global install prettier') end,
     { desc = "prettier (efm required)" })
   map("n", "<leader>Lpy", function() sendSequence('pixi global install pyright') end, { desc = "pyright (python)" })
-  map("n", "<leader>LpY", function() sendSequence('pixi global install python-lsp-server; # symlink pylsp to PATH') end,
-    { desc = "pylsp (symlink to PATH)" }) -- TODO: replace with https://github.com/astral-sh/ty since doens't show completions on external libraries like pynput
+  map("n", "<leader>LpY", function() sendSequence('pixi global install python-lsp-server --expose pylsp') end,
+    { desc = "pylsp (formatter included)" }) -- TODO: replace with https://github.com/astral-sh/ty since doens't show completions on external libraries like pynput
   map("n", "<leader>Lr", function() sendSequence('pixi global install ruff') end, { desc = "ruff (python formatter)" })
   map("n", "<leader>LR", "", { desc = "+rust_analyzer" })
   map("n", "<leader>LRl", function() sendSequence('nix-env -iA nixpkgs.rust-analyzer') end,
@@ -1117,18 +1118,18 @@ if not vim.g.vscode then
     { desc = "rust_analyzer mac (brew)" })
   map("n", "<leader>LRw", function() sendSequence('scoop install rust-analyzer') end,
     { desc = "rust_analyzer windows (scoop)" })
-  map("n", "<leader>Lsq", function() sendSequence('pixi global install sql-language-server') end, { desc = "sqlls" })
-  map("n", "<leader>LsQ", function() sendSequence('pixi global install sqls') end, { desc = "sqls" })
-  map("n", "<leader>Lsv", function() sendSequence('pixi global install svelte-language-server') end, { desc = "svelte" })
-  map("n", "<leader>Lta", function() sendSequence('pixi global install tailwindcss-language-server') end,
+  map("n", "<leader>Lsq", function() sendSequence('pnpm install -g install sql-language-server') end, { desc = "sqlls" })
+  map("n", "<leader>LsQ", function() sendSequence('pixi global install sqls') end, { desc = "sqls (formatter included)" })
+  map("n", "<leader>Lsv", function() sendSequence('pnpm install -g svelte-language-server') end, { desc = "svelte" })
+  map("n", "<leader>Lta", function() sendSequence('pnpm install -g @tailwindcss/language-server') end,
     { desc = "tailwindcss" })
   map("n", "<leader>LtA", function() sendSequence('pixi global install taplo') end, { desc = "taplo (toml)" })
   map("n", "<leader>Lte", function() sendSequence('pixi global install terraform-ls') end, { desc = "terraformls" })
-  map("n", "<leader>Lty", function() sendSequence('pixi global install typescript typescript-language-server') end,
+  map("n", "<leader>Lty", function() sendSequence('pnpm install -g typescript typescript-language-server') end,
     { desc = "typescript/angular/react/js" }) -- ts_ls
-  map("n", "<leader>Lv", function() sendSequence('pixi global install vue-language-server typescript') end,
+  map("n", "<leader>Lv", function() sendSequence('pnpm install -g @vue/language-server typescript') end,
     { desc = "volar (vue)" })
-  map("n", "<leader>Ly", function() sendSequence('pixi global install yaml-language-server') end, { desc = "yamlls" })
+  map("n", "<leader>Ly", function() sendSequence('pnpm install -g yaml-language-server') end, { desc = "yamlls" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
