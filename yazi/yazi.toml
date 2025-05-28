@@ -1,4 +1,4 @@
-[manager]
+[mgr]
 ratio          = [ 0, 1, 2 ]
 scrolloff      = 10
 show_hidden    = true

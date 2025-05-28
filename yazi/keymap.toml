@@ -1,4 +1,4 @@
-[manager]
+[mgr]
 
 prepend_keymap = [
 
@@ -72,7 +72,7 @@ prepend_keymap = [
 	{ on = [ '"' ], run = "plugin bookmarks delete", desc = "bookmark delete" },
 ]
 
-[[manager.append_keymap]]
+[[mgr.append_keymap]]
 on = [ "s", "e" ]
 run = '''
   shell
@@ -82,7 +82,7 @@ run = '''
 for = "windows"
 desc = "$EDITOR open selected"
 
-[[manager.append_keymap]]
+[[mgr.append_keymap]]
 on = [ "s", "f" ]
 run = '''
   shell
@@ -91,7 +91,7 @@ run = '''
 '''
 desc = "Neovim fzf"
 
-[[manager.append_keymap]]
+[[mgr.append_keymap]]
 on = [ "s", "g" ]
 run = '''
   shell
@@ -100,7 +100,7 @@ run = '''
 '''
 desc = "Neovim ripgrep"
 
-[[manager.append_keymap]]
+[[mgr.append_keymap]]
 on = [ "s", "r" ]
 run = '''
   shell
@@ -109,7 +109,7 @@ run = '''
 '''
 desc = "Ripgrep fzf (󰘶 ↓ scrolls preview)"
 
-[[manager.append_keymap]]
+[[mgr.append_keymap]]
 on = [ "s", "S" ]
 run = '''
   shell
@@ -118,7 +118,7 @@ run = '''
 '''
 desc = "open bash"
 
-[[manager.append_keymap]]
+[[mgr.append_keymap]]
 on = [ "s", "w" ]
 run = '''
   shell

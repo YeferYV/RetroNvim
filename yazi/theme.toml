@@ -1,4 +1,4 @@
-[manager]
+[mgr]
 # cwd           = { fg = "#6c6c6c" }
 cwd           = { fg = "#7aa2f7" }
 border_symbol = " "
