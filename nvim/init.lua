@@ -931,6 +931,9 @@ if not vim.g.vscode then
         },
         validate = {
           enable = true, -- to show errors since we are rewritting json settings
+        },
+        format = {
+          enable = true
         }
       },
     }
@@ -950,6 +953,16 @@ if not vim.g.vscode then
     }
   }
 
+  -- https://github.com/zed-industries/zed/issues/30767
+  vim.lsp.config['prismals']              = {
+    cmd = { 'prisma-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' },
+    filetypes = { 'prisma' },
+    settings = {
+      prisma = {
+        diagnostics = true, -- fixes `settings.enableDiagnostics === false` in prisma version 6.8.2
+      },
+    },
+  }
   -- https://www.reddit.com/r/neovim/comments/1jn3rjw/help_me_understand/
   vim.lsp.config['pyright']               = {
     cmd = { 'pyright-langserver', '--stdio' },
@@ -1020,8 +1033,6 @@ if not vim.g.vscode then
   vim.lsp.config['bashls']                = { cmd = { 'bash-language-server' .. (vim.env.APPDATA and '.cmd' or ''), 'start' }, filetypes = { 'bash', 'sh' } }
   vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
-  vim.lsp.config['cmake']                 = { cmd = { 'cmake-language-server' }, filetypes = { 'cmake' } }
-  vim.lsp.config['csharp_ls']             = { cmd = { 'csharp-ls' }, filetypes = { 'cs' } }
   vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
   vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'dockerfile' } }
   vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
@@ -1033,7 +1044,7 @@ if not vim.g.vscode then
   vim.lsp.config['jdtls']                 = { cmd = { 'jdtls', }, filetypes = { 'java' }, }
   vim.lsp.config['marksman']              = { cmd = { 'marksman' }, filetypes = { 'markdown', 'markdown.mdx' } }
   vim.lsp.config['neocmake']              = { cmd = { 'neocmakelsp', '--stdio' }, filetypes = { 'cmake' } }
-  vim.lsp.config['prismals']              = { cmd = { 'prisma-language-server' .. (vim.env.APPDATA and '.cmd' or ''), '--stdio' }, filetypes = { 'prisma' } }
+  vim.lsp.config['omnisharp']             = { cmd = { "OmniSharp", "-lsp" }, filetypes = { 'cs' } }
   vim.lsp.config['pylsp']                 = { cmd = { 'pylsp' }, filetypes = { 'python' } }
   vim.lsp.config['ruff']                  = { cmd = { 'ruff', 'server' }, filetypes = { 'python' } }
   vim.lsp.config['rust_analyzer']         = { cmd = { 'rust-analyzer' }, filetypes = { 'rust' } }
@@ -1048,7 +1059,7 @@ if not vim.g.vscode then
   vim.lsp.enable({
     'astro',
     'bashls', 'biome',
-    'clangd', 'cmake', 'csharp_ls', 'cssls',
+    'clangd', 'cssls',
     'dockerls',
     'efm', 'emmet_language_server', 'emmet_ls',
     'gopls',
@@ -1058,6 +1069,7 @@ if not vim.g.vscode then
     'luals',
     'marksman',
     'neocmake',
+    'omnisharp',
     'prismals', 'pylsp', 'pyright',
     'ruff', 'rust_analyzer',
     'sqlls', 'sqls', 'svelte',
@@ -1073,63 +1085,59 @@ if not vim.g.vscode then
   end
 
   -- zsh.exe and bash.exe doesn't support `:!pixi global install lua-language-server` on Windows use powershell.exe or cmd.exe though `:lua os.execute('pixi global install lua-language-server')` works
-  map("n", "<leader>L", "", { desc = "+LSP installer" }) -- relaunch nvim to autostart the new installed lsp
-  map("n", "<leader>La", function() sendSequence('pnpm install -g @astrojs/language-server') end, { desc = "astro" })
-  map("n", "<leader>Lb", function() sendSequence('pnpm install -g bash-language-server') end, { desc = "bashls" })
-  map("n", "<leader>LB", function() sendSequence('pixi global install biome') end, { desc = "biome (for eslint)" })
-  map("n", "<leader>Lcl", function() sendSequence('pixi global install clang-tools') end, { desc = "clangd" })
-  map("n", "<leader>Lcm", function() sendSequence('pixi global install cmake-language-server') end, { desc = "cmake" })
-  map("n", "<leader>Lcs",
-    function() sendSequence('dotnet tool install --global csharp-ls; # symlink csharp-ls to PATH') end,
-    { desc = "csharp_ls (symlink PATH)" })
+  map("n", "<leader>L", "", { desc = "+LSP installer" })                                                                  -- relaunch nvim to autostart the new installed lsp
+  map("n", "<leader>La", function() sendSequence('pnpm install -g @astrojs/language-server typescript') end,
+    { desc = "astro" })                                                                                                   -- (no formatter use biome instead)
+  map("n", "<leader>Lb", function() sendSequence('pnpm install -g bash-language-server') end, { desc = "bashls" })        -- (no formatter press `=` to format selection)
+  map("n", "<leader>LB", function() sendSequence('pixi global install biome') end, { desc = "biome (formatter+eslint)" }) -- https://biomejs.dev/internals/language-support/
+  map("n", "<leader>Lc", function() sendSequence('pixi global install clang-tools --expose clangd') end,
+    { desc = "clangd" })                                                                                                  -- (+formatter)
   map("n", "<leader>Ld", function() sendSequence('pnpm install -g dockerfile-language-server-nodejs') end,
-    { desc = "dockerls" })
-  map("n", "<leader>Lef", function() sendSequence('pixi global install efm-langserver') end, { desc = "efm (formatter)" })
-  map("n", "<leader>Lem", function() sendSequence('pnpm install -g @olrtg/emmet-language-server') end,
-    { desc = "emmet_language_server" }) -- suggests <autoclose-this-tag> but not </close-some-open-tag> like vscode-html-language-server
-  map("n", "<leader>LeM", function() sendSequence('pnpm install -g emmet-ls') end, { desc = "emmet_ls (autoclose tag)" })
-  map("n", "<leader>Lg", function() sendSequence('pixi global install gopls') end, { desc = "gopls (golang)" })
-  map("n", "<leader>Lh", function() sendSequence('pixi global install htmx-lsp') end, { desc = "htmx" })
-  map("n", "<leader>Li", function() sendSequence('pnpm install -g intelephense') end, { desc = "intelephense (php)" })
-  map("n", "<leader>Lj", function() sendSequence('pixi global install jdtls') end, { desc = "jdtls (java)" })
+    { desc = "dockerls" })                                                                                                -- (+formatter)
+  map("n", "<leader>Le", function() sendSequence('pnpm install -g @olrtg/emmet-language-server') end,
+    { desc = "emmet_language_server" })                                                                                   -- suggests <autoclose-this-tag> but not </close-some-open-tag> like vscode-html-language-server
+  map("n", "<leader>LE", function() sendSequence('pnpm install -g emmet-ls') end, { desc = "emmet_ls (autoclose tag)" })
+  map("n", "<leader>Lg", function() sendSequence('pixi global install gopls') end, { desc = "gopls (golang)" })           -- (+formatter)
+  map("n", "<leader>Lh", function() sendSequence('pixi global install htmx-lsp') end, { desc = "htmx" })                  -- (no formatter use prettier)
+  map("n", "<leader>Li", function() sendSequence('pnpm install -g intelephense') end, { desc = "intelephense (php)" })    -- (+formatter)
+  map("n", "<leader>Lj", function() sendSequence('pixi global install jdtls') end, { desc = "jdtls (java)" })             -- (+formatter)
   map("n", "<leader>LJ", function() sendSequence('pnpm install -g vscode-langservers-extracted') end,
-    { desc = "cssls/html/jsonls" })
-  map("n", "<leader>Lk", function() sendSequence('pixi global install black') end, { desc = "black (efm required)" })
-  map("n", "<leader>LL", "", { desc = "+luals" })
-  map("n", "<leader>LLl", function() sendSequence('nix-env -iA nixpkgs.lua-language-server') end,
-    { desc = "luals linux (nixpkgs)" })
-  map("n", "<leader>LLm", function() sendSequence('brew install lua-language-server') end, { desc = "luals mac (brew)" })
-  map("n", "<leader>LLw", function() sendSequence('scoop install lua-language-server') end,
-    { desc = "luals windows (scoop)" })
-  map("n", "<leader>Lm", function() sendSequence('pixi global install marksman') end, { desc = "marksman (markdown)" })
-  map("n", "<leader>Ln", function() sendSequence('pixi global install neocmakelsp') end, { desc = "neocmake" })
-  map("n", "<leader>Lpr", function() sendSequence('pnpm install -g @prisma/language-server') end,
-    { desc = "prismals" })
-  map("n", "<leader>LpR", function() sendSequence('pixi global install prettier') end,
-    { desc = "prettier (efm required)" })
-  map("n", "<leader>Lpy", function() sendSequence('pixi global install pyright') end, { desc = "pyright (python)" })
+    { desc = "cssls/html/jsonls" })                                                                                       -- (+formatter)
+  map("n", "<leader>Lk",
+    function() sendSequence('pixi global install black efm-langserver --environment efm-langserver') end,
+    { desc = "black (python formatter)" })
+  map("n", "<leader>Ll", function() sendSequence('pixi global install lua-language-server') end,
+    { desc = "luals (for unix)" })                                                                                      -- (+formatter)
+  map("n", "<leader>LL", function() sendSequence('scoop install lua-language-server') end,
+    { desc = "luals (for windows)" })                                                                                   -- (+formatter)
+  map("n", "<leader>Lm", function() sendSequence('pixi global install marksman') end, { desc = "marksman (markdown)" }) -- (no formatter use prettier)
+  map("n", "<leader>Ln", function() sendSequence('pixi global install neocmakelsp') end,
+    { desc = "neocmake" })                                                                                              -- (+formatter +linter) https://github.com/regen100/cmake-language-server doesn't have formatter nor linter
+  map("n", "<leader>Lo", function() sendSequence('pixi global install omnisharp-roslyn') end,
+    { desc = "omnisharp (c#)" })                                                                                        -- (+formatter)
+  map("n", "<leader>Lpr",
+    function() sendSequence('pixi global install prettier efm-langserver --environment efm-langserver') end,
+    { desc = "prettier (formatter)" })
+  map("n", "<leader>LpR", function() sendSequence('pnpm install -g @prisma/language-server') end, { desc = "prismals" }) -- (+formatter)
+  map("n", "<leader>Lpy", function() sendSequence('pixi global install pyright') end, { desc = "pyright (python)" })     -- (-formatter) means no formatter
   map("n", "<leader>LpY", function() sendSequence('pixi global install python-lsp-server --expose pylsp') end,
-    { desc = "pylsp (formatter included)" }) -- TODO: replace with https://github.com/astral-sh/ty since doens't show completions on external libraries like pynput
+    { desc = "pylsp (+formatter)" })                                                                                     -- TODO: replace with https://github.com/astral-sh/ty since doens't show completions on external libraries like pynput
   map("n", "<leader>Lr", function() sendSequence('pixi global install ruff') end, { desc = "ruff (python formatter)" })
-  map("n", "<leader>LR", "", { desc = "+rust_analyzer" })
-  map("n", "<leader>LRl", function() sendSequence('nix-env -iA nixpkgs.rust-analyzer') end,
-    { desc = "rust_analyzer linux (nixpkgs)" })
-  map("n", "<leader>LRm", function() sendSequence('brew install rust-analyzer') end,
-    { desc = "rust_analyzer mac (brew)" })
-  map("n", "<leader>LRw", function() sendSequence('scoop install rust-analyzer') end,
-    { desc = "rust_analyzer windows (scoop)" })
-  map("n", "<leader>Lsq", function() sendSequence('pnpm install -g install sql-language-server') end, { desc = "sqlls" })
-  map("n", "<leader>LsQ", function() sendSequence('pixi global install sqls') end, { desc = "sqls (formatter included)" })
-  map("n", "<leader>Lsv", function() sendSequence('pnpm install -g svelte-language-server') end, { desc = "svelte" })
+  map("n", "<leader>LR", function() sendSequence('pixi global install rust --with rust-src') end,
+    { desc = "rust_analyzer" })                                                                                       -- (+formatter)
+  map("n", "<leader>Lsq", function() sendSequence('pnpm install -g sql-language-server vscode-jsonrpc') end,
+    { desc = "sqlls(-formatter +linter)" })                                                                           -- (no formatter use sqls)
+  map("n", "<leader>LsQ", function() sendSequence('pixi global install sqls') end, { desc = "sqls (+formatter -linter)" })
+  map("n", "<leader>Lsv", function() sendSequence('pnpm install -g svelte-language-server') end, { desc = "svelte" }) -- (no formatter use biome)
   map("n", "<leader>Lta", function() sendSequence('pnpm install -g @tailwindcss/language-server') end,
     { desc = "tailwindcss" })
-  map("n", "<leader>LtA", function() sendSequence('pixi global install taplo') end, { desc = "taplo (toml)" })
-  map("n", "<leader>Lte", function() sendSequence('pixi global install terraform-ls') end, { desc = "terraformls" })
+  map("n", "<leader>LtA", function() sendSequence('pixi global install taplo') end, { desc = "taplo (toml)" })       -- (+formatter)
+  map("n", "<leader>Lte", function() sendSequence('pixi global install terraform-ls') end, { desc = "terraformls" }) -- (no formatter press `=` to format selection)
   map("n", "<leader>Lty", function() sendSequence('pnpm install -g typescript typescript-language-server') end,
-    { desc = "typescript/angular/react/js" }) -- ts_ls
+    { desc = "typescript/angular/react/js" })                                                                        -- (+formatter)
   map("n", "<leader>Lv", function() sendSequence('pnpm install -g @vue/language-server typescript') end,
-    { desc = "volar (vue)" })
-  map("n", "<leader>Ly", function() sendSequence('pnpm install -g yaml-language-server') end, { desc = "yamlls" })
+    { desc = "volar (vue)" })                                                                                        -- (no formatter use biome)
+  map("n", "<leader>Ly", function() sendSequence('pnpm install -g yaml-language-server') end, { desc = "yamlls" })   -- (+formatter)
 
   ------------------------------------------------------------------------------------------------------------------------
 
@@ -1228,8 +1236,8 @@ if not vim.g.vscode then
   map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
   map("n", "<leader>ud", "<cmd>lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())<cr>",
     { desc = "toggle diagnostic" })
-  map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent" })
-  map("n", "<leader>uF", "<cmd>lua vim.o.foldmethod='expr'<cr>", { desc = "fold by lsp" })
+  map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent (press z)" })
+  map("n", "<leader>uF", "<cmd>lua vim.o.foldmethod='expr'<cr>", { desc = "fold by lsp (press z)" })
   map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "toggle cursorline" })
   map("n", "<leader>up", "<cmd>popup PopUp<cr>", { desc = "Toggle Mouse PopUp" })
   map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "StatusBar Hide" })
