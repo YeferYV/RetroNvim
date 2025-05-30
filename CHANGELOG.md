@@ -8,6 +8,19 @@
 - **nvim:** indent_at_cursor = false (inside vscode) ([2b906d6](https://github.com/YeferYV/RetroNvim/commit/2b906d6cc3fb1c38d0032eee01cd598cdf85c9e3))
 - **zsh:** ZDOTDIR is overwrited by `code --locate-shell-integration-path` ([20ff9c0](https://github.com/YeferYV/RetroNvim/commit/20ff9c04651f80e9da829bd9416ae2966f122eea))
 
+## [0.3.1](https://github.com/YeferYV/RetroNvim/compare/v0.3.0...v0.3.1) (2025-05-30)
+
+
+### Bug Fixes
+
+* **nvim:** clangd and rust-analyzer installer + detect docker-compose.yaml filetype ([d6c7db5](https://github.com/YeferYV/RetroNvim/commit/d6c7db52867a4a433832c1fc2ebceff1eb90390f))
+* **nvim:** node based language servers inside lib/node_modules installed using pixi doesn't work on windows with the error  `...\bin\node` command not found ([1ab1c1d](https://github.com/YeferYV/RetroNvim/commit/1ab1c1d4257547e7566733a57d405b2e0e1bda14))
+* **nvim:** pnpm packages on Windows 11 requires `.cmd` + zsh.exe doesn't support `:!pixi ...` + jdtls support ([13f0c33](https://github.com/YeferYV/RetroNvim/commit/13f0c335fea07a2cf7784afeaee446072858bec4))
+* **nvim:** using OmniSharp instead of csharp-ls ([5be433c](https://github.com/YeferYV/RetroNvim/commit/5be433c0858244695b7f4145d45fb1cc71d62ba7))
+* **nvim:** using schemas instead of lsp for yaml and json files ([907e7da](https://github.com/YeferYV/RetroNvim/commit/907e7dab421a87d136b6b29c14f512f28496e575))
+* **nvim:** volar and astro requires typescript ([dfff7bf](https://github.com/YeferYV/RetroNvim/commit/dfff7bf86bdb74250b1882ac8dd148b3a1780bed))
+* **nvim:** yaml.github filetype (for gh_action_ls to work) and yaml.gitlab filetype (for gitlab_ci_ls) ([9b65e4f](https://github.com/YeferYV/RetroNvim/commit/9b65e4fb77410f016514e07498f63840be46e1b9))
+
 ## [0.3.0](https://github.com/YeferYV/RetroNvim/compare/v0.2.4...v0.3.0) (2025-05-08)
 
 
