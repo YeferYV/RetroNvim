@@ -773,7 +773,7 @@
           ]
         },
         {
-          "key": "I",
+          "key": "i",
           "name": "+Install Dependencies",
           "bindings": [
             {
@@ -813,10 +813,7 @@
               "args": [
                 null,
                 {
-                  "text": "brew tap homebrew/cask-fonts && brew install bat eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship ripgrep sevenzip zsh-autosuggestions zsh-fast-syntax-highlighting; \n"
-                },
-                {
-                  "text": "sudo /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate \n"
+                  "text": "brew install bat eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship ripgrep sevenzip zsh-autosuggestions zsh-fast-syntax-highlighting; \n"
                 }
               ]
             },
@@ -862,7 +859,7 @@
             },
             {
               "key": "s",
-              "name": "install scoop, pixi and pnpm package managers (Windows 10/11 on powershell)",
+              "name": "install scoop, pixi and pnpm package managers (Windows 10/11)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
@@ -924,18 +921,6 @@
               "commands": [
                 "workbench.panel.output.focus",
                 "workbench.action.reloadWindow"
-              ]
-            },
-            {
-              "key": "F",
-              "name": "Install FigmaToCode and AutoHTML",
-              "commands": [
-                "vscode.open",
-                "vscode.open"
-              ],
-              "args": [
-                "https://www.figma.com/community/plugin/842128343887142055/figma-to-code-html-tailwind-flutter-swiftui",
-                "https://www.figma.com/community/plugin/1077172952654000760/autohtml-components-to-code"
               ]
             },
             {
@@ -1007,62 +992,6 @@
               ]
             },
             {
-              "key": "j",
-              "name": "Install javascript and python vscode-extensions",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "code --install-extension alefragnani.Bookmarks        --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark      --install-extension lamartire.git-indicators         --install-extension DanielPriestley.poimandres-alternate           \n"
-                },
-                {
-                  "text": "code --install-extension WallabyJs.console-ninja      --install-extension bradlc.vscode-tailwindcss          --install-extension emranweb.daisyui-snippet     --install-extension imgildev.vscode-nextjs-generator --install-extension supabase-snippets.supabase-javascript-snippets \n"
-                },
-                {
-                  "text": "code --install-extension esbenp.prettier-vscode       --install-extension prisma.prisma                      --install-extension rangav.vscode-thunder-client --install-extension usernamehw.errorlens             --install-extension acchu99.firebase-react-snippets                \n"
-                },
-                {
-                  "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python                   --install-extension devil-cyber.keras-snippet    --install-extension changkaiyan.tf2snippets          --install-extension a-smiggle.chills                               \n"
-                },
-                {
-                  "text": "code --install-extension jjjermiah.pixi-vscode        --install-extension snippington.snp-pandas-basic       --install-extension supermaven.supermaven        --install-extension miguelsolorio.symbols            --install-extension formulahendry.auto-rename-tag                  \n"
-                }
-              ]
-            },
-            {
-              "key": "J",
-              "name": "Install jupyter and kaggle",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "pixi global install kaggle; pixi init; pixi add python ipykernel; # then `pixi shell` on Unix and `pixi run zsh` on Windows \n"
-                },
-                {
-                  "text": "code --install-extension ms-toolsai.jupyter                                                                                 \n"
-                },
-                {
-                  "text": "# kaggle kernels init # requires API KEY then edit generated kernel-metadata.json                                           \n"
-                },
-                {
-                  "text": "# kaggle kernels push; kaggle kernel output <owner/notebook> # https://www.kaggle.com/code/owner/notebook                   \n"
-                }
-              ]
-            },
-            {
               "key": "y",
               "name": "Install RetroNvim's nvim/yazi/zsh on any terminal (Windows 10/11)",
               "commands": [
@@ -1117,6 +1046,358 @@
                 },
                 {
                   "text": "ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc ~/.zshrc  \n"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "I",
+          "name": "+Install Programming languages (vscode-extension included)",
+          "bindings": [
+            {
+              "key": "a",
+              "name": "angular (javascript)",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install angular-cli \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension loiane.angular-extension-pack; # pnpm create vite \n"
+                }
+              ]
+            },
+            {
+              "key": "A",
+              "name": "astro (javascript)",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "code --install-extension astro-build.astro-vscode; # pnpm create astro \n"
+                }
+              ]
+            },
+            {
+              "key": "c",
+              "name": "c/c++",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install cmake cxx-compiler --environment cxx-compiler --expose gcc --expose g++ --expose cmake \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension ms-vscode.cpptools-extension-pack \n"
+                }
+              ]
+            },
+            {
+              "key": "C",
+              "name": "c#",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install dotnet-sdk --expose dotnet \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension ms-dotnettools.csdevkit \n"
+                }
+              ]
+            },
+            {
+              "key": "d",
+              "name": "docker",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "# brew install --cask docker # nix-env -iA nixpkgs.docker # winget install Docker.DockerDesktop \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension ms-azuretools.vscode-docker \n"
+                }
+              ]
+            },
+            {
+              "key": "F",
+              "name": "FigmaToCode and AutoHTML (installer link) ",
+              "commands": [
+                "vscode.open",
+                "vscode.open"
+              ],
+              "args": [
+                "https://www.figma.com/community/plugin/842128343887142055/figma-to-code-html-tailwind-flutter-swiftui",
+                "https://www.figma.com/community/plugin/1077172952654000760/autohtml-components-to-code"
+              ]
+            },
+            {
+              "key": "g",
+              "name": "go",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install go \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension golang.Go \n"
+                }
+              ]
+            },
+            {
+              "key": "j",
+              "name": "javascript",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install nodejs \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension WallabyJs.console-ninja  --install-extension bradlc.vscode-tailwindcss         --install-extension esbenp.prettier-vscode                         --install-extension prisma.prisma                    \n"
+                },
+                {
+                  "text": "code --install-extension emranweb.daisyui-snippet --install-extension imgildev.vscode-nextjs-generator  --install-extension supabase-snippets.supabase-javascript-snippets --install-extension acchu99.firebase-react-snippets  \n"
+                },
+                {
+                  "text": "code --install-extension a-smiggle.chills         --install-extension formulahendry.auto-rename-tag     --install-extension rangav.vscode-thunder-client                   --install-extension usernamehw.errorlens            --install-extension PayPal.vscode-paypal \n"
+                }
+              ]
+            },
+            {
+              "key": "J",
+              "name": "java",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install gradle openjdk \n"
+                },
+                null,
+                {
+                  "text": "code  --install-extension vscjava.vscode-java-pack \n"
+                }
+              ]
+            },
+            {
+              "key": "k",
+              "name": "jupyter and kaggle",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install kaggle; pixi init; pixi add python ipykernel; # then `pixi shell` on Unix and `pixi run zsh` on Windows \n"
+                },
+                {
+                  "text": "code --install-extension ms-toolsai.jupyter                                                                                 \n"
+                },
+                {
+                  "text": "# kaggle kernels init # requires API KEY then edit generated kernel-metadata.json                                           \n"
+                },
+                {
+                  "text": "# kaggle kernels push; kaggle kernel output <owner/notebook> # https://www.kaggle.com/code/owner/notebook                   \n"
+                }
+              ]
+            },
+            {
+              "key": "M",
+              "name": "Mysql Posgresql (installer link) ",
+              "commands": [
+                "vscode.open",
+                "vscode.open",
+                "vscode.open",
+                "vscode.open",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                "https://hub.docker.com/_/mysql",
+                "https://hub.docker.com/_/postgres",
+                "https://devhints.io/mysql",
+                "https://devhints.io/docker",
+                null,
+                {
+                  "text": "code --install-extension joe-re.sql-language-server --install-extension qwtel.sqlite-viewer --install-extension inferrinizzard.prettier-sql-vscode \n"
+                }
+              ]
+            },
+            {
+              "key": "p",
+              "name": "python",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install python \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python          --install-extension jjjermiah.pixi-vscode   \n"
+                },
+                {
+                  "text": "code --install-extension snippington.snp-pandas-basic --install-extension devil-cyber.keras-snippet --install-extension changkaiyan.tf2snippets \n"
+                }
+              ]
+            },
+            {
+              "key": "P",
+              "name": "php",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install php \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension zobo.php-intellisense --install-extension DEVSENSE.composer-php-vscode --install-extension onecentlin.laravel-extension-pack \n"
+                }
+              ]
+            },
+            {
+              "key": "r",
+              "name": "rust",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "pixi global install rust --with rust-src \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension rust-lang.rust-analyzer \n"
+                }
+              ]
+            },
+            {
+              "key": "R",
+              "name": "retronvim extra extensions",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "code --install-extension alefragnani.Bookmarks                --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark --install-extension lamartire.git-indicators \n"
+                },
+                {
+                  "text": "code --install-extension DanielPriestley.poimandres-alternate --install-extension usernamehw.errorlens               --install-extension supermaven.supermaven   --install-extension miguelsolorio.symbols    \n"
+                }
+              ]
+            },
+            {
+              "key": "s",
+              "name": "svelte (javascript)",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "code --install-extension svelte.svelte-vscode  --install-extension biomejs.biome; # pnpm create vite \n"
+                }
+              ]
+            },
+            {
+              "key": "v",
+              "name": "vue (javascript)",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "code --install-extension mubaidr.vuejs-extension-pack  --install-extension biomejs.biome; # pnpm create vite \n"
+                }
+              ]
+            },
+            {
+              "key": "y",
+              "name": "toml and yaml",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "code --install-extension tamasfe.even-better-toml --install-extension redhat.vscode-yaml \n"
                 }
               ]
             }
@@ -1416,16 +1697,22 @@
           "name": "+Search",
           "bindings": [
             {
-              "key": "b",
-              "name": "open flowbite.com/docs/components",
-              "command": "vscode.open",
-              "args": "https://flowbite.com/docs/components/forms"
-            },
-            {
               "key": "c",
               "name": "open chatgpt.com",
               "command": "vscode.open",
               "args": "https://chatgpt.com"
+            },
+            {
+              "key": "C",
+              "name": "open cheat.sh",
+              "command": "vscode.open",
+              "args": "https://cheat.sh"
+            },
+            {
+              "key": "d",
+              "name": "open devhints cheatsheets",
+              "command": "vscode.open",
+              "args": "https://devhints.io"
             },
             {
               "key": "f",
@@ -1464,8 +1751,15 @@
             },
             {
               "key": "w",
-              "name": "VSCode builtin Browser (some urls are restricted, useful for localhost)",
-              "command": "simpleBrowser.show"
+              "name": "tailwind components (creative-tim.com)",
+              "command": "vscode.open",
+              "args": "https://www.creative-tim.com/twcomponents"
+            },
+            {
+              "key": "W",
+              "name": "tailwind components (tailwindflex.com)",
+              "command": "vscode.open",
+              "args": "https://www.creative-tim.com/twcomponents"
             }
           ]
         },
@@ -1563,11 +1857,6 @@
               "key": "!",
               "name": "Break panel",
               "command": "workbench.action.terminal.unsplit"
-            },
-            {
-              "key": "z",
-              "name": "Toggle maximized panel",
-              "command": "workbench.action.toggleMaximizedPanel"
             },
             {
               "key": "-",
@@ -1711,6 +2000,11 @@
               "key": "Y",
               "name": "New panel terminal (choose shell)",
               "command": "workbench.action.terminal.newWithProfile"
+            },
+            {
+              "key": "z",
+              "name": "Toggle maximized panel",
+              "command": "workbench.action.toggleMaximizedPanel"
             },
             {
               "key": "/",
