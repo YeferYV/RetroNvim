@@ -1061,6 +1061,7 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
@@ -1069,9 +1070,12 @@
                 {
                   "text": "pixi global install angular-cli \n"
                 },
+                {
+                  "text": "# pnpm create vite \n pixi exec curl cht.sh/ng \n"
+                },
                 null,
                 {
-                  "text": "code --install-extension loiane.angular-extension-pack; # pnpm create vite \n"
+                  "text": "code --install-extension loiane.angular-extension-pack \n"
                 }
               ]
             },
@@ -1095,6 +1099,7 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
@@ -1102,6 +1107,9 @@
                 null,
                 {
                   "text": "pixi global install cmake cxx-compiler --environment cxx-compiler --expose gcc --expose g++ --expose cmake \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/g++ \n"
                 },
                 null,
                 {
@@ -1115,6 +1123,7 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
@@ -1122,6 +1131,9 @@
                 null,
                 {
                   "text": "pixi global install dotnet-sdk --expose dotnet \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/dotnet \n"
                 },
                 null,
                 {
@@ -1135,13 +1147,25 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 null,
                 {
-                  "text": "# brew install --cask docker # nix-env -iA nixpkgs.docker # winget install Docker.DockerDesktop \n"
+                  "text": "pixi exec shell -c 'brew install --cask docker          2>/dev/null' \n"
+                },
+                {
+                  "text": "pixi exec shell -c 'nix-env -iA nixpkgs.docker          2>/dev/null' \n"
+                },
+                {
+                  "text": "pixi exec shell -c 'winget install docker.dockerdesktop 2>/dev/null' \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/docker \n"
                 },
                 null,
                 {
@@ -1167,6 +1191,7 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
@@ -1174,6 +1199,9 @@
                 null,
                 {
                   "text": "pixi global install go \n"
+                },
+                {
+                  "text": "pixi curl cht.sh/go \n"
                 },
                 null,
                 {
@@ -1187,6 +1215,8 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -1195,7 +1225,13 @@
               "args": [
                 null,
                 {
-                  "text": "pixi global install nodejs \n"
+                  "text": "pixi global install nodejs pnpm \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/node \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/pnpm \n"
                 },
                 null,
                 {
@@ -1215,6 +1251,8 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
@@ -1223,9 +1261,15 @@
                 {
                   "text": "pixi global install gradle openjdk \n"
                 },
+                {
+                  "text": "pixi exec curl cht.sh/gradle \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/java \n"
+                },
                 null,
                 {
-                  "text": "code  --install-extension vscjava.vscode-java-pack \n"
+                  "text": "code --install-extension vscjava.vscode-java-pack \n"
                 }
               ]
             },
@@ -1283,6 +1327,8 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
@@ -1291,6 +1337,12 @@
                 null,
                 {
                   "text": "pixi global install python \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/python \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/pixi \n"
                 },
                 null,
                 {
@@ -1307,6 +1359,8 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
@@ -1314,6 +1368,12 @@
                 null,
                 {
                   "text": "pixi global install php \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/php \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/composer \n"
                 },
                 null,
                 {
@@ -1327,6 +1387,8 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
@@ -1334,6 +1396,12 @@
                 null,
                 {
                   "text": "pixi global install rust --with rust-src \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/rustc \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/cargo \n"
                 },
                 null,
                 {
@@ -1364,12 +1432,16 @@
               "name": "svelte (javascript)",
               "commands": [
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 null,
                 {
-                  "text": "code --install-extension svelte.svelte-vscode  --install-extension biomejs.biome; # pnpm create vite \n"
+                  "text": "code --install-extension svelte.svelte-vscode  --install-extension biomejs.biome \n"
+                },
+                {
+                  "text": "# pnpm create vite \n pixi exec curl cht.sh/vite \n"
                 }
               ]
             },
@@ -1378,12 +1450,16 @@
               "name": "vue (javascript)",
               "commands": [
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 null,
                 {
-                  "text": "code --install-extension mubaidr.vuejs-extension-pack  --install-extension biomejs.biome; # pnpm create vite \n"
+                  "text": "code --install-extension mubaidr.vuejs-extension-pack  --install-extension biomejs.biome \n"
+                },
+                {
+                  "text": "# pnpm create vite \n pixi exec curl cht.sh/vite \n "
                 }
               ]
             },
@@ -1750,14 +1826,26 @@
               "command": "filesExplorer.findInFolder"
             },
             {
-              "key": "w",
-              "name": "tailwind components (creative-tim.com)",
+              "key": "u",
+              "name": "50000+ tailwind templates (uipilot.dev)",
               "command": "vscode.open",
-              "args": "https://www.creative-tim.com/twcomponents"
+              "args": "https://uipilot.dev"
+            },
+            {
+              "key": "U",
+              "name": "tailwind templates (figma.com + FigmaToCode)",
+              "command": "vscode.open",
+              "args": "https://www.figma.com/community"
+            },
+            {
+              "key": "w",
+              "name": "2400+ tailwind components (tailwindflex.com)",
+              "command": "vscode.open",
+              "args": "https://tailwindflex.com"
             },
             {
               "key": "W",
-              "name": "tailwind components (tailwindflex.com)",
+              "name": "600+ tailwind components (creative-tim.com)",
               "command": "vscode.open",
               "args": "https://www.creative-tim.com/twcomponents"
             }
