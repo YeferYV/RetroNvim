@@ -15,49 +15,58 @@ zle-line-init() { echo -ne "\e[6 q"; } # use beam shape cursor after ctrl+c or e
 zle -N zle-line-init                   # overwriting zle-line-init
 zle -N zle-keymap-select               # overwriting zle-keymap-select
 
-alias	apt="sudo apt -y"
-alias	cht="cht.sh"                       # nix-env -iA nixpkgs.cht-sh
-alias grep="grep --color=auto"
-alias ll="ls -l"
-alias svim="NVIM_APPNAME=sixelrice nvim" # git clone https://github.com/yeferyv/sixelrice ~/.config/sixelrice
-[[ "$OSTYPE" != "msys" ]] && alias pacman="sudo pacman --noconfirm"
+# retronvim's neovim
+vi() { nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua" $@; }
 
-# export LC_ALL=C.UTF-8 # `locale` lists all user's locale https://wiki.archlinux.org/title/Locale
+# yazi cd on exit (then moves the cursor up and clear until end of line)
+y()  { yazi --cwd-file=$HOME/.yazi $@; cd "$(cat $HOME/.yazi)"; printf "\x1b[A\x1b[K"; }
+
+# yazi cd on exit (even while writing commands)
+yy() { yazi --cwd-file=$HOME/.yazi $@ < /dev/tty; cd "$(cat $HOME/.yazi)"; zle reset-prompt; echo -ne "\e[6 q"; }
+zle -N yy          # creating `yy` keymap
+bindkey '\eo' 'yy' # \eo = alt + o
+
+alias  apt="sudo apt -y"
+alias  cht="cht.sh"                       # nix-env -iA nixpkgs.cht-sh
+alias  grep="grep --color=auto"
+alias  ll="ls -l"
+alias  svim="NVIM_APPNAME=sixelrice nvim" # git clone https://github.com/yeferyv/sixelrice ~/.config/sixelrice
 export BAT_THEME="base16"
+export EDITOR="nvim"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
 export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview" --multi --bind "ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}"'
 export HISTFILE="$HOME/.cache/.zsh_history"
 export LESSKEYIN="$HOME/.vscode/extensions/yeferyv.retronvim/yazi/lesskey"
+# export RETRONVIM_INIT=$(echo $HOME/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua)
+export RETRONVIM_INIT="$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua"
+export RIPGREP_LINUX="/opt/visual-studio-code/resources/app/node_modules/@vscode/ripgrep/bin:/usr/share/code/resources/app/node_modules/@vscode/ripgrep/bin"
+export RIPGREP_MACOS="/Applications/Visual Studio Code.app/resources/app/node_modules/@vscode/ripgrep/bin"
+export RIPGREP_MSYS2="$HOME/AppData/Local/Programs/Microsoft VS Code/resources/app/node_modules/@vscode/ripgrep/bin"
 export SAVEHIST=10000
-[[ -z $STARSHIP_CONFIG                                             ]] && export STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml"
-[[ -z $EDITOR                                                      ]] && export EDITOR='nvim -u "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua"'
-[[ "$TERM_PROGRAM" != "vscode"  ]] && [[ "$OSTYPE" == "linux-gnu"* ]] && export PATH="$HOME/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:$HOME/.pixi/bin:$HOME/.local/bin:$HOME/.local/share/pnpm:$PATH"
-[[ "$TERM_PROGRAM" != "vscode"  ]] && [[ "$OSTYPE" == "darwin"*    ]] && export PATH="$HOME/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64:$HOME/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin:$HOME/.pixi/bin:$HOME/Library/pnpm:$PATH"
+export STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/zsh/starship.toml"
+export SWALLOWER="devour"
+export VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_INIT)"
+export YAZI_CONFIG_HOME="$HOME/.vscode/extensions/yeferyv.retronvim/yazi"
+source $HOME/.vscode/extensions/yeferyv.retronvim/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source $HOME/.vscode/extensions/yeferyv.retronvim/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
-# retronvim's neovim
-vi() { eval $EDITOR $@; }
+[[ "$OSTYPE" == "linux-gnu"    ]] && export PATH="$HOME/.vscode/extensions/yeferyv.retronvim/bin/linux/envs/linux/bin:$HOME/.pixi/bin:$HOME/.local/share/pnpm:$HOME/.local/bin:$RIPGREP_LINUX:$PATH"
+[[ "$OSTYPE" == "linux-gnu"    ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
+[[ "$OSTYPE" == "linux-gnu"    ]] && export RETRONVIM_BIN="$HOME/.vscode/extensions/yeferyv.retronvim/bin/linux/envs/linux/bin"
+[[ "$OSTYPE" == "darwin"       ]] && export PATH="$HOME/.vscode/extensions/yeferyv.retronvim/bin/macos/envs/macos/bin:$HOME/.pixi/bin:$HOME/Library/pnpm:$HOME/.local/bin:$RIPGREP_MACOS:$PATH"
+[[ "$OSTYPE" == "darwin"       ]] && export PNPM_HOME="$HOME/Library/pnpm"
+[[ "$OSTYPE" == "darwin"       ]] && export RETRONVIM_BIN="$HOME/.vscode/extensions/yeferyv.retronvim/bin/macos/envs/macos/bin"
+[[ "$OSTYPE" == "msys"         ]] && export PATH="$PATH:$HOME/.vscode/extensions/yeferyv.retronvim/bin/windows/envs/windows/Library/bin:$HOME/.pixi/bin:$HOME/appdata/local/pnpm:$HOME/.local/bin:$RIPGREP_MSYS2:$PATH"
+[[ "$OSTYPE" == "msys"         ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
+[[ "$OSTYPE" != "msys"         ]] && alias  pacman="sudo pacman --noconfirm"
+[[ "$TERM_PROGRAM" == "vscode" ]] && source "$(code --locate-shell-integration-path zsh)"
+[[ -z $ZDOTDIR                 ]] && export ZDOTDIR="$HOME/.vscode/extensions/yeferyv.retronvim/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
 
-# yazi cd on exit (then moves the cursor up and clear until end of line)
-y() { yazi --cwd-file=$HOME/.yazi $@; cd "$(cat $HOME/.yazi)"; printf "\x1b[A\x1b[K"; }
+eval "$(/usr/local/bin/brew                 shellenv 2>/dev/null)"
+eval "$(/opt/homebrew/bin/brew              shellenv 2>/dev/null)"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)"
 
-# yazi cd on exit (even while writing commands)
-yy () { yazi --cwd-file=$HOME/.yazi $@ < /dev/tty; cd "$(cat $HOME/.yazi)"; zle reset-prompt; echo -ne "\e[6 q"; }
-zle -N yy          # creating `yy` keymap
-bindkey '\eo' 'yy' # \eo = alt + o
-
-[[ -e $HOME/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh            ]] && source $HOME/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-[[ -e $HOME/.nix-profile/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh ]] && source $HOME/.nix-profile/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh
-[[ -e $HOMEBREW_PREFIX/share/zsh-autosuggestions                                      ]] && source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-[[ -e $HOMEBREW_PREFIX/opt/zsh-fast-syntax-highlighting                               ]] && source $HOMEBREW_PREFIX/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-[[ -e $HOME/.config/_gitmodules/zsh-autosuggestions                                   ]] && source $HOME/.config/_gitmodules/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-[[ -e $HOME/.config/_gitmodules/fast-syntax-highlighting                              ]] && source $HOME/.config/_gitmodules/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-which fzf      >/dev/null 2>&1 && source <(fzf --zsh)
-which eza      >/dev/null 2>&1 && alias ls="eza --all --icons --group-directories-first"
-which starship >/dev/null 2>&1 && eval "$(starship init zsh)"
-
-[[ -e "$HOME/.local/share/pnpm" ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
-[[ -e "$HOME/Library/pnpm"      ]] && export PNPM_HOME="$HOME/Library/pnpm"
-[[ "$(readlink $HOME/.zshrc)" != "$HOME/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc" ]] && [[ -e $HOME/.zshrc ]] && source $HOME/.zshrc
-[[ "$TERM_PROGRAM" == "vscode"  ]] && source "$(code --locate-shell-integration-path zsh)"
-
-[[ -z $ZDOTDIR                  ]] && export ZDOTDIR="$HOME/.vscode/extensions/yeferyv.retronvim/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
+>/dev/null 2>&1 diff -q $HOME/.zshrc $ZDOTDIR/.zshrc && [[ "$(realpath $HOME/.zshrc)" != "$(realpath $ZDOTDIR/.zshrc)" ]] && source $HOME/.zshrc
+>/dev/null 2>&1 which fzf	                           && source <(fzf --zsh)
+>/dev/null 2>&1 which eza              	             && alias ls="eza --all --icons --group-directories-first"
+>/dev/null 2>&1 which starship                       && eval "$(starship init zsh)"

@@ -1,7 +1,7 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi setup (zsh.exe supported) (yazi comes with a neovim IDE)",
+  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/powershell setup",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -40,7 +40,8 @@
     "yazi",
     "zsh",
     "msys2",
-    "base16"
+    "base16",
+    "powershell"
   ],
   "homepage": "https://marketplace.visualstudio.com/items?itemName=YeferYV.RetroNvim",
   "repository": {
@@ -109,59 +110,56 @@
         "workbench.action.openEditorAtIndex9"
       ],
       "terminal.integrated.enableImages": true,
-      "terminal.integrated.env.linux": {
-        "RETRONVIM_INIT": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-        "RETRONVIM_BIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64",
-        "BAT_THEME": "base16",
-        "EDITOR": "nvim -u $RETRONVIM_INIT",
-        "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'",
-        "LESSKEYIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi/lesskey",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/linux-x64:${env:HOME}/.pixi/bin:${env:HOME}/.local/bin:${env:HOME}/.local/share/pnpm:${env:PATH}",
-        "PNPM_HOME": "${env:HOME}/.local/share/pnpm",
-        "SWALLOWER": "devour",
-        "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi",
-        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
-      },
-      "terminal.integrated.env.osx": {
-        "RETRONVIM_INIT": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-        "RETRONVIM_BIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64",
-        "BAT_THEME": "base16",
-        "EDITOR": "nvim -u $RETRONVIM_INIT",
-        "LESSKEYIN": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi/lesskey",
-        "PATH": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64:${env:HOME}/.vscode/extensions/yeferyv.retronvim/bin/darwin-x64/nvim-macos-x86_64/bin:${env:HOME}/.pixi/bin:${env:HOME}/Library/pnpm:${env:PATH}",
-        "PNPM_HOME": "${env:HOME}/Library/pnpm",
-        "YAZI_CONFIG_HOME": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/yazi",
-        "ZDOTDIR": "${env:HOME}/.vscode/extensions/yeferyv.retronvim/zsh"
-      },
-      "terminal.integrated.env.windows": {
-        "RETRONVIM_INIT": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-        "BAT_THEME": "base16",
-        "EDITOR": "nvim -u ${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-        "FZF_DEFAULT_OPTS": "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'",
-        "LESSKEYIN": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/yazi/lesskey",
-        "PATH": "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;${env:PATH}",
-        "YAZI_CONFIG_HOME": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/yazi",
-        "YAZI_FILE_ONE": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/bin/win32-x64/file1/usr/bin/file.exe",
-        "ZDOTDIR": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/zsh"
-      },
       "terminal.integrated.experimental.windowsUseConptyDll": true,
       "terminal.integrated.scrollback": 10000,
       "terminal.integrated.suggest.enabled": true,
+      "terminal.integrated.profiles.osx": {
+        "zsh (retronvim)": {
+          "path": "zsh",
+          "args": [
+            "-c",
+            "export ZDOTDIR=\"$HOME/.vscode/extensions/yeferyv.retronvim/zsh\"; zsh"
+          ]
+        }
+      },
+      "terminal.integrated.profiles.linux": {
+        "zsh (retronvim)": {
+          "path": "zsh",
+          "args": [
+            "-c",
+            "export ZDOTDIR=\"$HOME/.vscode/extensions/yeferyv.retronvim/zsh\"; zsh"
+          ]
+        }
+      },
       "terminal.integrated.profiles.windows": {
         "zsh (MSYS2)": {
           "path": "msys2.cmd",
           "args": [
+            "-full-path",
             "-shell",
             "zsh",
-            "-full-path"
+            "-c",
+            "export HOME=\"/c/users/$USER\"; export ZDOTDIR=\"$HOME/.vscode/extensions/yeferyv.retronvim/zsh\"; zsh"
+          ]
+        },
+        "Powershell (retronvim)": {
+          "path": "powershell",
+          "args": [
+            "-nologo",
+            "-noexit",
+            "-executionpolicy",
+            "RemoteSigned",
+            "-file",
+            "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\powershell\\profile.ps1"
           ],
           "env": {
-            "HOME": "${env:USERPROFILE}"
+            "PSMODULEPATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/powershell/modules;${env:PSMODULEPATH}"
           }
         }
       },
-      "terminal.integrated.defaultProfile.windows": "zsh (MSYS2)",
-      "terminal.integrated.defaultProfile.linux": "zsh",
+      "terminal.integrated.defaultProfile.osx": "zsh (retronvim)",
+      "terminal.integrated.defaultProfile.linux": "zsh (retronvim)",
+      "terminal.integrated.defaultProfile.windows": "Powershell (retronvim)",
       "vim.camelCaseMotion.enable": true,
       "vim.flash.enable": true,
       "vim.foldfix": true,
@@ -778,54 +776,39 @@
           "bindings": [
             {
               "key": "b",
-              "name": "install brew, pixi and pnpm package-managers (MacOS)",
+              "name": "install brew karabiner (MacOS)",
               "commands": [
-                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n"
-                },
-                null,
-                {
-                  "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n"
-                },
-                null,
-                {
-                  "text": "curl -fsSL https://pixi.sh/install.sh | bash \n"
-                }
-              ]
-            },
-            {
-              "key": "B",
-              "name": "brew install bat eza font-fira-code-nerd-font fzf git karabiner lazygit starship ripgrep sevenzip",
-              "commands": [
-                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
-                null,
                 {
-                  "text": "brew install bat eza font-fira-code-nerd-font fzf git karabiner-elements lazygit starship ripgrep sevenzip zsh-autosuggestions zsh-fast-syntax-highlighting; \n"
+                  "profileName": "zsh"
+                },
+                {
+                  "text": "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n"
+                },
+                {
+                  "text": "# how to uninstall: https://github.com/Homebrew/install \n"
+                },
+                {
+                  "text": "source $ZDOTDIR/.zshrc \n"
+                },
+                {
+                  "text": "brew install --cask karabiner-elements \n"
                 }
               ]
             },
             {
               "key": "n",
-              "name": "install nixpkgs, pixi and pnpm package managers (Linux)",
+              "name": "install nix-env ripdrag (Linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -833,39 +816,22 @@
                 {
                   "text": "yes | sh <(curl -L https://nixos.org/nix/install) --daemon \n"
                 },
-                null,
                 {
-                  "text": "curl -fsSL https://get.pnpm.io/install.sh | sh - \n"
+                  "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
                 },
-                null,
                 {
-                  "text": "curl -fsSL https://pixi.sh/install.sh | bash \n"
-                }
-              ]
-            },
-            {
-              "key": "N",
-              "name": "nixpkgs install bat eza fira-code-nerdfont fzf git lazygit ripdrag ripgrep starship zsh _7zz",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "nix-env -iA nixpkgs.bat nixpkgs.eza nixpkgs.fira-code-nerdfont nixpkgs.fzf nixpkgs.git nixpkgs.lazygit nixpkgs.ripdrag nixpkgs.ripgrep nixpkgs.starship nixpkgs.zsh nixpkgs.zsh-autosuggestions nixpkgs.zsh-fast-syntax-highlighting nixpkgs._7zz; \n"
+                  "text": "bash -i -c \"nix-env -iA  nixpkgs.ripdrag\"; fc-cache -fv \n"
                 }
               ]
             },
             {
               "key": "s",
-              "name": "install scoop, pixi and pnpm package managers (Windows 10/11)",
+              "name": "install scoop zsh (Windows)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -876,22 +842,19 @@
                   "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
                 },
                 {
-                  "profileName": "PowerShell"
+                  "text": "pixi global install git p7zip; # required by `scoop bucket`"
                 },
                 {
-                  "text": "iwr -useb https://pixi.sh/install.ps1 | iex \n"
+                  "text": "scoop bucket add extras; scoop install msys2 \n"
                 },
                 {
-                  "profileName": "PowerShell"
-                },
-                {
-                  "text": "iwr -useb https://get.pnpm.io/install.ps1 | iex \n"
+                  "text": "msys2 -c 'pacman -S --noconfirm zsh' \n"
                 }
               ]
             },
             {
-              "key": "S",
-              "name": "scoop install bat eza FiraCode-NF fzf git lazygit less msys2 starship ripgrep zsh 7zip",
+              "key": "P",
+              "name": "pixi install bat eza git lazygit 7zip ",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -902,22 +865,16 @@
               "args": [
                 null,
                 {
-                  "text": "$env:PATH=\"$env:PATH;$HOME/scoop/shims\"; scoop install git; scoop bucket add extras; scoop bucket add nerd-fonts; scoop install bat eza FiraCode-NF fzf lazygit less msys2 starship ripgrep 7zip; msys2 -c 'pacman -S --noconfirm zsh' \n"
+                  "text": "pixi global install bat eza git lazygit --environment terminal-dependencies # ripgrep' \n"
                 },
                 {
-                  "text": "mkdir -p $HOME/.config/_gitmodules \n"
-                },
-                {
-                  "text": "git clone https://github.com/zsh-users/zsh-autosuggestions              $HOME/.config/_gitmodules/zsh-autosuggestions \n"
-                },
-                {
-                  "text": "git clone https://github.com/zdharma-continuum/fast-syntax-highlighting $HOME/.config/_gitmodules/fast-syntax-highlighting \n"
+                  "text": "pixi exec shell -c 'pixi global install 7zip 2>/dev/null || pixi global install p7zip' \n"
                 }
               ]
             },
             {
               "key": "R",
-              "name": "Restart Retronvim (REQUIRED after installing dependencies) (windows 10/11 needs to relaunch vscode)",
+              "name": "restart retronvim (required after installing brew nix-env scoop) (windows needs to relaunch vscode)",
               "commands": [
                 "workbench.panel.output.focus",
                 "workbench.action.reloadWindow"
@@ -925,7 +882,7 @@
             },
             {
               "key": "i",
-              "name": "Increase keyboard repeat rate on MacOS ",
+              "name": "Increase keyboard repeat rate (MacOS) ",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
@@ -939,7 +896,7 @@
             },
             {
               "key": "I",
-              "name": "Increase keyboard repeat rate on Windows 10/11",
+              "name": "Increase keyboard repeat rate (Windows)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -993,9 +950,10 @@
             },
             {
               "key": "y",
-              "name": "Install RetroNvim's nvim/yazi/zsh on any terminal (Windows 10/11)",
+              "name": "Install RetroNvim's nvim/yazi/zsh/powershell on any terminal (Windows 10/11)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -1008,22 +966,10 @@
                   "profileName": "Command Prompt"
                 },
                 {
-                  "text": "mklink /d %HOMEPATH%\\appdata\\local\\nvim           %HOMEPATH%\\.vscode\\extensions\\yeferyv.retronvim\\nvim        \n"
-                },
-                {
-                  "text": "mklink /d %HOMEPATH%\\appdata\\roaming\\yazi\\config %HOMEPATH%\\.vscode\\extensions\\yeferyv.retronvim\\yazi        \n"
+                  "text": "mklink /d %HOMEPATH%\\Documents\\WindowsPowershell   %HOMEPATH%\\.vscode\\extensions\\yeferyv.retronvim\\powershell  \n"
                 },
                 {
                   "text": "mklink    %HOMEPATH%\\.zshrc                         %HOMEPATH%\\.vscode\\extensions\\yeferyv.retronvim\\zsh\\.zshrc \n"
-                },
-                {
-                  "text": "setx         HOME                                    %USERPROFILE% \n"
-                },
-                {
-                  "text": "setx         YAZI_FILE_ONE                           %USERPROFILE%\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\file1\\usr\\bin\\file.exe \n"
-                },
-                {
-                  "text": "setx         PATH                           \"%PATH%;%USERPROFILE%\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64;%USERPROFILE%\\.vscode\\extensions\\yeferyv.retronvim\\bin\\win32-x64\\nvim-win64\\bin;\" \n"
                 }
               ]
             },
@@ -1038,12 +984,6 @@
               ],
               "args": [
                 null,
-                {
-                  "text": "ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/nvim       ~/.config \n"
-                },
-                {
-                  "text": "ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/yazi       ~/.config \n"
-                },
                 {
                   "text": "ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc ~/.zshrc  \n"
                 }
@@ -2818,7 +2758,12 @@
       {
         "key": "ctrl+l",
         "command": "workbench.action.navigateRight",
-        "when": "( neovim.mode == 'normal' || vim.mode == 'Normal' )' && !terminalFocus"
+        "when": "!terminalFocus && neovim.mode == 'normal'"
+      },
+      {
+        "key": "ctrl+l",
+        "command": "workbench.action.navigateRight",
+        "when": "!terminalFocus && vim.mode == 'Normal'"
       },
       {
         "key": "ctrl+space",

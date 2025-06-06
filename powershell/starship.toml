@@ -1,0 +1,22 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = "($battery)($sudo)($username)($directory)($git_branch)($git_status)($cmd_duration)($status)($character)"
+add_newline = false
+command_timeout = 60000
+
+[cmd_duration]
+min_time = 60000
+
+[directory]
+style = "bold fg:#5555cc"
+truncation_length = 9
+
+[character] # The name of the module we are configuring is "character"
+# success_symbol = "[󰞷 ](bold green)" # zsh.exe's vim-mode crashes on long lines due to `󰞷` (is not unicode) inside msys2
+success_symbol = "[ ](bold green)"
+error_symbol = "[ ](bold red)"
+vimcmd_symbol =	"[ ](bold green)"
+vimcmd_replace_one_symbol =	"[ ](bold purple)"
+vimcmd_replace_symbol =	"[ ](bold purple)"
+vimcmd_visual_symbol =	"[ ](bold yellow)"
+format = "$symbol"

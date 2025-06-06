@@ -87,7 +87,7 @@ on = [ "s", "f" ]
 run = '''
   shell
   --block
-  -- nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.files()"
+  -- nvim -c "lua Snacks.picker.files()"
 '''
 desc = "Neovim fzf"
 
@@ -96,7 +96,7 @@ on = [ "s", "g" ]
 run = '''
   shell
   --block
-  -- nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))" -c "lua Snacks.picker.grep()"
+  -- nvim -c "lua Snacks.picker.grep { layout = 'ivy_split'} "
 '''
 desc = "Neovim ripgrep"
 
@@ -105,7 +105,7 @@ on = [ "s", "r" ]
 run = '''
   shell
   --block
-  -- rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim -u NORC --cmd \"lua vim.cmd.source(vim.env.RETRONVIM_INIT or (vim.env.APPDATA and [[~/appdata/local/nvim/init.lua]] or [[~/.config/nvim/init.lua]] ))\" {1} +{2})"
+  -- rg "" --color=always --line-number | fzf --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim {1} +{2})"
 '''
 desc = "Ripgrep fzf (󰘶 ↓ scrolls preview)"
 

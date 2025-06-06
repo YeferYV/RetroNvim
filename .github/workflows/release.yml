@@ -48,33 +48,75 @@ jobs:
           rm -rf ./nvim/plugins/site/pack/deps/opt/snacks.nvim/tests
           rm -rf ./nvim/plugins/site/pack/deps/start/mini.nvim/tests
 
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_cmd_allowed                            --create-dirs --output  "./bin/linux-x64/kanata"                                                                                                                                  && chmod +x "./bin/linux-x64/kanata"
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage                  --create-dirs --output  "./bin/linux-x64/nvim"                                                                                                                                    && chmod +x "./bin/linux-x64/nvim"
-          curl -L https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-unknown-linux-musl.zip           --create-dirs --output  "/tmp/yazi-linux.zip"   && unzip "/tmp/yazi-linux.zip" -d "/tmp"   && cp -r    /tmp/yazi-x86_64-unknown-linux-gnu/{yazi,ya}            "./bin/linux-x64"  && chmod +x  ./bin/linux-x64/{yazi,ya}
+          curl -L pixi.sh/install.sh | bash
+          source ~/.bashrc
 
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_macos_cmd_allowed_x86_64               --create-dirs --output  "./bin/darwin-x64/kanata"                                                                                                                                 && chmod +x "./bin/darwin-x64/kanata"
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-macos-x86_64.tar.gz                    | tar -xzf- --directory "./bin/darwin-x64"
-          curl -L https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-apple-darwin.zip                 --create-dirs --output  "/tmp/yazi-macos.zip" && unzip "/tmp/yazi-macos.zip" -d "/tmp"     && cp -r    /tmp/yazi-x86_64-apple-darwin/{yazi,ya}                 "./bin/darwin-x64" && chmod +x  ./bin/darwin-x64/{yazi,ya}
+          curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                         | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/nerd-fonts/patched-fonts/FiraCode"                                           && mv /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
+          curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.ps1                     --create-dirs  --output    "bin/nerd-fonts/install.ps1"
+
+          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-macos-x86_64.tar.gz                      | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/macos/envs"                                                                  && mv /tmp/nvim-macos-x86_64 bin/macos/envs/macos
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_macos_cmd_allowed_x86_64                 --create-dirs  --output    "bin/macos/envs/macos/bin/kanata"                 && chmod +x "bin/macos/envs/macos/bin/kanata"
+          curl -L https://github.com/prefix-dev/pixi/releases/download/v0.48.0/pixi-x86_64-apple-darwin                    --create-dirs  --output    "bin/macos/envs/macos/bin/pixi"                   && chmod +x "bin/macos/envs/macos/bin/pixi"
+          curl -L https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-apple-darwin.zip                   | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/yazi-x86_64-apple-darwin/{ya,yazi}       "bin/macos/envs/macos/bin"                && chmod +x bin/macos/envs/macos/bin/{ya,yazi}
+          curl -L https://github.com/starship/starship/releases/download/v1.23.0/starship-x86_64-apple-darwin.tar.gz       | bsdtar -xzf- --directory "bin/macos/envs/macos/bin"
+          curl -L https://github.com/junegunn/fzf/releases/download/v0.62.0/fzf-0.62.0-darwin_amd64.tar.gz                 | bsdtar -xzf- --directory "bin/macos/envs/macos/bin"
 
           yes | npx vsce package
-          npx vsce publish # --pre-release
-          rm -rf ./bin/{linux-x64,darwin-x64}
+          npx       vsce publish
+          rm -rf bin/macos
 
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_cmd_allowed.exe                        --create-dirs --output  "./bin/win32-x64/kanata.exe"
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-win64.zip                              --create-dirs --output  "/tmp/nvim-windows.zip" && unzip "/tmp/nvim-windows.zip" -d "./bin/win32-x64"
-          curl -L https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-pc-windows-msvc.zip              --create-dirs --output  "/tmp/yazi-windows.zip" && unzip "/tmp/yazi-windows.zip" -d "/tmp" && cp -r     /tmp/yazi-x86_64-pc-windows-msvc/{yazi.exe,ya.exe}     "./bin/win32-x64"
-          curl -L https://repo.prefix.dev/conda-forge/win-64/vc14_runtime-14.42.34433-he29a5d6_23.conda                  --create-dirs --output  "/tmp/vc14-runtime.zip" && unzip "/tmp/vc14-runtime.zip" -d "/tmp" && tar -xvf "/tmp/pkg-vc14_runtime-14.42.34433-he29a5d6_23.tar.zst" --directory="/tmp" && cp "/tmp/vcruntime140.dll" "./bin/win32-x64/nvim-win64/bin"
+          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage                    --create-dirs  --output    "bin/linux/envs/linux/bin/nvim"                   && chmod +x "bin/linux/envs/linux/bin/nvim"
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_cmd_allowed                              --create-dirs  --output    "bin/linux/envs/linux/bin/kanata"                 && chmod +x "bin/linux/envs/linux/bin/kanata"
+          curl -L https://github.com/prefix-dev/pixi/releases/download/v0.48.0/pixi-x86_64-unknown-linux-musl              --create-dirs  --output    "bin/linux/envs/linux/bin/pixi"                   && chmod +x "bin/linux/envs/linux/bin/pixi"
+          curl -L https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-unknown-linux-musl.zip             | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/yazi-x86_64-unknown-linux-musl/{ya,yazi} bin/linux/envs/linux/bin                  && chmod +x bin/linux/envs/linux/bin/{ya,yazi}
+          curl -L https://github.com/starship/starship/releases/download/v1.23.0/starship-x86_64-unknown-linux-musl.tar.gz | bsdtar -xzf- --directory "bin/linux/envs/linux/bin"
+          curl -L https://github.com/junegunn/fzf/releases/download/v0.62.0/fzf-0.62.0-linux_amd64.tar.gz                  | bsdtar -xzf- --directory="bin/linux/envs/linux/bin"
 
-          mkdir /tmp/git-for-windows
-          curl -L https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/Git-2.48.1-64-bit.tar.bz2   | tar -xjf- --directory "/tmp/git-for-windows"  && mkdir -p ./bin/win32-x64/file1/usr/{bin,share/misc}
-          cp    /tmp/git-for-windows/usr/bin/{file.exe,msys-2.0.dll,msys-bz2-1.dll,msys-lzma-5.dll,msys-magic-1.dll,msys-z.dll,msys-zstd-1.dll}                                      ./bin/win32-x64/file1/usr/bin
-          cp    /tmp/git-for-windows/usr/share/misc/magic.mgc                                                                                                                        ./bin/win32-x64/file1/usr/share/misc
+          mkdir build_zsh_appimage
+          cd    build_zsh_appimage
+          pixi  init
+          pixi  add zsh
+          mkdir -p                                       AppDir/usr
+          cp    -r .pixi/envs/default/*                  AppDir/usr/
+          echo  '#!/bin/bash'                         >> AppDir/AppRun
+          echo  'exec "$APPDIR/usr/bin/zsh" "$@"'     >> AppDir/AppRun
+          chmod +x                                       AppDir/AppRun
+          echo  '[Desktop Entry]'                     >> AppDir/zsh.desktop
+          echo  'Name=zsh'                            >> AppDir/zsh.desktop
+          echo  'Exec=zsh'                            >> AppDir/zsh.desktop
+          echo  'Icon=retronvim-logo'                 >> AppDir/zsh.desktop
+          echo  'Type=Application'                    >> AppDir/zsh.desktop
+          echo  'Categories=System;TerminalEmulator;' >> AppDir/zsh.desktop
+          cp    ../assets/retronvim-logo.png             AppDir/
+          curl  -o appimagetool -L https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+          ./appimagetool AppDir zsh.appimage
+          cp    zsh.appimage ../bin/linux/envs/linux/bin/zsh
+          cd    ..
+          rm    -r build_zsh_appimage
 
-          rm -rf ./bin/win32-x64/nvim-win64/bin/{nvim.pdb,dbghelp.dll}
+          yes | npx vsce package --target linux-x64
+          npx       vsce publish --target linux-x64
+          rm -rf bin/linux
+
+          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-win64.zip                                | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p bin/windows/envs/windows                                                          && mv /tmp/nvim-win64       bin/windows/envs/windows/Library
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_cmd_allowed.exe                          --create-dirs  --output    "bin/windows/envs/windows/Library/bin/kanata.exe"
+          curl -L https://github.com/prefix-dev/pixi/releases/download/v0.48.0/pixi-x86_64-pc-windows-msvc.exe             --create-dirs  --output    "bin/windows/envs/windows/Library/bin/pixi.exe"
+          curl -L https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-pc-windows-msvc.zip                | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/yazi-x86_64-pc-windows-msvc/{ya.exe,yazi.exe} bin/windows/envs/windows/Library/bin
+          curl -L https://github.com/starship/starship/releases/download/v1.23.0/starship-x86_64-pc-windows-msvc.zip       | bsdtar -xzf- --directory "bin/windows/envs/windows/Library/bin"
+          curl -L https://github.com/junegunn/fzf/releases/download/v0.62.0/fzf-0.62.0-windows_amd64.zip                   | bsdtar -xzf- --directory "bin/windows/envs/windows/Library/bin"
+          curl -L https://repo.prefix.dev/conda-forge/win-64/vc14_runtime-14.42.34433-he29a5d6_23.conda                    | bsdtar -xzf- --directory "/tmp"                                            && bsdtar -xvf "/tmp/pkg-vc14_runtime-14.42.34433-he29a5d6_23.tar.zst" --directory="/tmp"     && mv /tmp/vcruntime140.dll bin/windows/envs/windows/Library/bin
+
+          mkdir -p powershell/modules/psreadline
+          curl -L https://cdn.powershellgallery.com/packages/psreadline.2.4.2-beta2.nupkg                                  | bsdtar -xzf- --directory "powershell/modules/psreadline"
+
+          export PIXI_HOME="$PWD/bin/windows"
+          pixi global install --platform win-64 m2-file --environment windows # vc14_runtime
+
           yes | npx vsce package --target win32-x64
-          npx vsce publish --target win32-x64 # --pre-release
+          npx       vsce publish --target win32-x64
 
-          # npx release-please release-pr --release-type node --repo-url https://github.com/yeferyv/retronvim --token $(gh auth token)
+          # npx release-please release-pr             --release-type node --repo-url https://github.com/yeferyv/retronvim --token $(gh auth token)
           # npx release-please github-release --draft --release-type node --repo-url https://github.com/yeferyv/retronvim --token $(gh auth token)
           # npx standard-version
           # previous_tag="$(git tag --sort=creatordate | tail -n 2 | head -n 1)"
