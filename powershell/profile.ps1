@@ -46,13 +46,14 @@ Set-PSReadlineKeyHandler -key tab    -Function MenuComplete
 $env:BAT_THEME="base16"
 $env:EDITOR="nvim"
 $env:FZF_DEFAULT_OPTS="--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'"
+$env:HOME=$env:USERPROFILE # fot ~/.gitconfig
 $env:LESSKEYIN="$HOME/.vscode/extensions/yeferyv.retronvim/yazi/lesskey"
 $env:PATH_RIPGREP="$HOME\AppData\Local\Programs\Microsoft VS Code\resources\app\node_modules\@vscode\ripgrep\bin"
 $env:PATH="$HOME\.vscode\extensions\yeferyv.retronvim\bin\windows\envs\windows\Library\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\local\bin;${env:RIPGREP_PATH};${env:PATH};"
 $env:PNPM_HOME="$HOME/appdata/local/pnpm"
-$env:PROFILE="$HOME/.vscode/extensions/yeferyv.retronvim/powershell/profile.ps1"
-$env:STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/powershell/starship.toml"
 $env:RETRONVIM_INIT=(Get-ChildItem -Path "$HOME\.vscode\extensions\yeferyv.retronvim*").FullName
+$env:STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/powershell/starship.toml"
+$env:SHELL="powershell"
 $env:VIMINIT="lua vim.cmd.source([[~/.vscode/extensions/yeferyv.retronvim/nvim/init.lua]])"
 $env:YAZI_CONFIG_HOME="$HOME/.vscode/extensions/yeferyv.retronvim/yazi"
 $env:YAZI_FILE_ONE="$HOME/.vscode/extensions/yeferyv.retronvim/bin/windows/envs/windows/Library/usr/bin/file.exe"

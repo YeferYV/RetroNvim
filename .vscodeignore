@@ -6,21 +6,3 @@
 # contains symbols in their filenames, which isn't supported by the VSIX format:
 nvim/plugins/site/pack/deps/opt/snacks.nvim/tests
 nvim/plugins/site/pack/deps/start/mini.nvim/tests
-
-# The following files have the same case insensitive path, which isn't supported by the VSIX format:
-# some old really old $TERM may use this terminfo
-bin/linux/envs/linux/share/terminfo/68/hp70092a
-bin/linux/envs/linux/share/terminfo/68/hp70092A
-bin/linux/envs/linux/share/terminfo/68/hp2621a
-bin/linux/envs/linux/share/terminfo/68/hp2621A
-bin/linux/envs/linux/share/terminfo/32/2621a
-bin/linux/envs/linux/share/terminfo/32/2621A
-bin/linux/envs/linux/lib/terminfo/68/hp70092a
-bin/linux/envs/linux/lib/terminfo/68/hp70092A
-bin/linux/envs/linux/lib/terminfo/68/hp2621a
-bin/linux/envs/linux/lib/terminfo/68/hp2621A
-bin/linux/envs/linux/lib/terminfo/32/2621a
-bin/linux/envs/linux/lib/terminfo/32/2621A
-
-# unneeded dep
-bin/windows/envs/windows/Library/usr/bin/dumper.exe

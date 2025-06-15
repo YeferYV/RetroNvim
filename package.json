@@ -842,7 +842,7 @@
                   "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
                 },
                 {
-                  "text": "pixi global install git p7zip; # required by `scoop bucket`"
+                  "text": "pixi global install git; # required by `scoop bucket` \n"
                 },
                 {
                   "text": "scoop bucket add extras; scoop install msys2 \n"
@@ -955,15 +955,14 @@
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 {
                   "profileName": "Command Prompt"
+                },
+                {
+                  "text": "set-executionpolicy bypass -scope currentuser \n"
                 },
                 {
                   "text": "mklink /d %HOMEPATH%\\Documents\\WindowsPowershell   %HOMEPATH%\\.vscode\\extensions\\yeferyv.retronvim\\powershell  \n"

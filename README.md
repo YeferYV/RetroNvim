@@ -2,7 +2,7 @@
 
 <div align="center"><p>
 
-Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi setup (zsh.exe supported) (yazi comes with a neovim IDE)
+Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/powershell setup
 
 <!-- <img src="https://github.com/yeferyv/retronvim/blob/main/assets/demo.gif?raw=true"> -->
 
