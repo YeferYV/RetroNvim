@@ -118,7 +118,7 @@
           "path": "zsh",
           "args": [
             "-c",
-            "export ZDOTDIR=\"$HOME/.vscode/extensions/yeferyv.retronvim/zsh\"; zsh"
+            "export ZDOTDIR=\"$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*/zsh | head -n1)\"; zsh"
           ]
         }
       },
@@ -127,7 +127,7 @@
           "path": "zsh",
           "args": [
             "-c",
-            "export ZDOTDIR=\"$HOME/.vscode/extensions/yeferyv.retronvim/zsh\"; zsh"
+            "export ZDOTDIR=\"$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*/zsh | head -n1)\"; zsh"
           ]
         }
       },
@@ -139,27 +139,22 @@
             "-shell",
             "zsh",
             "-c",
-            "export HOME=\"/c/users/$USER\"; export ZDOTDIR=\"$HOME/.vscode/extensions/yeferyv.retronvim/zsh\"; zsh"
+            "export HOME=/c/Users/$USER; export ZDOTDIR=$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*/zsh | head -n1); zsh -l"
           ]
         },
-        "Powershell (retronvim)": {
+        "powershell (retronvim)": {
           "path": "powershell",
           "args": [
-            "-nologo",
-            "-noexit",
             "-executionpolicy",
-            "RemoteSigned",
-            "-file",
-            "${env:USERPROFILE}\\.vscode\\extensions\\yeferyv.retronvim\\powershell\\profile.ps1"
-          ],
-          "env": {
-            "PSMODULEPATH": "${env:USERPROFILE}/.vscode/extensions/yeferyv.retronvim/powershell/modules;${env:PSMODULEPATH}"
-          }
+            "bypass",
+            "-c",
+            "$env:retronvim_path=(Get-ChildItem -Path \"$HOME/.vscode/extensions/yeferyv.retronvim*\" | Select-Object -First 1).FullName; $env:psmodulepath=\"$env:retronvim_path/powershell/modules;$env:psmodulepath\"; powershell -nologo -noexit -file \"$env:retronvim_path/powershell/profile.ps1\""
+          ]
         }
       },
       "terminal.integrated.defaultProfile.osx": "zsh (retronvim)",
       "terminal.integrated.defaultProfile.linux": "zsh (retronvim)",
-      "terminal.integrated.defaultProfile.windows": "Powershell (retronvim)",
+      "terminal.integrated.defaultProfile.windows": "powershell (retronvim)",
       "vim.camelCaseMotion.enable": true,
       "vim.flash.enable": true,
       "vim.foldfix": true,
@@ -337,9 +332,6 @@
         "y",
         "/"
       ],
-      "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
-      "vscode-neovim.neovimInitVimPaths.win32": "$HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua",
       "zenMode.centerLayout": false,
       "zenMode.fullScreen": false,
       "zenMode.hideLineNumbers": false,
@@ -795,7 +787,7 @@
                   "text": "# how to uninstall: https://github.com/Homebrew/install \n"
                 },
                 {
-                  "text": "source $ZDOTDIR/.zshrc \n"
+                  "text": "source ${ZDOTDIR:-~}/.zshrc \n"
                 },
                 {
                   "text": "brew install --cask karabiner-elements \n"
@@ -924,13 +916,15 @@
               "key": "k",
               "name": "Start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
               "commands": [
-                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
-                null,
                 {
-                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $HOME/.vscode/extensions/yeferyv.retronvim/kanata/simple.kbd &'; sleep 5; exit; \r"
+                  "profileName": "zsh (retronvim)"
+                },
+                {
+                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
                 }
               ]
             },
@@ -938,13 +932,15 @@
               "key": "K",
               "name": "Start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
               "commands": [
-                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
-                null,
                 {
-                  "text": "powershell -c 'Set-WinUserLanguageList -force en-US,es-US; conhost --headless kanata --cfg %HOMEPATH%/.vscode/extensions/yeferyv.retronvim/kanata/simple.kbd'; sleep 2; exit; \r"
+                  "profileName": "powershell (retronvim)"
+                },
+                {
+                  "text": "powershell -c 'Set-WinUserLanguageList -force en-US,es-US; conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd'; sleep 2; exit; \r"
                 }
               ]
             },
@@ -959,16 +955,16 @@
               ],
               "args": [
                 {
-                  "profileName": "Command Prompt"
+                  "profileName": "powershell (retronvim)"
                 },
                 {
-                  "text": "set-executionpolicy bypass -scope currentuser \n"
+                  "text": "set-executionpolicy bypass -scope currentuser                            \n"
                 },
                 {
-                  "text": "mklink /d %HOMEPATH%\\Documents\\WindowsPowershell   %HOMEPATH%\\.vscode\\extensions\\yeferyv.retronvim\\powershell  \n"
+                  "text": "cp -r $env:RETRONVIM_PATH/powershell   $HOME/documents/windowspowershell \n"
                 },
                 {
-                  "text": "mklink    %HOMEPATH%\\.zshrc                         %HOMEPATH%\\.vscode\\extensions\\yeferyv.retronvim\\zsh\\.zshrc \n"
+                  "text": "cp    $env:RETRONVIM_PATH/zsh/.zshrc   $HOME/.zshrc                      \n"
                 }
               ]
             },
@@ -976,15 +972,17 @@
               "key": "Y",
               "name": "Install RetroNvim's nvim/yazi/zsh on any terminal (Linux/MacOS)",
               "commands": [
-                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
-                null,
                 {
-                  "text": "ln -s --verbose ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc ~/.zshrc  \n"
+                  "profileName": "zsh (retronvim)"
+                },
+                {
+                  "text": "cp --verbose $RETRONVIM_PATH/zsh/.zshrc ~/.zshrc  \n"
                 }
               ]
             }
@@ -2004,7 +2002,7 @@
               "args": [
                 null,
                 {
-                  "text": "nvim --clean -c \"lua vim.cmd.source(vim.env.RETRONVIM_INIT)\" -cterm; exit\n"
+                  "text": "nvim -cterm; exit\n"
                 }
               ]
             },

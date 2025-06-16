@@ -8,14 +8,14 @@ function setNeovimPath(homeExtension) {
   // Construct the dynamic path
   const homeDirectory = os.homedir();
   const yaziBookmarkPath = path.join(homeDirectory, 'appdata/roaming/yazi/state');
-  const retronvimPath = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim');
-  const nerdfontPath = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/nerd-fonts/patched-fonts/FiraCode');
+  const nerdfontPath = path.join(homeExtension, '/bin/nerd-fonts/patched-fonts/FiraCode');
   const nerdfontPathLinux = path.join(homeDirectory, '.local/share/fonts/FiraCode');
   const nerdfontPathMacos = path.join(homeDirectory, 'Library/Fonts/FiraCode');
   const nerdfontPathWindows = path.join(homeDirectory, 'AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf');
-  const nvimPathLinux = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/linux/envs/linux/bin/nvim');
-  const nvimPathMacos = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/macos/envs/macos/bin/nvim');
-  const nvimPathWindows = path.join(homeDirectory, '.vscode/extensions/yeferyv.retronvim/bin/windows/envs/windows/Library/bin/nvim.exe');
+  const nvimPathLinux = path.join(homeExtension, '/bin/linux/envs/linux/bin/nvim');
+  const nvimPathMacos = path.join(homeExtension, '/bin/macos/envs/macos/bin/nvim');
+  const nvimPathWindows = path.join(homeExtension, '/bin/windows/envs/windows/Library/bin/nvim.exe');
+  const initDotLuaPath = path.join(homeExtension, '/nvim/init.lua');
 
   if (os.platform() == "win32") {
     var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
@@ -24,17 +24,9 @@ function setNeovimPath(homeExtension) {
     var pixiPath = "./.pixi/envs/default/bin/python"
   }
 
-  // create symlink for environment variables path
-  if (fs.existsSync(retronvimPath)) {
-    fs.unlinkSync(retronvimPath)
-    fs.symlinkSync(homeExtension, retronvimPath)
-  } else {
-    fs.symlinkSync(homeExtension, retronvimPath)
-  }
-
   // install locally nerd-fonts
   if (os.platform() == "win32" && fs.existsSync(nerdfontPathWindows) === false) {
-    child_process.exec('powershell.exe -ExecutionPolicy Bypass -File %USERPROFILE%/.vscode/extensions/yeferyv.retronvim/bin/nerd-fonts/install.ps1')
+    child_process.exec('powershell.exe -ExecutionPolicy Bypass -File ' + homeExtension + '/bin/nerd-fonts/install.ps1')
     vscode.window.showInformationMessage('relaunch vscode to load nerd-font')
   }
   if (os.platform() == "linux" && fs.existsSync(nerdfontPathLinux) === false) {
@@ -60,6 +52,9 @@ function setNeovimPath(homeExtension) {
   config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
   config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacos, vscode.ConfigurationTarget.Global)
   config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
+	config.update('vscode-neovim.neovimInitVimPaths.linux', initDotLuaPath, vscode.ConfigurationTarget.Global)
+	config.update('vscode-neovim.neovimInitVimPaths.darwin', initDotLuaPath, vscode.ConfigurationTarget.Global)
+	config.update('vscode-neovim.neovimInitVimPaths.win32', initDotLuaPath, vscode.ConfigurationTarget.Global)
 }
 
 // You can call this function in your extension's activate function or based on certain events

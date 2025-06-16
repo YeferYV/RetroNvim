@@ -3,8 +3,6 @@
 
 function ll() { eza --long --all --icons --group-directories-first $args; }
 
-function vi() { nvim -u $HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua $args; }
-
 function y() { yazi $PWD --cwd-file=$HOME/.yazi $args; cd $(cat $HOME/.yazi); write-host -NoNewline "`e[A`e[K"; }
 
 function yy() { start-process -NoNewWindow -Wait yazi -ArgumentList $PWD,"--cwd-file=$HOME/.yazi"; cd $(cat $HOME/.yazi); } # start-process is a equivalent of </dev/tty
@@ -15,15 +13,19 @@ function action2() { [Microsoft.PowerShell.PSConsoleReadLine]::insert($args) }
 
 function fzf_history() { return (Get-Content $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt -Raw) -replace "```n", " " | fzf --tac; }
 
+# https://github.com/PowerShell/PSReadLine/issues/3159
 function cursor {
-  $esc = [char]27
+  # $esc = [char]27
+  $ESC = "$([char]0x1b)"
 
   if ($args[0] -eq 'command') {
-    # write-host -nonewline "`e[2 q";   # not supported on powershell version 5
-    [Console]::Write("$esc[2 q")        # block cursor # works on powershell version 5 but it flickers with starship
+    # write-host -nonewline "`e[2 q";     # not supported on powershell version 5
+    # [Console]::Write("$esc[2 q")        # block cursor # works on powershell version 5 but it flickers with starship
+     Write-Host -NoNewLine "${ESC}[2 q"   # block cursor
   } else {
-    # write-host -nonewline "$esc[6 q"; # not supported on powershell version 5
-    [Console]::Write("$esc[6 q")        # beam cursor # works on powershell version 5 but it flickers with starship
+    # write-host -nonewline "$esc[6 q";   # not supported on powershell version 5
+    # [Console]::Write("$esc[6 q")        # beam cursor # works on powershell version 5 but it flickers with starship
+     Write-Host -NoNewLine "${ESC}[6 q"   # beam cursor
   }
 }
 
@@ -43,22 +45,24 @@ Set-PSReadlineKeyHandler -key alt+j  -Function HistorySearchForward  -ViMode Com
 Set-PSReadLineKeyHandler -key alt+h  -Function ViCommandMode
 Set-PSReadlineKeyHandler -key tab    -Function MenuComplete
 
+$env:RETRONVIM_PATH=(Get-ChildItem -Path "$HOME\.vscode\extensions\yeferyv.retronvim*" | Select-Object -First 1).FullName
 $env:BAT_THEME="base16"
 $env:EDITOR="nvim"
 $env:FZF_DEFAULT_OPTS="--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'"
+$env:FONT_PATH="$HOME\AppData\Local\Microsoft\Windows\Fonts\FiraCodeNerdFont-Bold.ttf"
 $env:HOME=$env:USERPROFILE # fot ~/.gitconfig
-$env:LESSKEYIN="$HOME/.vscode/extensions/yeferyv.retronvim/yazi/lesskey"
+$env:LESSKEYIN="$env:RETRONVIM_PATH/yazi/lesskey"
 $env:PATH_RIPGREP="$HOME\AppData\Local\Programs\Microsoft VS Code\resources\app\node_modules\@vscode\ripgrep\bin"
-$env:PATH="$HOME\.vscode\extensions\yeferyv.retronvim\bin\windows\envs\windows\Library\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\local\bin;${env:RIPGREP_PATH};${env:PATH};"
+$env:PATH="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\local\bin;${env:RIPGREP_PATH};${env:PATH};"
 $env:PNPM_HOME="$HOME/appdata/local/pnpm"
-$env:RETRONVIM_INIT=(Get-ChildItem -Path "$HOME\.vscode\extensions\yeferyv.retronvim*").FullName
-$env:STARSHIP_CONFIG="$HOME/.vscode/extensions/yeferyv.retronvim/powershell/starship.toml"
+$env:STARSHIP_CONFIG="$env:RETRONVIM_PATH/powershell/starship.toml"
 $env:SHELL="powershell"
-$env:VIMINIT="lua vim.cmd.source([[~/.vscode/extensions/yeferyv.retronvim/nvim/init.lua]])"
-$env:YAZI_CONFIG_HOME="$HOME/.vscode/extensions/yeferyv.retronvim/yazi"
-$env:YAZI_FILE_ONE="$HOME/.vscode/extensions/yeferyv.retronvim/bin/windows/envs/windows/Library/usr/bin/file.exe"
+$env:VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"
+$env:YAZI_CONFIG_HOME="$env:RETRONVIM_PATH/yazi"
+$env:YAZI_FILE_ONE="$env:RETRONVIM_PATH/bin/windows/envs/windows/Library/usr/bin/file.exe"
 
 set-alias which get-command
 
-if (get-command starship -ErrorAction SilentlyContinue) { iex (&starship init powershell);                  }
-if ($env:TERM_PROGRAM -eq "vscode")                     { . "$(code --locate-shell-integration-path pwsh)"; } # should be after starship otherwise won't work
+if ( -not (Test-Path $env:FONT_PATH) -and $env:OS -eq "Windows_NT" ) { set-executionpolicy bypass currentuser; & "$env:RETRONVIM_PATH\bin\nerd-fonts\install.ps1"; }
+if ( get-command starship -ErrorAction SilentlyContinue )            { iex (&starship init powershell);                  }
+if ( $env:TERM_PROGRAM -eq "vscode" )                                { . "$(code --locate-shell-integration-path pwsh)"; } # should be after starship otherwise won't work

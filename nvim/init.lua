@@ -3,7 +3,9 @@
 -- ╰─────────╯
 
 -- Clone 'mini.nvim'
-local path_package = vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim/nvim/plugins/site/"
+local retronvim_exist = vim.fn.glob(vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua",0,1)[1] -- ...0,1 shows in a list && [1] grabs the first match
+local retronvim_path = (retronvim_exist ~= nil) and vim.fs.dirname(retronvim_exist) or vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim/nvim"
+local path_package = retronvim_path .. "/plugins/site/"
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
 if not vim.loop.fs_stat(mini_path) then

@@ -1,27 +1,23 @@
-"$schema" = 'https://starship.rs/config-schema.json'
-
-format = "($battery)($sudo)($username)($custom)($git_branch)($git_status)($cmd_duration)($status)($character)"
+format = "($battery)($sudo)($username)(${custom.inside_home})(${custom.inside_symlink})($directory)(${custom.space})($git_branch)($git_status)($cmd_duration)($status)($character)"
 add_newline = false
 command_timeout = 60000
 
+[directory]
+home_symbol = ""
+truncation_length = 9
+format = '[$path](bold fg:#5555cc)[$read_only]($read_only_style)'
+
+[custom.inside_home]
+when = """ ! git rev-parse --is-inside-work-tree && pwd | grep --ignore-case "$HOME/" """
+format = "[~](bold fg:#5555cc)"
+
 [custom.inside_symlink]
-when =    """ test "${PWD:A}" != "$PWD"  """
-command = """ echo ${PWD/$HOME/\\~} """
-format =  """[$output](bold fg:#5555cc) """
+when = """ git rev-parse --is-inside-work-tree && [[ "$PWD:A" != "$PWD" ]]"""
+format = "[~](bold fg:#5555cc)"
 
-[custom.outside_git]
-when =    """ ! git rev-parse --is-inside-work-tree && test "$HOME" != "$PWD" """
-command = """ echo "${PWD/$HOME/~}" """
-format =  """[$output](bold fg:#5555cc) """
-
-[custom.inside_git]
-when = """ git rev-parse --is-inside-work-tree && test "${PWD:A}" = "$PWD" """
-command = """
-    GIT_ROOT=$(git rev-parse --show-toplevel)
-    REPO_NAME=${GIT_ROOT:t}
-    echo "$REPO_NAME${PWD#$GIT_ROOT}"
-"""
-format =  """[$output](bold fg:#5555cc) """
+[custom.space]
+when = """ test "${HOME:l}" != "${PWD:l}" """
+format = " "
 
 [cmd_duration]
 min_time = 60000

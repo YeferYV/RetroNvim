@@ -322,7 +322,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `<tab>`       | show (dash/path) options or complete path                  |
 |    `<tab><tab>`    | enter completion menu                                      |
 |    `<esc><esc>`    | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
-|    `vi<enter>`     | open retronvim's neovim IDE (`<space>` to open whichkey)   |
+|    `nvim<enter>`   | open retronvim's neovim IDE (`<space>` to open whichkey)   |
 |     `y<enter>`     | open yazi (changes directory on exit)                      |
 |      `alt+o`       | open yazi (even while writing commands)                    |
 | `alt+h` or `<esc>` | enter vim-mode                                             |
@@ -398,16 +398,17 @@ _    _    _              _              _    _    _
 
 <details open><summary></summary>
 
-- On Windows 10/11 before installing `retronvim` extension you need to enable `Developer Mode` to be able to create the `~/.vscode/extensions/yeferyv.retronvim` symlink and `firacode nerd font` symlink.
-  Go to `Settings` > `System` > `For Developers` > `Developer Mode` > `On` and relaunch vscode
+- RECOMENDED: On Windows 10/11 to allow creations of symlinks (npm creates them) you need to enable `Developer Mode`
+  Go to `Settings` > `System` > `For Developers` > `Developer Mode` > `On`
 
   <img src="https://github.com/user-attachments/assets/eeccfa84-32c1-4b81-bf89-804e08e97afa" alt="https://neacsu.net/posts/win_symlinks" width="700">
 
 - RetroNvim installs [`cvim` a vscodevim fork with flash.nvim support](https://github.com/VSCodeVim/Vim/issues/8567) and [`whichkey` a menu for keymaps](https://github.com/vspacecode/vscode-which-key) vscode extensions as optional dependencies
 
-- some text-objects requires install [`vscode-neovim`](https://github.com/vscode-neovim/vscode-neovim) (tested on vscode-neovim version v1.18.17, neovim version v0.11.0 and retronvim version v0.3.0,
-  future versions may be incompatible with retronvim's [init.lua](https://github.com/YeferYV/RetroNvim/blob/main/nvim/init.lua) file) and uninstall/disable [`cvim`](https://github.com/VSCodeVim/Vim/issues/8567) extension, you may need to relaunch vscode,
-  alternatively use `nvim -u ~/.vscode/extensions/yeferyv.retronvim/nvim/init.lua` a neovim IDE used inside `yazi`
+- some text-objects requires install [`vscode-neovim`](https://github.com/vscode-neovim/vscode-neovim)
+  (tested on vscode-neovim version v1.18.17, neovim version v0.11.0 and retronvim version v0.3.0, future versions may be incompatible with retronvim's [init.lua](https://github.com/YeferYV/RetroNvim/blob/main/nvim/init.lua) file)
+  and uninstall/disable [`cvim`](https://github.com/VSCodeVim/Vim/issues/8567) extension, you may need to relaunch vscode,
+  alternatively use `nvim` or `yazi` when opening a terminal with the profile `zsh (retronvim)` or `powershell(retronvim)` which are the default profile when opening a terminal
 
 **Manual Install**
 
@@ -419,7 +420,7 @@ _    _    _              _              _    _    _
   pixi global install git nodejs nvim yazi
   git clone --recursive https://github.com/yeferyv/retronvim
   cd retronvim
-  npx vsce package --out retronvim.vsix
+  npx vsce package --out   retronvim.vsix
   code --install-extension retronvim.vsix
   ```
 
@@ -429,7 +430,7 @@ _    _    _              _              _    _    _
   winget install gnuwin32.file git.git neovim.neovim openjs.nodejs prefix-dev.pixi sxyazi.yazi microsoft.vcredist.2015+.x64 # microsoft.visualstudiocode # then relaunch terminal
   git clone --recursive https://github.com/yeferyv/retronvim
   cd retronvim
-  npx vsce package --out retronvim.vsix
+  npx vsce package --out   retronvim.vsix
   code --install-extension retronvim.vsix
   ```
 
@@ -438,15 +439,23 @@ _    _    _              _              _    _    _
 - Linux/Macos/Msys2:
   ```bash
   code  --install-extension  yeferyv.retronvim
-  ln -s ~/.vscode/extensions/yeferyv.retronvim*            ~/.vscode/extensions/yeferyv.retronvim    # launching vscode will create this symlink automatically
-  ln -s ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc  ~/.zshrc
+  cp    ~/.vscode/extensions/yeferyv.retronvim*/zsh/.zshrc  ~/.zshrc
+  ```
+
+- SSH:
+  ```bash
+  curl  -L https://github.com/yeferyv/retronvim/releases/download/v0.3.1/retronvim-0.3.1.vsix | bsdtar -xf-
+  mkdir -p           ~/.vscode/extensions
+  cp    -r extension ~/.vscode/extensions/yeferyv.retronvim
+  cp                 ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc  ~/.zshrc
   ```
 
 - Windows 10/11:
   ```powershell
+  set-executionpolicy bypass currentuser ################################################ allow to load profile.ps1
+  winget  install vscode ################################################################ then relaunch terminal
   code  --install-extension  yeferyv.retronvim
-  cp -r ~/.vscode/extensions/yeferyv.retronvim*            ~/.vscode/extensions/yeferyv.retronvim    # launching vscode will create a symlink automatically
-  cp -r ~/.vscode/extensions/yeferyv.retronvim/powershell  ~/documents/windowspowershell
+  cp -r ~/.vscode/extensions/yeferyv.retronvim*/powershell  ~/documents/windowspowershell
   ```
 
 **VSCode Marketplace**
