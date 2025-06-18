@@ -39,7 +39,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 5. Installation
    - [Install](#installation)
    - [Trobleshotting](#troubleshooting)
-   - [Terminal Dependencies (optional)](#terminal-dependencies-optional)
+   - [Package Manager (optional)](#package-manager-optional)
 6. [Vim Cheatsheets / Tutorials](#vim-cheatsheets--tutorials)
 7. [Related projects](#related-projects)
 
@@ -424,7 +424,7 @@ _    _    _              _              _    _    _
   code --install-extension retronvim.vsix
   ```
 
-  Windows 10/11:
+- Windows 10/11:
 
   ```powershell
   winget install gnuwin32.file git.git neovim.neovim openjs.nodejs prefix-dev.pixi sxyazi.yazi microsoft.vcredist.2015+.x64 # microsoft.visualstudiocode # then relaunch terminal
@@ -444,7 +444,7 @@ _    _    _              _              _    _    _
 
 - SSH:
   ```bash
-  curl  -L https://github.com/yeferyv/retronvim/releases/download/v0.3.1/retronvim-0.3.1.vsix | bsdtar -xf-
+  curl  -L https://github.com/yeferyv/retronvim/releases/download/v0.3.1/retronvim-linux-x64-0.3.1.vsix | bsdtar -xf-
   mkdir -p           ~/.vscode/extensions
   cp    -r extension ~/.vscode/extensions/yeferyv.retronvim
   cp                 ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc  ~/.zshrc
@@ -458,15 +458,24 @@ _    _    _              _              _    _    _
   cp -r ~/.vscode/extensions/yeferyv.retronvim*/powershell  ~/documents/windowspowershell
   ```
 
+**Install from github releases (offline)(portable)**
+  open command palette `ctrl+shift+p` then type `Extensions: install from vsix`
+
 **VSCode Marketplace**
 
 - RetroNvim extension is shipped with
   [`neovim`](https://neovim.io),
-  [`pixi`](https://github.com/prefix-dev/pixi),
-  [`yazi`](https://github.com/sxyazi/yazi),
-  [`fzf`](https://github.com/junegunn/fzf),
-  [`starship`](https://github.com/starship/starship) and
   [`kanata`](https://github.com/jtroo/kanata) binaries
+  [`pixi`](https://github.com/prefix-dev/pixi),
+  [`bat`](https://github.com/sharkdp/bat),
+  [`eza`](https://github.com/eza-community/eza),
+  [`fzf`](https://github.com/junegunn/fzf),
+  [`git`](https://github.com/git-for-windows/git),
+  [`lazygit`](https://github.com/jesseduffield/lazygit),
+  [`ripgrep`](https://github.com/BurntSushi/ripgrep),
+  [`starship`](https://github.com/starship/starship),
+  [`yazi`](https://github.com/sxyazi/yazi),
+  [`7zip`](https://github.com/ip7z/7zip), and
   [using github-actions](https://github.com/YeferYV/retronvim/tree/main/.github/workflows/release.yml);
   [`mini.nvim`](https://github.com/echasnovski/mini.nvim),
   [`snacks.nvim`](https://github.com/folke/snacks.nvim),
@@ -491,12 +500,14 @@ _    _    _              _              _    _    _
 
 </details>
 
-## Terminal dependencies (optional)
+## Package Manager (optional)
 
 <details open><summary></summary>
 
-- To install terminal dependencies after installing retronvim extension, open
-  `whichkey` > `+Install Dependencies` > `install <your package manager>` > `<your package manager> install lazygit startship zsh` > relaunch vscode
+- open `whichkey > +Install Dependencies > install brew` for macos or
+  `whichkey > +Install Dependencies > install nix-env` for linux or
+  `whichkey > +Install Dependencies > install scoop` for windows or
+  just use `pixi` if you don't need GUI programs
 
 </details>
 

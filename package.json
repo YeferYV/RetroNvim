@@ -796,7 +796,7 @@
             },
             {
               "key": "n",
-              "name": "install nix-env ripdrag (Linux)",
+              "name": "install nix-env ripdrag zsh (Linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -812,7 +812,7 @@
                   "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
                 },
                 {
-                  "text": "bash -i -c \"nix-env -iA  nixpkgs.ripdrag\"; fc-cache -fv \n"
+                  "text": "bash -i -c \"nix-env -iA nixpkgs.ripdrag nixpkgs.zsh \"; \n"
                 }
               ]
             },
@@ -828,7 +828,7 @@
               ],
               "args": [
                 {
-                  "profileName": "PowerShell"
+                  "profileName": "powershell (retronvim)"
                 },
                 {
                   "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
@@ -841,26 +841,6 @@
                 },
                 {
                   "text": "msys2 -c 'pacman -S --noconfirm zsh' \n"
-                }
-              ]
-            },
-            {
-              "key": "P",
-              "name": "pixi install bat eza git lazygit 7zip ",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "pixi global install bat eza git lazygit --environment terminal-dependencies # ripgrep' \n"
-                },
-                {
-                  "text": "pixi exec shell -c 'pixi global install 7zip 2>/dev/null || pixi global install p7zip' \n"
                 }
               ]
             },
@@ -974,7 +954,6 @@
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -983,6 +962,9 @@
                 },
                 {
                   "text": "cp --verbose $RETRONVIM_PATH/zsh/.zshrc ~/.zshrc  \n"
+                },
+                {
+                  "text": "# chsh --shell /bin/zsh $USER \n"
                 }
               ]
             }

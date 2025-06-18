@@ -47,22 +47,22 @@ prepend_keymap = [
 	{ on = [ "i" ],      run = """ shell ' bat --paging always --wrap never %*   ' --block """, for = "windows", desc = "Bat open selected" },
 
   # Shell
-	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                           ' --block """, for = "unix",    desc = "VScode open selected" },
-	{ on = [ "s", "c" ], run = """ shell ' code %*                                                             ' --block """, for = "windows", desc = "VScode open selected" },
-	{ on = [ "s", "D" ], run = """ search fd                                                                             """,                  desc = "Search by content using fd" },
-	{ on = [ "s", "i" ], run = """ shell ' $SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"                       ' --block """, for = "unix",    desc = "Swallow sxiv (linux)" },
-	{ on = [ "s", "l" ], run = """ shell ' lazygit                                                             ' --block """,                  desc = "Lazygit" },
-	{ on = [ "s", "n" ], run = """ shell ' nvim "$@"                                                           ' --block """, for = "unix",    desc = "Neovim open selected" },
-	{ on = [ "s", "n" ], run = """ shell ' nvim %*                                                             ' --block """, for = "windows", desc = "Neovim open selected" },
-	{ on = [ "s", "p" ], run = """ shell ' $SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"                 ' --block """, for = "unix",    desc = "Swallow zathura (linux)" },
-	{ on = [ "s", "R" ], run = """ shell ' ripdrag "$@" -x 2>/dev/null &                                       '         """, for = "unix",    desc = "Ripdrag (linux)" },
-	{ on = [ "s", "s" ], run = """ shell ' zsh                                                                 ' --block """, for = "unix",    desc = "Open zsh" },
-	{ on = [ "s", "s" ], run = """ shell ' set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh       ' --block """, for = "windows", desc = "Open msys2's zsh'" },
-	{ on = [ "s", "v" ], run = """ shell ' $SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"                         ' --block """, for = "unix",    desc = "Swallow mpv" },
-	{ on = [ "s", "v" ], run = """ shell ' mpv %*                                                              ' --block """, for = "windows", desc = "Mpv open selected" },
-	{ on = [ "s", "x" ], run = """ shell ' $SWALLOWER xdg-open "$1" 2>/dev/null || xdg-open "$1"               ' --block """, for = "unix",    desc = "Swallow xdg-open (linux)" },
-	{ on = [ "s", "z" ], run = """ shell ' printf "Your Name:"; read name; zip "$name.zip" $(basename -a "$@") ' --block """, for = "unix",    desc = "Zip selected" },
-	{ on = [ "s", "Z" ], run = """ shell ' unzip "$0"                                                          ' --block """, for = "unix",    desc = "Unzip hovered file" },
+	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                              ' --block """, for = "unix",    desc = "VScode open selected" },
+	{ on = [ "s", "c" ], run = """ shell ' code %*                                                                ' --block """, for = "windows", desc = "VScode open selected" },
+	{ on = [ "s", "D" ], run = """ search fd                                                                                """,                  desc = "Search by content using fd" },
+	{ on = [ "s", "i" ], run = """ shell ' $SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"                          ' --block """, for = "unix",    desc = "Swallow sxiv (linux)" },
+	{ on = [ "s", "l" ], run = """ shell ' lazygit                                                                ' --block """,                  desc = "Lazygit" },
+	{ on = [ "s", "n" ], run = """ shell ' nvim "$@"                                                              ' --block """, for = "unix",    desc = "Neovim open selected" },
+	{ on = [ "s", "n" ], run = """ shell ' nvim %*                                                                ' --block """, for = "windows", desc = "Neovim open selected" },
+	{ on = [ "s", "p" ], run = """ shell ' $SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"                    ' --block """, for = "unix",    desc = "Swallow zathura (linux)" },
+	{ on = [ "s", "R" ], run = """ shell ' ripdrag "$@" -x 2>/dev/null &                                          '         """, for = "unix",    desc = "Ripdrag (linux)" },
+	{ on = [ "s", "s" ], run = """ shell ' zsh                                                                    ' --block """, for = "unix",    desc = "Open zsh" },
+	{ on = [ "s", "s" ], run = """ shell ' set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh          ' --block """, for = "windows", desc = "Open msys2's zsh'" },
+	{ on = [ "s", "v" ], run = """ shell ' $SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"                            ' --block """, for = "unix",    desc = "Swallow mpv" },
+	{ on = [ "s", "v" ], run = """ shell ' mpv %*                                                                 ' --block """, for = "windows", desc = "Mpv open selected" },
+	{ on = [ "s", "x" ], run = """ shell ' $SWALLOWER xdg-open "$1" 2>/dev/null || xdg-open "$1"                  ' --block """, for = "unix",    desc = "Swallow xdg-open (linux)" },
+	{ on = [ "s", "z" ], run = """ shell ' printf "Your Name:"; read name; zip -r "$name.zip" $(basename -a "$@") ' --block """, for = "unix",    desc = "Zip selected" },
+	{ on = [ "s", "Z" ], run = """ shell ' unzip "$0"                                                             ' --block """, for = "unix",    desc = "Unzip hovered file" },
 
   # Plugins
 	{ on = [ "l" ], run = "plugin smart-enter",      desc = "open directory or file" },
@@ -71,7 +71,6 @@ prepend_keymap = [
 	{ on = [ '"' ], run = "plugin bookmarks delete", desc = "bookmark delete" },
 ]
 
-# { on = [ "s", "e" ], run = """ shell ' eval ${EDITOR:-nvim -u $HOME/.vscode/extensions/yeferyv.retronvim/nvim/init.lua} "$@" ' --block """, for = "unix",    desc = "$EDITOR open selected" },
 [[mgr.append_keymap]]
 on = [ "s", "e" ]
 run = '''

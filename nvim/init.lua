@@ -3,8 +3,10 @@
 -- ╰─────────╯
 
 -- Clone 'mini.nvim'
-local retronvim_exist = vim.fn.glob(vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua",0,1)[1] -- ...0,1 shows in a list && [1] grabs the first match
-local retronvim_path = (retronvim_exist ~= nil) and vim.fs.dirname(retronvim_exist) or vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim/nvim"
+local retronvim_exist = vim.fn.glob(vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)
+    [1] -- ...0,1 shows in a list && [1] grabs the first match
+local retronvim_path = (retronvim_exist ~= nil) and vim.fs.dirname(retronvim_exist) or
+    vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim/nvim"
 local path_package = retronvim_path .. "/plugins/site/"
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
@@ -1092,38 +1094,39 @@ if not vim.g.vscode then
   -- zsh.exe and bash.exe doesn't support `:!pixi global install lua-language-server` on Windows use powershell.exe or cmd.exe though `:lua os.execute('pixi global install lua-language-server')` works
   -- `pixi global remove nodejs --environment neovim-lsp` to remove only nodejs (e.g. if you want `pixi global install nodejs=20`)
   ---@format disable
+  --vipga, --> to format manually
   map("n", "<leader>L", "", { desc = "+LSP installer" }) -- relaunch nvim to autostart the new installed lsp
-  map("n", "<leader>La", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @astrojs/language-server typescript') end,{ desc = "astro" }) -- (no formatter use biome instead)
-  map("n", "<leader>Lb", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g bash-language-server') end,{ desc = "bashls" }) -- (no formatter press `=` to format selection)
-  map("n", "<leader>LB", function() sendSequence('pixi global install biome --environment neovim-lsp') end,{ desc = "biome (formatter+eslint)" }) -- https://biomejs.dev/internals/language-support/
-  map("n", "<leader>Lc", function() sendSequence('pixi global install clang-tools --expose clangd') end,{ desc = "clangd" }) -- (+formatter)
-  map("n", "<leader>Ld", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g dockerfile-language-server-nodejs') end,{ desc = "dockerls" }) -- (+formatter)
-  map("n", "<leader>Le", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @olrtg/emmet-language-server') end,{ desc = "emmet (autoclose tag)" }) -- suggests <autoclose-this-tag> but not </close-some-open-tag> like vscode-html-language-server
-  map("n", "<leader>Lg", function() sendSequence('pixi global install gopls --environment neovim-lsp') end,{ desc = "gopls (golang)" }) -- (+formatter)
-  map("n", "<leader>Li", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g intelephense') end,{ desc = "intelephense (php)" }) -- (+formatter)
-  map("n", "<leader>Lj", function() sendSequence('pixi global install jdtls --environment neovim-lsp') end,{ desc = "jdtls (java)" }) -- (+formatter)
-  map("n", "<leader>LJ", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g vscode-langservers-extracted') end,{ desc = "cssls/html/jsonls" }) -- (+formatter)
-  map("n", "<leader>Lk", function() sendSequence('pixi global install black efm-langserver --environment neovim-lsp') end,{ desc = "black (python formatter)" })
-  map("n", "<leader>Ll", function() sendSequence('pixi global install lua-language-server --environment neovim-lsp') end,{ desc = "luals (for unix)" }) -- (+formatter)
-  map("n", "<leader>LL", function() sendSequence('winget install luals.lua-language-server # scoop install lua-language-server') end,{ desc = "luals (for windows)" }) -- (+formatter)
-  map("n", "<leader>Lm", function() sendSequence('pixi global install marksman --environment neovim-lsp') end,{ desc = "marksman (markdown)" }) -- (no formatter use prettier)
-  map("n", "<leader>Ln", function() sendSequence('pixi global install neocmakelsp --environment neovim-lsp') end,{ desc = "neocmake" }) -- (+formatter +linter) https://github.com/regen100/cmake-language-server doesn't have formatter nor linter
-  map("n", "<leader>Lo", function() sendSequence('pixi global install omnisharp-roslyn --environment neovim-lsp') end,{ desc = "omnisharp (c#)" }) -- (+formatter)
-  map("n", "<leader>Lpr", function() sendSequence('pixi global install prettier efm-langserver --environment neovim-lsp') end,{ desc = "prettier (formatter)" })
-  map("n", "<leader>LpR", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @prisma/language-server') end,{ desc = "prismals" }) -- (+formatter)
-  map("n", "<leader>Lpy", function() sendSequence('pixi global install pyright --environment neovim-lsp') end,{ desc = "pyright (python)" }) -- (-formatter) means no formatter
-  map("n", "<leader>LpY", function() sendSequence( 'pixi global install python-lsp-server -e neovim-lsp', 'pixi global expose add pylsp -e neovim-lsp' ) end,{ desc = "pylsp (+formatter)" }) -- TODO: replace with https://github.com/astral-sh/ty since doens't show completions on external libraries like pynput
-  map("n", "<leader>Lr", function() sendSequence('pixi global install ruff --environment neovim-lsp') end,{ desc = "ruff (python formatter)" })
-  map("n", "<leader>LR", function() sendSequence('pixi global install rust --with rust-src') end,{ desc = "rust_analyzer" }) -- (+formatter)
-  map("n", "<leader>Lsq", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g sql-language-server vscode-jsonrpc') end,{ desc = "sqlls(-formatter +linter)" }) -- (no formatter use sqls)
-  map("n", "<leader>LsQ", function() sendSequence('pixi global install sqls --environment neovim-lsp') end,{ desc = "sqls (+formatter -linter)" })
-  map("n", "<leader>Lsv", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g svelte-language-server') end,{ desc = "svelte" }) -- (no formatter use biome)
-  map("n", "<leader>Lta", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @tailwindcss/language-server') end,{ desc = "tailwindcss" })
-  map("n", "<leader>LtA", function() sendSequence('pixi global install taplo --environment neovim-lsp') end,{ desc = "taplo (toml)" }) -- (+formatter)
-  map("n", "<leader>Lte", function() sendSequence('pixi global install terraform-ls --environment neovim-lsp') end,{ desc = "terraformls" }) -- (no formatter press `=` to format selection)
-  map("n", "<leader>Lty", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g typescript typescript-language-server') end,{ desc = "typescript/angular/react/js" }) -- (+formatter)
-  map("n", "<leader>Lv", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @vue/language-server typescript') end,{ desc = "volar (vue)" }) -- (no formatter use biome)
-  map("n", "<leader>Ly", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g yaml-language-server') end,{ desc = "yamlls" }) -- (+formatter)
+  map("n", "<leader>La",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @astrojs/language-server typescript') end,             { desc = "astro" })                       -- (no formatter use biome instead)
+  map("n", "<leader>Lb",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g bash-language-server') end,                            { desc = "bashls" })                      -- (no formatter press `=` to format selection)
+  map("n", "<leader>LB",  function() sendSequence('pixi g install biome --environment neovim-lsp') end,                                               { desc = "biome (formatter+eslint)" })    -- https://biomejs.dev/internals/language-support/
+  map("n", "<leader>Lc",  function() sendSequence('pixi g install clang-tools --expose clangd') end,                                                  { desc = "clangd" })                      -- (+formatter)
+  map("n", "<leader>Ld",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g dockerfile-language-server-nodejs') end,               { desc = "dockerls" })                    -- (+formatter)
+  map("n", "<leader>Le",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @olrtg/emmet-language-server') end,                    { desc = "emmet (autoclose tag)" })       -- suggests <autoclose-this-tag> but not </close-some-open-tag> like vscode-html-language-server
+  map("n", "<leader>Lg",  function() sendSequence('pixi g install gopls --environment neovim-lsp') end,                                               { desc = "gopls (golang)" })              -- (+formatter)
+  map("n", "<leader>Li",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g intelephense') end,                                    { desc = "intelephense (php)" })          -- (+formatter)
+  map("n", "<leader>Lj",  function() sendSequence('pixi g install jdtls --environment neovim-lsp') end,                                               { desc = "jdtls (java)" })                -- (+formatter)
+  map("n", "<leader>LJ",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g vscode-langservers-extracted') end,                    { desc = "cssls/html/jsonls" })           -- (+formatter)
+  map("n", "<leader>Lk",  function() sendSequence('pixi g install black efm-langserver --environment neovim-lsp') end,                                { desc = "black (python formatter)" })
+  map("n", "<leader>Ll",  function() sendSequence('pixi g install lua-language-server --environment neovim-lsp') end,                                 { desc = "luals (for unix)" })            -- (+formatter)
+  map("n", "<leader>LL",  function() sendSequence('winget install luals.lua-language-server; # scoop install lua-language-server') end,               { desc = "luals (for windows)" })         -- (+formatter)
+  map("n", "<leader>Lm",  function() sendSequence('pixi g install marksman --environment neovim-lsp') end,                                            { desc = "marksman (markdown)" })         -- (no formatter use prettier)
+  map("n", "<leader>Ln",  function() sendSequence('pixi g install neocmakelsp --environment neovim-lsp') end,                                         { desc = "neocmake" })                    -- (+formatter +linter) https://github.com/regen100/cmake-language-server doesn't have formatter nor linter
+  map("n", "<leader>Lo",  function() sendSequence('pixi g install omnisharp-roslyn --environment neovim-lsp') end,                                    { desc = "omnisharp (c#)" })              -- (+formatter)
+  map("n", "<leader>Lpr", function() sendSequence('pixi g install prettier efm-langserver --environment neovim-lsp') end,                             { desc = "prettier (formatter)" })
+  map("n", "<leader>LpR", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @prisma/language-server') end,                         { desc = "prismals" })                    -- (+formatter)
+  map("n", "<leader>Lpy", function() sendSequence('pixi g install pyright --environment neovim-lsp') end,                                             { desc = "pyright (python)" })            -- (-formatter) means no formatter
+  map("n", "<leader>LpY", function() sendSequence('pixi g install python-lsp-server -e neovim-lsp; pixi global expose add pylsp -e neovim-lsp' ) end, { desc = "pylsp (+formatter)" })          -- TODO: replace with https://github.com/astral-sh/ty since doens't show completions on external libraries like pynput
+  map("n", "<leader>Lr",  function() sendSequence('pixi g install ruff --environment neovim-lsp') end,                                                { desc = "ruff (python formatter)" })
+  map("n", "<leader>LR",  function() sendSequence('pixi g install rust --with rust-src') end,                                                         { desc = "rust_analyzer" })               -- (+formatter)
+  map("n", "<leader>Lsq", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g sql-language-server vscode-jsonrpc') end,              { desc = "sqlls(-formatter +linter)" })   -- (no formatter use sqls)
+  map("n", "<leader>LsQ", function() sendSequence('pixi g install sqls --environment neovim-lsp') end,                                                { desc = "sqls (+formatter -linter)" })
+  map("n", "<leader>Lsv", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g svelte-language-server') end,                          { desc = "svelte" })                      -- (no formatter use biome)
+  map("n", "<leader>Lta", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @tailwindcss/language-server') end,                    { desc = "tailwindcss" })
+  map("n", "<leader>LtA", function() sendSequence('pixi g install taplo --environment neovim-lsp') end,                                               { desc = "taplo (toml)" })                -- (+formatter)
+  map("n", "<leader>Lte", function() sendSequence('pixi g install terraform-ls --environment neovim-lsp') end,                                        { desc = "terraformls" })                 -- (no formatter press `=` to format selection)
+  map("n", "<leader>Lty", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g typescript typescript-language-server') end,           { desc = "typescript/angular/react/js" }) -- (+formatter)
+  map("n", "<leader>Lv",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @vue/language-server typescript') end,                 { desc = "volar (vue)" })                 -- (no formatter use biome)
+  map("n", "<leader>Ly",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g yaml-language-server') end,                            { desc = "yamlls" })                      -- (+formatter)
   ---@format enable
 
   ------------------------------------------------------------------------------------------------------------------------

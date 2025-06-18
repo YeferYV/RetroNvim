@@ -52,9 +52,9 @@ $env:FZF_DEFAULT_OPTS="--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --c
 $env:FONT_PATH="$HOME\AppData\Local\Microsoft\Windows\Fonts\FiraCodeNerdFont-Bold.ttf"
 $env:HOME=$env:USERPROFILE # fot ~/.gitconfig
 $env:LESSKEYIN="$env:RETRONVIM_PATH/yazi/lesskey"
-$env:PATH_RIPGREP="$HOME\AppData\Local\Programs\Microsoft VS Code\resources\app\node_modules\@vscode\ripgrep\bin"
-$env:PATH="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\local\bin;${env:RIPGREP_PATH};${env:PATH};"
+$env:PATH="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin;$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\mingw64\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\local\bin;${env:PATH};"
 $env:PNPM_HOME="$HOME/appdata/local/pnpm"
+$env:RETRONVIM_BIN="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin"
 $env:STARSHIP_CONFIG="$env:RETRONVIM_PATH/powershell/starship.toml"
 $env:SHELL="powershell"
 $env:VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"
@@ -63,6 +63,7 @@ $env:YAZI_FILE_ONE="$env:RETRONVIM_PATH/bin/windows/envs/windows/Library/usr/bin
 
 set-alias which get-command
 
-if ( -not (Test-Path $env:FONT_PATH) -and $env:OS -eq "Windows_NT" ) { set-executionpolicy bypass currentuser; & "$env:RETRONVIM_PATH\bin\nerd-fonts\install.ps1"; }
-if ( get-command starship -ErrorAction SilentlyContinue )            { iex (&starship init powershell);                  }
-if ( $env:TERM_PROGRAM -eq "vscode" )                                { . "$(code --locate-shell-integration-path pwsh)"; } # should be after starship otherwise won't work
+if ( -not (Test-Path $env:RETRONVIM_BIN) -and $env:OS -eq "Windows_NT" ) { try { cd $env:RETRONVIM_PATH/bin; ./7zr.exe x windows.7z; cd ~; } catch {}; }
+if ( -not (Test-Path $env:FONT_PATH)     -and $env:OS -eq "Windows_NT" ) { $ErrorActionPreference = 'SilentlyContinue'; set-executionpolicy bypass currentuser; & "$env:RETRONVIM_PATH\bin\nerd-fonts\install.ps1"; }
+if ( get-command starship -ErrorAction SilentlyContinue )                { iex (&starship init powershell);                  }
+if ( $env:TERM_PROGRAM -eq "vscode" )                                    { . "$(code --locate-shell-integration-path pwsh)"; } # should be after starship otherwise won't work
