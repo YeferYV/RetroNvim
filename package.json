@@ -796,7 +796,7 @@
             },
             {
               "key": "n",
-              "name": "install nix-env ripdrag zsh (Linux)",
+              "name": "install nix-env zsh (Linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -812,7 +812,7 @@
                   "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
                 },
                 {
-                  "text": "bash -i -c \"nix-env -iA nixpkgs.ripdrag nixpkgs.zsh \"; \n"
+                  "text": "bash -i -c \"nix-env -iA nixpkgs.zsh \"; \n"
                 }
               ]
             },
