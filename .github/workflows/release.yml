@@ -58,6 +58,17 @@ jobs:
           curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/nerd-fonts/patched-fonts/FiraCode"                         && cp /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
           curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.ps1                         --create-dirs  --output    "bin/nerd-fonts/install.ps1"
 
+          (
+            mkdir /tmp/build_drag
+            cd    /tmp/build_drag
+            pixi global install pyinstaller=6.14.1
+            pixi init
+            pixi add python=3.13.5
+            pixi add --pypi tkinterdnd2==0.4.3
+            curl -LO https://raw.githubusercontent.com/ahrm/dotfiles/06ac2710ce6169dd451dedc738681feff3cfe846/lf-windows/lf_scripts/drag.py
+            pyinstaller --onefile --noconsole --paths="$PWD/.pixi/envs/default/lib/python3.13/site-packages" drag.py
+          )
+
           #######################################################################################################################################################################################################################################################################################################################################################################################
 
           curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-macos-x86_64.tar.gz                          | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/macos/envs"                                                && cp -r /tmp/nvim-macos-x86_64 bin/macos/envs/macos
@@ -90,15 +101,11 @@ jobs:
           curl -L https://github.com/ip7z/7zip/releases/download/24.09/7z2409-linux-x64.tar.xz                                 | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/7zz bin/7z                                                       && cp /tmp/7zz                bin/macos/envs/macos/bin/7z
 
           (
-            pixi global install pkg-config=0.29.2 glib=2.84.2 gobject-introspection=1.84.0 gtk4=4.14.1 libvulkan-loader=1.4.313.0 rust=1.87.0 rust-src=1.87.0 --environment rust
-            cargo install ripdrag --version 0.4.10
-            cp ~/.cargo/bin/ripdrag bin/linux/envs/linux/bin
-          )
-          (
             export PIXI_HOME="$PWD/bin/linux"
             pixi global install --platform linux-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 lazygit=0.52.0 starship=1.22.1 ripgrep=14.1.1 yazi=25.5.31 --environment linux # p7zip=16.02
           )
           (
+            cp /tmp/build_drag/dist/drag bin/linux/envs/linux/bin
             cd bin
             7z a -mx9 linux.7z linux
           )
