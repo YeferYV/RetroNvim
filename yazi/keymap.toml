@@ -43,27 +43,27 @@ prepend_keymap = [
 	{ on = [ "F" ],      run = """ filter --smart                                          """,                  desc = "Filter" },
 	{ on = [ "g", "d" ], run = """ cd ~/Documents                                          """,                  desc = "Goto ~/Documents" },
 	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                          """,                  desc = "Goto ~/Downloads" },
-	{ on = [ "i" ],      run = """ shell ' bat --paging always --wrap never "$@" ' --block """, for = "unix",    desc = "Bat open selected" },
-	{ on = [ "i" ],      run = """ shell ' bat --paging always --wrap never %*   ' --block """, for = "windows", desc = "Bat open selected" },
+	{ on = [ "g", "r" ], run = """ shell -- ya emit cd "$(git rev-parse --show-toplevel)"  """,                  desc = "Goto git root" },
+	{ on = [ "i" ],      run = """ shell -- bat --paging always --wrap never "$@" --block  """, for = "unix",    desc = "Bat open selected" },
+	{ on = [ "i" ],      run = """ shell -- bat --paging always --wrap never  %*  --block  """, for = "windows", desc = "Bat open selected" },
 
   # Shell
-	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                              ' --block """, for = "unix",    desc = "vscode open selected" },
-	{ on = [ "s", "c" ], run = """ shell ' code %*                                                                ' --block """, for = "windows", desc = "vscode open selected" },
+	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                              ' --block """, for = "unix",    desc = "vscode (supports drag and drop)" }, # drag file from vscode and drop it to the browser
+	{ on = [ "s", "c" ], run = """ shell ' code  %*                                                               ' --block """, for = "windows", desc = "vscode (supports drag and drop)" }, # drag file from vscode and drop it to the browser
 	{ on = [ "s", "D" ], run = """ search fd                                                                                """,                  desc = "search by content using fd" },
 	{ on = [ "s", "i" ], run = """ shell ' $SWALLOWER sxiv "$@" 2>/dev/null || sxiv "$@"                          ' --block """, for = "unix",    desc = "swallow sxiv (linux)" },
 	{ on = [ "s", "l" ], run = """ shell ' lazygit                                                                ' --block """,                  desc = "lazygit" },
 	{ on = [ "s", "n" ], run = """ shell ' nvim "$@"                                                              ' --block """, for = "unix",    desc = "neovim open selected" },
-	{ on = [ "s", "n" ], run = """ shell ' nvim %*                                                                ' --block """, for = "windows", desc = "neovim open selected" },
+	{ on = [ "s", "n" ], run = """ shell ' nvim  %*                                                               ' --block """, for = "windows", desc = "neovim open selected" },
 	{ on = [ "s", "p" ], run = """ shell ' $SWALLOWER zathura "$@" 2>/dev/null || zathura "$@"                    ' --block """, for = "unix",    desc = "swallow zathura (linux)" },
-	{ on = [ "s", "R" ], run = """ shell ' drag once "$@" &                                                       '         """, for = "unix",    desc = "drag and drop" },
-	{ on = [ "s", "R" ], run = """ shell ' drag once  %*                                                          '         """, for = "windows", desc = "drag and drop" },
+  { on = [ "s", "R" ], run = """ shell ' ripdrag "$@" -x 2>/dev/null &                                          '         """, for = "unix",    desc = "ripdrag (linux)" },
 	{ on = [ "s", "s" ], run = """ shell ' zsh                                                                    ' --block """, for = "unix",    desc = "open zsh" },
 	{ on = [ "s", "s" ], run = """ shell ' set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh          ' --block """, for = "windows", desc = "open msys2's zsh'" },
 	{ on = [ "s", "v" ], run = """ shell ' $SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"                            ' --block """, for = "unix",    desc = "swallow mpv" },
 	{ on = [ "s", "v" ], run = """ shell ' mpv %*                                                                 ' --block """, for = "windows", desc = "mpv open selected" },
 	{ on = [ "s", "x" ], run = """ shell ' $SWALLOWER xdg-open "$1" 2>/dev/null || xdg-open "$1"                  ' --block """, for = "unix",    desc = "swallow xdg-open (linux)" },
-	{ on = [ "s", "z" ], run = """ shell ' printf "Your Name:"; read name; zip -r "$name.zip" $(basename -a "$@") ' --block """, for = "unix",    desc = "zip selected" },
-	{ on = [ "s", "Z" ], run = """ shell ' unzip "$0"                                                             ' --block """, for = "unix",    desc = "unzip hovered file" },
+	{ on = [ "s", "z" ], run = """ shell ' 7z a $1.7z "$@"                                                        ' --block """, for = "unix",    desc = "7zip selection" },
+	{ on = [ "s", "z" ], run = """ shell ' 7z a %1.7z  %*                                                         ' --block """, for = "windows", desc = "7zip selection" },
 
   # Plugins
 	{ on = [ "l" ], run = "plugin smart-enter",      desc = "open directory or file" },
