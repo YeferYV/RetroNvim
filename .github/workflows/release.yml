@@ -45,7 +45,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         run: |
 
-          #######################################################################################################################################################################################################################################################################################################################################################################################
+          ###############################################################################################################################################################################################################################################################################################################################################################
 
           git submodule update --init;
           rm -rf ./nvim/plugins/site/pack/deps/opt/snacks.nvim/tests
@@ -55,19 +55,20 @@ jobs:
           source ~/.bashrc
           pixi global install p7zip
 
-          curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/nerd-fonts/patched-fonts/FiraCode"                         && cp /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
+          curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/nerd-fonts/patched-fonts/FiraCode" && cp /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
           curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.ps1                         --create-dirs  --output    "bin/nerd-fonts/install.ps1"
 
-          #######################################################################################################################################################################################################################################################################################################################################################################################
+          ###############################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_macos_cmd_allowed_x86_64                     --create-dirs  --output    "bin/env/bin/kanata"                              && chmod +x    bin/env/bin/kanata
+          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-macos-x86_64.tar.gz                          | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/env"                               && cp -r /tmp/nvim-macos-x86_64 bin/env/bin
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_macos_cmd_allowed_x86_64                     --create-dirs  --output    "bin/env/bin/kanata"                              && chmod +x "bin/env/bin/kanata"
 
           (
             mkdir bin/pixi_pack
             cd    bin/pixi_pack
             pixi init
             pixi global install pixi-pack
-            pixi add       --platform osx-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.52.0 less=679 nvim=0.11.2 pixi=0.48.2 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31
+            pixi add       --platform osx-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.52.0 less=679 pixi=0.48.2 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 # nvim=0.11.2 complains about treesitter for lua filetype
             pixi-pack pack --platform osx-64 --create-executable
             cp    environment.sh ..
             cd ..
@@ -78,8 +79,9 @@ jobs:
           npx       vsce publish
           rm -rf bin/environment.sh
 
-          #######################################################################################################################################################################################################################################################################################################################################################################################
+          ###############################################################################################################################################################################################################################################################################################################################################################
 
+          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage                        --create-dirs  --output    "bin/env/bin/nvim"                                && chmod +x "bin/env/nvim"
           curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_cmd_allowed                                  --create-dirs  --output    "bin/env/bin/kanata"                              && chmod +x env/bin/kanata
 
           (
@@ -92,7 +94,7 @@ jobs:
             cd    bin/pixi_pack
             pixi init
             pixi global install pixi-pack
-            pixi add       --platform linux-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.52.0 less=679 nvim=0.11.2 pixi=0.48.2 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 zsh=5.9
+            pixi add       --platform linux-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.52.0 less=679 pixi=0.48.2 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 zsh=5.9 # nvim=0.11.2 complains about treesitter for lua filetype
             pixi-pack pack --platform linux-64 --create-executable
             cp    environment.sh ..
             cd ..
@@ -103,9 +105,9 @@ jobs:
           npx       vsce publish --target linux-x64
           rm -rf bin/environment.sh
 
-          #######################################################################################################################################################################################################################################################################################################################################################################################
+          ###############################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-win64.zip                                    | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p bin/windows/envs/windows                                        && cp -r /tmp/nvim-win64       bin/windows/envs/windows/Library
+          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-win64.zip                                    | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p bin/windows/envs/windows                && cp -r /tmp/nvim-win64       bin/windows/envs/windows/Library
           curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_cmd_allowed.exe                              --create-dirs  --output    "bin/windows/envs/windows/Library/bin/kanata.exe"
           curl -L https://github.com/prefix-dev/pixi/releases/download/v0.48.2/pixi-x86_64-pc-windows-msvc.zip                 | bsdtar -xzf- --directory "bin/windows/envs/windows/Library/bin/"
           curl -L https://github.com/ip7z/7zip/releases/download/24.09/7zr.exe                                                 --create-dirs  --output    "bin/7zr.exe"
@@ -129,7 +131,7 @@ jobs:
           yes | npx vsce package --target win32-x64
           npx       vsce publish --target win32-x64
 
-          #######################################################################################################################################################################################################################################################################################################################################################################################
+          ###############################################################################################################################################################################################################################################################################################################################################################
 
       - name: Github release 📦
         if: ${{ steps.release.outputs.release_created }}

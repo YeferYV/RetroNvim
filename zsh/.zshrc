@@ -56,7 +56,7 @@ source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highligh
 [[ "$OSTYPE" != "msys"                   ]] && alias  pacman="sudo pacman --noconfirm"
 [[ "$TERM_PROGRAM" == "vscode"           ]] && source "$(code --locate-shell-integration-path zsh)"
 [[   -z $ZDOTDIR                         ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
-[[ ! -e $RETRONVIM_PATH/bin/env/bin/nvim ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh 2>/dev/null)
+[[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh 2>/dev/null)
 
 eval "$(/usr/local/bin/brew                 shellenv 2>/dev/null)"
 eval "$(/opt/homebrew/bin/brew              shellenv 2>/dev/null)"

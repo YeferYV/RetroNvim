@@ -63,6 +63,7 @@ function setNeovimPath(homeExtension) {
 
   // config.update("telemetry.telemetryLevel", "off", vscode.ConfigurationTarget.Global)
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
+  // config.update("terminal.integrated.windowsUseConptyDll", vscode.ConfigurationTarget.Global) // for yazi image preview on windows but sometimes yazi refuses to open
   config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
   config.update('window.customMenuBarAltFocus', false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
   config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)

@@ -44,8 +44,8 @@ prepend_keymap = [
 	{ on = [ "g", "d" ], run = """ cd ~/Documents                                          """,                  desc = "Goto ~/Documents" },
 	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                          """,                  desc = "Goto ~/Downloads" },
 	{ on = [ "g", "r" ], run = """ shell -- ya emit cd "$(git rev-parse --show-toplevel)"  """,                  desc = "Goto git root" },
-	{ on = [ "i" ],      run = """ shell -- bat --paging always --wrap never "$@" --block  """, for = "unix",    desc = "Bat open selected" },
-	{ on = [ "i" ],      run = """ shell -- bat --paging always --wrap never  %*  --block  """, for = "windows", desc = "Bat open selected" },
+	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never "$@"  """, for = "unix",    desc = "Bat open selected" },
+	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never  %*   """, for = "windows", desc = "Bat open selected" },
 
   # Shell
 	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                              ' --block """, for = "unix",    desc = "vscode (supports drag and drop)" }, # drag file from vscode and drop it to the browser
@@ -62,8 +62,8 @@ prepend_keymap = [
 	{ on = [ "s", "v" ], run = """ shell ' $SWALLOWER mpv "$@" 2>/dev/null || mpv "$@"                            ' --block """, for = "unix",    desc = "swallow mpv" },
 	{ on = [ "s", "v" ], run = """ shell ' mpv %*                                                                 ' --block """, for = "windows", desc = "mpv open selected" },
 	{ on = [ "s", "x" ], run = """ shell ' $SWALLOWER xdg-open "$1" 2>/dev/null || xdg-open "$1"                  ' --block """, for = "unix",    desc = "swallow xdg-open (linux)" },
-	{ on = [ "s", "z" ], run = """ shell ' 7z a $1.7z "$@"                                                        ' --block """, for = "unix",    desc = "7zip selection" },
-	{ on = [ "s", "z" ], run = """ shell ' 7z a %1.7z  %*                                                         ' --block """, for = "windows", desc = "7zip selection" },
+	{ on = [ "s", "z" ], run = """ shell ' 7z a -tzip $1.zip "$@"                                                 ' --block """, for = "unix",    desc = "7zip selection" },
+	{ on = [ "s", "z" ], run = """ shell ' 7z a -tzip %1.zip  %*                                                  ' --block """, for = "windows", desc = "7zip selection" },
 
   # Plugins
 	{ on = [ "l" ], run = "plugin smart-enter",      desc = "open directory or file" },

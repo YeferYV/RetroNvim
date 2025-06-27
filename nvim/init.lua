@@ -3,6 +3,7 @@
 -- ╰─────────╯
 
 -- Clone 'mini.nvim'
+-- vim.fn.expand("~/.vscode/extensions/yeferyv.retronvim*/bin/env/bin/zsh")
 local retronvim_exist = vim.fn.glob(vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)
     [1] -- ...0,1 shows in a list && [1] grabs the first match
 local retronvim_path = (retronvim_exist ~= nil) and vim.fs.dirname(retronvim_exist) or
@@ -840,10 +841,14 @@ map({ "v" }, ">", ">gv", { desc = "continious indent" })
 if not vim.g.vscode then
   map("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, desc = "next completion when no lsp" })
   map("i", "<S-Tab>", [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true, desc = "prev completion when no lsp" })
-  map({ "n", "v", "t" }, "<M-Left>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
-  map({ "n", "v", "t" }, "<M-Right>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
-  map({ "n", "v", "t" }, "<M-Up>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
-  map({ "n", "v", "t" }, "<M-Down>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "v", "t" }, "<C-S-l>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
+  map({ "n", "v", "t" }, "<C-S-h>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
+  map({ "n", "v", "t" }, "<C-S-j>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "v", "t" }, "<C-S-k>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "v", "t" }, "<A-S-Right>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
+  map({ "n", "v", "t" }, "<A-S-Left>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
+  map({ "n", "v", "t" }, "<A-S-Down>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "v", "t" }, "<A-S-Up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
   map({ "n" }, "<esc>", "<esc><cmd>lua vim.cmd.nohlsearch()<cr>", { desc = "escape and clear search highlight" })
   map({ "t" }, "<esc><esc>", "<C-\\><C-n>", { desc = "normal mode inside terminal" })
   map({ "n" }, "<C-s>", ":%s//g<Left><Left>", { desc = "Replace in Buffer" })
@@ -852,6 +857,10 @@ if not vim.g.vscode then
   map({ "t", "n" }, "<C-j>", "<C-\\><C-n><C-w>j", { desc = "down window" })
   map({ "t", "n" }, "<C-k>", "<C-\\><C-n><C-w>k", { desc = "up window" })
   map({ "t", "n" }, "<C-l>", "<C-\\><C-n><C-w>l", { desc = "right window" })
+  map({ "t", "n" }, "<S-Left>", "<C-\\><C-n><C-w>h", { desc = "left window" })
+  map({ "t", "n" }, "<S-Down>", "<C-\\><C-n><C-w>j", { desc = "down window" })
+  map({ "t", "n" }, "<S-Up>", "<C-\\><C-n><C-w>k", { desc = "up window" })
+  map({ "t", "n" }, "<S-Right>", "<C-\\><C-n><C-w>l", { desc = "right window" })
   map({ "t", "n" }, "<C-\\>", ToggleTerminal, { desc = "toggle window terminal" })
   map({ "t", "n" }, "<C-;>", "<C-\\><C-n><C-6>", { desc = "go to last buffer" })
   map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })

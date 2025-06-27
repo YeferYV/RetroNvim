@@ -110,7 +110,7 @@
         "workbench.action.openEditorAtIndex9"
       ],
       "terminal.integrated.enableImages": true,
-      "terminal.integrated.experimental.windowsUseConptyDll": true,
+      "terminal.integrated.minimumContrastRatio": 1,
       "terminal.integrated.scrollback": 10000,
       "terminal.integrated.suggest.enabled": true,
       "terminal.integrated.profiles.osx": {
@@ -124,10 +124,10 @@
       },
       "terminal.integrated.profiles.linux": {
         "zsh (retronvim)": {
-          "path": "zsh",
+          "path": "bash",
           "args": [
             "-c",
-            "export ZDOTDIR=\"$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*/zsh | head -n1)\"; zsh"
+            "export ZDOTDIR=\"$(echo ~/.vscode/extensions/yeferyv.retronvim*/zsh)\"; ~/.vscode/extensions/yeferyv.retronvim*/bin/env/bin/zsh"
           ]
         }
       },
@@ -344,7 +344,7 @@
           "panel.border": "#25252566",
           "terminal.border": "#25252566",
           "terminal.ansiBlack": "#3c3c3c",
-          "terminal.ansiRed": "#ff000099",
+          "terminal.ansiRed": "#ff0000",
           "terminal.ansiGreen": "#009900",
           "terminal.ansiYellow": "#999900",
           "terminal.ansiBlue": "#5555cc",
@@ -768,9 +768,10 @@
           "bindings": [
             {
               "key": "b",
-              "name": "install brew karabiner (MacOS)",
+              "name": "install brew karabiner ffmpeg poppler wezterm (MacOS)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -790,15 +791,20 @@
                   "text": "source ${ZDOTDIR:-~}/.zshrc \n"
                 },
                 {
-                  "text": "brew install --cask karabiner-elements \n"
+                  "text": "brew install --cask karabiner-elements wezterm \n"
+                },
+                {
+                  "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
                 }
               ]
             },
             {
               "key": "n",
-              "name": "install nix-env (Linux)",
+              "name": "install nix-env devour ffmpeg poppler wezterm zathura (Linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
@@ -810,12 +816,21 @@
                 },
                 {
                   "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
+                },
+                {
+                  "text": "bash -i -c \"nix-env -iA nixpkgs.devour nixpkgs.zathura \"; \n"
+                },
+                {
+                  "text": "curl -o ~/.pixi/bin/wezterm -L https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage && chmod +x ~/.pixi/bin/wezterm \n"
+                },
+                {
+                  "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
                 }
               ]
             },
             {
               "key": "s",
-              "name": "install scoop zsh (Windows)",
+              "name": "install scoop zsh ffmpeg poppler wezterm (Windows)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
@@ -828,16 +843,16 @@
                   "profileName": "powershell (retronvim)"
                 },
                 {
-                  "text": "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr get.scoop.sh | iex \n"
+                  "text": "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser; iwr get.scoop.sh | iex \n"
                 },
                 {
-                  "text": "pixi global install git; # required by `scoop bucket` \n"
-                },
-                {
-                  "text": "scoop bucket add extras; scoop install msys2 \n"
+                  "text": "scoop bucket add extras; scoop install msys2 wezterm \n"
                 },
                 {
                   "text": "msys2 -c 'pacman -S --noconfirm zsh' \n"
+                },
+                {
+                  "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
                 }
               ]
             },
@@ -851,20 +866,6 @@
             },
             {
               "key": "i",
-              "name": "Increase keyboard repeat rate (MacOS) ",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n"
-                }
-              ]
-            },
-            {
-              "key": "I",
               "name": "Increase keyboard repeat rate (Windows)",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -890,23 +891,21 @@
               ]
             },
             {
-              "key": "k",
-              "name": "Start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
+              "key": "I",
+              "name": "Increase keyboard repeat rate (MacOS) ",
               "commands": [
-                "workbench.action.terminal.newWithProfile",
+                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
+                null,
                 {
-                  "profileName": "zsh (retronvim)"
-                },
-                {
-                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_PATH/bin/env/bin/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
+                  "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n"
                 }
               ]
             },
             {
-              "key": "K",
+              "key": "k",
               "name": "Start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
@@ -917,7 +916,23 @@
                   "profileName": "powershell (retronvim)"
                 },
                 {
-                  "text": "powershell -c 'Set-WinUserLanguageList -force en-US,es-US; conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd'; sleep 2; exit; \r"
+                  "text": "Set-WinUserLanguageList -force en-US,es-US; conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd; sleep 2; exit; \r"
+                }
+              ]
+            },
+            {
+              "key": "K",
+              "name": "Start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
+              "commands": [
+                "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "profileName": "zsh (retronvim)"
+                },
+                {
+                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
                 }
               ]
             },
@@ -928,6 +943,8 @@
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -935,13 +952,19 @@
                   "profileName": "powershell (retronvim)"
                 },
                 {
-                  "text": "set-executionpolicy bypass -scope currentuser                            \n"
+                  "text": "set-executionpolicy bypass -scope currentuser                                                                                        \n"
                 },
                 {
-                  "text": "cp -r $env:RETRONVIM_PATH/powershell   $HOME/documents/windowspowershell \n"
+                  "text": "cp -r $env:RETRONVIM_PATH/powershell                $HOME/documents/windowspowershell                                                \n"
                 },
                 {
-                  "text": "cp    $env:RETRONVIM_PATH/zsh/.zshrc   $HOME/.zshrc                      \n"
+                  "text": "cp    $env:RETRONVIM_PATH/zsh/.zshrc                $HOME/.zshrc                                                                     \n"
+                },
+                {
+                  "text": "cp    $env:RETRONVIM_PATH/powershell/settings.json  $HOME/appdata/local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/ \n"
+                },
+                {
+                  "text": "mkdir -p $HOME/.config/wezterm; cp $env:RETRONVIM_PATH/zsh/wezterm.lua $HOME/.config/wezterm                                         \n"
                 }
               ]
             },
@@ -951,6 +974,8 @@
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -958,7 +983,13 @@
                   "profileName": "zsh (retronvim)"
                 },
                 {
-                  "text": "cp --verbose $RETRONVIM_PATH/zsh/.zshrc ~/.zshrc  \n"
+                  "text": "cp --verbose ~/.vscode/extensions/yeferyv.retronvim*/zsh/.zshrc ~/.zshrc  \n"
+                },
+                {
+                  "text": "mkdir -p ~/.config/wezterm && cp --verbose ~/.vscode/extensions/yeferyv.retronvim*/zsh/wezterm.lua ~/.config/wezterm  \n"
+                },
+                {
+                  "text": "# sudo ln -s ~/.vscode/extensions/yeferyv.retronvim*/bin/env/bin/zsh /bin/zsh \n"
                 },
                 {
                   "text": "# chsh --shell /bin/zsh $USER \n"
@@ -2854,44 +2885,54 @@
         "when": "terminalFocus"
       },
       {
-        "key": "alt+left",
+        "key": "ctrl+shift+h",
         "command": "workbench.action.terminal.resizePaneLeft",
         "when": "terminalFocus"
       },
       {
-        "key": "alt+right",
+        "key": "ctrl+shift+l",
         "command": "workbench.action.terminal.resizePaneRight",
         "when": "terminalFocus"
       },
       {
-        "key": "alt+down",
+        "key": "ctrl+shift+j",
         "command": "workbench.action.terminal.resizePaneDown",
         "when": "terminalFocus"
       },
       {
-        "key": "alt+up",
+        "key": "ctrl+shift+k",
         "command": "workbench.action.terminal.resizePaneUp",
         "when": "terminalFocus"
       },
       {
-        "key": "alt+left",
+        "key": "ctrl+shift+h",
         "command": "workbench.action.decreaseViewSize",
         "when": "!terminalFocus"
       },
       {
-        "key": "alt+right",
+        "key": "ctrl+shift+l",
         "command": "workbench.action.increaseViewSize",
         "when": "!terminalFocus"
       },
       {
-        "key": "alt+down",
+        "key": "ctrl+shift+k",
         "command": "workbench.action.decreaseViewSize",
         "when": "!terminalFocus"
       },
       {
-        "key": "alt+up",
+        "key": "ctrl+shift+j",
         "command": "workbench.action.increaseViewSize",
         "when": "!terminalFocus"
+      },
+      {
+        "key": "ctrl+left",
+        "command": "workbench.action.terminal.focusPreviousPane",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+right",
+        "command": "workbench.action.terminal.focusNextPane",
+        "when": "terminalFocus"
       },
       {
         "key": "enter",
