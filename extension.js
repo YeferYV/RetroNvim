@@ -13,8 +13,8 @@ function setNeovimPath(homeExtension) {
   const nerdfontPathMacos = path.join(homeDirectory, 'Library/Fonts/FiraCode');
   const nerdfontPathWindows = path.join(homeDirectory, 'AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf');
   const nvimPath = path.join(homeDirectory, '/.vscode/extensions/yefery.retronvim');
-  const nvimPathLinux = path.join(homeExtension, '/bin/linux/envs/linux/bin/nvim');
-  const nvimPathMacos = path.join(homeExtension, '/bin/macos/envs/macos/bin/nvim');
+  const nvimPathLinux = path.join(homeExtension, '/bin/env/bin/nvim');
+  const nvimPathMacos = path.join(homeExtension, '/bin/env/bin/nvim');
   const nvimPathWindows = path.join(homeExtension, '/bin/windows/envs/windows/Library/bin/nvim.exe');
   const initDotLuaPath = path.join(homeExtension, '/nvim/init.lua');
 
@@ -23,11 +23,6 @@ function setNeovimPath(homeExtension) {
     fs.mkdir(yaziBookmarkPath, { recursive: true }, (err) => { if (err) { vscode.window.showErrorMessage(`${err.message}`) }} );
   } else {
     var pixiPath = "./.pixi/envs/default/bin/python"
-  }
-
-  // remove ~/.vscode/extensions/yefery.retronvim created by retronvim/nvim/init.lua when retronvim extensions was not installed previously
-  if (fs.existsSync(nvimPath)) {
-    fs.rmSync(nvimPath, { recursive: true })
   }
 
   // install locally nerd-fonts
@@ -47,15 +42,20 @@ function setNeovimPath(homeExtension) {
     vscode.window.showInformationMessage('relaunch vscode to load nerd-font')
   }
 
+  // remove ~/.vscode/extensions/yefery.retronvim created by retronvim/nvim/init.lua when retronvim extensions was not installed previously
+  if (fs.existsSync(nvimPath)) {
+    fs.rmSync(nvimPath, { recursive: true })
+  }
+
   // decompress terminal dependencies
   if (os.platform() == "win32" && fs.existsSync(nvimPathWindows) === false) {
     child_process.exec('try { cd '+ homeExtension +'/bin; ./7zr.exe x windows.7z; } catch {};')
   }
   if (os.platform() == "linux" && fs.existsSync(nvimPathLinux) === false) {
-    child_process.exec('(cd ' + homeExtension + '/bin && ./7z x *.7z 2>/dev/null)')
+    child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
   }
   if (os.platform() == "darwin" && fs.existsSync(nvimPathMacos) === false) {
-    child_process.exec('(cd ' + homeExtension + '/bin && ./7z x *.7z 2>/dev/null)')
+    child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
   }
 
   // Access the configuration for 'vscode-neovim'

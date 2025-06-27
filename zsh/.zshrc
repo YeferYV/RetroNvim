@@ -44,30 +44,25 @@ export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 source $RETRONVIM_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
-[[ "$OSTYPE" == "linux-gnu"    ]] && export PATH="$RETRONVIM_PATH/bin/linux/envs/linux/bin:$HOME/.pixi/bin:$HOME/.local/share/pnpm:$HOME/.local/bin:$PATH"
-[[ "$OSTYPE" == "linux-gnu"    ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
-[[ "$OSTYPE" == "linux-gnu"    ]] && export RETRONVIM_BIN="$RETRONVIM_PATH/bin/linux/envs/linux/bin"
-[[ "$OSTYPE" == "linux-gnu"    ]] && test ! -e ~/.local/share/fonts/FiraCode && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/.local/share/fonts/FiraCode 2>/dev/null && fc-cache
-[[ "$OSTYPE" == "darwin"       ]] && test ! -e ~/Library/Fonts/FiraCode      && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/Library/Fonts/FiraCode      2>/dev/null
-[[ "$OSTYPE" == "darwin"       ]] && export PATH="$RETRONVIM_PATH/bin/macos/envs/macos/bin:$HOME/.pixi/bin:$HOME/Library/pnpm:$HOME/.local/bin:$PATH"
-[[ "$OSTYPE" == "darwin"       ]] && export PNPM_HOME="$HOME/Library/pnpm"
-[[ "$OSTYPE" == "darwin"       ]] && export RETRONVIM_BIN="$RETRONVIM_PATH/bin/macos/envs/macos/bin"
-[[ "$OSTYPE" == "msys"         ]] && test ! -e $HOME/AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf && powershell.exe -ExecutionPolicy Bypass -File $RETRONVIM_PATH/bin/nerd-fonts/install.ps1
-[[ "$OSTYPE" == "msys"         ]] && export PATH="$PATH:$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin:$HOME/.pixi/bin:$HOME/appdata/local/pnpm:$HOME/.local/bin:$PATH"
-[[ "$OSTYPE" == "msys"         ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
-[[ "$OSTYPE" == "msys"         ]] && export RETRONVIM_BIN="$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin"
-[[ "$OSTYPE" != "msys"         ]] && alias  pacman="sudo pacman --noconfirm"
-[[ "$TERM_PROGRAM" == "vscode" ]] && source "$(code --locate-shell-integration-path zsh)"
-[[   -z $ZDOTDIR               ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
-[[ ! -e $RETRONVIM_BIN         ]] && (cd $RETRONVIM_PATH/bin && ./7z x *.7z 2>/dev/null)
+[[ "$OSTYPE" == "linux-gnu"              ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.pixi/bin:$HOME/.local/share/pnpm:$HOME/.local/bin:$PATH"
+[[ "$OSTYPE" == "linux-gnu"              ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
+[[ "$OSTYPE" == "linux-gnu"              ]] && test ! -e ~/.local/share/fonts/FiraCode && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/.local/share/fonts/FiraCode 2>/dev/null && fc-cache
+[[ "$OSTYPE" == "darwin"                 ]] && test ! -e ~/Library/Fonts/FiraCode      && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/Library/Fonts/FiraCode      2>/dev/null
+[[ "$OSTYPE" == "darwin"                 ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.pixi/bin:$HOME/Library/pnpm:$HOME/.local/bin:$PATH"
+[[ "$OSTYPE" == "darwin"                 ]] && export PNPM_HOME="$HOME/Library/pnpm"
+[[ "$OSTYPE" == "msys"                   ]] && test ! -e $HOME/AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf && powershell.exe -ExecutionPolicy Bypass -File $RETRONVIM_PATH/bin/nerd-fonts/install.ps1
+[[ "$OSTYPE" == "msys"                   ]] && export PATH="$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin:$HOME/.pixi/bin:$HOME/appdata/local/pnpm:$HOME/.local/bin:$PATH"
+[[ "$OSTYPE" == "msys"                   ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
+[[ "$OSTYPE" != "msys"                   ]] && alias  pacman="sudo pacman --noconfirm"
+[[ "$TERM_PROGRAM" == "vscode"           ]] && source "$(code --locate-shell-integration-path zsh)"
+[[   -z $ZDOTDIR                         ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
+[[ ! -e $RETRONVIM_PATH/bin/env/bin/nvim ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh 2>/dev/null)
 
 eval "$(/usr/local/bin/brew                 shellenv 2>/dev/null)"
 eval "$(/opt/homebrew/bin/brew              shellenv 2>/dev/null)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)"
 
 # >/dev/null 2>&1 ! diff -q $HOME/.zshrc $ZDOTDIR/.zshrc && [[ "$(realpath $HOME/.zshrc)" != "$(realpath $ZDOTDIR/.zshrc)" ]] && source $HOME/.zshrc
->/dev/null 2>&1 which git	                           || pixi global install git  2>/dev/null
->/dev/null 2>&1 which less	                         || pixi global install less 2>/dev/null
 >/dev/null 2>&1 which fzf	                           && source <(fzf --zsh)
 >/dev/null 2>&1 which eza              	             && alias ls="eza --all --icons --group-directories-first"
 >/dev/null 2>&1 which starship                       && eval "$(starship init zsh)"

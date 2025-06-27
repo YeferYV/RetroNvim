@@ -60,58 +60,53 @@ jobs:
 
           #######################################################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-macos-x86_64.tar.gz                          | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/macos/envs"                                                && cp -r /tmp/nvim-macos-x86_64 bin/macos/envs/macos
-          curl -L https://github.com/sharkdp/bat/releases/download/v0.25.0/bat-v0.25.0-x86_64-apple-darwin.tar.gz              | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/bat-v0.25.0-x86_64-apple-darwin/bat   bin/macos/envs/macos/bin   && chmod +x bin/macos/envs/macos/bin/bat
-          curl -L https://github.com/junegunn/fzf/releases/download/v0.62.0/fzf-0.62.0-darwin_amd64.tar.gz                     | bsdtar -xzf- --directory "bin/macos/envs/macos/bin"
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_macos_cmd_allowed_x86_64                     --create-dirs  --output    "bin/macos/envs/macos/bin/kanata"                 && chmod +x "bin/macos/envs/macos/bin/kanata"
-          curl -L https://github.com/jesseduffield/lazygit/releases/download/v0.52.0/lazygit_0.52.0_Darwin_x86_64.tar.gz       | bsdtar -xzf- --directory "bin/macos/envs/macos/bin"                        && rm bin/macos/envs/macos/bin/{README.md,LICENSE}
-          curl -L https://github.com/prefix-dev/pixi/releases/download/v0.48.2/pixi-x86_64-apple-darwin.tar.gz                 | bsdtar -xzf- --directory "bin/macos/envs/macos/bin"
-          curl -L https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-x86_64-apple-darwin.tar.gz     | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/ripgrep-14.1.1-x86_64-apple-darwin/rg bin/macos/envs/macos/bin
-          curl -L https://github.com/starship/starship/releases/download/v1.23.0/starship-x86_64-apple-darwin.tar.gz           | bsdtar -xzf- --directory "bin/macos/envs/macos/bin"
-          curl -L https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-apple-darwin.zip                       | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/yazi-x86_64-apple-darwin/{ya,yazi}    bin/macos/envs/macos/bin   && chmod +x bin/macos/envs/macos/bin/{ya,yazi}
-          curl -L https://github.com/ip7z/7zip/releases/download/24.09/7z2409-mac.tar.xz                                       | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/7zz                                   bin/7z                     && cp /tmp/7zz                bin/macos/envs/macos/bin/7z
-          curl -L https://repo.prefix.dev/conda-forge/osx-64/eza-0.21.5-h371c88c_0.conda                                       | bsdtar -xzf- --directory "/tmp"                                            && bsdtar -xvf "/tmp/pkg-eza-0.21.5-h371c88c_0.tar.zst" --directory="/tmp"  && cp /tmp/bin/eza            bin/macos/envs/macos/bin
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_macos_cmd_allowed_x86_64                     --create-dirs  --output    "bin/env/bin/kanata"                              && chmod +x    bin/env/bin/kanata
 
           (
-            cd bin
-            7z a -mx9 macos.7z macos
+            mkdir bin/pixi_pack
+            cd    bin/pixi_pack
+            pixi init
+            pixi global install pixi-pack
+            pixi add       --platform osx-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.52.0 less=679 nvim=0.11.2 pixi=0.48.2 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31
+            pixi-pack pack --platform osx-64 --create-executable
+            cp    environment.sh ..
+            cd ..
+            rm -r pixi_pack
           )
 
-          rm -r bin/macos
           yes | npx vsce package
           npx       vsce publish
-          rm -rf bin/{macos.7z,7z}
+          rm -rf bin/environment.sh
 
           #######################################################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage                        --create-dirs  --output    "bin/linux/envs/linux/bin/nvim"                   && chmod +x "bin/linux/envs/linux/bin/nvim"
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_cmd_allowed                                  --create-dirs  --output    "bin/linux/envs/linux/bin/kanata"                 && chmod +x "bin/linux/envs/linux/bin/kanata"
-          curl -L https://github.com/prefix-dev/pixi/releases/download/v0.48.2/pixi-x86_64-unknown-linux-musl.tar.gz           | bsdtar -xzf- --directory "bin/linux/envs/linux/bin"
-          curl -L https://github.com/ip7z/7zip/releases/download/24.09/7z2409-linux-x64.tar.xz                                 | bsdtar -xzf- --directory "/tmp"                                            && cp /tmp/7zz bin/7z                                                       && cp /tmp/7zz                bin/macos/envs/macos/bin/7z
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_cmd_allowed                                  --create-dirs  --output    "bin/env/bin/kanata"                              && chmod +x env/bin/kanata
 
           (
             pixi global install pkg-config=0.29.2 glib=2.84.2 gobject-introspection=1.84.0 gtk4=4.14.1 libvulkan-loader=1.4.313.0 rust=1.87.0 rust-src=1.87.0 --environment rust
             cargo install ripdrag --version 0.4.10
-            cp ~/.cargo/bin/ripdrag bin/linux/envs/linux/bin
+            cp ~/.cargo/bin/ripdrag bin/env/bin
           )
           (
-            export PIXI_HOME="$PWD/bin/linux"
-            pixi global install --platform linux-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 lazygit=0.52.0 starship=1.22.1 ripgrep=14.1.1 yazi=25.5.31 --environment linux # p7zip=16.02
-          )
-          (
-            cd bin
-            7z a -mx9 linux.7z linux
+            mkdir bin/pixi_pack
+            cd    bin/pixi_pack
+            pixi init
+            pixi global install pixi-pack
+            pixi add       --platform linux-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.52.0 less=679 nvim=0.11.2 pixi=0.48.2 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 zsh=5.9
+            pixi-pack pack --platform linux-64 --create-executable
+            cp    environment.sh ..
+            cd ..
+            rm -r pixi_pack
           )
 
-          rm -r bin/linux
           yes | npx vsce package --target linux-x64
           npx       vsce publish --target linux-x64
-          rm -rf bin/{linux.7z,7z}
+          rm -rf bin/environment.sh
 
           #######################################################################################################################################################################################################################################################################################################################################################################################
 
           curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-win64.zip                                    | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p bin/windows/envs/windows                                        && cp -r /tmp/nvim-win64       bin/windows/envs/windows/Library
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.8.1/kanata_cmd_allowed.exe                              --create-dirs  --output    "bin/windows/envs/windows/Library/bin/kanata.exe"
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_cmd_allowed.exe                              --create-dirs  --output    "bin/windows/envs/windows/Library/bin/kanata.exe"
           curl -L https://github.com/prefix-dev/pixi/releases/download/v0.48.2/pixi-x86_64-pc-windows-msvc.zip                 | bsdtar -xzf- --directory "bin/windows/envs/windows/Library/bin/"
           curl -L https://github.com/ip7z/7zip/releases/download/24.09/7zr.exe                                                 --create-dirs  --output    "bin/7zr.exe"
           curl -L https://github.com/git-for-windows/git/releases/download/v2.50.0.windows.1/MinGit-2.50.0-busybox-64-bit.zip  | bsdtar -xzf- --directory "bin/windows/envs/windows/Library"

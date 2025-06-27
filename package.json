@@ -796,7 +796,7 @@
             },
             {
               "key": "n",
-              "name": "install nix-env zsh (Linux)",
+              "name": "install nix-env (Linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -810,9 +810,6 @@
                 },
                 {
                   "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
-                },
-                {
-                  "text": "bash -i -c \"nix-env -iA nixpkgs.zsh \"; \n"
                 }
               ]
             },
@@ -904,7 +901,7 @@
                   "profileName": "zsh (retronvim)"
                 },
                 {
-                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_BIN/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
+                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_PATH/bin/env/bin/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
                 }
               ]
             },
