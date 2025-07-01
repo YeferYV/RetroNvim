@@ -52,7 +52,7 @@ jobs:
           rm -rf ./nvim/plugins/site/pack/deps/start/mini.nvim/tests
 
           curl -L pixi.sh/install.sh | bash
-          source ~/.bashrc
+          export PATH="$HOME/.pixi/bin:$PATH"
           pixi global install p7zip
 
           curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             | bsdtar -xzf- --directory "/tmp"                                            && mkdir -p "bin/nerd-fonts/patched-fonts/FiraCode" && cp /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
