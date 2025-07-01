@@ -8,6 +8,13 @@
 - **nvim:** indent_at_cursor = false (inside vscode) ([2b906d6](https://github.com/YeferYV/RetroNvim/commit/2b906d6cc3fb1c38d0032eee01cd598cdf85c9e3))
 - **zsh:** ZDOTDIR is overwrited by `code --locate-shell-integration-path` ([20ff9c0](https://github.com/YeferYV/RetroNvim/commit/20ff9c04651f80e9da829bd9416ae2966f122eea))
 
+## [0.3.1](https://github.com/YeferYV/RetroNvim/compare/v0.3.1...v0.3.1) (2025-07-01)
+
+
+### Miscellaneous Chores
+
+* release 0.3.1 ([2726f61](https://github.com/YeferYV/RetroNvim/commit/2726f61258ca7cb3be84770cd0c03d093ac7c8ed))
+
 ## [0.3.1](https://github.com/YeferYV/RetroNvim/compare/v0.3.0...v0.3.1) (2025-07-01)
 
 
