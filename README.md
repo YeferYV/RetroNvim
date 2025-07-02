@@ -444,7 +444,7 @@ _    _    _              _              _    _    _
 
 - SSH:
   ```bash
-  curl  -L https://github.com/yeferyv/retronvim/releases/download/v0.3.1/retronvim-linux-x64-0.3.1.vsix | bsdtar -xf-
+  curl  -L https://github.com/yeferyv/retronvim/releases/download/v0.3.2/retronvim-linux-x64-0.3.2.vsix | bsdtar -xf-
   mkdir -p           ~/.vscode/extensions
   cp    -r extension ~/.vscode/extensions/yeferyv.retronvim
   cp                 ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc  ~/.zshrc
