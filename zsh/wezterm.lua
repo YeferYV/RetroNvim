@@ -3,7 +3,7 @@ local act = wezterm.action
 local home = os.getenv("HOME") or os.getenv("USERPROFILE")
 local retronvim_path = wezterm.glob(home .. '/.vscode/extensions/yeferyv.retronvim*')[1]
 
-if wezterm.target_triple == 'x86_64-pc-windows-msvc' then default_prog = { "powershell", "-nologo" } end
+if wezterm.target_triple == 'x86_64-pc-windows-msvc' then default_prog = { "powershell", "-nologo", "-noexit", "-file", retronvim_path .. "/powershell/profile.ps1" } end
 if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then default_prog = { retronvim_path .. "/bin/env/bin/zsh" } end
 
 return {
@@ -14,14 +14,17 @@ return {
   hide_tab_bar_if_only_one_tab = true,
   scrollback_lines = 10000,
   tab_bar_at_bottom = true,
-  text_background_opacity = 0.9,
   use_fancy_tab_bar = false,
   warn_about_missing_glyphs = false,
-  window_background_opacity = 0.9,
   window_close_confirmation = "NeverPrompt",
+  window_background_image = retronvim_path .. "/assets/retronvim.jpg", --> https://wezterm.org/config/lua/config/background.html
+  window_background_image_hsb = { brightness = 0.04 },                 --> https://github.com/wezterm/wezterm/discussions/5876
+  -- text_background_opacity = 0.9,
+  -- window_background_opacity = 0.9,
 
   set_environment_variables = {
-    ZDOTDIR = retronvim_path .. "/zsh"
+    ZDOTDIR = retronvim_path .. "/zsh",
+    PSMODULEPATH = retronvim_path .. "/powershell/modules"
   },
 
   font_rules = {

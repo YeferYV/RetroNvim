@@ -945,6 +945,7 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -965,6 +966,9 @@
                 },
                 {
                   "text": "mkdir -p $HOME/.config/wezterm; cp $env:RETRONVIM_PATH/zsh/wezterm.lua $HOME/.config/wezterm                                         \n"
+                },
+                {
+                  "text": "cp    $env:RETRONVIM_PATH/assets/retronvim.jpg      $HOME/documents/windowspowershell/                                               \n"
                 }
               ]
             },
@@ -1362,6 +1366,7 @@
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -1371,6 +1376,9 @@
                 },
                 {
                   "text": "code --install-extension DanielPriestley.poimandres-alternate --install-extension usernamehw.errorlens               --install-extension supermaven.supermaven   --install-extension miguelsolorio.symbols    \n"
+                },
+                {
+                  "text": "code --install-extension Katsute.code-background                                                                                                                                                              \n"
                 }
               ]
             },

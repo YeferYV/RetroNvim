@@ -52,14 +52,15 @@
   ],
   "profiles": {
     "defaults": {
+      // "backgroundImage": "desktopWallpaper",
+      "backgroundImage": "%USERPROFILE%\\Documents\\WindowsPowershell\\retronvim.jpg",
+      "backgroundImageOpacity": 0.15,
+      "colorScheme": "bat_base16_tmTheme",
       "compatibility.input.forceVT": true,
       "font": {
         "face": "FiraCode Nerd Font"
       },
-      "intenseTextStyle": "bright",
-      "opacity": 80,
-      "padding": "8",
-      "useAcrylic": true
+      "intenseTextStyle": "bright"
     },
     "list": [
       {
@@ -88,5 +89,30 @@
       }
     ]
   },
+  "schemes": [
+    {
+      "background": "#000000",
+      "black": "#3c3c3c",
+      "blue": "#5555cc",
+      "brightBlack": "#6c6c6c",
+      "brightBlue": "#1c1cff",
+      "brightCyan": "#5DE4C7",
+      "brightGreen": "#00ff00",
+      "brightPurple": "#8844bb",
+      "brightRed": "#ff0000",
+      "brightWhite": "#ffffff",
+      "brightYellow": "#ffff00",
+      "cursorColor": "#ffffff",
+      "cyan": "#5FB3A1",
+      "foreground": "#a0a0a0",
+      "green": "#009900",
+      "name": "bat_base16_tmTheme",
+      "purple": "#8855ff",
+      "red": "#990000",
+      "selectionBackground": "#5555cc",
+      "white": "#a0a0a0",
+      "yellow": "#999900"
+    }
+  ],
   "useAcrylicInTabRow": true
 }
