@@ -81,8 +81,8 @@ jobs:
 
           ##########################################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage                        --create-dirs  --output    "bin/env/bin/nvim"                                && chmod +x "bin/env/nvim"
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_cmd_allowed                                  --create-dirs  --output    "bin/env/bin/kanata"                              && chmod +x env/bin/kanata
+          curl -L https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage                        --create-dirs  --output    "bin/env/bin/nvim"                                && chmod +x bin/env/bin/nvim
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.9.0/kanata_cmd_allowed                                  --create-dirs  --output    "bin/env/bin/kanata"                              && chmod +x bin/env/bin/kanata
 
           (
             pixi global install pkg-config=0.29.2 glib=2.84.2 gobject-introspection=1.84.0 gtk4=4.14.1 libvulkan-loader=1.4.313.0 rust=1.87.0 rust-src=1.87.0 --environment rust
