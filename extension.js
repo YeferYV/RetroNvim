@@ -16,6 +16,9 @@ function setNeovimPath(homeExtension) {
   const nvimPathLinux = path.join(homeExtension, '/bin/env/bin/nvim');
   const nvimPathMacos = path.join(homeExtension, '/bin/env/bin/nvim');
   const nvimPathWindows = path.join(homeExtension, '/bin/windows/envs/windows/Library/bin/nvim.exe');
+  const pixiPathLinux = path.join(homeExtension, '/bin/env/bin/pixi');
+  const pixiPathMacos = path.join(homeExtension, '/bin/env/bin/pixi');
+  const pixiPathWindows = path.join(homeExtension, '/bin/windows/envs/windows/library/bin/pixi.exe');
   const initDotLuaPath = path.join(homeExtension, '/nvim/init.lua');
 
   if (os.platform() == "win32") {
@@ -48,13 +51,13 @@ function setNeovimPath(homeExtension) {
   }
 
   // decompress terminal dependencies
-  if (os.platform() == "win32" && fs.existsSync(nvimPathWindows) === false) {
+  if (os.platform() == "win32" && fs.existsSync(pixiPathWindows) === false) {
     child_process.exec('try { cd '+ homeExtension +'/bin; ./7zr.exe x windows.7z; } catch {};')
   }
-  if (os.platform() == "linux" && fs.existsSync(nvimPathLinux) === false) {
+  if (os.platform() == "linux" && fs.existsSync(pixiPathLinux) === false) {
     child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
   }
-  if (os.platform() == "darwin" && fs.existsSync(nvimPathMacos) === false) {
+  if (os.platform() == "darwin" && fs.existsSync(pixiPathMacos) === false) {
     child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
   }
 
