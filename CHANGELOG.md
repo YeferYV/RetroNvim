@@ -6,6 +6,15 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.3.4](https://github.com/YeferYV/RetroNvim/compare/v0.3.3...v0.3.4) (2025-07-11)
+
+
+### Bug Fixes
+
+* **extension.js:** uncompress environment.sh if there is no pixi in PATH ([2b945e8](https://github.com/YeferYV/RetroNvim/commit/2b945e8aab9f2a50cc984e31affc2241b74901dc))
+* **kanata:** short scroll doesn't scroll wezterm ([acf7a09](https://github.com/YeferYV/RetroNvim/commit/acf7a09918badab47b9136712b3876ad7153d5bb))
+* **yazi:** run detached mpv ([c2072ca](https://github.com/YeferYV/RetroNvim/commit/c2072cac6f059db52fcf939eb1b22cb9d31ddffc))
+
 ## [0.3.1](https://github.com/YeferYV/RetroNvim/compare/v0.3.0...v0.3.1) (2025-07-01)
 
 
