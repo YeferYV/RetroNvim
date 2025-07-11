@@ -6,8 +6,14 @@ zstyle ":completion:*" menu select                             # <tab><tab> to e
 precmd () { printf "\033]0; $(basename ${PWD/~/\~}) \a" }      # tmux/wezterm CWD status/title
 fpath=(~/.nix-profile/share/zsh/site-functions/ $fpath)        # activates tab completion for https://github.com/chubin/cheat.sh
 
-# linux keyboard repeat rate, xset doesn't support wayland
-(xset b off r rate 190 70 2>/dev/null)
+# linux keyboard repeat rate
+(
+  [[ -e $XAUTHORITY                  ]] && xset b off r rate 190 70                2>/dev/null
+  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_delay 190      2>/dev/null
+  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_rate 70        2>/dev/null
+  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_delay 190  2>/dev/null
+  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_rate 70    2>/dev/null
+)
 
 # Change cursor shape for different vi modes.
 zle-keymap-select() { [[ $KEYMAP == "vicmd" ]] && echo -ne '\e[2 q' || echo -ne '\e[6 q'; }
@@ -35,10 +41,12 @@ export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:
 export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview" --multi --bind "ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}"'
 export HISTFILE="$HOME/.cache/.zsh_history"
 export LESSKEYIN="$RETRONVIM_PATH/yazi/lesskey"
+export LESSHISTFILE="-"
+export MANROFFOPT="-c"
+export PAGER="less -R --use-color --color=d+g --color=u+r --color=Pyk --color=Syk"
 export SAVEHIST=10000
 export SHELL="zsh" # for nvim terminal if bash is the default shell
 export STARSHIP_CONFIG="$RETRONVIM_PATH/zsh/starship.toml"
-export SWALLOWER="devour"
 export VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"
 export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 source $RETRONVIM_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
@@ -56,13 +64,14 @@ source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highligh
 [[ "$OSTYPE" != "msys"                   ]] && alias  pacman="sudo pacman --noconfirm"
 [[ "$TERM_PROGRAM" == "vscode"           ]] && source "$(code --locate-shell-integration-path zsh)"
 [[   -z $ZDOTDIR                         ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
-[[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh 2>/dev/null)
+[[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh) 2>/dev/null
 
 eval "$(/usr/local/bin/brew                 shellenv 2>/dev/null)"
 eval "$(/opt/homebrew/bin/brew              shellenv 2>/dev/null)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)"
 
 # >/dev/null 2>&1 ! diff -q $HOME/.zshrc $ZDOTDIR/.zshrc && [[ "$(realpath $HOME/.zshrc)" != "$(realpath $ZDOTDIR/.zshrc)" ]] && source $HOME/.zshrc
+>/dev/null 2>&1 which devour	                       && export SWALLOWER="devour"
 >/dev/null 2>&1 which fzf	                           && source <(fzf --zsh)
 >/dev/null 2>&1 which eza              	             && alias ls="eza --all --icons --group-directories-first"
 >/dev/null 2>&1 which starship                       && eval "$(starship init zsh)"

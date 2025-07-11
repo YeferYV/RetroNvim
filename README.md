@@ -322,7 +322,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `<tab>`       | show (dash/path) options or complete path                  |
 |    `<tab><tab>`    | enter completion menu                                      |
 |    `<esc><esc>`    | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
-|    `nvim<enter>`   | open retronvim's neovim IDE (`<space>` to open whichkey)   |
+|   `nvim<enter>`    | open retronvim's neovim IDE (`<space>` to open whichkey)   |
 |     `y<enter>`     | open yazi (changes directory on exit)                      |
 |      `alt+o`       | open yazi (even while writing commands)                    |
 | `alt+h` or `<esc>` | enter vim-mode                                             |
@@ -344,10 +344,10 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 **layer qwerty**
 
 ```
-@grl 1    2    3    4    5    6    7    8    9    0    -    =    bspc
-tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-@cap a    s    d    f    g    h    j    k    l    ;    '    ret
-lsft z    x    c    v    b    n    m    ,    .    /    rsft
+@grl 1    2    3    4    5    6    7    8    9    0    -    =    @bsp
+tab  q    w    @e   r    t    y    u    i    o    p    [    ]    ret
+@cap a    @s   @d   f    g    @h   @j   @k   @l   ;    '    \
+lsft ret  z    x    c    v    b    n    m    ,    .    /    rsft
 lctl lmet @alt           @spc           @sft rmet rctl
 ```
 
@@ -355,9 +355,9 @@ lctl lmet @alt           @spc           @sft rmet rctl
 
 ```
 _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-_    @¿   _    _    _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
-_    del  spc  bspc @clr _    @🡠   @↓   @↑   @🡪   @yaz _    _
-_    @ñ   _    caps _    _    pgup home end  pgdn _    _
+_    @M↑  del  @m↑  @clr @m🡠  _    _    _    _    _    _    _    _
+_    @M↓  @bsp @m↓  spc  @m🡪  @🡠   @↓   @↑   @🡪   @yaz _    _
+_    _    _    _    caps @¿   @ñ   pgup home end  pgdn _    _
 _    _    _              _              _    _    _
 ```
 
@@ -368,18 +368,17 @@ _    _    _              _              _    _    _
 | @sft | tap for backspace, hold for LeftShift                                                     |         `RAlt+l = shift+l`         |
 | @alt | tap for middle click, hold for LeftAlt                                                    |         `LAlt+l = LAlt+l`          |
 | @spc | tap for space, hold for touchcursor layer, release for qwerty layer                       | `space+jj = DownArrow + DownArrow` |
-| @yaz | open yazi_cd on any shell                                                                 |             `space+;`              |
-| @clr | clear screen on any shell                                                                 |             `space+f`              |
-|  @¿  | unicode ¿                                                                                 |             `space+q`              |
-|  @ñ  | unicode ñ                                                                                 |             `space+z`              |
+| @clr | clear screen on any shell                                                                 |             `space+r`              |
+|  @¿  | unicode ¿                                                                                 |             `space+v`              |
+|  @ñ  | unicode ñ                                                                                 |             `space+b`              |
 | @m🡠  | mouse scrolling left                                                                      |             `space+t`              |
-| @m🡪  | mouse scrolling right                                                                     |             `space+p`              |
-| @m↑  | mouse scrolling up                                                                        |             `space+i`              |
-| @m↓  | mouse scrolling down                                                                      |             `space+u`              |
-| @M↑  | mouse fast scrolling up                                                                   |             `space+y`              |
-| @M↓  | mouse fast scrolling down                                                                 |             `space+p`              |
-| spc  | space key                                                                                 |             `space+s`              |
-| bspc | backspace key                                                                             |             `space+d`              |
+| @m🡪  | mouse scrolling right                                                                     |             `space+g`              |
+| @m↑  | mouse scrolling up                                                                        |             `space+e`              |
+| @m↓  | mouse scrolling down                                                                      |             `space+d`              |
+| @M↑  | mouse fast scrolling up                                                                   |             `space+q`              |
+| @M↓  | mouse fast scrolling down                                                                 |             `space+a`              |
+| spc  | space key                                                                                 |             `space+f`              |
+| bspc | backspace key                                                                             |             `space+s`              |
 | home | home key                                                                                  |             `space+m`              |
 | end  | end key                                                                                   |             `space+,`              |
 | pgup | pageup key                                                                                |             `space+n`              |
@@ -437,12 +436,14 @@ _    _    _              _              _    _    _
 **Install Retronvim on any terminal or ssh**
 
 - Linux/Macos/Msys2:
+
   ```bash
   code  --install-extension  yeferyv.retronvim
   cp    ~/.vscode/extensions/yeferyv.retronvim*/zsh/.zshrc  ~/.zshrc
   ```
 
 - SSH:
+
   ```bash
   curl  -L https://github.com/yeferyv/retronvim/releases/download/v0.3.4/retronvim-linux-x64-0.3.4.vsix | bsdtar -xf-
   mkdir -p           ~/.vscode/extensions
@@ -459,7 +460,7 @@ _    _    _              _              _    _    _
   ```
 
 **Install from github releases (offline)(portable)**
-  open command palette `ctrl+shift+p` then type `Extensions: install from vsix`
+open command palette `ctrl+shift+p` then type `Extensions: install from vsix`
 
 **VSCode Marketplace**
 

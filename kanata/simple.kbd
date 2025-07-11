@@ -27,9 +27,9 @@
 ;; be passed straight to the operating system.
 (defsrc
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-  caps a    s    d    f    g    h    j    k    l    ;    '    ret
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    ret
+  caps a    s    d    f    g    h    j    k    l    ;    '    \
+  lsft <    z    x    c    v    b    n    m    ,    .    /    rsft
   lctl lmet lalt           spc            ralt comp rctl
 )
 
@@ -40,9 +40,9 @@
 ;; There are currently a maximum of 25 layers allowed.
 (deflayer qwerty
   @grl 1    2    3    4    5    6    7    8    9    0    -    =    @bsp
-  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-  @cap a    s    d    f    g    @h   @j   @k   @l   ;    '    ret
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  tab  q    w    @e   r    t    y    u    i    o    p    [    ]    ret
+  @cap a    @s   @d   f    g    @h   @j   @k   @l   ;    '    \
+  lsft ret  z    x    c    v    b    n    m    ,    .    /    rsft
   lctl lmet @alt           @spc           @sft rmet rctl
 )
 
@@ -51,9 +51,9 @@
 ;; quickly tapped but is read as left-control when held.
 (deflayer dvorak
   @grl 1    2    3    4    5    6    7    8    9    0    [    ]    bspc
-  tab  '    ,    .    p    y    f    g    c    r    l    /    =    \
-  @cap a    o    e    u    i    d    h    t    n    s    -    ret
-  lsft ;    q    j    k    x    b    m    w    v    z    rsft
+  tab  '    ,    .    p    y    f    g    c    r    l    /    =    ret
+  @cap a    o    e    u    i    d    h    t    n    s    -    \
+  lsft ret  ;    q    j    k    x    b    m    w    v    z    rsft
   lctl lmet lalt           spc            ralt rmet rctl
 )
 
@@ -63,9 +63,9 @@
 
 (deflayer touchcursor
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-  _    @¿   _    _    _    @m🡠  @M↓  @m↓  @m↑  @M↑  @m🡪  _    _    _
-  _    del  spc  @bsp @clr _    @🡠   @↓   @↑   @🡪   @yaz _    _
-  _    @ñ   _    caps _    _    pgup home end  pgdn _    _
+  _    @M↑  del  @m↑  @clr @m🡠  _    _    _    _    _    _    _    _
+  _    @M↓  @bsp @m↓  spc  @m🡪  @🡠   @↓   @↑   @🡪   @yaz _    _
+  _    _    _    caps @¿   @ñ   pgup home end  pgdn _    _    _
   _    _    _              _              _    _    _
 )
 
@@ -99,6 +99,9 @@
 
   ;; fast keyboard repeat rate emulation
   ;; (multi f24) fixes fast typing `vh`, `vj`, `vk` and `vl` not entering visual mode on neovim
+  e   (multi f24 (tap-hold 150 150 e     (macro-repeat e     15)))
+  d   (multi f24 (tap-hold 150 150 d     (macro-repeat d     15)))
+  s   (multi f24 (tap-hold 150 150 s     (macro-repeat s     15)))
   h   (multi f24 (tap-hold 150 150 h     (macro-repeat h     15)))
   j   (multi f24 (tap-hold 150 150 j     (macro-repeat j     15)))
   k   (multi f24 (tap-hold 150 150 k     (macro-repeat k     15)))
@@ -122,12 +125,12 @@
   ñ   (unicode ñ)
 
   ;; mouse scrolling <intervale> <distance>
-  m↑ (mwheel-up 50 30)
-  m↓ (mwheel-down 50 30)
+  m↑ (mwheel-up 50 40)
+  m↓ (mwheel-down 50 40)
 
   ;; mouse scrolling <intervale> <distance>
-  m🡠 (mwheel-left 50 30)
-  m🡪 (mwheel-right 50 30)
+  m🡠 (mwheel-left 50 40)
+  m🡪 (mwheel-right 50 40)
 
   ;; mouse scrolling <intervale> <distance>
   M↑ (mwheel-up 25 60)
@@ -147,7 +150,7 @@
   _    @qwr @dvk lrld _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _              _              _    _    _
 )
 
