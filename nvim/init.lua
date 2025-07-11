@@ -1026,7 +1026,7 @@ if not vim.g.vscode then
   -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
   vim.lsp.config['efm']                   = {
     cmd = { 'efm-langserver' },
-    filetypes = { 'python', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'html', 'json', 'markdown', 'yaml' },
+    filetypes = { 'python', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'html', 'json', 'jsonc', 'markdown', 'yaml' },
     init_options = { documentFormatting = true },
     settings = {
       rootMarkers = { ".git/" },
@@ -1039,6 +1039,7 @@ if not vim.g.vscode then
         css             = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
         html            = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
         json            = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
+        jsonc           = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
         markdown        = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
         yaml            = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
       }
