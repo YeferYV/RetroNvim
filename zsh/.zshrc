@@ -49,8 +49,6 @@ export SHELL="zsh" # for nvim terminal if bash is the default shell
 export STARSHIP_CONFIG="$RETRONVIM_PATH/zsh/starship.toml"
 export VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"
 export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
-source $RETRONVIM_PATH/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 [[ "$OSTYPE" == "linux-gnu"              ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.pixi/bin:$HOME/.local/share/pnpm:$HOME/.local/bin:$PATH"
 [[ "$OSTYPE" == "linux-gnu"              ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -65,6 +63,9 @@ source $RETRONVIM_PATH/zsh/plugins/fast-syntax-highlighting/fast-syntax-highligh
 [[ "$TERM_PROGRAM" == "vscode"           ]] && source "$(code --locate-shell-integration-path zsh)"
 [[   -z $ZDOTDIR                         ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
 [[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh) 2>/dev/null
+
+source $ZDOTDIR/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source $ZDOTDIR/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 eval "$(/usr/local/bin/brew                 shellenv 2>/dev/null)"
 eval "$(/opt/homebrew/bin/brew              shellenv 2>/dev/null)"

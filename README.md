@@ -445,10 +445,11 @@ _    _    _              _              _    _    _
 - SSH:
 
   ```bash
-  curl  -L https://github.com/yeferyv/retronvim/releases/download/v0.3.4/retronvim-linux-x64-0.3.4.vsix | bsdtar -xf-
-  mkdir -p           ~/.vscode/extensions
-  cp    -r extension ~/.vscode/extensions/yeferyv.retronvim
-  cp                 ~/.vscode/extensions/yeferyv.retronvim/zsh/.zshrc  ~/.zshrc
+  curl  -s https://api.github.com/repos/yeferyv/retronvim/releases/latest | grep --only-matching --extended-regexp "https.*linux.*vsix" | curl -o retronvim.vsix -L @-
+  unzip retronvim.vsix -d /tmp
+  mkdir -p                             ~/.vscode/extensions/yeferyv.retronvim
+  cp    -r  /tmp/extension/*           ~/.vscode/extensions/yeferyv.retronvim
+  cp    -r  /tmp/extension/zsh/.zshrc  ~/.zshrc
   ```
 
 - Windows 10/11:
@@ -530,8 +531,8 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`
 
 <details open><summary></summary>
 
-- [yeferyv/archrice](https://github.com/yeferyv/archrice) (RetroNvim's linux distro) comes with extended keybindings for [bspwm](https://github.com/baskerville/bspwm)
-- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) (terminal version of RetroNvim) neovim with text objects, based on [lazyvim](https://github.com/LazyVim/LazyVim)
+- [yeferyv/dotfiles](https://github.com/yeferyv/dotfiles) retronvim + [hyprland](https://hypr.land) setup
+- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) appimages containing retronvim's kanata, nvim, yazi and zsh configs
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
 - [vspacecode](https://github.com/vspacecode/vspacecode) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
 

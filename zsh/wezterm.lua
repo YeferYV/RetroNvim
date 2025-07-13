@@ -4,7 +4,7 @@ local home = os.getenv("HOME") or os.getenv("USERPROFILE")
 local retronvim_path = wezterm.glob(home .. '/.vscode/extensions/yeferyv.retronvim*')[1]
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then default_prog = { "powershell", "-nologo", "-noexit", "-file", retronvim_path .. "/powershell/profile.ps1" } end
-if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then default_prog = { retronvim_path .. "/bin/env/bin/zsh" } end
+if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then default_prog = { "zsh" } end
 
 return {
   audible_bell = "Disabled",
@@ -23,8 +23,9 @@ return {
   -- window_background_opacity = 0.9,
 
   set_environment_variables = {
-    ZDOTDIR = retronvim_path .. "/zsh",
-    PSMODULEPATH = retronvim_path .. "/powershell/modules"
+    PATH = retronvim_path .. "/bin/env/bin:" .. os.getenv("PATH"),
+    PSMODULEPATH = retronvim_path .. "/powershell/modules",
+    ZDOTDIR = retronvim_path .. "/zsh"
   },
 
   font_rules = {
