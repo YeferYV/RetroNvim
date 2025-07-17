@@ -6,6 +6,13 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.3.6](https://github.com/YeferYV/RetroNvim/compare/v0.3.5...v0.3.6) (2025-07-17)
+
+
+### Bug Fixes
+
+* **zsh:** `source $ZDOTDIR/plugins/...` ([8c068a3](https://github.com/YeferYV/RetroNvim/commit/8c068a3254b17e45e331a540eb4d93649aaa6ae4))
+
 ## [0.3.5](https://github.com/YeferYV/RetroNvim/compare/v0.3.4...v0.3.5) (2025-07-16)
 
 
