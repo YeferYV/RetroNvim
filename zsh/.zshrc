@@ -35,7 +35,7 @@ alias  cht="cht.sh"                       # nix-env -iA nixpkgs.cht-sh
 alias  grep="grep --color=auto"
 alias  ll="ls -l"
 alias  svim="NVIM_APPNAME=sixelrice nvim" # git clone https://github.com/yeferyv/sixelrice ~/.config/sixelrice
-export RETRONVIM_PATH=$(print -l $HOME/.vscode/extensions/yeferyv.retronvim* | head -n1)
+export RETRONVIM_PATH=$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*(N) | head -n1)
 export BAT_THEME="base16"
 export EDITOR="nvim"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
@@ -47,7 +47,7 @@ export MANROFFOPT="-c"
 export PAGER="less -R --use-color --color=d+g --color=u+r --color=Pyk --color=Syk"
 export SAVEHIST=10000
 export SHELL="zsh" # for nvim terminal if bash is the default shell
-export STARSHIP_CONFIG="$RETRONVIM_PATH/zsh/starship.toml"
+export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 export VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"
 export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 
