@@ -1,5 +1,6 @@
 autoload -U compinit && compinit -u -d $HOME/.cache/.zcompdump # enable command completion
 bindkey -v '^?' backward-delete-char                           # enable vi-mode with backward-delete-char
+setopt share_history                                           # share history across sessions
 setopt inc_append_history                                      # save to history after running a command
 setopt interactive_comments                                    # allow comments
 zstyle ":completion:*" menu select                             # <tab><tab> to enter menu completion
@@ -64,8 +65,8 @@ export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 [[   -z $ZDOTDIR                         ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
 [[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh) 2>/dev/null
 
-source $ZDOTDIR/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-source $ZDOTDIR/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 eval "$(/usr/local/bin/brew                 shellenv 2>/dev/null)"
 eval "$(/opt/homebrew/bin/brew              shellenv 2>/dev/null)"

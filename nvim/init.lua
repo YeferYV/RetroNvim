@@ -5,7 +5,7 @@
 -- Clone 'mini.nvim'
 -- vim.fn.expand("~/.vscode/extensions/yeferyv.retronvim*/bin/env/bin/zsh")
 local retronvim_exist = vim.env.APPDIR and
-    vim.env.APPDIR .. "/usr/share/nvim/runtime/init.lua" or
+    vim.env.APPDIR .. "/usr/home/user/.config/nvim/init.lua" or
     vim.fn.glob(vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)
     [1] -- ...0,1 shows in a list && [1] grabs the first match
 local retronvim_path = (retronvim_exist ~= nil) and vim.fs.dirname(retronvim_exist) or
