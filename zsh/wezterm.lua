@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
 local home = os.getenv("HOME") or os.getenv("USERPROFILE")
-local retronvim_path = wezterm.glob(home .. '/.vscode/extensions/yeferyv.retronvim*')[1] or os.getenv("APPDIR2")
+local retronvim_path = wezterm.glob(home .. '/.vscode/extensions/yeferyv.retronvim*')[1] or os.getenv("APPDIR3")
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then default_prog = { "powershell", "-nologo", "-noexit", "-file", retronvim_path .. "/powershell/profile.ps1" } end
 if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then default_prog = { "zsh" } end
@@ -11,6 +11,7 @@ return {
   bold_brightens_ansi_colors = false, --> for i in {0..255}; do; printf "\033[${i};1m color${i}"; done
   default_prog = default_prog,
   front_end = (wezterm.target_triple ~= 'x86_64-pc-windows-msvc') and "WebGpu" or "OpenGL", --> webgpu's transparency doesn't work on Windows
+  font_dirs = { os.getenv("APPDIR3") .. '/assets' },
   hide_tab_bar_if_only_one_tab = true,
   scrollback_lines = 10000,
   tab_bar_at_bottom = true,
