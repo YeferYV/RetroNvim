@@ -51,14 +51,14 @@ export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 export VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"
 export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 
-[[ "$OSTYPE" == "linux-gnu"              ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.pixi/bin:$HOME/.local/share/pnpm:$HOME/.local/bin:$PATH"
+[[ "$OSTYPE" == "linux-gnu"              ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.pixi/bin:$HOME/.local/share/pnpm:$PATH:$HOME/.local/bin"
 [[ "$OSTYPE" == "linux-gnu"              ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
 [[ "$OSTYPE" == "linux-gnu"              ]] && test ! -e ~/.local/share/fonts/FiraCode && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/.local/share/fonts/FiraCode 2>/dev/null && fc-cache
 [[ "$OSTYPE" == "darwin"                 ]] && test ! -e ~/Library/Fonts/FiraCode      && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/Library/Fonts/FiraCode      2>/dev/null
-[[ "$OSTYPE" == "darwin"                 ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.pixi/bin:$HOME/Library/pnpm:$HOME/.local/bin:$PATH"
+[[ "$OSTYPE" == "darwin"                 ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.pixi/bin:$HOME/Library/pnpm:$PATH:$HOME/.local/bin"
 [[ "$OSTYPE" == "darwin"                 ]] && export PNPM_HOME="$HOME/Library/pnpm"
 [[ "$OSTYPE" == "msys"                   ]] && test ! -e $HOME/AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf && powershell.exe -ExecutionPolicy Bypass -File $RETRONVIM_PATH/bin/nerd-fonts/install.ps1
-[[ "$OSTYPE" == "msys"                   ]] && export PATH="$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin:$HOME/.pixi/bin:$HOME/appdata/local/pnpm:$HOME/.local/bin:$PATH"
+[[ "$OSTYPE" == "msys"                   ]] && export PATH="$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin:$HOME/.pixi/bin:$HOME/appdata/local/pnpm:$PATH:$HOME/.local/bin"
 [[ "$OSTYPE" == "msys"                   ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
 [[ "$OSTYPE" != "msys"                   ]] && alias  pacman="sudo pacman --noconfirm"
 [[ "$TERM_PROGRAM" == "vscode"           ]] && source "$(code --locate-shell-integration-path zsh)"
