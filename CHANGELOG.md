@@ -6,6 +6,14 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.3.8](https://github.com/YeferYV/RetroNvim/compare/v0.3.7...v0.3.8) (2025-07-23)
+
+
+### Bug Fixes
+
+* **nvim:** $APPDIR2 when init.lua is inside two nvim.appimage ([ad33fc4](https://github.com/YeferYV/RetroNvim/commit/ad33fc46617d2b7b142bcd384b0155172990e0b8))
+* **wezterm:** wezterm.appimage errors if retronvim_path is nil ([86cdb16](https://github.com/YeferYV/RetroNvim/commit/86cdb1622af2f293d5e8082854259eaecdefd236))
+
 ## [0.3.7](https://github.com/YeferYV/RetroNvim/compare/v0.3.6...v0.3.7) (2025-07-17)
 
 
