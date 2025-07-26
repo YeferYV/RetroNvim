@@ -41,7 +41,7 @@
 (deflayer qwerty
   @grl 1    2    3    4    5    6    7    8    9    0    -    =    @bsp
   tab  q    w    @e   r    t    y    u    i    o    p    [    ]    ret
-  @cap a    @s   @d   f    g    @h   @j   @k   @l   ;    '    \
+  @cap a    @s   @d   f    g    @h   @j   @k   @l   @;   '    \
   lsft ret  z    x    c    v    b    n    m    ,    .    /    rsft
   lctl lmet @alt           @spc           @sft rmet rctl
 )
@@ -90,6 +90,9 @@
 
   ;; tap for middle click, hold for lalt
   alt (tap-hold 200 200 mmid lalt)
+
+  ;; tap for semicolon, hold for ctrl
+  ; (tap-hold 200 200 ; lctl)
 
   ;; tap for middle click, hold for altspace layout
   ;; alt (tap-hold 200 200 mmid (multi lalt (layer-while-held altspace)))

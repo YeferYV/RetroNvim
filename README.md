@@ -346,7 +346,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 ```
 @grl 1    2    3    4    5    6    7    8    9    0    -    =    @bsp
 tab  q    w    @e   r    t    y    u    i    o    p    [    ]    ret
-@cap a    @s   @d   f    g    @h   @j   @k   @l   ;    '    \
+@cap a    @s   @d   f    g    @h   @j   @k   @l   @;   '    \
 lsft ret  z    x    c    v    b    n    m    ,    .    /    rsft
 lctl lmet @alt           @spc           @sft rmet rctl
 ```
@@ -368,6 +368,7 @@ _    _    _              _              _    _    _
 | @sft | tap for backspace, hold for LeftShift                                                     |         `RAlt+l = shift+l`         |
 | @alt | tap for middle click, hold for LeftAlt                                                    |         `LAlt+l = LAlt+l`          |
 | @spc | tap for space, hold for touchcursor layer, release for qwerty layer                       | `space+jj = DownArrow + DownArrow` |
+|  @;  | tap for semicolon, hold for ctrl                                                          | `;+click = OpenInNewTab (chrome)`  |
 | @clr | clear screen on any shell                                                                 |             `space+r`              |
 |  @¿  | unicode ¿                                                                                 |             `space+v`              |
 |  @ñ  | unicode ñ                                                                                 |             `space+b`              |

@@ -62,6 +62,9 @@
     "configurationDefaults": {
       "accessibility.accessibleView.closeOnKeyPress": false,
       "editor.accessibilitySupport": "off",
+      "editor.autoClosingBrackets": "beforeWhitespace",
+      "editor.autoClosingComments": "beforeWhitespace",
+      "editor.autoClosingQuotes": "beforeWhitespace",
       "editor.codeActionsOnSave": {
         "source.organizeImports": "always",
         "source.addMissingImports": "always"
@@ -1791,6 +1794,12 @@
               "name": "tailwind templates (figma.com + FigmaToCode)",
               "command": "vscode.open",
               "args": "https://www.figma.com/community"
+            },
+            {
+              "key": "v",
+              "name": "6000+ tailwind elements (uiverse.io)",
+              "command": "vscode.open",
+              "args": "https://uiverse.io/"
             },
             {
               "key": "w",
