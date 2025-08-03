@@ -58,6 +58,11 @@ if not vim.g.vscode then
                 },
                 { win = "preview", title = "{preview}", border = "rounded", width = 2 / 3 },
               },
+            },
+            sidebar = {
+              layout = {
+                width = 25
+              },
             }
           },
           sources = { explorer = { hidden = true, --[[ ignored = true ]] } },
@@ -839,6 +844,7 @@ map({ "v" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchan
 map({ "n" }, "U", "@:", { desc = "repeat `:command`" })
 map({ "v" }, "<", "<gv", { desc = "continious indent" })
 map({ "v" }, ">", ">gv", { desc = "continious indent" })
+map({ "n" }, "<esc>", "<esc><cmd>lua vim.cmd.nohlsearch()<cr>", { desc = "escape and clear search highlight" })
 
 if not vim.g.vscode then
   map("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, desc = "next completion when no lsp" })
@@ -851,7 +857,6 @@ if not vim.g.vscode then
   map({ "n", "v", "t" }, "<A-S-Left>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
   map({ "n", "v", "t" }, "<A-S-Down>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
   map({ "n", "v", "t" }, "<A-S-Up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
-  map({ "n" }, "<esc>", "<esc><cmd>lua vim.cmd.nohlsearch()<cr>", { desc = "escape and clear search highlight" })
   map({ "t" }, "<esc><esc>", "<C-\\><C-n>", { desc = "normal mode inside terminal" })
   map({ "n" }, "<C-s>", ":%s//g<Left><Left>", { desc = "Replace in Buffer" })
   map({ "x" }, "<C-s>", ":s//g<Left><Left>", { desc = "Replace in Visual_selected" })
@@ -1333,6 +1338,18 @@ if vim.g.vscode then
 else
   map({ "n", "o", "x" }, "gD", function() require('mini.diff').textobject() end, { desc = "select diff/hunk" })
 end
+
+map(
+  { "x" },
+  "go",
+  function()
+    local commentstring = vim.bo.commentstring
+    vim.bo.commentstring = [[{/* %s */}]]
+    vim.cmd [[ normal gc ]]
+    vim.bo.commentstring = commentstring
+  end,
+  { desc = "jsx comment" }
+)
 
 map({ "n" }, "vgh", "<cmd>lua require('mini.diff').textobject()<cr>", { desc = "select diff/hunk" })
 map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
