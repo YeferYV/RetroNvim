@@ -65,5 +65,5 @@ set-alias which get-command
 
 if ( -not (Test-Path $env:RETRONVIM_BIN) -and $env:OS -eq "Windows_NT" ) { try { cd $env:RETRONVIM_PATH/bin; ./7zr.exe x windows.7z; cd ~; } catch {}; }
 if ( -not (Test-Path $env:FONT_PATH)     -and $env:OS -eq "Windows_NT" ) { $ErrorActionPreference = 'SilentlyContinue'; set-executionpolicy bypass currentuser; & "$env:RETRONVIM_PATH\bin\nerd-fonts\install.ps1"; }
-if ( get-command starship -ErrorAction SilentlyContinue )                { iex (&starship init powershell);                  }
-if ( $env:TERM_PROGRAM -eq "vscode" )                                    { . "$(code --locate-shell-integration-path pwsh)"; } # should be after starship otherwise won't work
+if ( get-command starship -ErrorAction SilentlyContinue                ) { iex (&starship init powershell);                  }
+if ( $env:TERM_PROGRAM -eq "vscode" -and -not $env:SHELLINTEGRATION    ) { . "$(code --locate-shell-integration-path pwsh)"; $env:SHELLINTEGRATION=1 } # should be after starship otherwise won't work
