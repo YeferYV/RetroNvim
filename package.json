@@ -398,6 +398,11 @@
               "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor"
             },
             {
+              "key": "c",
+              "name": "force close editor",
+              "command": "workbench.action.revertAndCloseActiveEditor"
+            },
+            {
               "key": "C",
               "name": "Close other editors",
               "command": "workbench.action.closeOtherEditors"
@@ -1846,6 +1851,21 @@
               "command": "workbench.action.terminal.focusAccessibleBuffer"
             },
             {
+              "key": ".",
+              "name": "Copy Scrollback",
+              "command": "runCommands",
+              "args": {
+                "commands": [
+                  {
+                    "command": "workbench.action.terminal.selectAll"
+                  },
+                  {
+                    "command": "editor.action.clipboardCopyAction"
+                  }
+                ]
+              }
+            },
+            {
               "key": "0",
               "name": "Focus tabs view",
               "command": "workbench.action.terminal.focusTabs"
@@ -2021,7 +2041,21 @@
             },
             {
               "key": "t",
-              "name": "Neovim terminal (<esc><esc> for tmux-copy-mode)",
+              "name": "Neovim panel terminal (<esc><esc> for tmux-copy-mode)",
+              "commands": [
+                "workbench.action.terminal.new",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "nvim -cterm; exit\n"
+                }
+              ]
+            },
+            {
+              "key": "T",
+              "name": "Neovim Tab terminal (<esc><esc> for tmux-copy-mode)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
