@@ -2496,7 +2496,7 @@
       {
         "key": "shift+u",
         "command": "whichkey.repeatMostRecent",
-        "when": "filesExplorerFocus || (editorTextFocus && (vim.mode == 'Normal' || neovim.mode == 'normal'))"
+        "when": "editorTextFocus && (vim.mode == 'Normal' || neovim.mode == 'normal')"
       },
       {
         "key": "/",
