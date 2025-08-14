@@ -10,10 +10,10 @@ fpath=(~/.nix-profile/share/zsh/site-functions/ $fpath)        # activates tab c
 
 # linux keyboard repeat rate
 (
-  [[ -e $XAUTHORITY                  ]] && xset b off r rate 190 70                2>/dev/null
-  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_delay 190      2>/dev/null
+  [[ -e $XAUTHORITY                  ]] && xset b off r rate 210 70                2>/dev/null
+  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_delay 210      2>/dev/null
   [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_rate 70        2>/dev/null
-  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_delay 190  2>/dev/null
+  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_delay 210  2>/dev/null
   [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_rate 70    2>/dev/null
 )
 

@@ -16,7 +16,7 @@
 ;; (defcfg process-unmapped-keys yes) (defsrc) (deflayermap (mylayer) a (multi lsft a))
 
 (defcfg
-  linux-x11-repeat-delay-rate 190,70
+  linux-x11-repeat-delay-rate 210,70
 )
 
 ;; Only one defsrc is allowed.

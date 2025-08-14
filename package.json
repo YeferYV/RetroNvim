@@ -92,6 +92,7 @@
       },
       "git.autofetch": true,
       "git.mergeEditor": true,
+      "github.copilot.nextEditSuggestions.enabled": true,
       "json.format.keepLines": true,
       "multiDiffEditor.experimental.enabled": true,
       "scm.defaultViewMode": "tree",
@@ -829,7 +830,7 @@
                   "text": "bash -i -c \"nix-env -iA nixpkgs.devour nixpkgs.zathura \"; \n"
                 },
                 {
-                  "text": "curl -o ~/.pixi/bin/wezterm -L https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage && chmod +x ~/.pixi/bin/wezterm \n"
+                  "text": "curl -C- -o ~/.pixi/bin/wezterm -L https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage && chmod +x ~/.pixi/bin/wezterm \n"
                 },
                 {
                   "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
@@ -885,7 +886,7 @@
               "args": [
                 null,
                 {
-                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 190     \" \n"
+                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 210     \" \n"
                 },
                 {
                   "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 7        \" \n"
@@ -1179,6 +1180,7 @@
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -1200,7 +1202,10 @@
                   "text": "code --install-extension emranweb.daisyui-snippet --install-extension imgildev.vscode-nextjs-generator  --install-extension supabase-snippets.supabase-javascript-snippets --install-extension acchu99.firebase-react-snippets  \n"
                 },
                 {
-                  "text": "code --install-extension a-smiggle.chills         --install-extension formulahendry.auto-rename-tag     --install-extension rangav.vscode-thunder-client                   --install-extension usernamehw.errorlens            --install-extension PayPal.vscode-paypal \n"
+                  "text": "code --install-extension a-smiggle.chills         --install-extension formulahendry.auto-rename-tag     --install-extension rangav.vscode-thunder-client                   --install-extension usernamehw.errorlens             \n"
+                },
+                {
+                  "text": "code --install-extension PayPal.vscode-paypal     --install-extension amjarmed.100-nextjs-snippets      --install-extension GitHub.copilot                                                                                      \n"
                 }
               ]
             },
@@ -2856,17 +2861,22 @@
       {
         "key": "alt+j",
         "command": "editor.action.inlineSuggest.acceptNextWord",
-        "when": "inlineSuggestionVisible"
+        "when": "inlineSuggestionVisible || inlineEditIsVisible"
       },
       {
         "key": "alt+k",
         "command": "editor.action.inlineSuggest.acceptNextLine",
-        "when": "inlineSuggestionVisible"
+        "when": "inlineSuggestionVisible || inlineEditIsVisible"
       },
       {
         "key": "alt+l",
         "command": "editor.action.inlineSuggest.commit",
-        "when": "inlineSuggestionVisible"
+        "when": "inlineSuggestionVisible || inlineEditIsVisible"
+      },
+      {
+        "key": "alt+;",
+        "command": "editor.action.inlineSuggest.triggerInlineEditExplicit",
+        "when": "editorTextFocus"
       },
       {
         "key": "ctrl+j",
@@ -3008,8 +3018,11 @@
       },
       {
         "key": "tab",
-        "command": "-editor.action.inlineSuggest.commit",
-        "when": "inlineEditIsVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible || inlineEditIsVisible && inlineSuggestionVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible"
+        "command": "-extension.vim_tab"
+      },
+      {
+        "key": "tab",
+        "command": "-vscode-neovim.send"
       },
       {
         "key": "ctrl+v",
