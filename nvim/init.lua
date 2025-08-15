@@ -95,6 +95,33 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
+  -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
+
+  now(
+    function()
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
+      vim.g.copilot_nes_debounce = 100
+      vim.lsp.enable("copilot_ls")
+      vim.keymap.set({ "n", "i" }, "<A-;>", function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local state = vim.b[bufnr].nes_state
+        if state then
+          -- Try to jump to the start of the suggestion edit.
+          -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+          local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
+              or (
+                require("copilot-lsp.nes").apply_pending_nes()
+                and require("copilot-lsp.nes").walk_cursor_end_edit()
+              )
+        end
+      end, { desc = "Accept Copilot NES suggestion" })
+    end
+  )
+end
+
+if not vim.g.vscode then
+  -- add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
+
   later(
     function()
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
@@ -764,8 +791,8 @@ if not vim.g.vscode then
         -- Add snippets to runtimepath
         for _, dir in ipairs(snippet_dirs) do
           if vim.fn.globpath(dir, '*code-snippets') ~= '' then
-            -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work
-            -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work
+            -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change snippetshtml.code-snippets filetype to json `:set ft=json`
+            -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change trpc.code-snippets         filetype to json `:set ft=json`
             -- ~/.vscode/extensions/acchu99.firebase-react-snippets-1.0.4/snippets                      File is absent or not readable  so delete the file to make mini.snippet work
             vim.opt.rtp:append(vim.fs.dirname(dir))
           end
@@ -778,8 +805,8 @@ if not vim.g.vscode then
         snippets = { require('mini.snippets').gen_loader.from_runtime("*") },
         mappings = {
           expand = '<a-.>',
-          jump_next = '<a-;>',
-          jump_prev = '<a-,>',
+          jump_next = '<a-n>',
+          jump_prev = '<a-p>',
         }
       })
 
@@ -832,11 +859,6 @@ map({ "n" }, "J", "10gj")
 map({ "n" }, "K", "10gk")
 map({ "n" }, "H", "10h")
 map({ "n" }, "L", "10l")
-map({ "n" }, "<M-j>", "10gj")
-map({ "n" }, "<M-k>", "10gk")
-map({ "n" }, "<M-h>", "10h")
-map({ "n" }, "<M-l>", "10l")
-map({ "n" }, "<M-v>", "V")
 map({ "n" }, "Y", "yg_", { desc = "Yank forward" })  -- "Y" yank forward by default
 map({ "v" }, "Y", "g_y", { desc = "Yank forward" })
 map({ "v" }, "P", "g_P", { desc = "Paste forward" }) -- "P" doesn't change register
@@ -844,7 +866,17 @@ map({ "v" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchan
 map({ "n" }, "U", "@:", { desc = "repeat `:command`" })
 map({ "v" }, "<", "<gv", { desc = "continious indent" })
 map({ "v" }, ">", ">gv", { desc = "continious indent" })
-map({ "n" }, "<esc>", "<esc><cmd>lua vim.cmd.nohlsearch()<cr>", { desc = "escape and clear search highlight" })
+map(
+  "n",
+  "<esc>",
+  function()
+    if not require("copilot-lsp.nes").clear() then
+      vim.cmd.nohlsearch()
+      M.press("<esc>")
+    end
+  end,
+  { desc = "Clear Copilot-suggestion / search-highlight" }
+)
 
 if not vim.g.vscode then
   map("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, desc = "next completion when no lsp" })
@@ -1173,6 +1205,22 @@ if not vim.g.vscode then
     "n",
     "<leader>lz",
     function()
+      local os = vim.uv.os_uname().sysname:lower()
+      if os:find('win') then os = "win32" end
+      -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
+      sendSequence(
+        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.357.0/copilot-language-server-' .. os .. '-x64-1.357.0.zip',
+        '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
+      )
+      vim.cmd("DepsAdd copilotlsp-nvim/copilot-lsp")
+      vim.notify("relaunch nvim after installation")
+    end,
+    { desc = "Copilot NES enable" } -- then relaunch nvim or `:lua vim.lsp.enable("copilot_ls")`
+  )
+  map(
+    "n",
+    "<leader>lZ",
+    function()
       vim.cmd("DepsAdd supermaven-inc/supermaven-nvim")
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
       require("supermaven-nvim").setup {
@@ -1185,7 +1233,7 @@ if not vim.g.vscode then
     end,
     { desc = "Supermaven enable" }
   )
-  map("n", "<leader>lZ", "<cmd>DepsClean<cr>", { desc = "Supermaven disable" })
+  map("n", "<leader>lX", "<cmd>DepsClean<cr>", { desc = "disable copilot/supermaven" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })

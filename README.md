@@ -271,10 +271,11 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `alt+k`       | `i`  | inline suggestion accept next line                |
 |      `alt+l`       | `i`  | Commit inline suggestion                          |
 |      `alt+;`       | `i`  | trigger next edit suggestion (`alt+l` to accept)  |
+|      `alt+;`       | `i`  | accept next edit suggestion (neovim only)         |
 |       `tab`        | `i`  | go to next snippet stop or next suggestion        |
 |    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion        |
-|      `alt+;`       | `i`  | go to next snippet stop (neovim only)             |
-|      `alt+,`       | `i`  | go to prev snippet stop (neovim only)             |
+|      `alt+n`       | `i`  | go to next snippet stop (neovim only)             |
+|      `alt+p`       | `i`  | go to prev snippet stop (neovim only)             |
 |      `alt+.`       | `i`  | expand snippet (neovim only)                      |
 |      `ctrl+c`      | `i`  | exit snippet session (neovim only)                |
 
