@@ -21,7 +21,7 @@ if not vim.loop.fs_stat(mini_path) then
 end
 
 vim.opt.rtp:prepend(mini_path)
-require('mini.deps').setup({ path = { package = path_package } })
+require('mini.deps').setup({ path = { package = path_package }, job = { timeout = 300000 } })
 vim.cmd('packadd mini.nvim | helptags ALL')
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local _, vscode = pcall(require, "vscode-neovim")
@@ -100,7 +100,7 @@ if not vim.g.vscode then
   now(
     function()
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
-      vim.g.copilot_nes_debounce = 100
+      vim.g.copilot_nes_debounce = 75
       vim.lsp.enable("copilot_ls")
       vim.keymap.set({ "n", "i" }, "<A-;>", function()
         local bufnr = vim.api.nvim_get_current_buf()
@@ -115,6 +115,36 @@ if not vim.g.vscode then
               )
         end
       end, { desc = "Accept Copilot NES suggestion" })
+    end
+  )
+end
+
+
+if not vim.g.vscode then
+  -- add { source = "zbirenbaum/copilot.lua", checkout = "ef3fc4af72942bf43749cea6fe6598e4da63d415" }
+
+  now(
+    function()
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot.lua')
+      local ok, copilot = pcall(require, "copilot")
+      if not ok then return end
+      copilot.setup {
+        suggestion = {
+          auto_trigger = true,
+          hide_during_completion = false,
+          debounce = 75,
+          trigger_on_accept = true,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = "<M-j>",
+            accept_line = "<M-k>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = { ["*"] = true },
+      }
     end
   )
 end
@@ -215,7 +245,7 @@ autocmd({ "TermEnter", "TermOpen" }, {
 ------------------------------------------------------------------------------------------------------------------------
 
 -- https://github.com/neovim/neovim/issues/14986
-autocmd({ "TermClose", --[[ "BufWipeout" ]] }, {
+autocmd({ "TermLeave", --[[ "TermClose", "BufWipeout" ]] }, {
   callback = function()
     vim.schedule(function()
       -- if vim.bo.buftype == 'terminal'  then vim.cmd [[ bp | bd! # ]] end
@@ -870,10 +900,10 @@ map(
   "n",
   "<esc>",
   function()
-    if not require("copilot-lsp.nes").clear() then
-      vim.cmd.nohlsearch()
-      M.press("<esc>")
-    end
+    local ok, copilot_lsp = pcall(require, "copilot-lsp.nes")
+    if ok then copilot_lsp.clear() end
+    vim.cmd.nohlsearch()
+    M.press("<esc>")
   end,
   { desc = "Clear Copilot-suggestion / search-highlight" }
 )
@@ -1201,9 +1231,10 @@ if not vim.g.vscode then
   map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end,
     { desc = "Pick workspace symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
+  map("n", "<leader>lX", "<cmd>DepsClean<cr>", { desc = "disable copilot/supermaven" })
   map(
     "n",
-    "<leader>lz",
+    "<leader>ly",
     function()
       local os = vim.uv.os_uname().sysname:lower()
       if os:find('win') then os = "win32" end
@@ -1212,17 +1243,48 @@ if not vim.g.vscode then
         'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.357.0/copilot-language-server-' .. os .. '-x64-1.357.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
-      vim.cmd("DepsAdd copilotlsp-nvim/copilot-lsp")
-      vim.notify("relaunch nvim after installation")
+      -- vim.cmd("DepsAdd copilotlsp-nvim/copilot-lsp")
+      add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
+      vim.lsp.enable("copilot_ls")
+      vim.notify("relaunch nvim after installation or rerun this entry")
     end,
     { desc = "Copilot NES enable" } -- then relaunch nvim or `:lua vim.lsp.enable("copilot_ls")`
   )
   map(
     "n",
+    "<leader>lY",
+    function()
+      vim.notify("run `:Copilot auth` after installation or rerun this entry")
+      -- vim.cmd("DepsAdd zbirenbaum/copilot.lua")
+      add { source = "zbirenbaum/copilot.lua", checkout = "ef3fc4af72942bf43749cea6fe6598e4da63d415" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot.lua')
+      require("copilot").setup {
+        suggestion = {
+          auto_trigger = true,
+          hide_during_completion = false,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = "<M-j>",
+            accept_line = "<M-k>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = { ["*"] = true },
+      }
+      vim.cmd("Copilot auth")
+      vim.cmd("Copilot status")
+    end,
+    { desc = "Copilot Inline enable" }
+  )
+  map(
+    "n",
     "<leader>lZ",
     function()
-      vim.cmd("DepsAdd supermaven-inc/supermaven-nvim")
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
+      -- vim.cmd("DepsAdd supermaven-inc/supermaven-nvim")
+      add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
       require("supermaven-nvim").setup {
         keymaps = {
           accept_suggestion = "<A-l>",
@@ -1233,7 +1295,6 @@ if not vim.g.vscode then
     end,
     { desc = "Supermaven enable" }
   )
-  map("n", "<leader>lX", "<cmd>DepsClean<cr>", { desc = "disable copilot/supermaven" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })

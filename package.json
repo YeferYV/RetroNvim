@@ -1295,6 +1295,7 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -1314,6 +1315,9 @@
                 },
                 {
                   "text": "code --install-extension snippington.snp-pandas-basic --install-extension devil-cyber.keras-snippet --install-extension changkaiyan.tf2snippets \n"
+                },
+                {
+                  "text": "code --install-extension GitHub.copilot \n"
                 }
               ]
             },
