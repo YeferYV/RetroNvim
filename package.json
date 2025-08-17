@@ -54,9 +54,9 @@
   "contributes": {
     "themes": [
       {
-        "label": "bat_base16_tmTheme",
+        "label": "retronvim_base16",
         "uiTheme": "vs-dark",
-        "path": "./themes/bat_base16_tmTheme.json"
+        "path": "./themes/retronvim_base16.json"
       }
     ],
     "configurationDefaults": {
@@ -339,10 +339,10 @@
       "zenMode.centerLayout": false,
       "zenMode.fullScreen": false,
       "zenMode.hideLineNumbers": false,
-      "workbench.colorTheme": "bat_base16_tmTheme",
+      "workbench.colorTheme": "retronvim_base16",
       "workbench.iconTheme": "symbols",
       "workbench.colorCustomizations": {
-        "[bat_base16_tmTheme][Tokyo Night Dark][Poimandres Alternate]": {
+        "[retronvim_base16][Tokyo Night Dark][Poimandres Alternate]": {
           "editorGroup.border": "#25252566",
           "editorSuggestWidget.selectedBackground": "#2c2c2c",
           "panel.border": "#25252566",
@@ -1177,6 +1177,7 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -1193,6 +1194,9 @@
                 },
                 {
                   "text": "pixi exec curl cht.sh/pnpm \n"
+                },
+                {
+                  "text": "# pnpm create next-app; pnpm create strapi-app \n"
                 },
                 null,
                 {
