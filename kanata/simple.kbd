@@ -102,18 +102,18 @@
 
   ;; fast keyboard repeat rate emulation
   ;; (multi f24) fixes fast typing `vh`, `vj`, `vk` and `vl` not entering visual mode on neovim
-  e   (multi f24 (tap-hold 150 150 e     (macro-repeat e     15)))
-  d   (multi f24 (tap-hold 150 150 d     (macro-repeat d     15)))
-  s   (multi f24 (tap-hold 150 150 s     (macro-repeat s     15)))
-  h   (multi f24 (tap-hold 150 150 h     (macro-repeat h     15)))
-  j   (multi f24 (tap-hold 150 150 j     (macro-repeat j     15)))
-  k   (multi f24 (tap-hold 150 150 k     (macro-repeat k     15)))
-  l   (multi f24 (tap-hold 150 150 l     (macro-repeat l     15)))
-  🡠   (multi f24 (tap-hold 150 150 left  (macro-repeat left  15)))
-  ↓   (multi f24 (tap-hold 150 150 down  (macro-repeat down  15)))
-  ↑   (multi f24 (tap-hold 150 150 up    (macro-repeat up    15)))
-  🡪   (multi f24 (tap-hold 150 150 right (macro-repeat right 15)))
-  bsp (multi f24 (tap-hold 150 150 bspc  (macro-repeat bspc  15)))
+  e   (multi f24 (tap-hold 200 200 e     (macro-repeat e     20)))
+  d   (multi f24 (tap-hold 200 200 d     (macro-repeat d     20)))
+  s   (multi f24 (tap-hold 200 200 s     (macro-repeat s     20)))
+  h   (multi f24 (tap-hold 200 200 h     (macro-repeat h     20)))
+  j   (multi f24 (tap-hold 200 200 j     (macro-repeat j     20)))
+  k   (multi f24 (tap-hold 200 200 k     (macro-repeat k     20)))
+  l   (multi f24 (tap-hold 200 200 l     (macro-repeat l     20)))
+  🡠   (multi f24 (tap-hold 200 200 left  (macro-repeat left  20)))
+  ↓   (multi f24 (tap-hold 200 200 down  (macro-repeat down  20)))
+  ↑   (multi f24 (tap-hold 200 200 up    (macro-repeat up    20)))
+  🡪   (multi f24 (tap-hold 200 200 right (macro-repeat right 20)))
+  bsp (multi f24 (tap-hold 200 200 bspc  (macro-repeat bspc  20)))
 
   ;; open yazi_cd on any shell
   yaz (macro y a z i spc S-4 S-(p w d) spc - - c w d - f i l e spc S-4 S-(h o m e) / . y a z i ; spc c d spc S-' S-4 S-9 c a t spc S-4 S-( h o m e) / . y a z i S-0 S-' ret)

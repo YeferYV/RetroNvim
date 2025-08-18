@@ -119,36 +119,6 @@ if not vim.g.vscode then
   )
 end
 
-
-if not vim.g.vscode then
-  -- add { source = "zbirenbaum/copilot.lua", checkout = "ef3fc4af72942bf43749cea6fe6598e4da63d415" }
-
-  now(
-    function()
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot.lua')
-      local ok, copilot = pcall(require, "copilot")
-      if not ok then return end
-      copilot.setup {
-        suggestion = {
-          auto_trigger = true,
-          hide_during_completion = false,
-          debounce = 75,
-          trigger_on_accept = true,
-          keymap = {
-            accept = "<M-l>",
-            accept_word = "<M-j>",
-            accept_line = "<M-k>",
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
-        },
-        filetypes = { ["*"] = true },
-      }
-    end
-  )
-end
-
 if not vim.g.vscode then
   -- add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
 
@@ -1234,7 +1204,7 @@ if not vim.g.vscode then
   map("n", "<leader>lX", "<cmd>DepsClean<cr>", { desc = "disable copilot/supermaven" })
   map(
     "n",
-    "<leader>ly",
+    "<leader>lz",
     function()
       local os = vim.uv.os_uname().sysname:lower()
       if os:find('win') then os = "win32" end
@@ -1253,38 +1223,11 @@ if not vim.g.vscode then
   )
   map(
     "n",
-    "<leader>lY",
-    function()
-      vim.notify("run `:Copilot auth` after installation or rerun this entry")
-      -- vim.cmd("DepsAdd zbirenbaum/copilot.lua")
-      add { source = "zbirenbaum/copilot.lua", checkout = "ef3fc4af72942bf43749cea6fe6598e4da63d415" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot.lua')
-      require("copilot").setup {
-        suggestion = {
-          auto_trigger = true,
-          hide_during_completion = false,
-          keymap = {
-            accept = "<M-l>",
-            accept_word = "<M-j>",
-            accept_line = "<M-k>",
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
-        },
-        filetypes = { ["*"] = true },
-      }
-      vim.cmd("Copilot auth")
-      vim.cmd("Copilot status")
-    end,
-    { desc = "Copilot Inline enable" }
-  )
-  map(
-    "n",
     "<leader>lZ",
     function()
       -- vim.cmd("DepsAdd supermaven-inc/supermaven-nvim")
       add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
       require("supermaven-nvim").setup {
         keymaps = {
           accept_suggestion = "<A-l>",
