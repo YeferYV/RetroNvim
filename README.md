@@ -465,7 +465,8 @@ _    _    _              _              _    _    _
   ```
 
 **Install from github releases (offline)(portable)**
-open command palette `ctrl+shift+p` then type `Extensions: install from vsix`
+open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
+To work inside windsurf retronvim must be installed inside vscode as well
 
 **VSCode Marketplace**
 
@@ -539,5 +540,6 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`
 - [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) appimages containing retronvim's kanata, nvim, yazi and zsh configs
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
 - [vspacecode](https://github.com/vspacecode/vspacecode) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
+- [leaderKey](https://github.com/JimmyZJX/leaderkey) (a faster whichkey with ripgrep/fzf integration) whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
 
 </details>
