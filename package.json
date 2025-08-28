@@ -1196,20 +1196,20 @@
                   "text": "pixi exec curl cht.sh/pnpm \n"
                 },
                 {
-                  "text": "# pnpm create next-app; pnpm create strapi-app \n"
+                  "text": "pnpm install -g firebase-tools ;# pnpm create next-app; pnpm create strapi-app \n"
                 },
                 null,
                 {
-                  "text": "code --install-extension WallabyJs.console-ninja  --install-extension bradlc.vscode-tailwindcss         --install-extension esbenp.prettier-vscode                         --install-extension prisma.prisma                    \n"
+                  "text": "code --install-extension WallabyJs.console-ninja  --install-extension bradlc.vscode-tailwindcss         --install-extension esbenp.prettier-vscode                         --install-extension prisma.prisma             \n"
                 },
                 {
-                  "text": "code --install-extension emranweb.daisyui-snippet --install-extension imgildev.vscode-nextjs-generator  --install-extension supabase-snippets.supabase-javascript-snippets --install-extension acchu99.firebase-react-snippets  \n"
+                  "text": "code --install-extension emranweb.daisyui-snippet --install-extension imgildev.vscode-nextjs-generator  --install-extension supabase-snippets.supabase-javascript-snippets --install-extension SohanEmon.firebase-wizard \n"
                 },
                 {
-                  "text": "code --install-extension a-smiggle.chills         --install-extension formulahendry.auto-rename-tag     --install-extension rangav.vscode-thunder-client                   --install-extension usernamehw.errorlens             \n"
+                  "text": "code --install-extension a-smiggle.chills         --install-extension formulahendry.auto-rename-tag     --install-extension rangav.vscode-thunder-client                   --install-extension usernamehw.errorlens      \n"
                 },
                 {
-                  "text": "code --install-extension PayPal.vscode-paypal     --install-extension amjarmed.100-nextjs-snippets                                                                                                                              \n"
+                  "text": "code --install-extension PayPal.vscode-paypal     --install-extension amjarmed.100-nextjs-snippets      --install-extension ImKKingshuk.xsnippets                                                                        \n"
                 }
               ]
             },
