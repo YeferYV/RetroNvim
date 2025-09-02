@@ -6,6 +6,22 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.3.8](https://github.com/YeferYV/RetroNvim/compare/v0.3.7...v0.3.8) (2025-09-02)
+
+
+### Bug Fixes
+
+* **extension.js:** vscode's marketplace support for windsurf ([bb79613](https://github.com/YeferYV/RetroNvim/commit/bb79613aa17f9c19d2b8bbcbafa0c0d72f013a99))
+* **nvim:** $APPDIR2 when init.lua is inside two nvim.appimage ([ad33fc4](https://github.com/YeferYV/RetroNvim/commit/ad33fc46617d2b7b142bcd384b0155172990e0b8))
+* **nvim:** comment out jsx keybinding ([fcf68d4](https://github.com/YeferYV/RetroNvim/commit/fcf68d42c5d3e82b0c5ae158305f6948569ee0a0))
+* **nvim:** copilot NES support added since supermaven doesn't support NES ([d58e9a1](https://github.com/YeferYV/RetroNvim/commit/d58e9a17189a57f00eac8712a3cf7b21a22ba07c))
+* **nvim:** copilot.lua as alternative since supermaven seems to be unmaintained ([ba3bc22](https://github.com/YeferYV/RetroNvim/commit/ba3bc226fb261ef08786e7502d05538c2c1d1b73))
+* **nvim:** removing copilot.lua since it's limited to 2000 free request per month ([1709d1b](https://github.com/YeferYV/RetroNvim/commit/1709d1b8d2ca97fa193c4b2b46c9c845c24a734e))
+* **package.json:** adding new file containing shift+u in the file explorer triggers `whichkey.repeatMostRecent` ([2ad5c7b](https://github.com/YeferYV/RetroNvim/commit/2ad5c7ba98a6edef99aebb287a47957cc7077cad))
+* **powershell:** if vscode shell integration is sourced two times it crashes ([9128a6a](https://github.com/YeferYV/RetroNvim/commit/9128a6a14fa5393a8c65b5060abd3e25c1204af3))
+* **wezterm:** wezterm.appimage errors if retronvim_path is nil ([86cdb16](https://github.com/YeferYV/RetroNvim/commit/86cdb1622af2f293d5e8082854259eaecdefd236))
+* **yazi:** using chrome to drag and drop instead of ripdrag ([bc30ab5](https://github.com/YeferYV/RetroNvim/commit/bc30ab51b2aa54e70b53055b06c06141a4c265c9))
+
 ## [0.3.7](https://github.com/YeferYV/RetroNvim/compare/v0.3.6...v0.3.7) (2025-07-17)
 
 
