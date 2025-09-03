@@ -310,7 +310,8 @@
         "<C-q>": false,
         "<C-s>": false,
         "<C-t>": false,
-        "<C-z>": false
+        "<C-z>": false,
+        "<C-space>": false
       },
       "vscode-neovim.compositeKeys": {
         "jk": {
