@@ -6,6 +6,13 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.3.9](https://github.com/YeferYV/RetroNvim/compare/v0.3.8...v0.3.9) (2025-09-03)
+
+
+### Bug Fixes
+
+* **package.json:** affinity for performance and ignore ctrl+space ([c26d74b](https://github.com/YeferYV/RetroNvim/commit/c26d74bab68c73d421c4369cc6d3c8449907bfec))
+
 ## [0.3.8](https://github.com/YeferYV/RetroNvim/compare/v0.3.7...v0.3.8) (2025-09-02)
 
 
