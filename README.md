@@ -236,8 +236,8 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |         `alt+v`          |     `n`     | Type `V`                                         |
 |    `alt+s` or `left`     |     `n`     | Go to previous tab                               |
 |    `alt+f` or `right`    |     `n`     | Go to next tab                                   |
-| `alt+left` or `alt+down` |     `n`     | Decrease view size of current window or terminal |
-| `alt+right` or `alt+up`  |     `n`     | Increase view size of current window or terminal |
+|   `ctrl+H` or `ctrl+J`   |     `n`     | Decrease view size of current window or terminal |
+|   `ctrl+L` or `ctrl+K`   |     `n`     | Increase view size of current window or terminal |
 |         `ctrl+h`         |     `n`     | Navigate to left window                          |
 |         `ctrl+j`         |     `n`     | Navigate to down window                          |
 |         `ctrl+k`         |     `n`     | Navigate to up window                            |
