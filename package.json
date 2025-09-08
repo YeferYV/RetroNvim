@@ -61,12 +61,12 @@
     ],
     "configurationDefaults": {
       "accessibility.accessibleView.closeOnKeyPress": false,
+      "cursor.cpp.enablePartialAccepts": true,
       "editor.accessibilitySupport": "off",
       "editor.autoClosingBrackets": "beforeWhitespace",
       "editor.autoClosingComments": "beforeWhitespace",
       "editor.autoClosingQuotes": "beforeWhitespace",
       "editor.codeActionsOnSave": {
-        "source.organizeImports": "always",
         "source.addMissingImports": "always"
       },
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
@@ -122,7 +122,7 @@
           "path": "zsh",
           "args": [
             "-c",
-            "export ZDOTDIR=\"$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*/zsh | head -n1)\"; zsh"
+            "export ZDOTDIR=\"$(ls -d $HOME/.*/extensions/yeferyv.retronvim*/zsh | head -n1)\"; zsh"
           ]
         }
       },
@@ -131,7 +131,7 @@
           "path": "bash",
           "args": [
             "-c",
-            "export ZDOTDIR=\"$(echo ~/.vscode/extensions/yeferyv.retronvim*/zsh)\"; ~/.vscode/extensions/yeferyv.retronvim*/bin/env/bin/zsh"
+            "export ZDOTDIR=\"$(echo ~/.*/extensions/yeferyv.retronvim*/zsh | cut -d' ' -f1)\"; $ZDOTDIR/../bin/env/bin/zsh"
           ]
         }
       },
@@ -143,7 +143,7 @@
             "-shell",
             "zsh",
             "-c",
-            "export HOME=/c/Users/$USER; export ZDOTDIR=$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*/zsh | head -n1); zsh -l"
+            "export HOME=/c/Users/$USER; export ZDOTDIR=$(printf ~/.*/extensions/yeferyv.retronvim*/zsh | head -n1); zsh -l"
           ]
         },
         "powershell (retronvim)": {
@@ -152,7 +152,7 @@
             "-executionpolicy",
             "bypass",
             "-c",
-            "$env:retronvim_path=(Get-ChildItem -Path \"$HOME/.vscode/extensions/yeferyv.retronvim*\" | Select-Object -First 1).FullName; $env:psmodulepath=\"$env:retronvim_path/powershell/modules;$env:psmodulepath\"; powershell -nologo -noexit -file \"$env:retronvim_path/powershell/profile.ps1\""
+            "$env:retronvim_path=(Get-ChildItem -Path \"$HOME/.*/extensions/yeferyv.retronvim*\" | Select-Object -First 1).FullName; $env:psmodulepath=\"$env:retronvim_path/powershell/modules;$env:psmodulepath\"; powershell -nologo -noexit -file \"$env:retronvim_path/powershell/profile.ps1\""
           ]
         }
       },
@@ -997,13 +997,13 @@
                   "profileName": "zsh (retronvim)"
                 },
                 {
-                  "text": "cp --verbose ~/.vscode/extensions/yeferyv.retronvim*/zsh/.zshrc ~/.zshrc  \n"
+                  "text": "cp --verbose $RETRONVIM_PATH/zsh/.zshrc ~/.zshrc  \n"
                 },
                 {
-                  "text": "mkdir -p ~/.config/wezterm && cp --verbose ~/.vscode/extensions/yeferyv.retronvim*/zsh/wezterm.lua ~/.config/wezterm  \n"
+                  "text": "mkdir -p ~/.config/wezterm && cp --verbose $RETRONVIM_PATH/zsh/wezterm.lua ~/.config/wezterm  \n"
                 },
                 {
-                  "text": "# sudo ln -s ~/.vscode/extensions/yeferyv.retronvim*/bin/env/bin/zsh /bin/zsh \n"
+                  "text": "# sudo ln -s $RETRONVIM_PATH/bin/env/bin/zsh /bin/zsh \n"
                 },
                 {
                   "text": "# chsh --shell /bin/zsh $USER \n"
@@ -2707,90 +2707,6 @@
         "when": "editorTextFocus && neovim.mode == 'insert' || neovim.mode == 'visual'"
       },
       {
-        "key": "alt+h",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft",
-            "cursorLeft"
-          ]
-        },
-        "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
-      },
-      {
-        "key": "alt+j",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "cursorDown",
-            "cursorDown",
-            "cursorDown",
-            "cursorDown",
-            "cursorDown",
-            "cursorDown",
-            "cursorDown",
-            "cursorDown",
-            "cursorDown",
-            "cursorDown"
-          ]
-        },
-        "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
-      },
-      {
-        "key": "alt+k",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp",
-            "cursorUp"
-          ]
-        },
-        "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
-      },
-      {
-        "key": "alt+l",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "cursorRight",
-            "cursorRight",
-            "cursorRight",
-            "cursorRight",
-            "cursorRight",
-            "cursorRight",
-            "cursorRight",
-            "cursorRight",
-            "cursorRight",
-            "cursorRight"
-          ]
-        },
-        "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
-      },
-      {
-        "key": "alt+v",
-        "command": "type",
-        "args": {
-          "text": "V"
-        },
-        "when": "editorTextFocus && (neovim.mode == 'normal' || vim.mode == 'Normal')"
-      },
-      {
         "key": "alt+s",
         "command": "workbench.action.previousEditor"
       },
@@ -2866,7 +2782,7 @@
       {
         "key": "alt+j",
         "command": "editor.action.inlineSuggest.acceptNextWord",
-        "when": "inlineSuggestionVisible || inlineEditIsVisible"
+        "when": "cppSuggestion || inlineSuggestionVisible || inlineEditIsVisible"
       },
       {
         "key": "alt+k",
@@ -2877,6 +2793,11 @@
         "key": "alt+l",
         "command": "editor.action.inlineSuggest.commit",
         "when": "inlineSuggestionVisible || inlineEditIsVisible"
+      },
+      {
+        "key": "alt+l",
+        "command": "editor.action.acceptCursorTabSuggestion",
+        "when": "cpp.shouldAcceptTab"
       },
       {
         "key": "alt+;",

@@ -36,7 +36,7 @@ alias  cht="cht.sh"                       # nix-env -iA nixpkgs.cht-sh
 alias  grep="grep --color=auto"
 alias  ll="ls -l"
 alias  svim="NVIM_APPNAME=sixelrice nvim" # git clone https://github.com/yeferyv/sixelrice ~/.config/sixelrice
-export RETRONVIM_PATH=$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*(N) | head -n1)
+export RETRONVIM_PATH=$(realpath $HOME/.*/extensions/yeferyv.retronvim* | head -n1)
 export BAT_THEME="base16"
 export EDITOR="nvim"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
@@ -52,19 +52,21 @@ export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 export VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"
 export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 
-[[ "$OSTYPE" == "linux-gnu"              ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.local/share/pnpm:$HOME/.pixi/bin:$HOME/.console-ninja/.bin:$PATH:$HOME/.local/bin"
-[[ "$OSTYPE" == "linux-gnu"              ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
-[[ "$OSTYPE" == "linux-gnu"              ]] && test ! -e ~/.local/share/fonts/FiraCode && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/.local/share/fonts/FiraCode 2>/dev/null && fc-cache
-[[ "$OSTYPE" == "darwin"                 ]] && test ! -e ~/Library/Fonts/FiraCode      && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/Library/Fonts/FiraCode      2>/dev/null
-[[ "$OSTYPE" == "darwin"                 ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/Library/pnpm:$HOME/.pixi/bin:$HOME/.console-ninja/.bin:$PATH:$HOME/.local/bin"
-[[ "$OSTYPE" == "darwin"                 ]] && export PNPM_HOME="$HOME/Library/pnpm"
-[[ "$OSTYPE" == "msys"                   ]] && test ! -e $HOME/AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf && powershell.exe -ExecutionPolicy Bypass -File $RETRONVIM_PATH/bin/nerd-fonts/install.ps1
-[[ "$OSTYPE" == "msys"                   ]] && export PATH="$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin:$HOME/appdata/local/pnpm:$HOME/.pixi/bin:$HOME/.console-ninja/.bin:$PATH:$HOME/.local/bin"
-[[ "$OSTYPE" == "msys"                   ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
-[[ "$OSTYPE" != "msys"                   ]] && alias  pacman="sudo pacman --noconfirm"
-[[ "$TERM_PROGRAM" == "vscode"           ]] && source "$(code --locate-shell-integration-path zsh)"
-[[   -z $ZDOTDIR                         ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
-[[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh) 2>/dev/null
+[[ "$OSTYPE" == "linux-gnu"                ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/.local/share/pnpm:$HOME/.pixi/bin:$HOME/.console-ninja/.bin:$PATH:$HOME/.local/bin"
+[[ "$OSTYPE" == "linux-gnu"                ]] && export PNPM_HOME="$HOME/.local/share/pnpm"
+[[ "$OSTYPE" == "linux-gnu"                ]] && test ! -e ~/.local/share/fonts/FiraCode && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/.local/share/fonts/FiraCode 2>/dev/null && fc-cache
+[[ "$OSTYPE" == "darwin"                   ]] && test ! -e ~/Library/Fonts/FiraCode      && mkdir -p ~/.local/share/fonts && cp -r $RETRONVIM_PATH/bin/nerd-fonts/patched-fonts/FiraCode ~/Library/Fonts/FiraCode      2>/dev/null
+[[ "$OSTYPE" == "darwin"                   ]] && export PATH="$RETRONVIM_PATH/bin/env/bin:$HOME/Library/pnpm:$HOME/.pixi/bin:$HOME/.console-ninja/.bin:$PATH:$HOME/.local/bin"
+[[ "$OSTYPE" == "darwin"                   ]] && export PNPM_HOME="$HOME/Library/pnpm"
+[[ "$OSTYPE" == "msys"                     ]] && test ! -e $HOME/AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf && powershell.exe -ExecutionPolicy Bypass -File $RETRONVIM_PATH/bin/nerd-fonts/install.ps1
+[[ "$OSTYPE" == "msys"                     ]] && export PATH="$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin:$HOME/appdata/local/pnpm:$HOME/.pixi/bin:$HOME/.console-ninja/.bin:$PATH:$HOME/.local/bin"
+[[ "$OSTYPE" == "msys"                     ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
+[[ "$OSTYPE" != "msys"                     ]] && alias  pacman="sudo pacman --noconfirm"
+[[ "$TERM_PROGRAM" == "vscode"             ]] && source "$(code --locate-shell-integration-path zsh)"
+[[ "$CHROME_DESKTOP" == "windsurf.desktop" ]] && alias code="winsurf" # whichkey uses `code --install-extension ...`
+[[ "$CHROME_DESKTOP" == "cursor.desktop"   ]] && alias code="cursor" # whichkey uses `code --install-extension ...`
+[[   -z $ZDOTDIR                           ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
+[[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi   ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh) 2>/dev/null
 
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh

@@ -79,7 +79,7 @@ on = [ "s", "e" ]
 run = '''
   shell
   --block
-  -- eval "${EDITOR:-nvim -u NORC --cmd 'lua vim.cmd.source(vim.fn.glob[[~/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua]])'}" "$@"
+  -- eval "${EDITOR:-nvim -u NORC --cmd 'lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])'}" "$@"
 '''
 for = "unix"
 desc = "$EDITOR" # open selected with $EDITOR
@@ -89,7 +89,7 @@ on = [ "s", "e" ]
 run = '''
   shell
   --block
-  -- %EDITOR% %* 2>nul || nvim -u NORC --cmd "lua vim.cmd.source(vim.fn.glob[[~/.vscode/extensions/yeferyv.retronvim*/nvim/init.lua]])" %*
+  -- %EDITOR% %* 2>nul || nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])" %*
 '''
 for = "windows"
 desc = "$EDITOR" # opens selected with $EDITOR

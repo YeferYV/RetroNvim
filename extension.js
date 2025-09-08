@@ -70,9 +70,11 @@ function setNeovimPath(homeExtension) {
   config.update( "extensions.experimental.affinity", { "asvetliakov.vscode-neovim": 1, "vscodevim.vim": 1 }, vscode.ConfigurationTarget.Global);
   config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)
   config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
-  config.update('window.customMenuBarAltFocus', false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
+  config.update("window.customMenuBarAltFocus", false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
   config.update("windsurf.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global)
   config.update("windsurf.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global)
+  config.update("extensions.gallery.itemUrl", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
+  config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace fo rcursor
   config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
   config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacos, vscode.ConfigurationTarget.Global)
   config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)

@@ -45,7 +45,7 @@ Set-PSReadlineKeyHandler -key alt+j  -Function HistorySearchForward  -ViMode Com
 Set-PSReadLineKeyHandler -key alt+h  -Function ViCommandMode
 Set-PSReadlineKeyHandler -key tab    -Function MenuComplete
 
-$env:RETRONVIM_PATH=(Get-ChildItem -Path "$HOME\.vscode\extensions\yeferyv.retronvim*" | Select-Object -First 1).FullName
+$env:RETRONVIM_PATH=(Get-ChildItem -Path "$HOME\.*\extensions\yeferyv.retronvim*" | Select-Object -First 1).FullName
 $env:BAT_THEME="base16"
 $env:EDITOR="nvim"
 $env:FZF_DEFAULT_OPTS="--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'"
@@ -66,4 +66,6 @@ set-alias which get-command
 if ( -not (Test-Path $env:RETRONVIM_BIN) -and $env:OS -eq "Windows_NT" ) { try { cd $env:RETRONVIM_PATH/bin; ./7zr.exe x windows.7z; cd ~; } catch {}; }
 if ( -not (Test-Path $env:FONT_PATH)     -and $env:OS -eq "Windows_NT" ) { $ErrorActionPreference = 'SilentlyContinue'; set-executionpolicy bypass currentuser; & "$env:RETRONVIM_PATH\bin\nerd-fonts\install.ps1"; }
 if ( get-command starship -ErrorAction SilentlyContinue                ) { iex (&starship init powershell);                  }
-if ( $env:TERM_PROGRAM -eq "vscode" -and -not $env:SHELLINTEGRATION    ) { . "$(code --locate-shell-integration-path pwsh)"; $env:SHELLINTEGRATION=1 } # should be after starship otherwise won't work
+if ( $env:TERM_PROGRAM   -eq "vscode" -and -not $env:SHELLINTEGRATION  ) { . "$(code --locate-shell-integration-path pwsh)"; $env:SHELLINTEGRATION=1 } # should be after starship otherwise won't work
+if ( $env:CHROME_DESKTOP -eq "windsurf"                                ) { set-alias code "winsurf" } # whichkey uses `code --install-extension ...`
+if ( $env:CHROME_DESKTOP -eq "cursor"                                  ) { set-alias code "cursor" } # whichkey uses `code --install-extension ...`

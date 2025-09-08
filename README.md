@@ -123,7 +123,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |        `gs`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +sort Operator                                                            | followed by text-object/motion           |                        | uses selection               | `gsip` or `vipgs` sorts a paragraph                                          |
 |        `gS`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | split/join arguments                                                      | toggles inside `{}`,`[]`,`()`            |                        | followed by operator         | `vipgS` joins selected lines in one line                                     |
 |     `gt`/`gT`      | vscode-neovim |   `n`,`x`   |        `.`        | `;`ending `,`beginning | +go to end/start of textobj                                               | followed by text-object                  |                        | selects form cursor position | `vgtiq` selects until end of quotation                                       |
-|     `gu`/`gU`      |               |   `n`,`x`   |        `.`        |                        | +to lowercase/uppercase                                                   | requires a text-object                   |                        | applies to selection         | `gUiw` (neovim only) or `viwgU` lowercases a word                                          |
+|     `gu`/`gU`      |               |   `n`,`x`   |        `.`        |                        | +to lowercase/uppercase                                                   | requires a text-object                   |                        | applies to selection         | `gUiw` (neovim only) or `viwgU` lowercases a word                            |
 |        `gv`        |               |   `n`,`x`   |                   |                        | last selected                                                             | finds and jumps                          |                        | reselects                    | `vgv` selects last selection                                                 |
 |        `gw`        |               |   `n`,`x`   |        `.`        |                        | split/join comments/lines 80chars (keeps cursor position)                 | requires a text-object                   |                        | applies to selection         | `gwip` or `vipgw` split/join a paragraph limited by 80 characters            |
 |        `gx`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +exchange (text) Operator                                                 | followed by text-object/motion           |                        | uses selection               | `gxiw` or `viwgx` exchanges word with another `gxiw` or `viwgx` or `.`       |
@@ -217,36 +217,36 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|     Key Combination      |    mode     | Description                                      |
-| :----------------------: | :---------: | :----------------------------------------------- |
-|        `<space>o`        |     `n`     | view file explorer                               |
-|         `ctrl+\`         |   `n`,`i`   | Toggle panel (terminal) visibility               |
-|         `escape`         |     `n`     | clear search highlight                           |
-|      `shift+escape`      |     `n`     | close any popup window like diff/diagnostic etc  |
-|      `shift+space`       |     `n`     | Show whichkey menu (Windows, Linux, Mac)         |
-|       `alt+space`        |     `n`     | Show whichkey menu (Linux, Mac)                  |
-|         `alt+c`          |     `i`     | Copy                                             |
-|         `alt+v`          |     `i`     | Paste                                            |
-|           `jk`           |     `i`     | enter vim normal mode                            |
-|         `alt+h`          |   `i`,`x`   | enter vim normal mode                            |
-|   `alt+h` or `shift+h`   |     `n`     | cursorLeft `10` times                            |
-|   `alt+j` or `shift+j`   |     `n`     | cursorDown `10` times                            |
-|   `alt+k` or `shift+k`   |     `n`     | cursorUp `10` times                              |
-|   `alt+l` or `shift+l`   |     `n`     | cursorRigth `10` times                           |
-|         `alt+v`          |     `n`     | Type `V`                                         |
-|    `alt+s` or `left`     |     `n`     | Go to previous tab                               |
-|    `alt+f` or `right`    |     `n`     | Go to next tab                                   |
-|   `ctrl+H` or `ctrl+J`   |     `n`     | Decrease view size of current window or terminal |
-|   `ctrl+L` or `ctrl+K`   |     `n`     | Increase view size of current window or terminal |
-|         `ctrl+h`         |     `n`     | Navigate to left window                          |
-|         `ctrl+j`         |     `n`     | Navigate to down window                          |
-|         `ctrl+k`         |     `n`     | Navigate to up window                            |
-|         `ctrl+l`         |     `n`     | Navigate to right window                         |
-|        `shift+q`         |     `n`     | Close active tab                                 |
-|        `shift+r`         |     `n`     | Format and save                                  |
-|     `ctrl+alt+left`      | `n`,`i`,`x` | select left word (on multi cursor)               |
-|     `ctrl+alt+right`     | `n`,`i`,`x` | select right word (on multi cursor)              |
-|    `<ctr+x><ctrl+o>`     |     `i`     | to expand emmet-ls (neovim only)                 |
+|         Key Combination          |    mode     | Description                                      |
+| :------------------------------: | :---------: | :----------------------------------------------- |
+|            `<space>o`            |     `n`     | view file explorer                               |
+|             `ctrl+\`             |   `n`,`i`   | Toggle panel (terminal) visibility               |
+|             `escape`             |     `n`     | clear search highlight                           |
+|          `shift+escape`          |     `n`     | close any popup window like diff/diagnostic etc  |
+|          `shift+space`           |     `n`     | Show whichkey menu (Windows, Linux, Mac)         |
+|           `alt+space`            |     `n`     | Show whichkey menu (Linux, Mac)                  |
+|             `alt+c`              |     `i`     | Copy                                             |
+|             `alt+v`              |     `i`     | Paste                                            |
+|               `jk`               |     `i`     | enter vim normal mode                            |
+|             `alt+h`              |   `i`,`x`   | enter vim normal mode                            |
+|       `alt+h` or `shift+h`       |     `n`     | cursorLeft `10` times                            |
+|       `alt+j` or `shift+j`       |     `n`     | cursorDown `10` times                            |
+|       `alt+k` or `shift+k`       |     `n`     | cursorUp `10` times                              |
+|       `alt+l` or `shift+l`       |     `n`     | cursorRigth `10` times                           |
+|             `alt+v`              |     `n`     | Type `V`                                         |
+|        `alt+s` or `left`         |     `n`     | Go to previous tab                               |
+|        `alt+f` or `right`        |     `n`     | Go to next tab                                   |
+| `ctrl+shift+h` or `ctrl+shift+j` |     `n`     | Decrease view size of current window or terminal |
+| `ctrl+shift+l` or `ctrl+shift+k` |     `n`     | Increase view size of current window or terminal |
+|             `ctrl+h`             |     `n`     | Navigate to left window                          |
+|             `ctrl+j`             |     `n`     | Navigate to down window                          |
+|             `ctrl+k`             |     `n`     | Navigate to up window                            |
+|             `ctrl+l`             |     `n`     | Navigate to right window                         |
+|            `shift+q`             |     `n`     | Close active tab                                 |
+|            `shift+r`             |     `n`     | Format and save                                  |
+|         `ctrl+alt+left`          | `n`,`i`,`x` | select left word (on multi cursor)               |
+|         `ctrl+alt+right`         | `n`,`i`,`x` | select right word (on multi cursor)              |
+|        `<ctr+x><ctrl+o>`         |     `i`     | to expand emmet-ls (neovim only)                 |
 
 </details>
 
@@ -413,6 +413,8 @@ _    _    _              _              _    _    _
   and uninstall/disable [`cvim`](https://github.com/VSCodeVim/Vim/issues/8567) extension, you may need to relaunch vscode,
   alternatively use `nvim` or `yazi` when opening a terminal with the profile `zsh (retronvim)` or `powershell(retronvim)` which are the default profile when opening a terminal
 
+- nvim/yazi/zsh/powershell will search for retronvim installation path alphabetically (~/.cursor then ~/.vscode then ~/.windsurf ...) and will use the first one found
+
 **Manual Install**
 
 - Linux/MacOS:
@@ -466,7 +468,6 @@ _    _    _              _              _    _    _
 
 **Install from github releases (offline)(portable)**
 open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
-To work inside windsurf retronvim must be installed inside vscode as well
 
 **VSCode Marketplace**
 
