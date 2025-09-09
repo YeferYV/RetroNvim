@@ -6,6 +6,19 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.4.0](https://github.com/YeferYV/RetroNvim/compare/v0.3.8...v0.4.0) (2025-09-09)
+
+
+### Features
+
+* **release.yaml:** support for open-vsx.org, windsurf and cursor ([53dde0a](https://github.com/YeferYV/RetroNvim/commit/53dde0a96b7b9d5052978506257c276fa9c03500))
+
+
+### Bug Fixes
+
+* **package.json:** affinity for performance and ignore ctrl+space ([c26d74b](https://github.com/YeferYV/RetroNvim/commit/c26d74bab68c73d421c4369cc6d3c8449907bfec))
+* **vscodevim:** yank fordward ([617d726](https://github.com/YeferYV/RetroNvim/commit/617d726fb8335f8a89723ff511446dfb35b8d7f1))
+
 ## [0.3.8](https://github.com/YeferYV/RetroNvim/compare/v0.3.7...v0.3.8) (2025-09-02)
 
 
