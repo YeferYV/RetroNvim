@@ -102,7 +102,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |        `gc`        |               | `n`,`o`,`x` |        `.`        |                        | +comment (`vgc` in normal mode will select a block comment)               | followed by textobject/motion            | won't jump             | uses selection               | `gcip` or `vipgc` comments a paragraph                                       |
 |        `gC`        | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | block comment (supports selection `vgC` or just `gC`)                     | select text-object under cursor          | won't jump             | reselects                    | `vgC` selects current block of comment                                       |
 |        `gd`        |               |     `n`     |                   |                        | go to definition                                                          | jumps                                    |                        |                              | `gd` go to definition of word under cursor                                   |
-|        `gD`        | vscode-neovim |     `x`     |                   |                        | git diff/hunk (vscode selects from cursor position to end of diff)        |                                          | won't jump             | reselects                    | `vgh` selects modified code                                                  |
+|        `gD`        | vscode-neovim |     `x`     |                   |                        | git diff/hunk (vscode selects from cursor position to end of diff)        |                                          | won't jump             | reselects                    | `vgD` selects modified code                                                  |
 |     `ge`/`gE`      |               | `n`,`o`,`x` |                   |                        | previous end of word/WORD (`WORD` omits punctuation)                      | jumps                                    | uses cursor position   | uses selection               | `vge` selects from cursor position until previous end of word                |
 |        `gf`        |               |   `n`,`x`   |                   |                        | go to file under cursor                                                   | jumps                                    |                        | uses selection               | `gf` open in a tab the path under cursor                                     |
 |      `gg`/`G`      |               | `n`,`o`,`x` |        `.`        |                        | first/last line                                                           | jumps                                    | uses cursor position   | uses selection               | `vgg` selects until first line                                               |
@@ -254,30 +254,30 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|  Key Combination   | mode | Description                                       |
-| :----------------: | :--: | :------------------------------------------------ |
-|    `ctrl+space`    | `i`  | Toggle suggestion widget                          |
-| `ctrl+shift+space` | `i`  | Toggle suggestion details (when inside widget)    |
-| `ctrl+shift+space` | `i`  | Toggle parameter hints (when inside parameters)   |
-|      `ctrl+h`      | `i`  | Toggle suggestion focus (when inside widget)      |
-|      `ctrl+d`      | `i`  | Select next page (when inside suggestion details) |
-|      `ctrl+u`      | `i`  | Select prev page (when inside suggestion details) |
-|      `ctrl+j`      | `i`  | Select next suggestion                            |
-|      `ctrl+k`      | `i`  | Select prev suggestion                            |
-|      `ctrl+l`      | `i`  | Accept selected suggestion                        |
-|      `alt+]`       | `i`  | Show next inline suggestion                       |
-|      `alt+[`       | `i`  | Show previous inline suggestion                   |
-|      `alt+j`       | `i`  | inline suggestion accept next word                |
-|      `alt+k`       | `i`  | inline suggestion accept next line                |
-|      `alt+l`       | `i`  | Commit inline suggestion                          |
-|      `alt+;`       | `i`  | trigger next edit suggestion (`alt+l` to accept)  |
-|      `alt+;`       | `i`  | accept next edit suggestion (neovim only)         |
-|       `tab`        | `i`  | go to next snippet stop or next suggestion        |
-|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion        |
-|      `alt+n`       | `i`  | go to next snippet stop (neovim only)             |
-|      `alt+p`       | `i`  | go to prev snippet stop (neovim only)             |
-|      `alt+.`       | `i`  | expand snippet (neovim only)                      |
-|      `ctrl+c`      | `i`  | exit snippet session (neovim only)                |
+|  Key Combination   | mode | Description                                            |
+| :----------------: | :--: | :----------------------------------------------------- |
+|    `ctrl+space`    | `i`  | Toggle suggestion widget                               |
+| `ctrl+shift+space` | `i`  | Toggle suggestion details (when inside widget)         |
+| `ctrl+shift+space` | `i`  | Toggle parameter hints (when inside parameters)        |
+|      `ctrl+h`      | `i`  | Toggle suggestion focus (when inside widget)           |
+|      `ctrl+d`      | `i`  | Select next page (when inside suggestion details)      |
+|      `ctrl+u`      | `i`  | Select prev page (when inside suggestion details)      |
+|      `ctrl+j`      | `i`  | Select next suggestion                                 |
+|      `ctrl+k`      | `i`  | Select prev suggestion                                 |
+|      `ctrl+l`      | `i`  | Accept selected suggestion                             |
+|      `alt+]`       | `i`  | Show next inline suggestion                            |
+|      `alt+[`       | `i`  | Show previous inline suggestion                        |
+|      `alt+j`       | `i`  | inline suggestion accept next word                     |
+|      `alt+k`       | `i`  | inline suggestion accept next line                     |
+|      `alt+l`       | `i`  | Commit inline/NES suggestion (copilot/cursor/windsurf) |
+|      `alt+;`       | `i`  | trigger Next Edit Suggestion (`alt+l` to accept)       |
+|      `alt+;`       | `i`  | accept next edit suggestion (neovim only)              |
+|       `tab`        | `i`  | go to next snippet stop or next suggestion             |
+|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion             |
+|      `alt+n`       | `i`  | go to next snippet stop                                |
+|      `alt+p`       | `i`  | go to prev snippet stop                                |
+|      `alt+.`       | `i`  | expand snippet (neovim only)                           |
+|      `ctrl+c`      | `i`  | exit snippet session (neovim only)                     |
 
 </details>
 

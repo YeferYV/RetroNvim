@@ -1179,6 +1179,7 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -1197,7 +1198,10 @@
                   "text": "pixi exec curl cht.sh/pnpm \n"
                 },
                 {
-                  "text": "pnpm install -g firebase-tools ;# pnpm create next-app; pnpm create strapi-app \n"
+                  "text": "# pnpm create next-app --example prisma-postgres \n"
+                },
+                {
+                  "text": "# pnpm create expo-app --example with-nextjs \n"
                 },
                 null,
                 {
@@ -1270,7 +1274,7 @@
             },
             {
               "key": "M",
-              "name": "Mysql Posgresql (installer link) ",
+              "name": "Mysql Postgresql (installer link) ",
               "commands": [
                 "vscode.open",
                 "vscode.open",
@@ -2800,9 +2804,29 @@
         "when": "cpp.shouldAcceptTab"
       },
       {
+        "key": "alt+l",
+        "command": "windsurf.prioritized.supercompleteAccept",
+        "when": "editorTextFocus && windsurf.richGhostTextShown && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && windsurf.sideHintShown && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && windsurf.tabActionShown && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && inlineSuggestionVisible && neovim.init && !windsurf.interactiveCascade.isCursorPosInSuggestedAction && neovim.mode == 'normal' || editorTextFocus && inlineSuggestionVisible && vim.active && !windsurf.interactiveCascade.isCursorPosInSuggestedAction && vim.mode == 'Normal'"
+      },
+      {
+        "key": "alt+l",
+        "command": "windsurf.interactiveCascade.acceptSuggestedAction",
+        "when": "editorTextFocus && windsurf.interactiveCascade.isCursorPosInSuggestedAction"
+      },
+      {
         "key": "alt+;",
         "command": "editor.action.inlineSuggest.triggerInlineEditExplicit",
         "when": "editorTextFocus"
+      },
+      {
+        "key": "alt+n",
+        "command": "jumpToNextSnippetPlaceholder",
+        "when": "hasNextTabstop && inSnippetMode && textInputFocus"
+      },
+      {
+        "key": "alt+p",
+        "command": "jumpToPrevSnippetPlaceholder",
+        "when": "hasPrevTabstop && inSnippetMode && textInputFocus"
       },
       {
         "key": "ctrl+j",
