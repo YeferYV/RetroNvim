@@ -254,30 +254,34 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|  Key Combination   | mode | Description                                            |
-| :----------------: | :--: | :----------------------------------------------------- |
-|    `ctrl+space`    | `i`  | Toggle suggestion widget                               |
-| `ctrl+shift+space` | `i`  | Toggle suggestion details (when inside widget)         |
-| `ctrl+shift+space` | `i`  | Toggle parameter hints (when inside parameters)        |
-|      `ctrl+h`      | `i`  | Toggle suggestion focus (when inside widget)           |
-|      `ctrl+d`      | `i`  | Select next page (when inside suggestion details)      |
-|      `ctrl+u`      | `i`  | Select prev page (when inside suggestion details)      |
-|      `ctrl+j`      | `i`  | Select next suggestion                                 |
-|      `ctrl+k`      | `i`  | Select prev suggestion                                 |
-|      `ctrl+l`      | `i`  | Accept selected suggestion                             |
-|      `alt+]`       | `i`  | Show next inline suggestion                            |
-|      `alt+[`       | `i`  | Show previous inline suggestion                        |
-|      `alt+j`       | `i`  | inline suggestion accept next word                     |
-|      `alt+k`       | `i`  | inline suggestion accept next line                     |
-|      `alt+l`       | `i`  | Commit inline/NES suggestion (copilot/cursor/windsurf) |
-|      `alt+;`       | `i`  | trigger Next Edit Suggestion (`alt+l` to accept)       |
-|      `alt+;`       | `i`  | accept next edit suggestion (neovim only)              |
-|       `tab`        | `i`  | go to next snippet stop or next suggestion             |
-|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion             |
-|      `alt+n`       | `i`  | go to next snippet stop                                |
-|      `alt+p`       | `i`  | go to prev snippet stop                                |
-|      `alt+.`       | `i`  | expand snippet (neovim only)                           |
-|      `ctrl+c`      | `i`  | exit snippet session (neovim only)                     |
+|  Key Combination   | mode | Description                                             |
+| :----------------: | :--: | :------------------------------------------------------ |
+|    `ctrl+space`    | `i`  | Toggle suggestion widget                                |
+| `ctrl+shift+space` | `i`  | Toggle suggestion details (when inside widget)          |
+| `ctrl+shift+space` | `i`  | Toggle parameter hints (when inside parameters)         |
+|      `ctrl+h`      | `i`  | Toggle suggestion focus (when inside widget)            |
+|      `ctrl+d`      | `i`  | Select next page (when inside suggestion details)       |
+|      `ctrl+u`      | `i`  | Select prev page (when inside suggestion details)       |
+|      `ctrl+j`      | `i`  | Select next suggestion                                  |
+|      `ctrl+k`      | `i`  | Select prev suggestion                                  |
+|      `ctrl+l`      | `i`  | Accept selected suggestion                              |
+|      `ctrl+i`      | `i`  | prompt to AI (gemini/windsurf/copilot)                  |
+|      `ctrl+k`      | `i`  | prompt to AI (cursor)                                   |
+|      `ctrl+.`      | `i`  | fix error with AI (TRAE/gemini/windsurf/cursor/copilot) |
+|      `alt+]`       | `i`  | Show next inline suggestion                             |
+|      `alt+[`       | `i`  | Show previous inline suggestion                         |
+|      `alt+j`       | `i`  | inline suggestion accept next word                      |
+|      `alt+k`       | `i`  | inline suggestion accept next line                      |
+|      `alt+l`       | `i`  | Commit inline/NES suggestion (copilot/cursor/windsurf)  |
+|      `alt+;`       | `i`  | trigger Next Edit Suggestion (`alt+l` to accept)        |
+|      `alt+,`       | `i`  | trigger Next Edit Suggestion (neovim only)              |
+|      `alt+;`       | `i`  | accept next edit suggestion (neovim only)               |
+|       `tab`        | `i`  | go to next snippet stop or next suggestion              |
+|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion              |
+|      `alt+n`       | `i`  | go to next snippet stop                                 |
+|      `alt+p`       | `i`  | go to prev snippet stop                                 |
+|      `alt+.`       | `i`  | expand snippet (neovim only)                            |
+|      `ctrl+c`      | `i`  | exit snippet session (neovim only)                      |
 
 </details>
 
@@ -473,7 +477,7 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 - RetroNvim extension is shipped with
   [`neovim`](https://neovim.io),
-  [`kanata`](https://github.com/jtroo/kanata) binaries
+  [`kanata`](https://github.com/jtroo/kanata),
   [`pixi`](https://github.com/prefix-dev/pixi),
   [`bat`](https://github.com/sharkdp/bat),
   [`eza`](https://github.com/eza-community/eza),
@@ -483,13 +487,17 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   [`ripgrep`](https://github.com/BurntSushi/ripgrep),
   [`starship`](https://github.com/starship/starship),
   [`yazi`](https://github.com/sxyazi/yazi),
-  [`7zip`](https://github.com/ip7z/7zip), and
-  [using github-actions](https://github.com/YeferYV/retronvim/tree/main/.github/workflows/release.yml);
+  [`7zip`](https://github.com/ip7z/7zip) binaries
+  [using github-actions](https://github.com/YeferYV/retronvim/tree/main/.github/workflows/release.yml); and
   [`mini.nvim`](https://github.com/echasnovski/mini.nvim),
   [`snacks.nvim`](https://github.com/folke/snacks.nvim),
-  [`zsh-autosuggestions`](https://github.com/zsh-users/zsh-autosuggestions) and
+  [`zsh-autosuggestions`](https://github.com/zsh-users/zsh-autosuggestions),
   [`zsh-fast-syntax-highlighting`](https://github.com/zdharma-continuum/fast-syntax-highlighting) as git-submodules; and
   [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts) for terminal icons
+
+- Retronvim/nvim comes with an installer for
+  [supermaven-nvim](https://github.com/supermaven-inc/supermaven-nvim) (free copilot) and
+  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (copilot-NES + gemini)
 
 - Retronvim comes with [bat's base16](https://github.com/sharkdp/bat/blob/master/assets/themes/base16.tmTheme) syntax highlighting generated by `npx yo code --extensionType colortheme` and a editor theme generated using https://themes.vscode.one
 

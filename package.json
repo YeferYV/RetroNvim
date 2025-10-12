@@ -90,6 +90,8 @@
       "files.exclude": {
         "**/node_modules": true
       },
+      "geminicodeassist.inlineSuggestions.nextEditPredictions": true,
+      "geminicodeassist.inlineSuggestions.suggestionSpeed": "Fast",
       "git.autofetch": true,
       "git.mergeEditor": true,
       "github.copilot.nextEditSuggestions.enabled": true,
@@ -159,6 +161,7 @@
       "terminal.integrated.defaultProfile.osx": "zsh (retronvim)",
       "terminal.integrated.defaultProfile.linux": "zsh (retronvim)",
       "terminal.integrated.defaultProfile.windows": "powershell (retronvim)",
+      "trae.chatLanguage": "en",
       "vim.camelCaseMotion.enable": true,
       "vim.flash.enable": true,
       "vim.foldfix": true,
@@ -1214,7 +1217,7 @@
                   "text": "code --install-extension a-smiggle.chills         --install-extension formulahendry.auto-rename-tag     --install-extension rangav.vscode-thunder-client                   --install-extension usernamehw.errorlens      \n"
                 },
                 {
-                  "text": "code --install-extension PayPal.vscode-paypal     --install-extension amjarmed.100-nextjs-snippets      --install-extension ImKKingshuk.xsnippets                                                                        \n"
+                  "text": "code --install-extension PayPal.vscode-paypal     --install-extension chris-noring.graphql-snippets     --install-extension amjarmed.100-nextjs-snippets                   --install-extension ImKKingshuk.xsnippets     \n"
                 }
               ]
             },
@@ -1394,13 +1397,13 @@
               "args": [
                 null,
                 {
-                  "text": "code --install-extension alefragnani.Bookmarks                --install-extension christian-kohler.path-intellisense --install-extension drewxs.tokyo-night-dark --install-extension lamartire.git-indicators \n"
+                  "text": "code --install-extension alefragnani.Bookmarks   --install-extension usernamehw.errorlens                 --install-extension lamartire.git-indicators --install-extension christian-kohler.path-intellisense \n"
                 },
                 {
-                  "text": "code --install-extension DanielPriestley.poimandres-alternate --install-extension usernamehw.errorlens               --install-extension supermaven.supermaven   --install-extension miguelsolorio.symbols    \n"
+                  "text": "code --install-extension Katsute.code-background --install-extension DanielPriestley.poimandres-alternate --install-extension miguelsolorio.symbols    --install-extension drewxs.tokyo-night-dark            \n"
                 },
                 {
-                  "text": "code --install-extension Katsute.code-background                                                                                                                                                              \n"
+                  "text": "code --install-extension Google.geminicodeassist --install-extension MarsCode.marscode-extension          --install-extension supermaven.supermaven                                                           \n"
                 }
               ]
             },
@@ -1678,9 +1681,29 @@
               "command": "workbench.action.files.openFolder"
             },
             {
-              "key": "r",
-              "name": "Recent",
-              "command": "workbench.action.openRecent"
+              "key": "c",
+              "name": "Cursor prompt (include selection)",
+              "command": "aipopup.action.modal.generate"
+            },
+            {
+              "key": "C",
+              "name": "Cursor chat (include selection)",
+              "command": "composer.startComposerPrompt"
+            },
+            {
+              "key": ">",
+              "name": "Gemini prompt",
+              "command": "geminicodeassist.showinEditor"
+            },
+            {
+              "key": "g",
+              "name": "Gemini chat",
+              "command": "workbench.view.extension.geminiChat"
+            },
+            {
+              "key": "G",
+              "name": "Gemini chat (include selection)",
+              "command": "geminicodeassist.terminal.addSelectionToChatContext"
             },
             {
               "key": "f",
@@ -1691,6 +1714,31 @@
               "key": "m",
               "name": "Markdown previewer",
               "command": "markdown.showPreview"
+            },
+            {
+              "key": "r",
+              "name": "Recent git projects",
+              "command": "workbench.action.openRecent"
+            },
+            {
+              "key": "t",
+              "name": "TRAE chat",
+              "command": "trae.chat"
+            },
+            {
+              "key": "T",
+              "name": "TRAE chat (include selection)",
+              "command": "trae.add.context.menu"
+            },
+            {
+              "key": "w",
+              "name": "Windsurf prompt (include selection)",
+              "command": "windsurf.prioritized.command.open"
+            },
+            {
+              "key": "W",
+              "name": "Windsurf chat (include selection)",
+              "command": "windsurf.prioritized.chat.open"
             }
           ]
         },
@@ -2796,7 +2844,22 @@
       {
         "key": "alt+l",
         "command": "editor.action.inlineSuggest.commit",
-        "when": "inlineSuggestionVisible || inlineEditIsVisible"
+        "when": "inlineSuggestionVisible || inlineEditIsVisible|| trae.hasInlineSuggestShouldAcceptDirect"
+      },
+      {
+        "key": "alt+l",
+        "command": "trae.acceptAllEdits",
+        "when": "trae.hasEditOfCurrentEditor && !inlineSuggestionVisible"
+      },
+      {
+        "key": "alt+l",
+        "command": "geminicodeassist.nextEdit.acceptSuggestion",
+        "when": "nextEditSessionActive"
+      },
+      {
+        "key": "alt+l",
+        "command": "geminicodeassist.nextEdit.startSession",
+        "when": "nextEditSessionAvailable"
       },
       {
         "key": "alt+l",
@@ -2806,17 +2869,27 @@
       {
         "key": "alt+l",
         "command": "windsurf.prioritized.supercompleteAccept",
-        "when": "editorTextFocus && windsurf.richGhostTextShown && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && windsurf.sideHintShown && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && windsurf.tabActionShown && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !windsurf.interactiveCascade.isCursorPosInSuggestedAction || editorTextFocus && inlineSuggestionVisible && neovim.init && !windsurf.interactiveCascade.isCursorPosInSuggestedAction && neovim.mode == 'normal' || editorTextFocus && inlineSuggestionVisible && vim.active && !windsurf.interactiveCascade.isCursorPosInSuggestedAction && vim.mode == 'Normal'"
+        "when": "!windsurf.interactiveCascade.isCursorPosInSuggestedAction && (windsurf.richGhostTextShown || windsurf.sideHintShown || windsurf.tabActionShown )"
       },
       {
         "key": "alt+l",
         "command": "windsurf.interactiveCascade.acceptSuggestedAction",
-        "when": "editorTextFocus && windsurf.interactiveCascade.isCursorPosInSuggestedAction"
+        "when": "windsurf.interactiveCascade.isCursorPosInSuggestedAction"
       },
       {
         "key": "alt+;",
         "command": "editor.action.inlineSuggest.triggerInlineEditExplicit",
         "when": "editorTextFocus"
+      },
+      {
+        "key": "alt+;",
+        "command": "trae.buildEditRequest",
+        "when": "!trae.hasEditOfCurrentEditor"
+      },
+      {
+        "key": "alt+;",
+        "command": "geminicodeassist.generateCode",
+        "when": "!nextEditSessionAvailable"
       },
       {
         "key": "alt+n",

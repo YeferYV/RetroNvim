@@ -25,6 +25,7 @@ require('mini.deps').setup({ path = { package = path_package }, job = { timeout 
 vim.cmd('packadd mini.nvim | helptags ALL')
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local _, vscode = pcall(require, "vscode-neovim")
+local map = vim.keymap.set
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -95,26 +96,42 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
+  -- add { source = "folke/sidekick.nvim", checkout = "v1.3.0" }
 
-  now(
+  later(
     function()
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
-      vim.g.copilot_nes_debounce = 75
-      vim.lsp.enable("copilot_ls")
-      vim.keymap.set({ "n", "i" }, "<A-;>", function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local state = vim.b[bufnr].nes_state
-        if state then
-          -- Try to jump to the start of the suggestion edit.
-          -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-          local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
-              or (
-                require("copilot-lsp.nes").apply_pending_nes()
-                and require("copilot-lsp.nes").walk_cursor_end_edit()
-              )
-        end
-      end, { desc = "Accept Copilot NES suggestion" })
+      map({ 'x', 'n', 'i' }, '<m-;>', function() require("sidekick").nes_jump_or_apply() end, { desc = 'nes apply' })
+      map({ 'x', 'n', 'i' }, '<m-,>', function() require("sidekick.nes").update() end, { desc = 'nes update' })
+      map(
+        { 'x', 'n', 'i' },
+        '<leader>lg',
+        function() require("sidekick.cli").toggle({ name = "gemini" }) end,
+        { desc = 'gemini cli' }
+      )
+      map(
+        { 'x', 'n', 'i' },
+        '<leader>lG',
+        function() require("sidekick.cli").prompt() end,
+        { desc = 'gemini prompt' }
+      )
+
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
+      local ok, sidekick = pcall(require, "sidekick")
+      if not ok then return end
+      sidekick.setup({
+        nes = {
+          enabled = true,
+          trigger = {
+            -- events that trigger sidekick next edit suggestions
+            events = { "InsertLeave", "TextChanged", "TextChangedI", "User SidekickNesDone" },
+          },
+          clear = {
+            -- events that clear the current next edit suggestion
+            events = { "InsertEnter" },
+            esc = true, -- clear next edit suggestions when pressing <Esc>
+          },
+        },
+      })
     end
   )
 end
@@ -552,7 +569,7 @@ if not vim.g.vscode then
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
-      { desc = "argument",    keys = "aa", mode = "o" },
+      { desc = "argument",    keys = "raa", mode = "o" },
       { desc = "argument",    keys = "aa", mode = "x" },
       { desc = "argument",    keys = "ia", mode = "o" },
       { desc = "argument",    keys = "ia", mode = "x" },
@@ -851,8 +868,6 @@ end
 -- │ Navigation │
 -- ╰────────────╯
 
-local map = vim.keymap.set
-
 map({ "i" }, "jk", "<ESC>")
 map({ "i" }, "kj", "<ESC>")
 map({ "n" }, "J", "10gj")
@@ -870,8 +885,6 @@ map(
   "n",
   "<esc>",
   function()
-    local ok, copilot_lsp = pcall(require, "copilot-lsp.nes")
-    if ok then copilot_lsp.clear() end
     vim.cmd.nohlsearch()
     M.press("<esc>")
   end,
@@ -965,6 +978,20 @@ if not vim.g.vscode then
       },
     },
     filetypes = { 'astro' }
+  }
+
+  vim.lsp.config['copilot'] = {
+    cmd = { 'copilot-language-server', '--stdio' },
+    init_options = {
+      editorInfo = {
+        name = 'Neovim',
+        version = tostring(vim.version()),
+      },
+      editorPluginInfo = {
+        name = 'Neovim',
+        version = tostring(vim.version()),
+      },
+    },
   }
 
   -- https://github.com/LunarVim/Neovim-from-scratch/blob/master/lua/user/lsp/settings/jsonls.lua
@@ -1089,6 +1116,7 @@ if not vim.g.vscode then
   vim.lsp.config['bashls']                = { cmd = { 'bash-language-server' .. dotcmd, 'start' }, filetypes = { 'bash', 'sh' } }
   vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
+  vim.lsp.config['copilot']               = { cmd = { 'copilot-language-server', '--stdio' } }
   vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server' .. dotcmd, '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
   vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver' .. dotcmd, '--stdio' }, filetypes = { 'dockerfile' } }
   vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server' .. dotcmd, '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
@@ -1113,7 +1141,7 @@ if not vim.g.vscode then
   vim.lsp.enable({
     'astro',
     'bashls', 'biome',
-    'clangd', 'cssls',
+    'clangd', 'cssls', 'copilot',
     'dockerls',
     'efm', 'emmet_language_server',
     'gopls',
@@ -1210,16 +1238,17 @@ if not vim.g.vscode then
       if os:find('win') then os = "win32" end
       -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
       sendSequence(
-        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.357.0/copilot-language-server-' .. os .. '-x64-1.357.0.zip',
+        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.357.0/copilot-language-server-' .. os .. '-x64-1.380.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
-      -- vim.cmd("DepsAdd copilotlsp-nvim/copilot-lsp")
-      add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
-      vim.lsp.enable("copilot_ls")
-      vim.notify("relaunch nvim after installation or rerun this entry")
+      sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
+
+      add { source = "folke/sidekick.nvim", checkout = "v1.3.0" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
+      require("sidekick").setup()
+      vim.notify("IMPORTANT!!! USE VSCODE TO LOGIN TO COPILOT", vim.log.levels.WARN)
     end,
-    { desc = "Copilot NES enable" } -- then relaunch nvim or `:lua vim.lsp.enable("copilot_ls")`
+    { desc = "gemini/copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
   )
   map(
     "n",
