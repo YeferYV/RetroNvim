@@ -63,8 +63,8 @@ export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 [[ "$OSTYPE" == "msys"                     ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
 [[ "$OSTYPE" != "msys"                     ]] && alias  pacman="sudo pacman --noconfirm"
 [[ "$TERM_PROGRAM" == "vscode"             ]] && source "$(code --locate-shell-integration-path zsh)"
-[[ "$CHROME_DESKTOP" == "windsurf.desktop" ]] && alias code="winsurf" # whichkey uses `code --install-extension ...`
-[[ "$CHROME_DESKTOP" == "cursor.desktop"   ]] && alias code="cursor" # whichkey uses `code --install-extension ...`
+[[ "$CHROME_DESKTOP" == "cursor.desktop"   ]] && alias code="cursor" # whichkey uses `code --install-extension <publisher.extension>` but cursor can't find some <publisher.extension> due to `extensions.gallery.serviceUrl`
+[[ "$CHROME_DESKTOP" == "windsurf.desktop" ]] && alias code="winsurf" # whichkey uses `code --install-extension <publisher.extension>` but windsurf can't find some <publisher.extension> due to `extensions.gallery.serviceUrl`
 [[   -z $ZDOTDIR                           ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
 [[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi   ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh) 2>/dev/null
 

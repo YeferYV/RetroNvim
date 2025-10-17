@@ -3,13 +3,15 @@
 -- ╰─────────╯
 
 -- Clone 'mini.nvim'
--- vim.fn.expand("~/.vscode/extensions/yeferyv.retronvim*/bin/env/bin/zsh")
+-- vim.fn.glob("~/.*/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)[1] -- ...,0,1 shows in a list && [1] grabs the first match
 local retronvim_exist = vim.env.APPDIR2 and
     vim.env.APPDIR2 .. "/usr/home/user/.config/nvim/init.lua" or
-    vim.fn.glob(vim.env.HOME .. "/.*/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)
-    [1] -- ...0,1 shows in a list && [1] grabs the first match
-local retronvim_path = (retronvim_exist ~= nil) and vim.fs.dirname(retronvim_exist) or
+    vim.fn.expand("~/.*/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)[1]
+
+local retronvim_path = (retronvim_exist ~= nil) and
+    vim.fs.dirname(retronvim_exist) or
     vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim/nvim"
+
 local path_package = retronvim_path .. "/plugins/site/"
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
@@ -96,7 +98,7 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  -- add { source = "folke/sidekick.nvim", checkout = "v1.3.0" }
+  -- add { source = "folke/sidekick.nvim", checkout = "v2.0.0" }
 
   later(
     function()
@@ -121,6 +123,7 @@ if not vim.g.vscode then
       sidekick.setup({
         nes = {
           enabled = true,
+          debounce = 100,
           trigger = {
             -- events that trigger sidekick next edit suggestions
             events = { "InsertLeave", "TextChanged", "TextChangedI", "User SidekickNesDone" },
@@ -129,6 +132,9 @@ if not vim.g.vscode then
             -- events that clear the current next edit suggestion
             events = { "InsertEnter" },
             esc = true, -- clear next edit suggestions when pressing <Esc>
+          },
+          diff = {
+            inline = "words",
           },
         },
       })
@@ -209,6 +215,7 @@ autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
 -- https://www.reddit.com/r/neovim/comments/xgziol/setting_html_syntax_highlight_prevent_the_svelte
 autocmd({ "BufWinEnter" }, { pattern = "*.svelte", command = "syntax on | set syntax=html" })
+autocmd({ "BufWinEnter" }, { pattern = "*.code-snippets", command = "set ft=json" })
 
 -- right click menu
 vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
@@ -569,7 +576,7 @@ if not vim.g.vscode then
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
-      { desc = "argument",    keys = "raa", mode = "o" },
+      { desc = "argument",    keys = "aa", mode = "o" },
       { desc = "argument",    keys = "aa", mode = "x" },
       { desc = "argument",    keys = "ia", mode = "o" },
       { desc = "argument",    keys = "ia", mode = "x" },
@@ -793,33 +800,22 @@ if not vim.g.vscode then
   later(
     function()
       local function add_vscode_snippets_to_rtp()
-        local extensions_dir = vim.fs.joinpath(vim.env.HOME, '.vscode', 'extensions') -- alternative `:h vim.fs.normalize()`
+        -- local snippet_dirs = vim.fn.glob("~/.vscode/extensions/*/snippets", 0, 1)
+        -- local snippet_dirs = vim.fn.expand("~/.vscode/extensions/*/snippets", 0, 1)
+        local vscode_extensions = vim.fs.dirname(vim.fs.dirname(retronvim_path))
+        local snippet_dirs = vim.fn.expand(vscode_extensions .. "/*/snippets", 0, 1)
 
-        -- using vim.uv it may be simpler, see https://github.com/luvit/luv/blob/master/docs.md
-        local snippet_dirs = vim.fs.find(
-          { "snippets" },
-          {
-            limit = math.huge, -- number of matches
-            type  = "directory",
-            path  = extensions_dir,
-          }
-        )
-
-        -- Add snippets to runtimepath
         for _, dir in ipairs(snippet_dirs) do
-          if vim.fn.globpath(dir, '*code-snippets') ~= '' then
-            -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change snippetshtml.code-snippets filetype to json `:set ft=json`
-            -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change trpc.code-snippets         filetype to json `:set ft=json`
-            -- ~/.vscode/extensions/acchu99.firebase-react-snippets-1.0.4/snippets                      File is absent or not readable  so delete the file to make mini.snippet work
-            vim.opt.rtp:append(vim.fs.dirname(dir))
-          end
+          -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change snippetshtml.code-snippets filetype to json `:set ft=json`
+          -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change trpc.code-snippets         filetype to json `:set ft=json`
+          vim.opt.rtp:append(vim.fs.dirname(dir))
         end
       end
 
       add_vscode_snippets_to_rtp()
 
       require('mini.snippets').setup({
-        snippets = { require('mini.snippets').gen_loader.from_runtime("*") },
+        snippets = { require('mini.snippets').gen_loader.from_runtime("*code-snippets") },
         mappings = {
           expand = '<a-.>',
           jump_next = '<a-n>',
@@ -980,7 +976,7 @@ if not vim.g.vscode then
     filetypes = { 'astro' }
   }
 
-  vim.lsp.config['copilot'] = {
+  vim.lsp.config['copilot']               = {
     cmd = { 'copilot-language-server', '--stdio' },
     init_options = {
       editorInfo = {
@@ -1238,12 +1234,12 @@ if not vim.g.vscode then
       if os:find('win') then os = "win32" end
       -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
       sendSequence(
-        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.357.0/copilot-language-server-' .. os .. '-x64-1.380.0.zip',
+        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.386.0/copilot-language-server-' .. os .. '-x64-1.386.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
       sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
 
-      add { source = "folke/sidekick.nvim", checkout = "v1.3.0" }
+      add { source = "folke/sidekick.nvim", checkout = "v2.0.0" }
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       require("sidekick").setup()
       vim.notify("IMPORTANT!!! USE VSCODE TO LOGIN TO COPILOT", vim.log.levels.WARN)

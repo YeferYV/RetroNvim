@@ -2878,18 +2878,18 @@
       },
       {
         "key": "alt+;",
-        "command": "editor.action.inlineSuggest.triggerInlineEditExplicit",
-        "when": "editorTextFocus"
-      },
-      {
-        "key": "alt+;",
         "command": "trae.buildEditRequest",
-        "when": "!trae.hasEditOfCurrentEditor"
+        "when": "editorTextFocus && !trae.hasEditOfCurrentEditor"
       },
       {
         "key": "alt+;",
         "command": "geminicodeassist.generateCode",
-        "when": "!nextEditSessionAvailable"
+        "when": "editorTextFocus && !nextEditSessionAvailable"
+      },
+      {
+        "key": "alt+;",
+        "command": "editor.action.inlineSuggest.triggerInlineEditExplicit",
+        "when": "editorTextFocus && !inlineEditIsVisible"
       },
       {
         "key": "alt+n",
