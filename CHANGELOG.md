@@ -6,6 +6,14 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.4.1](https://github.com/YeferYV/RetroNvim/compare/v0.4.0...v0.4.1) (2025-10-17)
+
+
+### Bug Fixes
+
+* **keybindings.json:** `alt+l` windsurf supercomplete and `alt+p`/`alt+n` prev/next snippet stop ([6cc3dae](https://github.com/YeferYV/RetroNvim/commit/6cc3dae84660bf1250a40d309e056d3cc998c4a7))
+* **package.json:** `TRAE coding assistant`, `Gemini code assist` and `sidekick.nvim` have FREE `next-edit-sugggestion` and `agent` ([1153276](https://github.com/YeferYV/RetroNvim/commit/1153276c5f8104b975c346c207c602876ff7f93e))
+
 ## [0.4.0](https://github.com/YeferYV/RetroNvim/compare/v0.3.8...v0.4.0) (2025-09-09)
 
 
