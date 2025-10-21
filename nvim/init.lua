@@ -134,7 +134,7 @@ if not vim.g.vscode then
             esc = true, -- clear next edit suggestions when pressing <Esc>
           },
           diff = {
-            inline = "words",
+            inline = false, -- "chars", -- "words",
           },
         },
       })
@@ -976,6 +976,7 @@ if not vim.g.vscode then
     filetypes = { 'astro' }
   }
 
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/copilot.lua
   vim.lsp.config['copilot']               = {
     cmd = { 'copilot-language-server', '--stdio' },
     init_options = {
@@ -988,6 +989,28 @@ if not vim.g.vscode then
         version = tostring(vim.version()),
       },
     },
+    on_attach = function(client, bufnr)
+      vim.api.nvim_buf_create_user_command(bufnr, 'LspCopilotSignIn', function()
+        client:request('signIn', vim.empty_dict(), function(_, result)
+          if result.command then
+            client:exec_cmd(result.command, { bufnr = bufnr })
+          end
+
+          if result.status == 'PromptUserDeviceFlow' then
+            vim.print(string.format(
+              [[
+                Enter your one-time code %s in %s
+              ]],
+              result.userCode,
+              result.verificationUri
+            ))
+          elseif result.status == 'AlreadySignedIn' then
+            vim.notify('Already signed in as ' .. result.user)
+          end
+        end
+        )
+      end, { desc = 'Sign in Copilot with GitHub' })
+    end,
   }
 
   -- https://github.com/LunarVim/Neovim-from-scratch/blob/master/lua/user/lsp/settings/jsonls.lua
@@ -1112,7 +1135,6 @@ if not vim.g.vscode then
   vim.lsp.config['bashls']                = { cmd = { 'bash-language-server' .. dotcmd, 'start' }, filetypes = { 'bash', 'sh' } }
   vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
-  vim.lsp.config['copilot']               = { cmd = { 'copilot-language-server', '--stdio' } }
   vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server' .. dotcmd, '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
   vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver' .. dotcmd, '--stdio' }, filetypes = { 'dockerfile' } }
   vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server' .. dotcmd, '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
@@ -1242,7 +1264,6 @@ if not vim.g.vscode then
       add { source = "folke/sidekick.nvim", checkout = "v2.0.0" }
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       require("sidekick").setup()
-      vim.notify("IMPORTANT!!! USE VSCODE TO LOGIN TO COPILOT", vim.log.levels.WARN)
     end,
     { desc = "gemini/copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
   )
@@ -1263,6 +1284,7 @@ if not vim.g.vscode then
     end,
     { desc = "Supermaven enable" }
   )
+  map("n", "<leader>l>", "<cmd>LspCopilotSignIn<cr>", { desc = "copilot signin" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })
