@@ -98,12 +98,35 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
+  -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
+
+  now(
+    function()
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
+      vim.g.copilot_nes_debounce = 75
+      vim.lsp.enable("copilot_ls")
+      vim.keymap.set({ "n", "i" }, "<A-;>", function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local state = vim.b[bufnr].nes_state
+        if state then
+          -- Try to jump to the start of the suggestion edit.
+          -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+          local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
+              or (
+                require("copilot-lsp.nes").apply_pending_nes()
+                and require("copilot-lsp.nes").walk_cursor_end_edit()
+              )
+        end
+      end, { desc = "Accept Copilot NES suggestion" })
+    end
+  )
+end
+
+if not vim.g.vscode then
   -- add { source = "folke/sidekick.nvim", checkout = "v2.0.0" }
 
   later(
     function()
-      map({ 'x', 'n', 'i' }, '<m-;>', function() require("sidekick").nes_jump_or_apply() end, { desc = 'nes apply' })
-      map({ 'x', 'n', 'i' }, '<m-,>', function() require("sidekick.nes").update() end, { desc = 'nes update' })
       map(
         { 'x', 'n', 'i' },
         '<leader>lg',
@@ -120,24 +143,7 @@ if not vim.g.vscode then
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       local ok, sidekick = pcall(require, "sidekick")
       if not ok then return end
-      sidekick.setup({
-        nes = {
-          enabled = true,
-          debounce = 100,
-          trigger = {
-            -- events that trigger sidekick next edit suggestions
-            events = { "InsertLeave", "TextChanged", "TextChangedI", "User SidekickNesDone" },
-          },
-          clear = {
-            -- events that clear the current next edit suggestion
-            events = { "InsertEnter" },
-            esc = true, -- clear next edit suggestions when pressing <Esc>
-          },
-          diff = {
-            inline = false, -- "chars", -- "words",
-          },
-        },
-      })
+      sidekick.setup({ nes = { enabled = false }})
     end
   )
 end
@@ -881,6 +887,8 @@ map(
   "n",
   "<esc>",
   function()
+    local ok, copilot_lsp = pcall(require, "copilot-lsp.nes")
+    if ok then copilot_lsp.clear() end
     vim.cmd.nohlsearch()
     M.press("<esc>")
   end,
@@ -974,43 +982,6 @@ if not vim.g.vscode then
       },
     },
     filetypes = { 'astro' }
-  }
-
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/copilot.lua
-  vim.lsp.config['copilot']               = {
-    cmd = { 'copilot-language-server', '--stdio' },
-    init_options = {
-      editorInfo = {
-        name = 'Neovim',
-        version = tostring(vim.version()),
-      },
-      editorPluginInfo = {
-        name = 'Neovim',
-        version = tostring(vim.version()),
-      },
-    },
-    on_attach = function(client, bufnr)
-      vim.api.nvim_buf_create_user_command(bufnr, 'LspCopilotSignIn', function()
-        client:request('signIn', vim.empty_dict(), function(_, result)
-          if result.command then
-            client:exec_cmd(result.command, { bufnr = bufnr })
-          end
-
-          if result.status == 'PromptUserDeviceFlow' then
-            vim.print(string.format(
-              [[
-                Enter your one-time code %s in %s
-              ]],
-              result.userCode,
-              result.verificationUri
-            ))
-          elseif result.status == 'AlreadySignedIn' then
-            vim.notify('Already signed in as ' .. result.user)
-          end
-        end
-        )
-      end, { desc = 'Sign in Copilot with GitHub' })
-    end,
   }
 
   -- https://github.com/LunarVim/Neovim-from-scratch/blob/master/lua/user/lsp/settings/jsonls.lua
@@ -1262,8 +1233,12 @@ if not vim.g.vscode then
       sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
 
       add { source = "folke/sidekick.nvim", checkout = "v2.0.0" }
+      add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
-      require("sidekick").setup()
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
+      vim.lsp.enable("copilot_ls")
+      require("sidekick").setup({ nes = { enabled = false }})
+      vim.notify("relaunch nvim after installation to login to copilot or rerun this entry")
     end,
     { desc = "gemini/copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
   )
@@ -1284,7 +1259,6 @@ if not vim.g.vscode then
     end,
     { desc = "Supermaven enable" }
   )
-  map("n", "<leader>l>", "<cmd>LspCopilotSignIn<cr>", { desc = "copilot signin" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })

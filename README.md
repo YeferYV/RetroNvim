@@ -274,8 +274,8 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `alt+k`       | `i`  | inline suggestion accept next line                      |
 |      `alt+l`       | `i`  | Commit inline/NES suggestion (copilot/cursor/windsurf)  |
 |      `alt+;`       | `i`  | trigger Next Edit Suggestion (`alt+l` to accept)        |
-|      `alt+,`       | `i`  | trigger Next Edit Suggestion (neovim only)              |
 |      `alt+;`       | `i`  | accept next edit suggestion (neovim only)               |
+|      `escape`      | `i`  | cancel next edit suggestion                             |
 |       `tab`        | `i`  | go to next snippet stop or next suggestion              |
 |    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion              |
 |      `alt+n`       | `i`  | go to next snippet stop                                 |
@@ -497,11 +497,12 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 - Retronvim/nvim comes with an installer for
   [supermaven-nvim](https://github.com/supermaven-inc/supermaven-nvim) (free copilot),
-  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (copilot-NES + gemini) and
+  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (gemini cli),
+  [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes) and
   LSP + formatters for:
   `astro`, `angular`,
   `bash`, `biome`, `black`,
-  `c', `c++`, `c#`, `cmake`, `css`,
+  `c`, `c++`, `c#`, `cmake`, `css`,
   `docker`,
   `emmet`,
   `go`,
