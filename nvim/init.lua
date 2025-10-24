@@ -123,7 +123,7 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  -- add { source = "folke/sidekick.nvim", checkout = "v2.0.0" }
+  -- add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
 
   later(
     function()
@@ -143,7 +143,7 @@ if not vim.g.vscode then
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       local ok, sidekick = pcall(require, "sidekick")
       if not ok then return end
-      sidekick.setup({ nes = { enabled = false }})
+      sidekick.setup({ nes = { enabled = false } })
     end
   )
 end
@@ -1232,7 +1232,7 @@ if not vim.g.vscode then
       )
       sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
 
-      add { source = "folke/sidekick.nvim", checkout = "v2.0.0" }
+      add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
       add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
@@ -1314,6 +1314,30 @@ if not vim.g.vscode then
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
+  map(
+    "n",
+    "<leader>uc",
+    function()
+      vim.o.foldcolumn = '0'
+      vim.o.signcolumn = 'no'
+      vim.o.statuscolumn = ''
+      vim.opt.foldenable = false
+      vim.opt.number = false
+    end,
+    { desc = "StatusColumn Hide" }
+  )
+  map(
+    "n",
+    "<leader>uC",
+    function()
+      vim.o.foldcolumn = '1'
+      vim.o.signcolumn = 'auto'
+      vim.o.statuscolumn = '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
+      vim.opt.foldenable = true
+      vim.opt.number = true
+    end,
+    { desc = "StatusColumn Show" }
+  )
   map("n", "<leader>ud", "<cmd>lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())<cr>",
     { desc = "toggle diagnostic" })
   map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent (press z)" })
