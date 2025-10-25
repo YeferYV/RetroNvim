@@ -329,6 +329,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `<tab>`       | show (dash/path) options or complete path                  |
 |    `<tab><tab>`    | enter completion menu                                      |
 |    `<esc><esc>`    | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
+|   `shift+escape`   | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
 |   `nvim<enter>`    | open retronvim's neovim IDE (`<space>` to open whichkey)   |
 |     `y<enter>`     | open yazi (changes directory on exit)                      |
 |      `alt+o`       | open yazi (even while writing commands)                    |

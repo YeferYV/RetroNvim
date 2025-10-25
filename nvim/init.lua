@@ -28,6 +28,7 @@ vim.cmd('packadd mini.nvim | helptags ALL')
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local _, vscode = pcall(require, "vscode-neovim")
 local map = vim.keymap.set
+local M = {}
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -234,7 +235,9 @@ autocmd({ "TermEnter", "TermOpen" }, {
     vim.cmd.startinsert()
 
     -- hide bufferline if `nvim -cterm`
-    if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 then
+    if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 and
+      vim.bo.filetype ~= "snacks_win" and
+      vim.bo.filetype ~= "snacks_terminal" then
       vim.opt.showtabline = 0
     else
       vim.opt.showtabline = 2
@@ -281,9 +284,43 @@ function ToggleTerminal()
   end
 end
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
 
-local M = {}
+-- https://github.com/folke/snacks.nvim/issues/835
+-- https://github.com/akinsho/toggleterm.nvim/issues/66
+M.ToggleYazi = function()
+  if not yazi_win then
+    yazi_win = Snacks.win()
+    -- vim.cmd.term("yazi --chooser-file ~/.yazi") -- creates a buffer that doesn't autoclose
+    vim.fn.jobstart("yazi --chooser-file ~/.yazi", { term = true })
+  end
+
+  if not is_yazi_open then
+    yazi_win:show()
+    is_yazi_open = true
+    vim.cmd.startinsert()
+  else
+    yazi_win:hide()
+    is_yazi_open = false
+  end
+
+  yazi_win:on("TermClose", function()
+    yazi_win:close()
+    yazi_win = nil
+
+    local file = io.open(vim.env.HOME .. "/.yazi", "r")
+    if file then
+      -- vim.cmd("vsplit " .. file:read("*a"))
+      vim.cmd("edit " .. file:read("*a"))
+      vim.cmd("filetype detect")
+      file:close()
+    end
+
+    os.remove(vim.env.HOME .. "/.yazi")
+  end)
+end
+
+------------------------------------------------------------------------------------------------------------------------
 
 local ns = vim.api.nvim_create_namespace("flash")
 
@@ -907,6 +944,7 @@ if not vim.g.vscode then
   map({ "n", "v", "t" }, "<A-S-Down>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
   map({ "n", "v", "t" }, "<A-S-Up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
   map({ "t" }, "<esc><esc>", "<C-\\><C-n>", { desc = "normal mode inside terminal" })
+  map({ "t" }, "<S-esc>", "<C-\\><C-n>", { desc = "normal mode inside terminal" })
   map({ "n" }, "<C-s>", ":%s//g<Left><Left>", { desc = "Replace in Buffer" })
   map({ "x" }, "<C-s>", ":s//g<Left><Left>", { desc = "Replace in Visual_selected" })
   map({ "t", "n" }, "<C-h>", "<C-\\><C-n><C-w>h", { desc = "left window" })
@@ -918,6 +956,7 @@ if not vim.g.vscode then
   map({ "t", "n" }, "<S-Up>", "<C-\\><C-n><C-w>k", { desc = "up window" })
   map({ "t", "n" }, "<S-Right>", "<C-\\><C-n><C-w>l", { desc = "right window" })
   map({ "t", "n" }, "<C-\\>", ToggleTerminal, { desc = "toggle window terminal" })
+  map({ "t", "n" }, "<a-o>", function() M.ToggleYazi() end, { desc = "toggle yazi (open file)" })
   map({ "t", "n" }, "<C-;>", "<C-\\><C-n><C-6>", { desc = "go to last buffer" })
   map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", "<cmd>bprevious<CR>", { desc = "prev buffer" })
@@ -1281,7 +1320,7 @@ if not vim.g.vscode then
   map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = "marks" })
   map("n", "<leader>f.", function() require("snacks").picker.resume() end, { desc = "resume" })
   map("n", "<leader>g", "", { desc = "+Git" })
-  map("n", "<leader>gg", function() sendSequence('lazygit; exit') end, { desc = "lazygit" }) -- `:term lazygit` doesn't work on zsh.exe
+  map("n", "<leader>gg", function() Snacks.terminal("lazygit")  end, { desc = "lazygit" }) -- `:term lazygit` doesn't work on zsh.exe
   map(
     "n",
     "<leader>gd",
@@ -1362,8 +1401,8 @@ if not vim.g.vscode then
     { desc = "Hide/Unhide window (useful for terminal)" }
   )
   map("n", "<leader>t", "", { desc = "+Terminal" })
-  map("n", "<leader>tt", "<cmd>terminal <cr>", { desc = "buffer terminal" })
-  map("n", "<leader>ty", function() sendSequence('yazi; exit') end, { desc = "yazi" }) -- `:term yazi` doesn't work on zsh.exe
+  map("n", "<leader>tt", function() Snacks.terminal(vim.o.shell --[[ ,{ win = { position = "float" }} ]]) end, { desc = "toggle float terminal" })
+  map("n", "<leader>ty", function() M.ToggleYazi() end, { desc = "toggle yazi (open file)" })
   map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
   map("n", "<leader>w", "", { desc = "+Window" })

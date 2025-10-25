@@ -2,15 +2,6 @@
 
 prepend_keymap = [
 
-  # Navigation
-	{ on = [   "J"   ], run = "seek 1",    desc = "preview down 3 lines" },
-	{ on = [   "K"   ], run = "seek -1",   desc = "preview up 3 lines" },
-	{ on = [   "j"   ], run = "arrow 1",   desc = "down until end of list" },
-	{ on = [   "k"   ], run = "arrow -1",  desc = "up until start of list " },
-	{ on = [ "<A-j>" ], run = "arrow 10",  desc = "move cursor down 10 lines" },
-	{ on = [ "<A-k>" ], run = "arrow -10", desc = "move cursor up 10 lines" },
-	{ on = [   "R"   ], run = "refresh",   desc = "refresh" },
-
 	# Search by First Char
 	{ on = [ "f", "a" ], run = "find_do '^a' --smart", desc = "find ^a" },
 	{ on = [ "f", "b" ], run = "find_do '^b' --smart", desc = "find ^b" },
@@ -47,18 +38,37 @@ prepend_keymap = [
 	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never "$@"  """, for = "unix",    desc = "Bat open selected" },
 	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never  %*   """, for = "windows", desc = "Bat open selected" },
 
+  # Navigation
+	{ on = [   "J"   ], run = "seek 1",    desc = "preview down 3 lines" },
+	{ on = [   "K"   ], run = "seek -1",   desc = "preview up 3 lines" },
+	{ on = [   "j"   ], run = "arrow 1",   desc = "down until end of list" },
+	{ on = [   "k"   ], run = "arrow -1",  desc = "up until start of list " },
+	{ on = [ "<A-j>" ], run = "arrow 10",  desc = "move cursor down 10 lines" },
+	{ on = [ "<A-k>" ], run = "arrow -10", desc = "move cursor up 10 lines" },
+	{ on = [   "R"   ], run = "refresh",   desc = "refresh" },
+
+  # Plugins
+	{ on = [ "l" ],       run = "plugin smart-enter",      desc = "open directory or file" },
+	{ on = [ "<Enter>" ], run = "plugin smart-enter",      desc = "open directory or file" },
+	{ on = [ "m" ],       run = "plugin bookmarks save",   desc = "bookmark create" },
+	{ on = [ "'" ],       run = "plugin bookmarks jump",   desc = "bookmark jump" },
+	{ on = [ '"' ],       run = "plugin bookmarks delete", desc = "bookmark delete" },
+
   # Shell
 	{ on = [ "s", "c" ], run = """ shell ' code "$@"                                                     '         """, for = "unix",    desc = "vscode" },
 	{ on = [ "s", "c" ], run = """ shell ' code  %*                                                      '         """, for = "windows", desc = "vscode" },
 	{ on = [ "s", "C" ], run = """ shell ' google-chrome "$@" || google-chrome-stable "$@"               '         """, for = "unix",    desc = "chrome (to drag and drop)" }, # or copy file path into the browser to drag and drop from download icon (images are draggable, some files you need right-click to download)
 	{ on = [ "s", "C" ], run = """ shell ' chrome  %*                                                    '         """, for = "windows", desc = "chrome (to drag and drop)" }, # or copy file path into the browser to drag and drop from download icon (images are draggable, some files you need right-click to download)
 	{ on = [ "s", "D" ], run = """ search fd                                                                       """,                  desc = "fd search" },
+	{ on = [ "s", "f" ], run = """ shell ' nvim -c "lua Snacks.picker.files()"                           ' --block """, for = "unix",    desc = "neovim fzf" },
+	{ on = [ "s", "g" ], run = """ shell ' nvim -c "lua Snacks.picker.grep { layout = 'ivy_split'} "     ' --block """, for = "unix",    desc = "neovim ripgrep" },
 	{ on = [ "s", "l" ], run = """ shell ' lazygit                                                       ' --block """,                  desc = "lazygit" },
 	{ on = [ "s", "n" ], run = """ shell ' nvim "$@"                                                     ' --block """, for = "unix",    desc = "neovim" },    # opens all selections
 	{ on = [ "s", "n" ], run = """ shell ' nvim  %*                                                      ' --block """, for = "windows", desc = "neovim" },    # opens all selections
   { on = [ "s", "p" ], run = """ shell ' $SWALLOWER zathura --config-dir="$ZATHURARC" "$@" &           '         """, for = "unix",    desc = "zathura" },   # linux only, hyprland has builtin togglespecialworkspace alternative for $SWALLOWER
 	{ on = [ "s", "s" ], run = """ shell ' zsh                                                           ' --block """, for = "unix",    desc = "zsh" },
 	{ on = [ "s", "s" ], run = """ shell ' set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh ' --block """, for = "windows", desc = "msys2 zsh" },
+	{ on = [ "s", "t" ], run = """ search_do rg                                                                    """,                  desc = "tree view" },
 	{ on = [ "s", "v" ], run = """ shell ' $SWALLOWER mpv "$@" >/dev/null 2>&1 & disown                  ' --block """, for = "unix",    desc = "mpv" },       # `_` key to minimize for music videos, hyprland has builtin togglespecialworkspace alternative for $SWALLOWER
 	{ on = [ "s", "V" ], run = """ shell ' mpv --vo=sixel "$@"                                           ' --block """, for = "unix",    desc = "mpv sixel" }, # https://github.com/occivink/mpv-gallery-view for grid image viewer
 	{ on = [ "s", "v" ], run = """ shell ' mpv %*                                                        '         """, for = "windows", desc = "mpv" },       # `_` key to minimize for music videos
@@ -66,51 +76,7 @@ prepend_keymap = [
 	{ on = [ "s", "z" ], run = """ shell ' 7z a -tzip $1.zip "$@"                                        '         """, for = "unix",    desc = "7zip selection" },
 	{ on = [ "s", "z" ], run = """ shell ' 7z a -tzip %1.zip  %*                                         '         """, for = "windows", desc = "7zip selection" },
 
-  # Plugins
-	{ on = [ "l" ], run = "plugin smart-enter",      desc = "open directory or file" },
-	{ on = [ "<Enter>" ], run = "plugin smart-enter",      desc = "open directory or file" },
-	{ on = [ "m" ], run = "plugin bookmarks save",   desc = "bookmark create" },
-	{ on = [ "'" ], run = "plugin bookmarks jump",   desc = "bookmark jump" },
-	{ on = [ '"' ], run = "plugin bookmarks delete", desc = "bookmark delete" },
 ]
-
-[[mgr.append_keymap]]
-on = [ "s", "e" ]
-run = '''
-  shell
-  --block
-  -- eval "${EDITOR:-nvim -u NORC --cmd 'lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])'}" "$@"
-'''
-for = "unix"
-desc = "$EDITOR" # open selected with $EDITOR
-
-[[mgr.append_keymap]]
-on = [ "s", "e" ]
-run = '''
-  shell
-  --block
-  -- %EDITOR% %* 2>nul || nvim -u NORC --cmd "lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])" %*
-'''
-for = "windows"
-desc = "$EDITOR" # opens selected with $EDITOR
-
-[[mgr.append_keymap]]
-on = [ "s", "f" ]
-run = '''
-  shell
-  --block
-  -- nvim -c "lua Snacks.picker.files()"
-'''
-desc = "neovim fzf"
-
-[[mgr.append_keymap]]
-on = [ "s", "g" ]
-run = '''
-  shell
-  --block
-  -- nvim -c "lua Snacks.picker.grep { layout = 'ivy_split'} "
-'''
-desc = "neovim ripgrep"
 
 [[mgr.append_keymap]]
 on = [ "s", "r" ]
