@@ -324,22 +324,22 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|       keymap       | description                                                |
-| :----------------: | :--------------------------------------------------------- |
-|      `<tab>`       | show (dash/path) options or complete path                  |
-|    `<tab><tab>`    | enter completion menu                                      |
-|    `<esc><esc>`    | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
-|   `shift+escape`   | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
-|   `nvim<enter>`    | open retronvim's neovim IDE (`<space>` to open whichkey)   |
-|     `y<enter>`     | open yazi (changes directory on exit)                      |
-|      `alt+o`       | open yazi (even while writing commands)                    |
-| `alt+h` or `<esc>` | enter vim-mode                                             |
-|      `alt+j`       | previous history and enter vim-mode                        |
-|      `alt+k`       | next history and enter vim-mode                            |
-|      `alt+l`       | complete inline/ghost suggestion and enter vim-mode        |
-|      `ctrl+r`      | search history with fzf                                    |
-|      `ctrl+l`      | clear screen                                               |
-|    `ctrl+alt+l`    | clear screen (inside neovim terminal or vscode terminal)   |
+|       keymap        | description                                                |
+| :-----------------: | :--------------------------------------------------------- |
+|       `<tab>`       | show (dash/path) options or complete path                  |
+|    `<tab><tab>`     | enter completion menu                                      |
+|    `<esc><esc>`     | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
+|   `shift+escape`    | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
+|    `nvim<enter>`    | open retronvim's neovim IDE (`<space>` to open whichkey)   |
+|     `y<enter>`      | open yazi (changes directory on exit)                      |
+| `alt+o` or `<esc>o` | open yazi (even while writing commands)                    |
+| `alt+h` or `<esc>`  | enter vim-mode                                             |
+|       `alt+j`       | previous history and enter vim-mode                        |
+|       `alt+k`       | next history and enter vim-mode                            |
+|       `alt+l`       | complete inline/ghost suggestion and enter vim-mode        |
+|      `ctrl+r`       | search history with fzf                                    |
+|      `ctrl+l`       | clear screen                                               |
+|    `ctrl+alt+l`     | clear screen (inside neovim terminal or vscode terminal)   |
 
 </details>
 
