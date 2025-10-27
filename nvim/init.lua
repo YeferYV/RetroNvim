@@ -177,8 +177,8 @@ vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboar
 vim.opt.expandtab = true          -- convert tabs to spaces
 vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
 vim.opt.ignorecase = true         -- ignore case in search patterns
-vim.opt.shellcmdflag='-c'         -- https://github.com/folke/snacks.nvim/issues/1750
-vim.opt.shellxquote=''            -- https://github.com/folke/snacks.nvim/issues/1750
+vim.opt.shellcmdflag = '-c'       -- https://github.com/folke/snacks.nvim/issues/1750
+vim.opt.shellxquote = ''          -- https://github.com/folke/snacks.nvim/issues/1750
 vim.opt.shiftwidth = 2            -- the number of spaces inserted for each indentation
 vim.opt.smartcase = true          -- smart case
 vim.opt.splitbelow = true         -- force all horizontal splits to go below current window
@@ -921,7 +921,8 @@ if not vim.g.vscode then
   map({ "t", "n" }, "<S-Down>", "<C-\\><C-n><C-w>j", { desc = "down window" })
   map({ "t", "n" }, "<S-Up>", "<C-\\><C-n><C-w>k", { desc = "up window" })
   map({ "t", "n" }, "<S-Right>", "<C-\\><C-n><C-w>l", { desc = "right window" })
-  map({ "t", "n" }, "<C-\\>", function() Snacks.terminal(vim.o.shell) end, { desc = "toggle window terminal" })
+  map({ "t", "n" }, "<C-\\>", function() Snacks.terminal(nil, { win = { position = "float" } }) end,
+    { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
   map({ "t", "n" }, "<a-o>", function() Snacks.terminal("yazi --chooser-file " .. vim.fn.expand("~/.yazi")) end,
     { desc = "toggle yazi (open file)" })
   map({ "t", "n" }, "<C-;>", "<C-\\><C-n><C-6>", { desc = "go to last buffer" })
@@ -1368,7 +1369,7 @@ if not vim.g.vscode then
     { desc = "Hide/Unhide window (useful for terminal)" }
   )
   map("n", "<leader>t", "", { desc = "+Terminal" })
-  map("n", "<leader>tt", function() Snacks.terminal(vim.o.shell --[[ ,{ win = { position = "float" }} ]]) end, { desc = "toggle float terminal" })
+  map("n", "<leader>tt", function() Snacks.terminal(nil, { win = { position = "float" }}) end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
   map("n", "<leader>ty", function() Snacks.terminal("yazi --chooser-file " .. vim.fs.normalize("~/.yazi")) end, { desc = "toggle yazi (open file)" })
   map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
