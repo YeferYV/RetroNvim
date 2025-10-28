@@ -69,6 +69,10 @@ if not vim.g.vscode then
               },
             }
           },
+          sort = {
+            -- default sort is by score, text length and index
+            fields = { "idx", "score:desc", "#text" },
+          },
           sources = { explorer = { hidden = true, --[[ ignored = true ]] } },
           win = {
             preview = { keys = { ["<space><space><space>"] = { "cycle_win", mode = { "n" } } } },
@@ -93,6 +97,14 @@ if not vim.g.vscode then
             width = 30,
           },
         },
+        terminal = {
+          win = {
+            width = vim.o.columns,
+            height = vim.o.lines,
+            border = 'rounded',
+            position = "float"
+          }
+        }
       })
     end
   )
@@ -721,7 +733,9 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#787c99" })
+  vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = "#a9b1d6" })
   vim.api.nvim_set_hl(0, "SnacksPickerDirectory", { fg = "#5555cc" })
+  -- vim.api.nvim_set_hl(0, "SnacksPickerFile", { fg = "#d5d6db" })
   vim.api.nvim_set_hl(0, "MiniIconsAzure", { fg = "#5555cc" })
   vim.api.nvim_set_hl(0, "MiniStatuslineFilename", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { underline = false, bg = "#1c1c2c" })
@@ -927,23 +941,17 @@ if not vim.g.vscode then
   map({ "t", "n" }, "<S-Down>", "<C-\\><C-n><C-w>j", { desc = "down window" })
   map({ "t", "n" }, "<S-Up>", "<C-\\><C-n><C-w>k", { desc = "up window" })
   map({ "t", "n" }, "<S-Right>", "<C-\\><C-n><C-w>l", { desc = "right window" })
-  map(
-    { "t", "n" },
-    "<C-\\>",
-    function() Snacks.terminal(nil, { win = { border = 'rounded', position = "float" } }) end, -- vim.o.shell doesn't work on zsh.exe
-    { desc = "toggle float terminal" }
-  )
+  map({ "t", "n" }, "<C-\\>", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
   map(
     { "t", "n" },
     "<a-o>",
-    function() Snacks.terminal("yazi --chooser-file " .. vim.fn.expand("~/.yazi"), { win = { border = 'rounded' } }) end,
+    function() Snacks.terminal("yazi --chooser-file " .. vim.fn.expand("~/.yazi")) end,
     { desc = "toggle yazi (open file)" }
   )
-  map({ "t", "n" }, "<C-;>", "<C-\\><C-n><C-6>", { desc = "go to last buffer" })
+  map({ "n" }, "<C-;>", "<C-6>", { desc = "go to last buffer" })
   map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", "<cmd>bprevious<CR>", { desc = "prev buffer" })
   map({ "n" }, "<leader>x", "<cmd>bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
-  map({ "n" }, "<leader>;", "<cmd>buffer #<cr>", { desc = "Recent buffer" })
 end
 
 -- Quick quit/write
@@ -1220,8 +1228,8 @@ if not vim.g.vscode then
 
   map("n", "<leader>l", "", { desc = "+LSP" })
   map("n", "<leader>la", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
-  map("n", "<leader>lc", function() vim.lsp.buf.incoming_calls() end, { desc = "Incoming Calls" })
-  map("n", "<leader>lC", function() vim.lsp.buf.outcoming_calls() end, { desc = "Outcoming Calls" })
+  map("n", "<leader>lc", function() require("snacks").picker.lsp_incoming_calls() end, { desc = "Incoming Calls" })
+  map("n", "<leader>lC", function() require("snacks").picker.lsp_outgoing_calls() end, { desc = "Outcoming Calls" })
   map("n", "<leader>ld", function() require("snacks").picker.lsp_definitions() end, { desc = "Pick Definition" })
   map("n", "<leader>lD", function() require("snacks").picker.lsp_declarations() end, { desc = "Pick Declaration" })
   map("n", "<leader>lF", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "Format" })
@@ -1294,13 +1302,27 @@ if not vim.g.vscode then
   )
   map("n", "<leader>fn", function() MiniNotify.show_history() end, { desc = "Notify history" })
   map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "projects" })
-  map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quickfix list" })
+  map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quick list" })
   map("n", "<leader>fr", function() require("snacks").picker.recent() end, { desc = "recent files" })
   map("n", '<leader>f"', function() require("snacks").picker.registers() end, { desc = "register (:help quote)" })
-  map("n", "<leader>f/", function() require("snacks").picker.git_files() end, { desc = "find git (sorted) files" })
-  map("n", "<leader>f;", function() require("snacks").picker.jumps() end, { desc = "jumps" })
+  map(
+    "n",
+    "<leader>f;",
+    function()
+      Snacks.picker.files({
+        focus = "list",
+        layout = {
+          preset = 'big_preview',
+          layout = { width = vim.o.columns, height = vim.o.lines }
+        }
+      })
+    end,
+    { desc = "files (normal mode)" }
+  )
+  map("n", "<leader>f.", function() require("snacks").picker.jumps() end, { desc = "jumps" })
   map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = "marks" })
-  map("n", "<leader>f.", function() require("snacks").picker.resume() end, { desc = "resume" })
+  map("n", "<leader>f,", "<cmd>buffer #<cr>", { desc = "Recent buffer" })
+  map("n", "<leader>;", function() require("snacks").picker.resume() end, { desc = "resume search" })
   map("n", "<leader>g", "", { desc = "+Git" })
   map("n", "<leader>gg", function() Snacks.terminal("lazygit")  end, { desc = "lazygit" }) -- `:term lazygit` doesn't work on zsh.exe
   map(
@@ -1323,7 +1345,7 @@ if not vim.g.vscode then
               break -- break at first match
             end
           end
-          vim.cmd('stopinsert') -- starts normal mode
+          vim.cmd.stopinsert() -- starts normal mode
         end,
       })
     end,
@@ -1383,18 +1405,8 @@ if not vim.g.vscode then
     { desc = "Hide/Unhide window (useful for terminal)" }
   )
   map("n", "<leader>t", "", { desc = "+Terminal" })
-  map(
-    "n",
-    "<leader>tt",
-    function() Snacks.terminal(nil, { win = { border = 'rounded', position = "float" } }) end, -- vim.o.shell doesn't work on zsh.exe
-    { desc = "toggle float terminal" }
-  )
-  map(
-    "n",
-    "<leader>ty",
-    function() Snacks.terminal("yazi --chooser-file " .. vim.fn.normalize("~/.yazi"), { win = { border = 'rounded' } }) end,
-    { desc = "toggle yazi (open file)" }
-  )
+  map("n", "<leader>tt", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
+  map("n", "<leader>ty", function() Snacks.terminal( "yazi --chooser-file " .. vim.fs.normalize("~/.yazi")) end, { desc = "toggle yazi (open file)" })
   map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
   map("n", "<leader>w", "", { desc = "+Window" })
