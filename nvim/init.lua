@@ -236,9 +236,10 @@ autocmd({ "TermEnter", "TermOpen" }, {
   callback = function()
     vim.cmd.startinsert()
 
+    if vim.bo.filetype == "snacks_terminal" then return end
+
     -- hide bufferline if `nvim -cterm`
-    if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 and
-        vim.bo.filetype ~= "snacks_terminal" then
+    if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 then
       vim.opt.showtabline = 0
     else
       vim.opt.showtabline = 2
@@ -257,7 +258,7 @@ autocmd({ "TermLeave", --[[ "TermClose", "BufWipeout" ]] }, {
 
       -- required when exiting `nvim -cterm`
       if vim.fn.bufname() == "" then
-        vim.cmd [[ quit ]]
+        vim.cmd.quit()
       end
     end)
   end,
@@ -717,6 +718,7 @@ if not vim.g.vscode then
   -- adding tokyonight transparency
   vim.api.nvim_set_hl(0, "Normal", { fg = "#787c99", bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#787c99" })
   vim.api.nvim_set_hl(0, "SnacksPickerDirectory", { fg = "#5555cc" })
@@ -731,6 +733,10 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "MiniDiffSignAdd", { fg = "#009900" })
   vim.api.nvim_set_hl(0, "MiniDiffSignChange", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "MiniDiffSignDelete", { fg = "#990000" })
+  vim.api.nvim_set_hl(0, "MiniClueDescGroup", { fg = "#8855ff" })
+  vim.api.nvim_set_hl(0, "MiniClueNextKey", { fg = "#5fb3a1" })
+  vim.api.nvim_set_hl(0, "MiniClueTitle", { fg = "#5fb3a1" })
+  vim.api.nvim_set_hl(0, "MiniClueSeparator", { fg = "#3c3cff" })
   vim.api.nvim_set_hl(0, "diffAdded", { fg = "#009900" })
   vim.api.nvim_set_hl(0, "diffChanged", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "diffRemoved", { fg = "#ff0000" })
@@ -858,7 +864,7 @@ if not vim.g.vscode then
   require('mini.icons').setup()
   require('mini.misc').setup_auto_root()
   require('mini.misc').setup_restore_cursor()
-  require('mini.notify').setup( --[[ { lsp_progress = { enable = false } } ]])
+  require('mini.notify').setup({ window = { winblend = 0 } --[[ ,lsp_progress = { enable = false } ]] })
   require('mini.pairs').setup()
   require('mini.statusline').setup()
   require('mini.starter').setup()
@@ -921,10 +927,18 @@ if not vim.g.vscode then
   map({ "t", "n" }, "<S-Down>", "<C-\\><C-n><C-w>j", { desc = "down window" })
   map({ "t", "n" }, "<S-Up>", "<C-\\><C-n><C-w>k", { desc = "up window" })
   map({ "t", "n" }, "<S-Right>", "<C-\\><C-n><C-w>l", { desc = "right window" })
-  map({ "t", "n" }, "<C-\\>", function() Snacks.terminal(nil, { win = { position = "float" } }) end,
-    { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
-  map({ "t", "n" }, "<a-o>", function() Snacks.terminal("yazi --chooser-file " .. vim.fn.expand("~/.yazi")) end,
-    { desc = "toggle yazi (open file)" })
+  map(
+    { "t", "n" },
+    "<C-\\>",
+    function() Snacks.terminal(nil, { win = { border = 'rounded', position = "float" } }) end, -- vim.o.shell doesn't work on zsh.exe
+    { desc = "toggle float terminal" }
+  )
+  map(
+    { "t", "n" },
+    "<a-o>",
+    function() Snacks.terminal("yazi --chooser-file " .. vim.fn.expand("~/.yazi"), { win = { border = 'rounded' } }) end,
+    { desc = "toggle yazi (open file)" }
+  )
   map({ "t", "n" }, "<C-;>", "<C-\\><C-n><C-6>", { desc = "go to last buffer" })
   map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", "<cmd>bprevious<CR>", { desc = "prev buffer" })
@@ -1369,8 +1383,18 @@ if not vim.g.vscode then
     { desc = "Hide/Unhide window (useful for terminal)" }
   )
   map("n", "<leader>t", "", { desc = "+Terminal" })
-  map("n", "<leader>tt", function() Snacks.terminal(nil, { win = { position = "float" }}) end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
-  map("n", "<leader>ty", function() Snacks.terminal("yazi --chooser-file " .. vim.fs.normalize("~/.yazi")) end, { desc = "toggle yazi (open file)" })
+  map(
+    "n",
+    "<leader>tt",
+    function() Snacks.terminal(nil, { win = { border = 'rounded', position = "float" } }) end, -- vim.o.shell doesn't work on zsh.exe
+    { desc = "toggle float terminal" }
+  )
+  map(
+    "n",
+    "<leader>ty",
+    function() Snacks.terminal("yazi --chooser-file " .. vim.fn.normalize("~/.yazi"), { win = { border = 'rounded' } }) end,
+    { desc = "toggle yazi (open file)" }
+  )
   map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
   map("n", "<leader>w", "", { desc = "+Window" })
@@ -1394,7 +1418,7 @@ else
     function()
       Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true } })
     end,
-    { desc = "Explorer with preview" }
+    { desc = "Explorer/previewer" }
   )
 end
 
