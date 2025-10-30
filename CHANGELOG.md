@@ -6,6 +6,16 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.4.2](https://github.com/YeferYV/RetroNvim/compare/v0.4.1...v0.4.2) (2025-10-30)
+
+
+### Bug Fixes
+
+* **nvim:** `windsurf.nvim` alternative to supermaven since the service will be sunset + `Amp` extension keymaps for vscode ([cef8012](https://github.com/YeferYV/RetroNvim/commit/cef8012df095a3064f2bd96eaff14a5155afc63c))
+* **nvim:** missing StatusColumn Hide/Show ([7d5a783](https://github.com/YeferYV/RetroNvim/commit/7d5a7836782ee52f4bd8298840a7efb2bfa5a101))
+* **nvim:** yazi open file inside neovim ([b49c576](https://github.com/YeferYV/RetroNvim/commit/b49c5761256517e5e513e2aaad4b6905d2574ac3))
+* **zsh:** `$OSTYPE` of msys2 is called now `cygwin` ([01cc617](https://github.com/YeferYV/RetroNvim/commit/01cc617ae493b60c86ac4e8825fb5f4d8e1ad0ee))
+
 ## [0.4.1](https://github.com/YeferYV/RetroNvim/compare/v0.4.0...v0.4.1) (2025-10-22)
 
 
