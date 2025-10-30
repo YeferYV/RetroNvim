@@ -69,6 +69,7 @@
       "editor.codeActionsOnSave": {
         "source.addMissingImports": "always"
       },
+      "editor.cursorBlinking": "solid",
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
       "editor.minimap.enabled": false,
@@ -164,10 +165,11 @@
       "trae.chatLanguage": "en",
       "vim.camelCaseMotion.enable": true,
       "vim.flash.enable": true,
-      "vim.foldfix": true,
+      "vim.foldfix": false,
       "vim.hlsearch": true,
       "vim.highlightedyank.enable": true,
       "vim.useSystemClipboard": true,
+      "vim.statusBarColorControl": false,
       "vim.visualstar": true,
       "vim.insertModeKeyBindings": [
         {
@@ -1403,7 +1405,7 @@
                   "text": "code --install-extension Katsute.code-background --install-extension DanielPriestley.poimandres-alternate --install-extension miguelsolorio.symbols    --install-extension drewxs.tokyo-night-dark            \n"
                 },
                 {
-                  "text": "code --install-extension Google.geminicodeassist --install-extension MarsCode.marscode-extension          --install-extension supermaven.supermaven                                                           \n"
+                  "text": "code --install-extension Google.geminicodeassist --install-extension MarsCode.marscode-extension          --install-extension sourcegraph.amp                                                                 \n"
                 }
               ]
             },
@@ -1675,6 +1677,16 @@
           "key": "O",
           "name": "+Open",
           "bindings": [
+            {
+              "key": "a",
+              "name": "Amp chat",
+              "command": "amp.agent.focusPromptEditor"
+            },
+            {
+              "key": "A",
+              "name": "Amp chat (include selection)",
+              "command": "amp.agent.addSelectionToPromptEditor"
+            },
             {
               "key": "d",
               "name": "Directory",
@@ -2875,6 +2887,21 @@
         "key": "alt+l",
         "command": "windsurf.interactiveCascade.acceptSuggestedAction",
         "when": "windsurf.interactiveCascade.isCursorPosInSuggestedAction"
+      },
+      {
+        "key": "alt+l",
+        "command": "amp.autoImport.accept",
+        "when": "amp.activated && amp.autoImportSuggested && config.amp.tab.enabled && editorTextFocus && !amp.editorHasMultipleLineSelection"
+      },
+      {
+        "key": "alt+l",
+        "command": "amp.nextCursor.accept",
+        "when": "amp.activated && amp.nextCursorSuggested && editorTextFocus && !amp.editorHasMultipleLineSelection"
+      },
+      {
+        "key": "alt+l",
+        "command": "amp.tab.accept",
+        "when": "amp.activated && amp.tab.active && editorTextFocus && !amp.editorHasMultipleLineSelection && !amp.nextCursorSuggested"
       },
       {
         "key": "alt+;",

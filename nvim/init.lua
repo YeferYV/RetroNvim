@@ -144,13 +144,13 @@ if not vim.g.vscode then
         { 'x', 'n', 'i' },
         '<leader>lg',
         function() require("sidekick.cli").toggle({ name = "gemini" }) end,
-        { desc = 'gemini cli' }
+        { desc = 'Gemini cli' }
       )
       map(
         { 'x', 'n', 'i' },
         '<leader>lG',
         function() require("sidekick.cli").prompt() end,
-        { desc = 'gemini prompt' }
+        { desc = 'Gemini prompt' }
       )
 
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
@@ -162,21 +162,26 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  -- add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
+  -- add { source = "Exafunction/windsurf.nvim", checkout = "821b570b526dbb05b57aa4ded578b709a704a38a" }
+  -- add { source = "https://github.com/nvim-lua/plenary.nvim", checkout = "b9fd5226c2f76c951fc8ed5923d85e4de065e509" }
 
   later(
     function()
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
-      local ok, supermaven = pcall(require, "supermaven-nvim")
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/windsurf.nvim')
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/plenary.nvim')
+      local ok, codeium = pcall(require, "codeium")
       if not ok then return end
-      supermaven.setup {
-        keymaps = {
-          accept_suggestion = "<A-l>",
-          clear_suggestion = "<A-k>",
-          accept_word = "<A-j>",
+      codeium.setup({
+        virtual_text = {
+          idle_delay = 75,
+          key_bindings = {
+            enabled = true,
+            accept = "<A-l>",
+            accept_word = "<A-j>",
+            accept_line = "<A-k>",
+          }
         }
-        -- ignore_filetypes = { "prompt", "snacks_input", "snacks_picker_input" }
-      }
+      })
     end
   )
 end
@@ -197,6 +202,7 @@ vim.opt.splitbelow = true         -- force all horizontal splits to go below cur
 vim.opt.splitright = true         -- force all vertical splits to go to the right of current window
 vim.opt.tabstop = 2               -- insert 2 spaces for a tab
 vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.winborder = 'rounded'     -- MiniCompletion's info and signature border
 vim.opt.wrap = false              -- display lines as one long line
 vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
 vim.g.mapleader = " "             -- <leader> key
@@ -1247,7 +1253,31 @@ if not vim.g.vscode then
   map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end,
     { desc = "Pick workspace symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
-  map("n", "<leader>lX", "<cmd>DepsClean<cr>", { desc = "disable copilot/supermaven" })
+  map(
+    "n",
+    "<leader>lw",
+    function()
+      -- vim.cmd("DepsAdd Exafunction/windsurf.nvim")
+      add { source = "Exafunction/windsurf.nvim", checkout = "821b570b526dbb05b57aa4ded578b709a704a38a" }
+      add { source = "https://github.com/nvim-lua/plenary.nvim", checkout = "b9fd5226c2f76c951fc8ed5923d85e4de065e509" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/windsurf.nvim')
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/plenary.nvim')
+      require("codeium").setup({
+        enable_cmp_source = false,
+        virtual_text = {
+          enabled = true,
+          idle_delay = 75,
+          key_bindings = {
+            accept = "<A-l>",
+            accept_word = "<A-j>",
+            accept_line = "<A-k>",
+          }
+        }
+      })
+    end,
+    { desc = "Windsurf enable" }
+  )
+  map("n", "<leader>lX", "<cmd>DepsClean<cr>", { desc = "Windsurf/Copilot disable" })
   map(
     "n",
     "<leader>lz",
@@ -1269,24 +1299,7 @@ if not vim.g.vscode then
       require("sidekick").setup({ nes = { enabled = false }})
       vim.notify("relaunch nvim after installation to login to copilot or rerun this entry")
     end,
-    { desc = "gemini/copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
-  )
-  map(
-    "n",
-    "<leader>lZ",
-    function()
-      -- vim.cmd("DepsAdd supermaven-inc/supermaven-nvim")
-      add { source = "supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/supermaven-nvim')
-      require("supermaven-nvim").setup {
-        keymaps = {
-          accept_suggestion = "<A-l>",
-          clear_suggestion = "<A-k>",
-          accept_word = "<A-j>",
-        }
-      }
-    end,
-    { desc = "Supermaven enable" }
+    { desc = "Gemini/Copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
   )
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })

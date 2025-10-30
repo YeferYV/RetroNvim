@@ -229,10 +229,10 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |             `alt+v`              |     `i`     | Paste                                            |
 |               `jk`               |     `i`     | enter vim normal mode                            |
 |             `alt+h`              |   `i`,`x`   | enter vim normal mode                            |
-|       `alt+h` or `shift+h`       |     `n`     | cursorLeft `10` times                            |
-|       `alt+j` or `shift+j`       |     `n`     | cursorDown `10` times                            |
-|       `alt+k` or `shift+k`       |     `n`     | cursorUp `10` times                              |
-|       `alt+l` or `shift+l`       |     `n`     | cursorRigth `10` times                           |
+|            `shift+h`             |     `n`     | cursorLeft `10` times                            |
+|            `shift+j`             |     `n`     | cursorDown `10` times                            |
+|            `shift+k`             |     `n`     | cursorUp `10` times                              |
+|            `shift+l`             |     `n`     | cursorRigth `10` times                           |
 |             `alt+v`              |     `n`     | Type `V`                                         |
 |        `alt+s` or `left`         |     `n`     | Go to previous tab                               |
 |        `alt+f` or `right`        |     `n`     | Go to next tab                                   |
@@ -254,34 +254,34 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|  Key Combination   | mode | Description                                             |
-| :----------------: | :--: | :------------------------------------------------------ |
-|    `ctrl+space`    | `i`  | Toggle suggestion widget                                |
-| `ctrl+shift+space` | `i`  | Toggle suggestion details (when inside widget)          |
-| `ctrl+shift+space` | `i`  | Toggle parameter hints (when inside parameters)         |
-|      `ctrl+h`      | `i`  | Toggle suggestion focus (when inside widget)            |
-|      `ctrl+d`      | `i`  | Select next page (when inside suggestion details)       |
-|      `ctrl+u`      | `i`  | Select prev page (when inside suggestion details)       |
-|      `ctrl+j`      | `i`  | Select next suggestion                                  |
-|      `ctrl+k`      | `i`  | Select prev suggestion                                  |
-|      `ctrl+l`      | `i`  | Accept selected suggestion                              |
-|      `ctrl+i`      | `i`  | prompt to AI (gemini/windsurf/copilot)                  |
-|      `ctrl+k`      | `i`  | prompt to AI (cursor)                                   |
-|      `ctrl+.`      | `i`  | fix error with AI (TRAE/gemini/windsurf/cursor/copilot) |
-|      `alt+]`       | `i`  | Show next inline suggestion                             |
-|      `alt+[`       | `i`  | Show previous inline suggestion                         |
-|      `alt+j`       | `i`  | inline suggestion accept next word                      |
-|      `alt+k`       | `i`  | inline suggestion accept next line                      |
-|      `alt+l`       | `i`  | Commit inline/NES suggestion (copilot/cursor/windsurf)  |
-|      `alt+;`       | `i`  | trigger Next Edit Suggestion (`alt+l` to accept)        |
-|      `alt+;`       | `i`  | accept next edit suggestion (neovim only)               |
-|      `escape`      | `i`  | cancel next edit suggestion                             |
-|       `tab`        | `i`  | go to next snippet stop or next suggestion              |
-|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion              |
-|      `alt+n`       | `i`  | go to next snippet stop                                 |
-|      `alt+p`       | `i`  | go to prev snippet stop                                 |
-|      `alt+.`       | `i`  | expand snippet (neovim only)                            |
-|      `ctrl+c`      | `i`  | exit snippet session (neovim only)                      |
+|  Key Combination   | mode | Description                                                            |
+| :----------------: | :--: | :--------------------------------------------------------------------- |
+|    `ctrl+space`    | `i`  | Toggle suggestion widget                                               |
+| `ctrl+shift+space` | `i`  | Toggle suggestion details (when inside widget)                         |
+| `ctrl+shift+space` | `i`  | Toggle parameter hints (when inside parameters)                        |
+|      `ctrl+h`      | `i`  | Toggle suggestion focus (when inside widget)                           |
+|      `ctrl+d`      | `i`  | Select next page (when inside suggestion details)                      |
+|      `ctrl+u`      | `i`  | Select prev page (when inside suggestion details)                      |
+|      `ctrl+j`      | `i`  | Select next suggestion                                                 |
+|      `ctrl+k`      | `i`  | Select prev suggestion                                                 |
+|      `ctrl+l`      | `i`  | Accept selected suggestion                                             |
+|      `ctrl+i`      | `i`  | prompt to AI (gemini/windsurf/copilot)                                 |
+|      `ctrl+k`      | `i`  | prompt to AI (cursor)                                                  |
+|      `ctrl+.`      | `i`  | fix error with AI (windsurf/cursor/copilot)                            |
+|      `alt+]`       | `i`  | Show next inline suggestion                                            |
+|      `alt+[`       | `i`  | Show previous inline suggestion                                        |
+|      `alt+j`       | `i`  | inline suggestion accept next word                                     |
+|      `alt+k`       | `i`  | inline suggestion accept next line                                     |
+|      `alt+l`       | `i`  | Commit inline/NES suggestion (TRAE/AMP/gemini/windsurf/cursor/copilot) |
+|      `alt+;`       | `i`  | trigger Next Edit Suggestion (`alt+l` to accept)                       |
+|      `alt+;`       | `i`  | accept next edit suggestion (neovim only)                              |
+|      `escape`      | `i`  | cancel next edit suggestion                                            |
+|       `tab`        | `i`  | go to next snippet stop or next suggestion                             |
+|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion                             |
+|      `alt+n`       | `i`  | go to next snippet stop                                                |
+|      `alt+p`       | `i`  | go to prev snippet stop                                                |
+|      `alt+.`       | `i`  | expand snippet (neovim only)                                           |
+|      `ctrl+c`      | `i`  | exit snippet session (neovim only)                                     |
 
 </details>
 
@@ -497,7 +497,7 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts) for terminal icons
 
 - Retronvim/nvim comes with an installer for
-  [supermaven-nvim](https://github.com/supermaven-inc/supermaven-nvim) (free copilot),
+  [windsurf.nvim](https://github.com/Exafunction/windsurf.nvim) (free copilot),
   [sidekick.nvim](https://github.com/folke/sidekick.nvim) (gemini cli),
   [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes) and
   LSP + formatters for:
