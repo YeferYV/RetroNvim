@@ -162,26 +162,20 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  -- add { source = "Exafunction/windsurf.nvim", checkout = "821b570b526dbb05b57aa4ded578b709a704a38a" }
-  -- add { source = "https://github.com/nvim-lua/plenary.nvim", checkout = "b9fd5226c2f76c951fc8ed5923d85e4de065e509" }
+  -- add { source = "monkoose/neocodeium", checkout = "bfe790d78e66adaa95cb50a8c75c64a752336e9c" }
 
   later(
     function()
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/windsurf.nvim')
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/plenary.nvim')
-      local ok, codeium = pcall(require, "codeium")
+      map("i", "<A-l>", function() require("neocodeium").accept() end)
+      map("i", "<A-j>", function() require("neocodeium").accept_word() end)
+      map("i", "<A-k>", function() require("neocodeium").accept_line() end)
+      map("i", "<A-]>", function() require("neocodeium").cycle_or_complete() end)
+      map("i", "<A-[>", function() require("neocodeium").cycle_or_complete(-1) end)
+
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/neocodeium')
+      local ok, neocodeium = pcall(require, "neocodeium")
       if not ok then return end
-      codeium.setup({
-        virtual_text = {
-          idle_delay = 75,
-          key_bindings = {
-            enabled = true,
-            accept = "<A-l>",
-            accept_word = "<A-j>",
-            accept_line = "<A-k>",
-          }
-        }
-      })
+      neocodeium.setup()
     end
   )
 end
@@ -254,6 +248,7 @@ autocmd({ "TermEnter", "TermOpen" }, {
   callback = function()
     vim.cmd.startinsert()
 
+    if vim.bo.filetype == "sidekick_terminal" then return end
     if vim.bo.filetype == "snacks_terminal" then return end
 
     -- hide bufferline if `nvim -cterm`
@@ -1257,23 +1252,9 @@ if not vim.g.vscode then
     "n",
     "<leader>lw",
     function()
-      -- vim.cmd("DepsAdd Exafunction/windsurf.nvim")
-      add { source = "Exafunction/windsurf.nvim", checkout = "821b570b526dbb05b57aa4ded578b709a704a38a" }
-      add { source = "https://github.com/nvim-lua/plenary.nvim", checkout = "b9fd5226c2f76c951fc8ed5923d85e4de065e509" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/windsurf.nvim')
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/plenary.nvim')
-      require("codeium").setup({
-        enable_cmp_source = false,
-        virtual_text = {
-          enabled = true,
-          idle_delay = 75,
-          key_bindings = {
-            accept = "<A-l>",
-            accept_word = "<A-j>",
-            accept_line = "<A-k>",
-          }
-        }
-      })
+      add { source = "monkoose/neocodeium", checkout = "bfe790d78e66adaa95cb50a8c75c64a752336e9c" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/neocodeium')
+      require("neocodeium").setup()
     end,
     { desc = "Windsurf enable" }
   )
@@ -1415,7 +1396,7 @@ if not vim.g.vscode then
         Hidden = false
       end
     end,
-    { desc = "Hide/Unhide window (useful for terminal)" }
+    { desc = "Hide/Unhide window/terminal" }
   )
   map("n", "<leader>t", "", { desc = "+Terminal" })
   map("n", "<leader>tt", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe

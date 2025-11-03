@@ -497,7 +497,7 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts) for terminal icons
 
 - Retronvim/nvim comes with an installer for
-  [windsurf.nvim](https://github.com/Exafunction/windsurf.nvim) (free copilot),
+  [neocodeium](https://github.com/monkoose/neocodeium) (free copilot/windsurf),
   [sidekick.nvim](https://github.com/folke/sidekick.nvim) (gemini cli),
   [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes) and
   LSP + formatters for:
