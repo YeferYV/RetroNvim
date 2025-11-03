@@ -115,9 +115,6 @@ if not vim.g.vscode then
 
   now(
     function()
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
-      vim.g.copilot_nes_debounce = 75
-      vim.lsp.enable("copilot_ls")
       vim.keymap.set({ "n", "i" }, "<A-;>", function()
         local bufnr = vim.api.nvim_get_current_buf()
         local state = vim.b[bufnr].nes_state
@@ -131,6 +128,18 @@ if not vim.g.vscode then
               )
         end
       end, { desc = "Accept Copilot NES suggestion" })
+
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
+      local ok, copilot_lsp = pcall(require, "copilot-lsp")
+      if not ok then return end
+      copilot_lsp.setup({
+        nes = {
+          move_count_threshold = 1, -- Clear after 1 cursor movements
+        }
+      })
+
+      vim.g.copilot_nes_debounce = 75
+      vim.lsp.enable("copilot_ls")
     end
   )
 end
@@ -733,6 +742,7 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "NeoCodeiumSuggestion", { fg = "#444b6a" })
   vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#787c99" })
   vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = "#a9b1d6" })
   vim.api.nvim_set_hl(0, "SnacksPickerDirectory", { fg = "#5555cc" })
@@ -1332,6 +1342,7 @@ if not vim.g.vscode then
       -- local curr_file = vim.fs.basename(vim.api.nvim_buf_get_name(0))
       local curr_file = vim.fn.expand('%')
       require("snacks").picker.git_diff({
+        focus = "list",
         on_show = function(picker)
           for i, item in ipairs(picker:items()) do
             if item.text:match(curr_file) then
@@ -1339,7 +1350,7 @@ if not vim.g.vscode then
               break -- break at first match
             end
           end
-          vim.cmd.stopinsert() -- starts normal mode
+          -- vim.cmd.stopinsert() -- starts normal mode
         end,
       })
     end,
