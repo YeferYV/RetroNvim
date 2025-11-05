@@ -1339,18 +1339,35 @@ if not vim.g.vscode then
     "n",
     "<leader>gp",
     function()
-      -- local curr_file = vim.fs.basename(vim.api.nvim_buf_get_name(0))
+
       local curr_file = vim.fn.expand('%')
+      local curr_line = vim.fn.line('.') - 3 -- Snacks.picker.git_diff() adds 3 lines
+
       require("snacks").picker.git_diff({
         focus = "list",
         on_show = function(picker)
-          for i, item in ipairs(picker:items()) do
+
+          local pos_index = {} -- { { 6, 3 }, { 19, 4 }, { 45, 5 }, { 55, 6 }, { 63, 7 } }
+          local jump = 1
+
+          -- fill pos_index
+          for index, item in ipairs(picker:items()) do
             if item.text:match(curr_file) then
-              picker.list:view(i)
-              break -- break at first match
+              table.insert(pos_index, {item.pos[1], index})
             end
           end
-          -- vim.cmd.stopinsert() -- starts normal mode
+
+          if not pos_index[1] then return end
+
+          -- find index to jump
+          for index, item in ipairs(pos_index) do
+            if (curr_line >= item[1]) then
+              jump = index
+            end
+          end
+
+          picker.list:view(pos_index[jump][2])
+          -- vim.notify(vim.inspect(pos_index))
         end,
       })
     end,
