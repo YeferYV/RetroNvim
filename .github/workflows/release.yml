@@ -61,7 +61,7 @@ jobs:
 
           #####################################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.5/nvim-macos-x86_64.tar.gz                          | tar -xzf- --directory /tmp                                            && mkdir -p bin/env/bin                                        && cp -r /tmp/nvim-macos-x86_64/* bin/env
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-x86_64.tar.gz                          | tar -xzf- --directory /tmp                                            && mkdir -p bin/env/bin                                        && cp -r /tmp/nvim-macos-x86_64/* bin/env
           curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0-prerelease-2/kanata_macos_cmd_allowed_x86_64       --create-dirs  --output bin/env/bin/kanata                              && chmod +x bin/env/bin/kanata
 
           (
@@ -84,7 +84,7 @@ jobs:
 
           #####################################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.5/nvim-linux-x86_64.appimage                        --create-dirs  --output bin/env/bin/nvim                                && chmod +x bin/env/bin/nvim
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage                        --create-dirs  --output bin/env/bin/nvim                                && chmod +x bin/env/bin/nvim
           curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0-prerelease-2/kanata_cmd_allowed                    --create-dirs  --output bin/env/bin/kanata                              && chmod +x bin/env/bin/kanata
 
           (
@@ -106,7 +106,7 @@ jobs:
 
           #####################################################################################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/v0.11.5/nvim-win64.zip                                    --create-dirs  --output /tmp/nvim.zip                                   && mkdir -p bin/windows/envs/windows                           && unzip /tmp/nvim.zip -d /tmp/nvim && cp -r /tmp/nvim/nvim-win64 bin/windows/envs/windows/Library
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                                    --create-dirs  --output /tmp/nvim.zip                                   && mkdir -p bin/windows/envs/windows                           && unzip /tmp/nvim.zip -d /tmp/nvim && cp -r /tmp/nvim/nvim-win64 bin/windows/envs/windows/Library
           curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0-prerelease-2/kanata_cmd_allowed.exe                --create-dirs  --output bin/windows/envs/windows/Library/bin/kanata.exe
           curl -L https://github.com/prefix-dev/pixi/releases/download/v0.56.0/pixi-x86_64-pc-windows-msvc.zip                 --create-dirs  --output /tmp/pixi.zip                                   && unzip /tmp/pixi.zip -d bin/windows/envs/windows/Library/bin
           curl -L https://github.com/ip7z/7zip/releases/download/24.09/7zr.exe                                                 --create-dirs  --output bin/7zr.exe
