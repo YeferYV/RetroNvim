@@ -1261,7 +1261,7 @@ if not vim.g.vscode then
     function()
 
       local curr_file = vim.fn.expand('%')
-      local curr_line = vim.fn.line('.') - 3 -- Snacks.picker.git_diff() adds 3 lines
+      local curr_line = vim.fn.line('.') - 2 -- Snacks.picker.git_diff() adds 3 lines and deleted hunks takes out 1 line
 
       require("snacks").picker.git_diff({
         focus = "list",

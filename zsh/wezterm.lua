@@ -43,6 +43,7 @@ return {
   },
 
   keys = {
+    { key = "0",          mods = "ALT",        action = act { ActivateTab = -1 } },
     { key = "1",          mods = "ALT",        action = act { ActivateTab = 0 } },
     { key = "2",          mods = "ALT",        action = act { ActivateTab = 1 } },
     { key = "3",          mods = "ALT",        action = act { ActivateTab = 2 } },
@@ -52,9 +53,6 @@ return {
     { key = "7",          mods = "ALT",        action = act { ActivateTab = 6 } },
     { key = "8",          mods = "ALT",        action = act { ActivateTab = 7 } },
     { key = "9",          mods = "ALT",        action = act { ActivateTab = 8 } },
-    { key = "0",          mods = "ALT",        action = act { ActivateTab = -1 } },
-    { key = '-',          mods = 'ALT',        action = wezterm.action_callback(function(_, pane) pane:move_to_new_tab() end) },
-    { key = '=',          mods = 'ALT',        action = wezterm.action_callback(function(_, pane) pane:move_to_new_window() end) },
     { key = "a",          mods = "ALT",        action = act { ScrollByPage = 1 } },
     { key = "q",          mods = "ALT",        action = act { ScrollByPage = -1 } },
     { key = "d",          mods = "ALT",        action = act { ScrollByLine = 1 } },
@@ -83,9 +81,11 @@ return {
     { key = "DownArrow",  mods = "CTRL",       action = act { ActivatePaneDirection = "Down" } },
     { key = "L",          mods = "CTRL",       action = 'DisableDefaultAssignment' },
     { key = "K",          mods = "CTRL",       action = 'DisableDefaultAssignment' },
-    { key = "N",          mods = 'CTRL',       action = act.SpawnWindow },
     { key = "t",          mods = "CTRL",       action = act { SpawnTab = "CurrentPaneDomain" } },
     { key = "w",          mods = "CTRL",       action = act { CloseCurrentPane = { confirm = false } } },
+    { key = 'T',          mods = 'CTRL',       action = wezterm.action_callback(function(_, pane) pane:move_to_new_tab() end) },
+    { key = 'W',          mods = 'CTRL',       action = wezterm.action_callback(function(_, pane) pane:move_to_new_window() end) },
+    { key = "N",          mods = 'CTRL',       action = act.SpawnWindow },
     { key = ";",          mods = "CTRL",       action = act.ActivateLastTab },
 
     --> Copy Mode

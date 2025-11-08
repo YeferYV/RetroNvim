@@ -8,6 +8,7 @@
   "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
   "keybindings": [
 
+    {"id": "Terminal.SwitchToLastTab",    "keys": "alt+0"},
     {"id": "Terminal.SwitchToTab0",       "keys": "alt+1"},
     {"id": "Terminal.SwitchToTab1",       "keys": "alt+2"},
     {"id": "Terminal.SwitchToTab2",       "keys": "alt+3"},
@@ -16,9 +17,6 @@
     {"id": "Terminal.SwitchToTab5",       "keys": "alt+6"},
     {"id": "Terminal.SwitchToTab6",       "keys": "alt+7"},
     {"id": "Terminal.SwitchToTab7",       "keys": "alt+8"},
-    {"id": "Terminal.SwitchToLastTab",    "keys": "alt+0"},
-    {"id": "Terminal.MovePaneToTab8",     "keys": "alt+-"},
-    {"id": "Terminal.MoveTabToNewWindow", "keys": "alt+="},
     {"id": "Terminal.ScrollDownPage",     "keys": "alt+a"},
     {"id": "Terminal.ScrollUpPage",       "keys": "alt+q"},
     {"id": "Terminal.ScrollDown",         "keys": "alt+d"},
@@ -43,9 +41,11 @@
     {"id": "Terminal.MoveFocusRight",     "keys": "ctrl+right"},
     {"id": "Terminal.MoveFocusUp",        "keys": "ctrl+up"},
     {"id": "Terminal.MoveFocusDown",      "keys": "ctrl+down"},
-    {"id": "Terminal.OpenNewWindow",      "keys": "ctrl+shift+n"},
     {"id": "Terminal.OpenNewTab",         "keys": "ctrl+t"},
     {"id": "Terminal.ClosePane",          "keys": "ctrl+w"},
+    {"id": "Terminal.MovePaneToTab",      "keys": "ctrl+shift+t"},
+    {"id": "Terminal.MoveTabToNewWindow", "keys": "ctrl+shift+w"},
+    {"id": "Terminal.OpenNewWindow",      "keys": "ctrl+shift+n"},
     {"id": "Terminal.ToggleMarkMode",     "keys": "shift+space"},
     {"id": "Terminal.FindText",           "keys": "ctrl+shift+f"}
 

@@ -1,7 +1,7 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/powershell setup",
+  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/powershell/wezterm/windows-terminal setup",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -41,7 +41,10 @@
     "zsh",
     "msys2",
     "base16",
-    "powershell"
+    "powershell",
+    "wezterm",
+    "windows-terminal",
+    "terminal"
   ],
   "homepage": "https://marketplace.visualstudio.com/items?itemName=YeferYV.RetroNvim",
   "repository": {
@@ -1990,6 +1993,11 @@
               "command": "workbench.action.terminal.focusAtIndex9"
             },
             {
+              "key": "=",
+              "name": "move terminal to window",
+              "command": "workbench.action.terminal.moveIntoNewWindow"
+            },
+            {
               "key": "b",
               "name": "Move terminal to buffer",
               "command": "workbench.action.terminal.moveToEditor"
@@ -2102,12 +2110,30 @@
             },
             {
               "key": "v",
-              "name": "split Vertical Tab/Panel terminal",
-              "command": "workbench.action.terminal.splitInActiveWorkspace"
+              "name": "Split panel terminal vertical",
+              "commands": [
+                "workbench.action.positionPanelBottom",
+                "workbench.action.terminal.focus",
+                "workbench.action.terminal.split"
+              ]
             },
             {
               "key": "V",
-              "name": "split Horizontal Tab/Panel terminal",
+              "name": "Split panel terminal horizontal",
+              "commands": [
+                "workbench.action.positionPanelRight",
+                "workbench.action.terminal.focus",
+                "workbench.action.terminal.split"
+              ]
+            },
+            {
+              "key": "]",
+              "name": "split tab terminal vertical",
+              "command": "workbench.action.terminal.splitInActiveWorkspace"
+            },
+            {
+              "key": "[",
+              "name": "split tab terminal horizontal",
               "commands": [
                 "workbench.action.terminal.split",
                 "workbench.action.moveActiveEditorGroupDown"
@@ -2167,8 +2193,13 @@
               "command": "workbench.action.toggleMaximizedPanel"
             },
             {
+              "key": "'",
+              "name": "Find text",
+              "command": "workbench.action.terminal.focusFind"
+            },
+            {
               "key": "/",
-              "name": "Focus terminal (find terminal panel)",
+              "name": "Focus terminal",
               "command": "workbench.action.terminal.toggleTerminal"
             },
             {
@@ -2568,6 +2599,9 @@
     },
     "keybindings": [
       {
+        "name": "------------------------------------------- editor keymaps -------------------------------------------"
+      },
+      {
         "key": "shift+u",
         "command": "whichkey.repeatMostRecent",
         "when": "editorTextFocus && (vim.mode == 'Normal' || neovim.mode == 'normal')"
@@ -2595,6 +2629,66 @@
         "key": "d",
         "command": "deleteFile",
         "when": "filesExplorerFocus && !inputFocus"
+      },
+      {
+        "key": "shift+j",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown",
+            "list.focusDown"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "shift+k",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp",
+            "list.focusUp"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "shift+l",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "list.select",
+            "workbench.action.toggleSidebarVisibility"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
+      },
+      {
+        "key": "shift+o",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "explorer.openAndPassFocus",
+            "workbench.view.explorer"
+          ]
+        },
+        "when": "listFocus && !inputFocus"
       },
       {
         "key": "p",
@@ -2668,66 +2762,6 @@
         "when": "listFocus && !inputFocus"
       },
       {
-        "key": "shift+j",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown",
-            "list.focusDown"
-          ]
-        },
-        "when": "listFocus && !inputFocus"
-      },
-      {
-        "key": "shift+k",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp",
-            "list.focusUp"
-          ]
-        },
-        "when": "listFocus && !inputFocus"
-      },
-      {
-        "key": "shift+l",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "list.select",
-            "workbench.action.toggleSidebarVisibility"
-          ]
-        },
-        "when": "listFocus && !inputFocus"
-      },
-      {
-        "key": "shift+o",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "explorer.openAndPassFocus",
-            "workbench.view.explorer"
-          ]
-        },
-        "when": "listFocus && !inputFocus"
-      },
-      {
         "key": "ctrl+\\",
         "command": "workbench.action.togglePanel"
       },
@@ -2748,16 +2782,6 @@
         "key": "alt+v",
         "command": "editor.action.clipboardPasteAction",
         "when": "!terminalFocus"
-      },
-      {
-        "key": "alt+c",
-        "command": "workbench.action.terminal.copySelection",
-        "when": "terminalFocus"
-      },
-      {
-        "key": "alt+v",
-        "command": "workbench.action.terminal.paste",
-        "when": "terminalFocus"
       },
       {
         "key": "alt+h",
@@ -2789,6 +2813,26 @@
         "when": "!terminalFocus && !sideBarFocus && ( neovim.mode == 'normal' || vim.mode == 'Normal' ) && editorTextFocus"
       },
       {
+        "key": "ctrl+shift+h",
+        "command": "workbench.action.decreaseViewSize",
+        "when": "!terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+l",
+        "command": "workbench.action.increaseViewSize",
+        "when": "!terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+k",
+        "command": "workbench.action.decreaseViewSize",
+        "when": "!terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+j",
+        "command": "workbench.action.increaseViewSize",
+        "when": "!terminalFocus"
+      },
+      {
         "key": "ctrl+h",
         "command": "workbench.action.navigateLeft",
         "when": "neovim.mode == 'normal' || vim.mode == 'Normal'"
@@ -2812,6 +2856,9 @@
         "key": "ctrl+l",
         "command": "workbench.action.navigateRight",
         "when": "!terminalFocus && vim.mode == 'Normal'"
+      },
+      {
+        "name": "----------------------------------------- suggestion keymaps -----------------------------------------"
       },
       {
         "key": "ctrl+space",
@@ -2839,9 +2886,34 @@
         "when": "editorTextFocus && parameterHintsVisible"
       },
       {
+        "key": "ctrl+d",
+        "command": "selectNextPageSuggestion",
+        "when": "suggestWidgetVisible"
+      },
+      {
+        "key": "ctrl+u",
+        "command": "selectPrevPageSuggestion",
+        "when": "suggestWidgetVisible"
+      },
+      {
         "key": "ctrl+h",
         "command": "toggleSuggestionFocus",
         "when": "suggestWidgetVisible && textInputFocus"
+      },
+      {
+        "key": "ctrl+j",
+        "command": "selectNextSuggestion",
+        "when": "editorTextFocus && suggestWidgetVisible"
+      },
+      {
+        "key": "ctrl+k",
+        "command": "selectPrevSuggestion",
+        "when": "editorTextFocus && suggestWidgetVisible"
+      },
+      {
+        "key": "ctrl+l",
+        "command": "acceptSelectedSuggestion",
+        "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
       },
       {
         "key": "alt+j",
@@ -2929,29 +3001,7 @@
         "when": "hasPrevTabstop && inSnippetMode && textInputFocus"
       },
       {
-        "key": "ctrl+j",
-        "command": "selectNextSuggestion",
-        "when": "editorTextFocus && suggestWidgetVisible"
-      },
-      {
-        "key": "ctrl+k",
-        "command": "selectPrevSuggestion",
-        "when": "editorTextFocus && suggestWidgetVisible"
-      },
-      {
-        "key": "ctrl+l",
-        "command": "acceptSelectedSuggestion",
-        "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
-      },
-      {
-        "key": "ctrl+d",
-        "command": "selectNextPageSuggestion",
-        "when": "suggestWidgetVisible"
-      },
-      {
-        "key": "ctrl+u",
-        "command": "selectPrevPageSuggestion",
-        "when": "suggestWidgetVisible"
+        "name": "------------------------------------------ terminal keymaps ------------------------------------------"
       },
       {
         "key": "alt+y",
@@ -2961,18 +3011,58 @@
         }
       },
       {
-        "key": "alt+shift+d",
-        "command": "workbench.action.terminal.scrollToNextCommand",
+        "key": "alt+1",
+        "command": "workbench.action.terminal.focusAtIndex1",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+2",
+        "command": "workbench.action.terminal.focusAtIndex2",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+3",
+        "command": "workbench.action.terminal.focusAtIndex3",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+4",
+        "command": "workbench.action.terminal.focusAtIndex4",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+5",
+        "command": "workbench.action.terminal.focusAtIndex5",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+6",
+        "command": "workbench.action.terminal.focusAtIndex6",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+7",
+        "command": "workbench.action.terminal.focusAtIndex7",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+8",
+        "command": "workbench.action.terminal.focusAtIndex8",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+9",
+        "command": "workbench.action.terminal.focusAtIndex9",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+a",
+        "command": "workbench.action.terminal.scrollDownPage",
         "when": "terminalFocus"
       },
       {
-        "key": "alt+shift+e",
-        "command": "workbench.action.terminal.scrollToPreviousCommand",
-        "when": "terminalFocus"
-      },
-      {
-        "key": "alt+e",
-        "command": "workbench.action.terminal.scrollUp",
+        "key": "alt+q",
+        "command": "workbench.action.terminal.scrollUpPage",
         "when": "terminalFocus"
       },
       {
@@ -2981,8 +3071,18 @@
         "when": "terminalFocus"
       },
       {
-        "key": "alt+a",
-        "command": "workbench.action.terminal.scrollDownPage",
+        "key": "alt+e",
+        "command": "workbench.action.terminal.scrollUp",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+shift+d",
+        "command": "workbench.action.terminal.scrollToNextCommand",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+shift+e",
+        "command": "workbench.action.terminal.scrollToPreviousCommand",
         "when": "terminalFocus"
       },
       {
@@ -2996,44 +3096,90 @@
         "when": "terminalFocus"
       },
       {
-        "key": "ctrl+shift+h",
+        "key": "alt+s",
+        "command": "workbench.action.terminal.focusPrevious",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+f",
+        "command": "workbench.action.terminal.focusNext",
+        "when": "terminalFocus && !terminalEditorFocus"
+      },
+      {
+        "key": "alt+shift+s",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "workbench.action.terminal.moveToEditor",
+            "workbench.action.terminal.moveToTerminalPanel"
+          ]
+        },
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+shift+f",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "workbench.action.terminal.moveToEditor",
+            "workbench.action.terminal.moveToTerminalPanel"
+          ]
+        },
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+c",
+        "command": "workbench.action.terminal.copySelection",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "alt+v",
+        "command": "workbench.action.terminal.paste",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+alt+h",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "workbench.action.positionPanelRight",
+            "workbench.action.terminal.focus",
+            "workbench.action.terminal.split"
+          ]
+        },
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+alt+v",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "workbench.action.positionPanelBottom",
+            "workbench.action.terminal.focus",
+            "workbench.action.terminal.split"
+          ]
+        },
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+left",
         "command": "workbench.action.terminal.resizePaneLeft",
         "when": "terminalFocus"
       },
       {
-        "key": "ctrl+shift+l",
+        "key": "ctrl+shift+right",
         "command": "workbench.action.terminal.resizePaneRight",
         "when": "terminalFocus"
       },
       {
-        "key": "ctrl+shift+j",
+        "key": "ctrl+shift+down",
         "command": "workbench.action.terminal.resizePaneDown",
         "when": "terminalFocus"
       },
       {
-        "key": "ctrl+shift+k",
+        "key": "ctrl+shift+up",
         "command": "workbench.action.terminal.resizePaneUp",
         "when": "terminalFocus"
-      },
-      {
-        "key": "ctrl+shift+h",
-        "command": "workbench.action.decreaseViewSize",
-        "when": "!terminalFocus"
-      },
-      {
-        "key": "ctrl+shift+l",
-        "command": "workbench.action.increaseViewSize",
-        "when": "!terminalFocus"
-      },
-      {
-        "key": "ctrl+shift+k",
-        "command": "workbench.action.decreaseViewSize",
-        "when": "!terminalFocus"
-      },
-      {
-        "key": "ctrl+shift+j",
-        "command": "workbench.action.increaseViewSize",
-        "when": "!terminalFocus"
       },
       {
         "key": "ctrl+left",
@@ -3043,6 +3189,56 @@
       {
         "key": "ctrl+right",
         "command": "workbench.action.terminal.focusNextPane",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+up",
+        "command": "workbench.action.terminal.focusPreviousPane",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+down",
+        "command": "workbench.action.terminal.focusNextPane",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+up",
+        "command": "-workbench.action.terminal.scrollToPreviousCommand",
+        "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled"
+      },
+      {
+        "key": "ctrl+down",
+        "command": "-workbench.action.terminal.scrollToNextCommand",
+        "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled"
+      },
+      {
+        "key": "ctrl+t",
+        "command": "workbench.action.terminal.newInActiveWorkspace",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+w",
+        "command": "workbench.action.terminal.kill",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+t",
+        "command": "workbench.action.terminal.moveToEditor",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+w",
+        "command": "workbench.action.terminal.moveIntoNewWindow",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+n",
+        "command": "workbench.action.terminal.newInNewWindow",
+        "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+f",
+        "command": "workbench.action.terminal.focusFind",
         "when": "terminalFocus"
       },
       {
