@@ -834,7 +834,7 @@ map({ "n" }, "Y", "yg_", { desc = "Yank forward" })  -- "Y" yank forward by defa
 map({ "v" }, "Y", "g_y", { desc = "Yank forward" })
 map({ "v" }, "P", "g_P", { desc = "Paste forward" }) -- "P" doesn't change register
 map({ "v" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchanged)" })
-map({ "n" }, "U", "@:", { desc = "repeat `:command`" })
+map({ "n" }, "U", "@:", { desc = "repeat `:command`" }) --> :normal A,jkj --> :normal A,j --->  escape char by pression ctrl+v then escape
 map({ "v" }, "<", "<gv", { desc = "continious indent" })
 map({ "v" }, ">", ">gv", { desc = "continious indent" })
 map(
@@ -1629,8 +1629,8 @@ map(
 -- TODO: remove it when https://github.com/echasnovski/mini.nvim/issues/1077 available
 local repeat_mini_ai = function(inner_or_around, key, desc)
   local next, prev = M.make_repeatable_move_pair(
-    function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "next" }) end,
-    function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "prev" }) end
+    function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "next" }) end, -- "right" to end of text object
+    function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "prev" }) end  -- "right" to end of text object
   )
   map({ "n", "x", "o" }, "gn" .. inner_or_around .. key, next, { desc = desc })
   map({ "n", "x", "o" }, "gp" .. inner_or_around .. key, prev, { desc = desc })
