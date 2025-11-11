@@ -64,6 +64,7 @@
     ],
     "configurationDefaults": {
       "accessibility.accessibleView.closeOnKeyPress": false,
+      "amp.tab.enabled": true,
       "cursor.cpp.enablePartialAccepts": true,
       "editor.accessibilitySupport": "off",
       "editor.autoClosingBrackets": "beforeWhitespace",
@@ -75,6 +76,7 @@
       "editor.cursorBlinking": "solid",
       "editor.fontFamily": "'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
       "editor.fontLigatures": true,
+      "editor.fontWeight": "500",
       "editor.minimap.enabled": false,
       "editor.quickSuggestions": {
         "strings": "on"
@@ -120,6 +122,7 @@
         "workbench.action.openEditorAtIndex9"
       ],
       "terminal.integrated.enableImages": true,
+      "terminal.integrated.fontWeight": "500",
       "terminal.integrated.minimumContrastRatio": 1,
       "terminal.integrated.scrollback": 10000,
       "terminal.integrated.suggest.enabled": true,

@@ -56,7 +56,7 @@ jobs:
           export PATH="$HOME/.pixi/bin:$PATH"
           pixi global install p7zip
 
-          curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             | tar -xJf- --directory /tmp                                            && mkdir -p bin/nerd-fonts/patched-fonts/FiraCode              && cp /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
+          curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             | tar -xJf- --directory /tmp                                            && mkdir -p bin/nerd-fonts/patched-fonts/FiraCode              && cp /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Medium.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
           curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.ps1                         --create-dirs  --output bin/nerd-fonts/install.ps1
 
           #####################################################################################################################################################################################################################################################################################################################################################################
