@@ -341,6 +341,8 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `ctrl+;`      | recent tab                                  |             wezterm             |
 |   `shift+space`    | tmux-copy-mode-like                         |    wezterm/windows-terminal     |
 |   `ctrl+shift+f`   | find text                                   | vscode/wezterm/windows-terminal |
+|    `ctrl+plus`     | zoom in                                     | vscode/wezterm/windows-terminal |
+|    `ctrl+minus`    | zoom out                                    | vscode/wezterm/windows-terminal |
 
 </details>
 

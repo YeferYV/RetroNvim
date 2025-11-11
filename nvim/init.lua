@@ -830,9 +830,9 @@ map({ "n" }, "J", "10gj")
 map({ "n" }, "K", "10gk")
 map({ "n" }, "H", "10h")
 map({ "n" }, "L", "10l")
-map({ "n" }, "Y", "yg_", { desc = "Yank forward" })  -- "Y" yank forward by default
+map({ "n" }, "Y", "yg_", { desc = "Yank forward" })     -- "Y" yank forward by default
 map({ "v" }, "Y", "g_y", { desc = "Yank forward" })
-map({ "v" }, "P", "g_P", { desc = "Paste forward" }) -- "P" doesn't change register
+map({ "v" }, "P", "g_P", { desc = "Paste forward" })    -- "P" doesn't change register
 map({ "v" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchanged)" })
 map({ "n" }, "U", "@:", { desc = "repeat `:command`" }) --> :normal A,jkj --> :normal A,j --->  escape char by pression ctrl+v then escape
 map({ "v" }, "<", "<gv", { desc = "continious indent" })
@@ -1265,6 +1265,7 @@ if not vim.g.vscode then
 
       require("snacks").picker.git_diff({
         focus = "list",
+        layout = { preset = 'big_preview' },
         on_show = function(picker)
 
           local pos_index = {} -- { { 6, 3 }, { 19, 4 }, { 45, 5 }, { 55, 6 }, { 63, 7 } }
@@ -1272,7 +1273,7 @@ if not vim.g.vscode then
 
           -- fill pos_index
           for index, item in ipairs(picker:items()) do
-            if item.text:match(curr_file) then
+            if (item.text == curr_file .. ":" .. item.pos[1]) then -- /[directory]/ also works
               table.insert(pos_index, {item.pos[1], index})
             end
           end
