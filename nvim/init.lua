@@ -73,7 +73,13 @@ if not vim.g.vscode then
             -- default sort is by score, text length and index
             fields = { "idx", "score:desc", "#text" },
           },
-          sources = { explorer = { hidden = true, --[[ ignored = true ]] } },
+          sources = {
+            explorer = { hidden = true, --[[ ignored = true ]] },
+            grep = {
+              layout = "ivy_split",
+              args = { "--sort=path" }
+            }
+          },
           win = {
             preview = { keys = { ["<space><space><space>"] = { "cycle_win", mode = { "n" } } } },
             input = { keys = { ["<space><space>"] = { "cycle_win", mode = { "i", "n" } } } },
@@ -414,9 +420,7 @@ function M.flash()
       l = l + 1
     end
 
-    if not M.labels[l] then
-      break
-    end
+    if not M.labels[l] then break end
 
     M.results[M.labels[l]] = match
 
@@ -1218,12 +1222,7 @@ if not vim.g.vscode then
   map("n", "<leader>fc", function() require("snacks").picker.colorschemes() end, { desc = "colorscheme" })
   map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "keymaps" })
   map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "files" })
-  map(
-    "n",
-    "<leader>fg",
-    function() require("snacks").picker.grep({ layout = "ivy_split", filter = { cwd = true }, }) end,
-    { desc = "ripgrep" }
-  )
+  map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "ripgrep" })
   map("n", "<leader>fn", function() MiniNotify.show_history() end, { desc = "Notify history" })
   map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "projects" })
   map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quick list" })
