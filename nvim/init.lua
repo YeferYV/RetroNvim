@@ -117,7 +117,7 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
+  -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
 
   now(
     function()
@@ -909,6 +909,7 @@ end
 if not vim.g.vscode then
   ---------------------------------------------------------------------------------------------------------------------
   vim.diagnostic.config({
+    update_in_insert = true,
     virtual_text = true,
     float = { border = "rounded" },
     signs = {
@@ -1201,13 +1202,13 @@ if not vim.g.vscode then
       if os:find('win') then os = "win32" end
       -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
       sendSequence(
-        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.386.0/copilot-language-server-' .. os .. '-x64-1.386.0.zip',
+        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.395.0/copilot-language-server-' .. os .. '-x64-1.386.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
       sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
 
       add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
-      add { source = "copilotlsp-nvim/copilot-lsp", checkout = "173c015ea61cb493997e3b1fa80bf57f6db58c26" }
+      add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
       vim.lsp.enable("copilot_ls")

@@ -92,7 +92,7 @@ on = [ "s", "r" ]
 run = '''
   shell
   --block
-  -- rg "" --color=always --line-number --sort=path | fzf --layout=reverse --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1} && nvim {1} +{2})"
+  -- rg "" --color=always --line-number --sort=path | fzf --no-sort --layout=reverse --ansi --delimiter : --preview "bat --color=always {1} --highlight-line {2}" --preview-window "up,60%,+{2},nohidden" --bind "enter:become(ya emit reveal {1}; nvim {1} +{2})"
 '''
 desc = "rg fzf (󰘶 ↓ scrolls)" # shift + down/up scrolls preview # resizable preview with mouse
 

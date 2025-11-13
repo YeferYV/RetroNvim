@@ -44,9 +44,10 @@ export EDITOR="nvim"
 export EZA_COLORS="reset:uu=0:ur=0:uw=0:ux=0:ue=0:gu=0:gr=0:gw=0:gx=0:tr=0:tw=0:tx=0:da=0:sn=0:di=34"
 export FZF_DEFAULT_OPTS='--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window "hidden" --bind "?:toggle-preview" --multi --bind "ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}"'
 export HISTFILE="$HOME/.cache/.zsh_history"
-export LESSKEYIN="$RETRONVIM_PATH/yazi/lesskey"
-export LESSHISTFILE="-"
-export MANROFFOPT="-c"
+export LESS="--ignore-case"                     # bat search case insensitive
+export LESSKEYIN="$RETRONVIM_PATH/yazi/lesskey" # bat keymaps
+export LESSHISTFILE="-"                         # bat no history
+export MANROFFOPT="-c"                          # man pages colored
 export PAGER="less -R --use-color --color=d+g --color=u+r --color=Pyk --color=Syk"
 export SAVEHIST=10000
 export SHELL="zsh" # for nvim terminal if bash is the default shell

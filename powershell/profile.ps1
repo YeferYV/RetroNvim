@@ -51,7 +51,9 @@ $env:EDITOR="nvim"
 $env:FZF_DEFAULT_OPTS="--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'"
 $env:FONT_PATH="$HOME\AppData\Local\Microsoft\Windows\Fonts\FiraCodeNerdFont-Bold.ttf"
 $env:HOME=$env:USERPROFILE # fot ~/.gitconfig
-$env:LESSKEYIN="$env:RETRONVIM_PATH/yazi/lesskey"
+$env:LESS="--ignore-case"                         # bat search case insensitive
+$env:LESSKEYIN="$env:RETRONVIM_PATH/yazi/lesskey" # bat keymaps
+$env:LESSHISTFILE="-"                             # bat no history
 $env:PATH="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin;$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\mingw64\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\.local\bin;${env:PATH};"
 $env:PNPM_HOME="$HOME/appdata/local/pnpm"
 $env:RETRONVIM_BIN="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin"
