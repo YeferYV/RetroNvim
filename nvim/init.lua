@@ -117,44 +117,12 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
-
-  now(
-    function()
-      vim.keymap.set({ "n", "i" }, "<A-;>", function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local state = vim.b[bufnr].nes_state
-        if state then
-          -- Try to jump to the start of the suggestion edit.
-          -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-          local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
-              or (
-                require("copilot-lsp.nes").apply_pending_nes()
-                and require("copilot-lsp.nes").walk_cursor_end_edit()
-              )
-        end
-      end, { desc = "Accept Copilot NES suggestion" })
-
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
-      local ok, copilot_lsp = pcall(require, "copilot-lsp")
-      if not ok then return end
-      copilot_lsp.setup({
-        nes = {
-          move_count_threshold = 1, -- Clear after 1 cursor movements
-        }
-      })
-
-      vim.g.copilot_nes_debounce = 75
-      vim.lsp.enable("copilot_ls")
-    end
-  )
-end
-
-if not vim.g.vscode then
-  -- add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
+  -- add { source = "folke/sidekick.nvim", checkout = "c2bdf8cfcd87a6be5f8b84322c1b5052e78e302e" }
 
   later(
     function()
+      map({ 'x', 'n', 'i' }, '<m-;>', function() require("sidekick").nes_jump_or_apply() end, { desc = 'nes apply' })
+      map({ 'x', 'n', 'i' }, '<m-,>', function() require("sidekick.nes").update() end, { desc = 'nes update' })
       map(
         { 'x', 'n', 'i' },
         '<leader>lg',
@@ -171,7 +139,24 @@ if not vim.g.vscode then
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       local ok, sidekick = pcall(require, "sidekick")
       if not ok then return end
-      sidekick.setup({ nes = { enabled = false } })
+      sidekick.setup({
+        nes = {
+          enabled = true,
+          debounce = 100,
+          trigger = {
+            -- events that trigger sidekick next edit suggestions
+            events = { "InsertLeave", "TextChanged", "TextChangedI", "User SidekickNesDone" },
+          },
+          clear = {
+            -- events that clear the current next edit suggestion
+            events = { "InsertEnter" },
+            esc = true, -- clear next edit suggestions when pressing <Esc>
+          },
+          diff = {
+            inline = "words", -- "chars", -- false,
+          },
+        },
+      })
     end
   )
 end
@@ -733,6 +718,9 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "DiffChange", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#990000" })
   vim.api.nvim_set_hl(0, "DiffText", { bg = "#3C3CFf", fg = "#ffffff" })
+  vim.api.nvim_set_hl(0, "SidekickDiffContext", { bg = "#00003c", blend = 50 }) -- blend for virtual line not suported, SidekickDiffContext = SidekickDiffAdd + SidekickDiffDelete rest of background
+  vim.api.nvim_set_hl(0, "SidekickDiffAdd", { bg = "#003c00", blend = 50 })     -- blend for virtual line not suported, uses `Normal` background + foreground if treesitter not available
+  vim.api.nvim_set_hl(0, "SidekickDiffDelete", { bg = "#3c0000", blend = 50 })  -- blend for virtual line not suported, doesn't diff well without treesitter
   vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#db4b4b" })
   vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#1abc9c" })
   vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#0db9d7" })
@@ -845,8 +833,6 @@ map(
   "n",
   "<esc>",
   function()
-    local ok, copilot_lsp = pcall(require, "copilot-lsp.nes")
-    if ok then copilot_lsp.clear() end
     vim.cmd.nohlsearch()
     M.press("<esc>")
   end,
@@ -947,6 +933,43 @@ if not vim.g.vscode then
       },
     },
     filetypes = { 'astro' }
+  }
+
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/copilot.lua
+  vim.lsp.config['copilot']               = {
+    cmd = { 'copilot-language-server', '--stdio' },
+    init_options = {
+      editorInfo = {
+        name = 'Neovim',
+        version = tostring(vim.version()),
+      },
+      editorPluginInfo = {
+        name = 'Neovim',
+        version = tostring(vim.version()),
+      },
+    },
+    on_attach = function(client, bufnr)
+      vim.api.nvim_buf_create_user_command(bufnr, 'LspCopilotSignIn', function()
+        client:request('signIn', vim.empty_dict(), function(_, result)
+          if result.command then
+            client:exec_cmd(result.command, { bufnr = bufnr })
+          end
+
+          if result.status == 'PromptUserDeviceFlow' then
+            vim.print(string.format(
+              [[
+                Enter your one-time code %s in %s
+              ]],
+              result.userCode,
+              result.verificationUri
+            ))
+          elseif result.status == 'AlreadySignedIn' then
+            vim.notify('Already signed in as ' .. result.user)
+          end
+        end
+        )
+      end, { desc = 'Sign in Copilot with GitHub' })
+    end,
   }
 
   -- https://github.com/LunarVim/Neovim-from-scratch/blob/master/lua/user/lsp/settings/jsonls.lua
@@ -1202,21 +1225,19 @@ if not vim.g.vscode then
       if os:find('win') then os = "win32" end
       -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
       sendSequence(
-        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.395.0/copilot-language-server-' .. os .. '-x64-1.386.0.zip',
+        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.395.0/copilot-language-server-' .. os .. '-x64-1.395.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
       sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
 
-      add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
-      add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
+      add { source = "folke/sidekick.nvim", checkout = "c2bdf8cfcd87a6be5f8b84322c1b5052e78e302e" }
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
-      vim.lsp.enable("copilot_ls")
-      require("sidekick").setup({ nes = { enabled = false }})
-      vim.notify("relaunch nvim after installation to login to copilot or rerun this entry")
+      require("sidekick").setup()
+      vim.notify("relaunch nvim after installation to login to copilot")
     end,
     { desc = "Gemini/Copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
   )
+  map("n", "<leader>l>", "<cmd>LspCopilotSignIn<cr>", { desc = "copilot signin" })
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })

@@ -286,6 +286,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `alt+j`       | `i`  | AI suggestion accept next word                                     | vscode/neovim |
 |      `alt+k`       | `i`  | AI suggestion accept next line                                     | vscode/neovim |
 |      `alt+l`       | `i`  | accept AI/NES suggestion (TRAE/AMP/gemini/windsurf/cursor/copilot) | vscode/neovim |
+|      `alt+,`       | `i`  | trigger Next Edit Suggestion (neovim only)                         |    neovim     |
 |      `alt+;`       | `i`  | trigger Next-Edit-Suggestion from AI (`alt+l` to accept)           |    vscode     |
 |      `alt+;`       | `i`  | accept Next-Edit-Suggestion from AI                                |    neovim     |
 |      `escape`      | `i`  | cancel Next-Edit-Suggestion from AI                                | vscode/neovim |
@@ -531,9 +532,8 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts) for terminal icons
 
 - Retronvim/nvim comes with an installer for
-  [neocodeium](https://github.com/monkoose/neocodeium) (free copilot/windsurf),
-  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (gemini cli),
-  [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes which is free and unlimited) and
+  [neocodeium](https://github.com/monkoose/neocodeium) (free and unlimited copilot/windsurf),
+  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (gemini cli + copilot-nes which are free and unlimited ) and
   LSP + formatters for:
   `astro`, `angular`,
   `bash`, `biome`, `black`,
