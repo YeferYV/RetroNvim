@@ -733,6 +733,9 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "DiffChange", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#990000" })
   vim.api.nvim_set_hl(0, "DiffText", { bg = "#3C3CFf", fg = "#ffffff" })
+  vim.api.nvim_set_hl(0, "CopilotLspNesApply", { bg = "#00003c", blend = 50 })  -- blend for virtual line not suported
+  vim.api.nvim_set_hl(0, "CopilotLspNesAdd", { bg = "#003c00", blend = 50 })    -- blend for virtual line not suported
+  vim.api.nvim_set_hl(0, "CopilotLspNesDelete", { bg = "#3c0000", blend = 50 }) -- blend for virtual line not suported
   vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#db4b4b" })
   vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#1abc9c" })
   vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#0db9d7" })
