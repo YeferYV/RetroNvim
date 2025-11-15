@@ -1411,7 +1411,10 @@
                   "text": "code --install-extension Katsute.code-background --install-extension DanielPriestley.poimandres-alternate --install-extension miguelsolorio.symbols    --install-extension drewxs.tokyo-night-dark            \n"
                 },
                 {
-                  "text": "code --install-extension Google.geminicodeassist --install-extension MarsCode.marscode-extension          --install-extension sourcegraph.amp                                                                 \n"
+                  "text": "code --install-extension Google.geminicodeassist --install-extension MarsCode.marscode-extension          --install-extension sourcegraph.amp          --install-extension AbdulkaderSafi.file-explorer       \n"
+                },
+                {
+                  "text": "code --install-extension mathematic.vscode-pdf                                                                                                                                                                \n"
                 }
               ]
             },
@@ -1694,11 +1697,6 @@
               "command": "amp.agent.addSelectionToPromptEditor"
             },
             {
-              "key": "d",
-              "name": "Directory",
-              "command": "workbench.action.files.openFolder"
-            },
-            {
               "key": "c",
               "name": "Cursor prompt (include selection)",
               "command": "aipopup.action.modal.generate"
@@ -1707,6 +1705,21 @@
               "key": "C",
               "name": "Cursor chat (include selection)",
               "command": "composer.startComposerPrompt"
+            },
+            {
+              "key": "d",
+              "name": "Directory",
+              "command": "workbench.action.files.openFolder"
+            },
+            {
+              "key": "e",
+              "name": "File explorer (abdulkadersafi extension)",
+              "command": "file-explorer.helloWorld"
+            },
+            {
+              "key": "f",
+              "name": "File",
+              "command": "workbench.action.files.openFile"
             },
             {
               "key": ">",
@@ -1722,11 +1735,6 @@
               "key": "G",
               "name": "Gemini chat (include selection)",
               "command": "geminicodeassist.terminal.addSelectionToChatContext"
-            },
-            {
-              "key": "f",
-              "name": "File",
-              "command": "workbench.action.files.openFile"
             },
             {
               "key": "m",
