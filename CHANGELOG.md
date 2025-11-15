@@ -6,6 +6,16 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.4.3](https://github.com/YeferYV/RetroNvim/compare/v0.4.2...v0.4.3) (2025-11-15)
+
+
+### Bug Fixes
+
+* **keybinding.json:** `!inputFocus` doesn't trigger search key `/` ([7edfe73](https://github.com/YeferYV/RetroNvim/commit/7edfe730adf3b88562dddf8c32ea77772643d04c))
+* **nvim:** `preview git hunk` deleted hunk takes out one line + terminal keymaps ([29a8e0a](https://github.com/YeferYV/RetroNvim/commit/29a8e0a70b0ab761a1df8ac52e93f547c26f52af))
+* **nvim:** `preview git hunk` with `[directory]` now works ([ec679bb](https://github.com/YeferYV/RetroNvim/commit/ec679bbf08928e490aba0b296f9a37fb7adccefa))
+* **yazi:** fzf sorted ([658fa44](https://github.com/YeferYV/RetroNvim/commit/658fa4483d47d6ea480549e70ddfdde9c4b53d98))
+
 ## [0.4.2](https://github.com/YeferYV/RetroNvim/compare/v0.4.1...v0.4.2) (2025-11-08)
 
 
