@@ -2,19 +2,19 @@
 -- │ Plugins │
 -- ╰─────────╯
 
--- Clone 'mini.nvim'
--- vim.fn.glob("~/.*/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)[1] -- ...,0,1 shows in a list && [1] grabs the first match
-local retronvim_exist = vim.env.APPDIR2 and
-    vim.env.APPDIR2 .. "/usr/home/user/.config/nvim/init.lua" or
-    vim.fn.expand("~/.*/extensions/yeferyv.retronvim*/nvim/init.lua", 0, 1)[1]
-
-local retronvim_path = (retronvim_exist ~= nil) and
-    vim.fs.dirname(retronvim_exist) or
+local nvim_path = vim.env.APPDIR2 and
+    vim.env.APPDIR2 .. "/usr/home/user/.config/nvim" or
     vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim/nvim"
+
+-- vim.fn.expand("~/.*/extensions/yeferyv.retronvim*/nvim", 0, 1)[1] -- ...,0,1 shows in a list and [1] grabs the first match
+-- vim.fn.expand outputs the same string if not founded
+-- vim.fn.glob outputs nil if not found
+local retronvim_path = vim.fn.glob("~/.*/extensions/yeferyv.retronvim*/nvim", 0, 1)[1] or nvim_path
 
 local path_package = retronvim_path .. "/plugins/site/"
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
+-- Clone 'mini.nvim'
 if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installing `mini.nvim`" | redraw')
   local clone_cmd = { 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.nvim', mini_path }
@@ -220,8 +220,8 @@ if not vim.g.vscode then
   vim.opt.cmdheight = 0                       -- more space in the neovim command line for displaying messages
   vim.opt.laststatus = 3                      -- laststatus=3 global status line (line between splits)
   vim.opt.number = true                       -- set numbered lines
-  vim.opt.scrolloff = 8                       -- vertical scrolloff
-  vim.opt.sidescrolloff = 8                   -- horizontal scrolloff
+  vim.opt.scrolloff = 3                       -- vertical scrolloff
+  vim.opt.sidescrolloff = 3                   -- horizontal scrolloff
   vim.opt.virtualedit = "all"                 -- allow cursor bypass end of line
   vim.o.foldcolumn = '1'                      -- if '1' will show clickable fold signs
   vim.o.foldlevel = 99                        -- Disable folding at startup
@@ -257,25 +257,7 @@ autocmd({ "BufWinEnter" }, { pattern = "*.code-snippets", command = "set ft=json
 vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
 vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
 
-------------------------------------------------------------------------------------------------------------------------
-
-autocmd({ "TermEnter", "TermOpen" }, {
-  callback = function()
-    vim.cmd.startinsert()
-
-    if vim.bo.filetype == "sidekick_terminal" then return end
-    if vim.bo.filetype == "snacks_terminal" then return end
-
-    -- hide bufferline if `nvim -cterm`
-    if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 then
-      vim.opt.showtabline = 0
-    else
-      vim.opt.showtabline = 2
-    end
-  end,
-})
-
-------------------------------------------------------------------------------------------------------------------------
+autocmd({ "TermEnter", "TermOpen" }, { callback = function() vim.cmd.startinsert() end })
 
 -- https://github.com/neovim/neovim/issues/14986
 autocmd({ "TermLeave", --[[ "TermClose", "BufWipeout" ]] }, {
@@ -289,29 +271,6 @@ autocmd({ "TermLeave", --[[ "TermClose", "BufWipeout" ]] }, {
         vim.cmd.quit()
       end
     end)
-  end,
-})
-
---------------------------------------------------------------------------------------------------------------------
-
--- https://github.com/akinsho/toggleterm.nvim/issues/66
-autocmd({ "TermClose" }, {
-  pattern = { "term://*:yazi --chooser-file*" },
-  callback = function()
-    local file = io.open(vim.env.HOME .. "/.yazi", "r")
-
-    if file then
-      local filepath = file:read("*a")
-      file:close()
-
-      vim.schedule(function()
-        -- vim.cmd("vsplit " .. filepath)
-        vim.cmd("edit " .. filepath)
-        vim.cmd("filetype detect")
-      end)
-    end
-
-    os.remove(vim.env.HOME .. "/.yazi")
   end,
 })
 
@@ -805,9 +764,9 @@ if not vim.g.vscode then
     }
   })
 
+  -- require('mini.basics').setup()
   require('mini.completion').setup()
   require('mini.cursorword').setup()
-  require('mini.extra').setup()
   require('mini.icons').setup()
   require('mini.misc').setup_auto_root()
   require('mini.misc').setup_restore_cursor()
@@ -859,34 +818,24 @@ map(
 if not vim.g.vscode then
   map("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, desc = "next completion when no lsp" })
   map("i", "<S-Tab>", [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true, desc = "prev completion when no lsp" })
-  map({ "n", "v", "t" }, "<C-S-l>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
-  map({ "n", "v", "t" }, "<C-S-h>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
-  map({ "n", "v", "t" }, "<C-S-j>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
-  map({ "n", "v", "t" }, "<C-S-k>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
-  map({ "n", "v", "t" }, "<A-S-Right>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
-  map({ "n", "v", "t" }, "<A-S-Left>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
-  map({ "n", "v", "t" }, "<A-S-Down>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
-  map({ "n", "v", "t" }, "<A-S-Up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
   map({ "t" }, "<esc><esc>", "<C-\\><C-n>", { desc = "normal mode inside terminal" })
   map({ "t" }, "<S-esc>", "<C-\\><C-n>", { desc = "normal mode inside terminal" })
   map({ "n" }, "<C-s>", ":%s//g<Left><Left>", { desc = "Replace in Buffer" })
   map({ "x" }, "<C-s>", ":s//g<Left><Left>", { desc = "Replace in Visual_selected" })
-  map({ "t", "n" }, "<C-h>", "<C-\\><C-n><C-w>h", { desc = "left window" })
-  map({ "t", "n" }, "<C-j>", "<C-\\><C-n><C-w>j", { desc = "down window" })
-  map({ "t", "n" }, "<C-k>", "<C-\\><C-n><C-w>k", { desc = "up window" })
-  map({ "t", "n" }, "<C-l>", "<C-\\><C-n><C-w>l", { desc = "right window" })
-  map({ "t", "n" }, "<S-Left>", "<C-\\><C-n><C-w>h", { desc = "left window" })
-  map({ "t", "n" }, "<S-Down>", "<C-\\><C-n><C-w>j", { desc = "down window" })
-  map({ "t", "n" }, "<S-Up>", "<C-\\><C-n><C-w>k", { desc = "up window" })
-  map({ "t", "n" }, "<S-Right>", "<C-\\><C-n><C-w>l", { desc = "right window" })
-  map({ "t", "n" }, "<C-\\>", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
-  map(
-    { "t", "n" },
-    "<a-o>",
-    function() Snacks.terminal("yazi --chooser-file " .. vim.fn.expand("~/.yazi")) end,
-    { desc = "toggle yazi (open file)" }
-  )
   map({ "n" }, "<C-;>", "<C-6>", { desc = "go to last buffer" })
+  map({ "n", "t" }, "<C-\\>", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
+  map({ "n", "t" }, "<C-h>", "<C-\\><C-n><C-w>h", { desc = "left window or [w" })
+  map({ "n", "t" }, "<C-j>", "<C-\\><C-n><C-w>j", { desc = "down window or ]w" })
+  map({ "n", "t" }, "<C-k>", "<C-\\><C-n><C-w>k", { desc = "up window or [w" })
+  map({ "n", "t" }, "<C-l>", "<C-\\><C-n><C-w>l", { desc = "right window or ]w" })
+  map({ "n", "v", "t" }, "<C-S-l>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
+  map({ "n", "v", "t" }, "<C-S-h>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
+  map({ "n", "v", "t" }, "<C-S-j>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "v", "t" }, "<C-S-k>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "v", "t" }, "<S-right>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
+  map({ "n", "v", "t" }, "<S-left>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
+  map({ "n", "v", "t" }, "<S-down>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "v", "t" }, "<S-up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
   map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", "<cmd>bprevious<CR>", { desc = "prev buffer" })
   map({ "n" }, "<leader>x", "<cmd>bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
@@ -1216,7 +1165,7 @@ if not vim.g.vscode then
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
       vim.lsp.enable("copilot_ls")
       require("sidekick").setup({ nes = { enabled = false }})
-      vim.notify("relaunch nvim after installation to login to copilot or rerun this entry")
+      vim.notify("relaunch nvim after installation to login to copilot")
     end,
     { desc = "Gemini/Copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
   )
@@ -1352,7 +1301,6 @@ if not vim.g.vscode then
   )
   map("n", "<leader>t", "", { desc = "+Terminal" })
   map("n", "<leader>tt", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
-  map("n", "<leader>ty", function() Snacks.terminal( "yazi --chooser-file " .. vim.fs.normalize("~/.yazi")) end, { desc = "toggle yazi (open file)" })
   map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
   map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
   map("n", "<leader>w", "", { desc = "+Window" })
@@ -1407,23 +1355,9 @@ map({ "x" }, "g<Down>", "g<c-x>", { desc = "numbers descending" })
 map({ "n", "x" }, "g+", "<C-a>", { desc = "Increment number (dot to repeat)" })
 map({ "n", "x" }, "g-", "<C-x>", { desc = "Decrement number (dot to repeat)" })
 
--- ╭───────────────────────────────────────╮
--- │ Text Objects with "g" (dot to repeat) │
--- ╰───────────────────────────────────────╯
-
-if vim.g.vscode then
-  map(
-    { "n", "x" },
-    "gD",
-    function()
-      vscode.action("editor.action.dirtydiff.next")
-      vscode.action("closeQuickDiff")
-    end,
-    { desc = "go to hunk ending (vscode only)" }
-  )
-else
-  map({ "n", "o", "x" }, "gD", function() require('mini.diff').textobject() end, { desc = "select diff/hunk" })
-end
+-- ╭─────────────────────────────────────────────────╮
+-- │ Text Objects with "g", "a", "i" (dot to repeat) │
+-- ╰─────────────────────────────────────────────────╯
 
 map(
   { "x" },
@@ -1440,229 +1374,12 @@ map(
 map({ "n" }, "vgh", "<cmd>lua require('mini.diff').textobject()<cr>", { desc = "select diff/hunk" })
 map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
 map({ "n", "o", "x" }, "gC", function() require('mini.comment').textobject() end, { desc = "select BlockComment" })
-map({ "n", "o", "x" }, "g>", "gn", { desc = "Next find textobj" })
-map({ "n", "o", "x" }, "g<", "gN", { desc = "Prev find textobj" })
-
--- ╭───────────────────────────────────────╮
--- │ Text Objects with a/i (dot to repeat) │
--- ╰───────────────────────────────────────╯
-
+map({ "n", "o", "x" }, "gD", function() require('mini.diff').textobject() end, { desc = "select diff/hunk" })
 map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent_noblanks" })
-map({ "o", "x" }, "ai", "<cmd>normal Viik<cr>", { desc = "indent_noblanks" })
-map(
-  { "o", "x" },
-  "iy",
-  function()
-    _G.skip_blank_line = true
-    require("mini.ai").select_textobject("i", "y")
-  end,
-  { desc = "same_indent" }
-)
-map(
-  { "o", "x" },
-  "ay",
-  function()
-    _G.skip_blank_line = false
-    require("mini.ai").select_textobject("i", "y")
-  end,
-  { desc = "same_indent" }
-)
+map({ "o", "x" }, "ai", "<cmd>normal Viiok<cr>", { desc = "indent_noblanks" })
+map({ "o", "x" }, "iy", ":lua _G.skip_blank_line=true  MiniAi.select_textobject('i','y')<cr>", { desc = "same_indent" })
+map({ "o", "x" }, "ay", ":lua _G.skip_blank_line=false MiniAi.select_textobject('i','y')<cr>", { desc = "same_indent" })
 map({ "x" }, "iz", ":<c-u>normal! [zjV]z<cr>", { silent = true, desc = "inner fold" })
-map({ "o" }, "iz", ":normal Viz<CR>", { silent = true, desc = "inner fold" })
 map({ "x" }, "az", ":<c-u>normal! [zV]z<cr>", { silent = true, desc = "outer fold" })
+map({ "o" }, "iz", ":normal Viz<cr>", { silent = true, desc = "inner fold" })
 map({ "o" }, "az", ":normal Vaz<cr>", { silent = true, desc = "outer fold" })
-
--- ╭──────────────────────────────────────────╮
--- │ Repeatable Pair - motions using <leader> │
--- ╰──────────────────────────────────────────╯
-
-M.last_move = {}
-
--- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/blob/master/lua/nvim-treesitter/textobjects/repeatable_move.lua
-M.repeat_last_move = function(opts_extend)
-  if M.last_move then
-    local opts = vim.tbl_deep_extend("force", {}, M.last_move.opts, opts_extend)
-    M.last_move.func(opts, unpack(M.last_move.additional_args))
-  end
-end
-
-map({ "n", "x", "o" }, ";", function() M.repeat_last_move { forward = true } end, { desc = "Next TS textobj" })
-map({ "n", "x", "o" }, ",", function() M.repeat_last_move { forward = false } end, { desc = "Prev TS textobj" })
-
-M.make_repeatable_move_pair = function(forward_move_fn, backward_move_fn)
-  local set_last_move = function(move_fn, opts, ...)
-    M.last_move = { func = move_fn, opts = vim.deepcopy(opts), additional_args = { ... } }
-  end
-
-  local general_repeatable_move_fn = function(opts, ...)
-    if opts.forward then
-      forward_move_fn(...)
-    else
-      backward_move_fn(...)
-    end
-  end
-
-  local repeatable_forward_move_fn = function(...)
-    set_last_move(general_repeatable_move_fn, { forward = true }, ...)
-    forward_move_fn(...)
-  end
-
-  local repeatable_backward_move_fn = function(...)
-    set_last_move(general_repeatable_move_fn, { forward = false }, ...)
-    backward_move_fn(...)
-  end
-
-  return repeatable_forward_move_fn, repeatable_backward_move_fn
-end
-
--- ╭──────────────────────────────────────────────────╮
--- │ Repeatable Pair - textobj navigation using gn/gp │
--- ╰──────────────────────────────────────────────────╯
-
-if vim.g.vscode then
-  local next_diagnostic, prev_diagnostic = M.make_repeatable_move_pair(
-    function() vscode.call("editor.action.marker.next") end,
-    function() vscode.call("editor.action.marker.prev") end
-  )
-  map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Diagnostic" })
-  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Diagnostic" })
-
-  local next_hunk_repeat, prev_hunk_repeat = M.make_repeatable_move_pair(
-    function() vscode.call("workbench.action.editor.nextChange") end,
-    function() vscode.call("workbench.action.editor.previousChange") end
-  )
-  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "GitHunk" })
-  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "GitHunk" })
-  map({ "n", "x", "o" }, "gnH", next_hunk_repeat, { desc = "GitHunk" })
-  map({ "n", "x", "o" }, "gpH", prev_hunk_repeat, { desc = "GitHunk" })
-
-  local next_reference, prev_reference = M.make_repeatable_move_pair(
-    function() vscode.call("editor.action.wordHighlight.next") end,
-    function() vscode.call("editor.action.wordHighlight.prev") end
-  )
-  map({ "n", "x", "o" }, "gnr", next_reference, { desc = "Reference (vscode only)" })
-  map({ "n", "x", "o" }, "gpr", prev_reference, { desc = "Reference (vscode only)" })
-else
-  local next_diagnostic, prev_diagnostic = M.make_repeatable_move_pair(
-    function() vim.diagnostic.jump({ count = 1, float = true }) end,
-    function() vim.diagnostic.jump({ count = -1, float = true }) end
-  )
-  map({ "n", "x", "o" }, "gnd", next_diagnostic, { desc = "Diagnostic" })
-  map({ "n", "x", "o" }, "gpd", prev_diagnostic, { desc = "Diagnostic" })
-
-  local next_hunk_repeat, prev_hunk_repeat = M.make_repeatable_move_pair(
-    function() require("mini.diff").goto_hunk('next') end,
-    function() require("mini.diff").goto_hunk('prev') end
-  )
-  map({ "n", "x", "o" }, "gnh", next_hunk_repeat, { desc = "GitHunk" })
-  map({ "n", "x", "o" }, "gph", prev_hunk_repeat, { desc = "GitHunk" })
-end
-
-local next_comment, prev_comment = M.make_repeatable_move_pair(
-  function() require("mini.bracketed").comment("forward") end,
-  function() require("mini.bracketed").comment("backward") end
-)
-map({ "n", "x", "o" }, "gnc", next_comment, { desc = "Comment" })
-map({ "n", "x", "o" }, "gpc", prev_comment, { desc = "Comment" })
-
-local next_fold, prev_fold = M.make_repeatable_move_pair(
-  function() vim.cmd([[ normal ]z ]]) end,
-  function() vim.cmd([[ normal [z ]]) end
-)
-map({ "n", "x", "o" }, "gnf", next_fold, { desc = "Fold ending" })
-map({ "n", "x", "o" }, "gpf", prev_fold, { desc = "Fold beginning" })
-
----------------------------------------------------------------------------------------------------------------------------------------
-
--- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
-local end_of_textobj, start_of_textobj = M.make_repeatable_move_pair(
-
-  function(inner_outer_key, motion_key)
-    vim.cmd.exec([["normal \<esc>v]] .. inner_outer_key .. motion_key .. [[\<esc>"]])
-    vim.cmd("normal! `>") -- end of latest visual selection
-    vim.cmd(_G.reselect_textobj)
-  end,
-
-  function(inner_outer_key, motion_key)
-    vim.cmd.exec([["normal \<esc>v]] .. inner_outer_key .. motion_key .. [[\<esc>"]])
-    vim.cmd("normal! `<") -- start of latest visual selection
-    vim.cmd(_G.reselect_textobj)
-  end
-)
-
-map(
-  { "n", "x" },
-  "gT",
-  function()
-    local _, inner_outer_key = pcall(vim.fn.getcharstr)
-    local _, motion_key = pcall(vim.fn.getcharstr)
-    _G.reselect_textobj = ""
-
-    if vim.fn.mode() ~= "n" then
-      vim.cmd.exec([["normal \<esc>"]])
-      vim.cmd.normal([[mT`>mS`T]]) -- create [S]tart mark
-      _G.reselect_textobj = "normal! v`So"
-    end
-
-    start_of_textobj(inner_outer_key, motion_key)
-  end,
-  { desc = "Start of TextObj" }
-)
-
-map(
-  { "n", "x" },
-  "gt",
-  function()
-    local _, inner_outer_key = pcall(vim.fn.getcharstr)
-    local _, motion_key = pcall(vim.fn.getcharstr)
-    _G.reselect_textobj = ""
-
-    if vim.fn.mode() ~= "n" then
-      vim.cmd.exec([["normal \<esc>"]])
-      vim.cmd.normal([[mT`<mS`T]]) -- create [S]tart mark
-      _G.reselect_textobj = "normal! v`So"
-    end
-
-    end_of_textobj(inner_outer_key, motion_key)
-  end,
-  { desc = "End of TextObj" }
-)
-
----------------------------------------------------------------------------------------------------------------------------------------
-
--- TODO: remove it when https://github.com/echasnovski/mini.nvim/issues/1077 available
-local repeat_mini_ai = function(inner_or_around, key, desc)
-  local next, prev = M.make_repeatable_move_pair(
-    function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "next" }) end, -- "right" to end of text object
-    function() require("mini.ai").move_cursor("left", inner_or_around, key, { search_method = "prev" }) end  -- "right" to end of text object
-  )
-  map({ "n", "x", "o" }, "gn" .. inner_or_around .. key, next, { desc = desc })
-  map({ "n", "x", "o" }, "gp" .. inner_or_around .. key, prev, { desc = desc })
-end
-
-repeat_mini_ai("i", "a", "argument")
-repeat_mini_ai("a", "a", "argument")
-repeat_mini_ai("i", "b", "brace")
-repeat_mini_ai("a", "b", "brace")
-repeat_mini_ai("i", "f", "func_call")
-repeat_mini_ai("a", "f", "func_call")
-repeat_mini_ai("i", "h", "html_atrib")
-repeat_mini_ai("a", "h", "html_atrib")
-repeat_mini_ai("i", "k", "key")
-repeat_mini_ai("a", "k", "key")
-repeat_mini_ai("i", "m", "number")
-repeat_mini_ai("a", "m", "number")
-repeat_mini_ai("i", "o", "whitespace")
-repeat_mini_ai("a", "o", "whitespace")
-repeat_mini_ai("i", "q", "quote")
-repeat_mini_ai("a", "q", "quote")
-repeat_mini_ai("i", "t", "tag")
-repeat_mini_ai("a", "t", "tag")
-repeat_mini_ai("i", "u", "subword")
-repeat_mini_ai("a", "u", "subword")
-repeat_mini_ai("i", "v", "value")
-repeat_mini_ai("a", "v", "value")
-repeat_mini_ai("i", "x", "hexadecimal")
-repeat_mini_ai("a", "x", "hexadecimal")
-repeat_mini_ai("i", "?", "user_prompt")
-repeat_mini_ai("a", "?", "user_prompt")
