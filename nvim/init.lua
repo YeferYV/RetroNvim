@@ -816,12 +816,14 @@ map({ "n" }, "K", "10gk")
 map({ "n" }, "H", "10h")
 map({ "n" }, "L", "10l")
 map({ "n" }, "Y", "yg_", { desc = "Yank forward" })     -- "Y" yank forward by default
-map({ "v" }, "Y", "g_y", { desc = "Yank forward" })
-map({ "v" }, "P", "g_P", { desc = "Paste forward" })    -- "P" doesn't change register
-map({ "v" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchanged)" })
-map({ "n" }, "U", "@:", { desc = "repeat `:command`" }) --> :normal A,jkj --> :normal A,j --->  escape char by pression ctrl+v then escape
-map({ "v" }, "<", "<gv", { desc = "continious indent" })
-map({ "v" }, ">", ">gv", { desc = "continious indent" })
+map({ "x" }, "Y", "g_y", { desc = "Yank forward" })
+map({ "x" }, "P", "g_P", { desc = "Paste forward" })    -- "P" doesn't change register
+map({ "x" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchanged)" })
+map({ "n", "x" }, "U", "@:", { desc = "repeat `:command`" }) --> :normal A,jkj --> :normal A,j --->  escape char by pression ctrl+v then escape
+map({ "n", "x" }, "\\", "@q", { desc = "repeat q register/macro" })
+map({ "n", "x" }, "|", "@w", { desc = "repeat w register/macro" })
+map({ "x" }, "<", "<gv", { desc = "continious indent" })
+map({ "x" }, ">", ">gv", { desc = "continious indent" })
 map(
   "n",
   "<esc>",
@@ -847,14 +849,14 @@ if not vim.g.vscode then
   map({ "n", "t" }, "<C-j>", "<C-\\><C-n><C-w>j", { desc = "down window or ]w" })
   map({ "n", "t" }, "<C-k>", "<C-\\><C-n><C-w>k", { desc = "up window or [w" })
   map({ "n", "t" }, "<C-l>", "<C-\\><C-n><C-w>l", { desc = "right window or ]w" })
-  map({ "n", "v", "t" }, "<C-S-l>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
-  map({ "n", "v", "t" }, "<C-S-h>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
-  map({ "n", "v", "t" }, "<C-S-j>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
-  map({ "n", "v", "t" }, "<C-S-k>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
-  map({ "n", "v", "t" }, "<S-right>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
-  map({ "n", "v", "t" }, "<S-left>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
-  map({ "n", "v", "t" }, "<S-down>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
-  map({ "n", "v", "t" }, "<S-up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "x", "t" }, "<C-S-l>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
+  map({ "n", "x", "t" }, "<C-S-h>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
+  map({ "n", "x", "t" }, "<C-S-j>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "x", "t" }, "<C-S-k>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "x", "t" }, "<S-right>", "<cmd>vertical resize -2<cr>", { desc = "vertical shrink" })
+  map({ "n", "x", "t" }, "<S-left>", "<cmd>vertical resize +2<cr>", { desc = "vertical expand" })
+  map({ "n", "x", "t" }, "<S-down>", "<cmd>resize -2<cr>", { desc = "horizontal shrink" })
+  map({ "n", "x", "t" }, "<S-up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
   map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", "<cmd>bprevious<CR>", { desc = "prev buffer" })
   map({ "n" }, "<leader>x", "<cmd>bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
@@ -1405,20 +1407,20 @@ map(
   function()
     local _, inner_outer_key = pcall(vim.fn.getcharstr)
     local _, motion_key = pcall(vim.fn.getcharstr)
+    local cmd
 
     if vim.fn.mode() == "n" then
-      vim.cmd.exec([["normal v]] .. inner_outer_key .. motion_key .. [[\<esc>`< "]]) -- empty space or `<\\ or `<` or `<`< ... escape special char since `< waits for a especial char
+      cmd = "v" .. inner_outer_key .. motion_key .. "`<    " -- empty spaces or repeat sequence `<`< escapes special char since `< waits for a especial char
     else
       -- mT = Temp mark
       -- mS = Start mark
-      -- `T = go to Temp mark
-      -- `S = go to Start mark
-      -- `< = start of recent selection
-      -- `> = end of recent selection
-      vim.cmd.exec([["normal \<esc>mT`>mS`Tv]] .. inner_outer_key .. motion_key .. [[\<esc>`<v`So"]])
+      cmd = "mT`>mS`Tv" .. inner_outer_key .. motion_key .. "`<v`So"
     end
+
+    vim.cmd.exec([["normal ]] .. cmd .. [["]])
+    vim.fn.setreg('w', cmd)
   end,
-  { desc = "Start of TextObj" }
+  { desc = "Start of TextObj (| to repeat)" }
 )
 map(
   { "n", "x" },
@@ -1426,20 +1428,20 @@ map(
   function()
     local _, inner_outer_key = pcall(vim.fn.getcharstr)
     local _, motion_key = pcall(vim.fn.getcharstr)
+    local cmd
 
     if vim.fn.mode() == "n" then
-      vim.cmd.exec([["normal v]] .. inner_outer_key .. motion_key .. [[\<esc>`>"]])
+      cmd = "v" .. inner_outer_key .. motion_key .. "`>"
     else
       -- mT = Temp mark
       -- mS = Start mark
-      -- `T = go to Temp mark
-      -- `S = go to Start mark
-      -- `< = start of recent selection
-      -- `> = end of recent selection
-      vim.cmd.exec([["normal \<esc>mT`<mS`Tv]] .. inner_outer_key .. motion_key .. [[\<esc>`>v`So"]])
+      cmd = "mT`<mS`Tv" .. inner_outer_key .. motion_key .. "`>v`So"
     end
+
+    vim.cmd.exec([["normal ]] .. cmd .. [["]])
+    vim.fn.setreg('q', cmd)
   end,
-  { desc = "End of TextObj" }
+  { desc = "End of TextObj (\\ to repeat)" }
 )
 
 map({ "n", "x" }, "gb", '"_d', { desc = "Blackhole Motion/Selected (dot to repeat)" })
