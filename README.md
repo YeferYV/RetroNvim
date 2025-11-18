@@ -533,8 +533,9 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 - Retronvim/nvim comes with an installer for
   [neocodeium](https://github.com/monkoose/neocodeium) (free copilot/windsurf),
-  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (gemini cli),
-  [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes which is free and unlimited) and
+  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (AI agents integration to neovim like gemini),
+  [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes which is free and unlimited),
+  [consolelog.nvim](https://github.com/chriswritescode-dev/consolelog.nvim) (console ninja requires `apt install net-tools`, Windows not supported) and
   LSP + formatters for:
   `astro`, `angular`,
   `bash`, `biome`, `black`,

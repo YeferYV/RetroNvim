@@ -117,6 +117,26 @@ if not vim.g.vscode then
 end
 
 if not vim.g.vscode then
+  -- pacman -S net-tools
+  -- apt install net-tools
+  if vim.env.APPDATA then return end -- consolelog.nvim breaks neovim on windows
+
+  -- add { source = "chriswritescode-dev/consolelog.nvim", checkout = "a7fe38cbef59d78f669744765f6d8b7b14b27d9a" }
+
+  later(
+    function()
+      map("n", "<leader>ll", "<cmd>ConsoleLogInspect<cr>", { desc = "ConsoleLog Inspect" })
+      map("n", "<leader>lL", "<cmd>ConsoleLogInspectAll<cr>", { desc = "ConsoleLog Inspect All" })
+
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/consolelog.nvim')
+      local ok, consolelog = pcall(require, "consolelog")
+      if not ok then return end
+      consolelog.setup({ keymaps = { enabled = false } })
+    end
+  )
+end
+
+if not vim.g.vscode then
   -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
 
   now(
@@ -1135,20 +1155,27 @@ if not vim.g.vscode then
   map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end,
     { desc = "Pick workspace symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
+
+  ------------------------------------------------------------------------------------------------------------------------
+
+  map("n", "<leader>E", "", { desc = "+Install Extension" })
+  map("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
   map(
     "n",
-    "<leader>lw",
+    "<leader>Ec",
     function()
-      add { source = "monkoose/neocodeium", checkout = "bfe790d78e66adaa95cb50a8c75c64a752336e9c" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/neocodeium')
-      require("neocodeium").setup()
+      if vim.env.APPDATA then vim.notify("windows not supported") return end
+      add { source = "chriswritescode-dev/consolelog.nvim", checkout = "a7fe38cbef59d78f669744765f6d8b7b14b27d9a" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/consolelog.nvim')
+      require("consolelog").setup({ keymaps = { enabled = false } })
+      vim.notify("consolelog.nvim requires (debian) ---> apt install net-tools")
+      vim.notify("consolelog.nvim requires (archlinux) ---> pacman -S net-tools")
     end,
-    { desc = "Windsurf enable" }
+    { desc = "ConsoleNinja (consolelog.nvim)" }
   )
-  map("n", "<leader>lX", "<cmd>DepsClean<cr>", { desc = "Windsurf/Copilot disable" })
   map(
     "n",
-    "<leader>lz",
+    "<leader>EC",
     function()
       local os = vim.uv.os_uname().sysname:lower()
       if os:find('win') then os = "win32" end
@@ -1157,18 +1184,39 @@ if not vim.g.vscode then
         'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.395.0/copilot-language-server-' .. os .. '-x64-1.386.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
-      sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
-
-      add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
       add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
       vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
       vim.lsp.enable("copilot_ls")
-      require("sidekick").setup({ nes = { enabled = false }})
       vim.notify("relaunch nvim after installation to login to copilot")
     end,
-    { desc = "Gemini/Copilot-NES enable" } -- Gemini and Copilot-NES are free and unlimited
+    { desc = "Copilot-NES (copilot-lsp)" } -- Copilot-NES is free and unlimited
   )
+  map(
+    "n",
+    "<leader>Eg",
+    function()
+      sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
+      add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
+      require("sidekick").setup({ nes = { enabled = false }})
+    end,
+    { desc = "Gemini (sidekick.nvim)" }  -- Gemini is free and unlimited
+  )
+  map(
+    "n",
+    "<leader>Ew",
+    function()
+      add { source = "monkoose/neocodeium", checkout = "bfe790d78e66adaa95cb50a8c75c64a752336e9c" }
+      vim.opt.rtp:append(path_package .. 'pack/deps/opt/neocodeium')
+      require("neocodeium").setup()
+      vim.notify("to login to windsurf run ---> :NeoCodeium auth")
+    end,
+    { desc = "Windsurf (neocodeium)" }
+  )
+  map("n", "<leader>EX", "<cmd>DepsClean<cr>", { desc = "Uninstall Extensions" })
+
+  ------------------------------------------------------------------------------------------------------------------------
+
   map("n", "<leader>f", "", { desc = "+Find" })
   map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
   map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })
@@ -1199,6 +1247,9 @@ if not vim.g.vscode then
   map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = "marks" })
   map("n", "<leader>f,", "<cmd>buffer #<cr>", { desc = "Recent buffer" })
   map("n", "<leader>;", function() require("snacks").picker.resume() end, { desc = "resume search" })
+
+  ------------------------------------------------------------------------------------------------------------------------
+
   map("n", "<leader>g", "", { desc = "+Git" })
   map("n", "<leader>gg", function() Snacks.terminal("lazygit")  end, { desc = "lazygit" }) -- `:term lazygit` doesn't work on zsh.exe
   map(
@@ -1248,7 +1299,9 @@ if not vim.g.vscode then
   )
   map("n", "<leader>gr", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gH')<cr>", { desc = "Reset GitHunk" })
   map("n", "<leader>gs", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gh')<cr>", { desc = "Stage GitHunk" })
-  map("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
+
+  ------------------------------------------------------------------------------------------------------------------------
+
   map("n", "<leader>u", "", { desc = "+UI toggle" })
   map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
   map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
@@ -1299,13 +1352,15 @@ if not vim.g.vscode then
     end,
     { desc = "Hide/Unhide window/terminal" }
   )
-  map("n", "<leader>t", "", { desc = "+Terminal" })
-  map("n", "<leader>tt", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
-  map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
-  map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
+
+  ------------------------------------------------------------------------------------------------------------------------
+
   map("n", "<leader>w", "", { desc = "+Window" })
   map("n", "<leader>wv", "<cmd>vsplit<cr>", { desc = "vertical window" })
   map("n", "<leader>wV", "<cmd>split<cr>", { desc = "horizontal window" })
+  map("n", "<leader>t", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
+  map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
+  map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
 end
 
 if vim.g.vscode then
@@ -1328,14 +1383,17 @@ else
   )
 end
 
-map("n", "<leader><leader>p", '"*p', { desc = "Paste after (second_clip)" })
-map("n", "<leader><leader>P", '"*P', { desc = "Paste before (second_clip)" })
-map("x", "<leader><leader>p", '"*p', { desc = "Paste (second_clip)" })           -- "Paste after (second_clip)"
-map("x", "<leader><leader>P", 'g_"*P', { desc = "Paste forward (second_clip)" }) -- only works in visual mode
-map("n", "<leader><leader>y", '"*y', { desc = "Yank (second_clip)" })
-map("n", "<leader><leader>Y", '"*yg_', { desc = "Yank forward (second_clip)" })
-map("x", "<leader><leader>y", '"*y', { desc = "Yank (second_clip)" })
-map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward (second_clip)" })
+------------------------------------------------------------------------------------------------------------------------
+
+map({ "n", "x" }, "<leader><leader>", "", { desc = "+Second Clipboard" })
+map("n", "<leader><leader>p", '"*p', { desc = "Paste after" })
+map("n", "<leader><leader>P", '"*P', { desc = "Paste before" })
+map("x", "<leader><leader>p", '"*p', { desc = "Paste" })           -- "Paste after (second_clip)"
+map("x", "<leader><leader>P", 'g_"*P', { desc = "Paste forward" }) -- only works in visual mode
+map("n", "<leader><leader>y", '"*y', { desc = "Yank" })
+map("n", "<leader><leader>Y", '"*yg_', { desc = "Yank forward" })
+map("x", "<leader><leader>y", '"*y', { desc = "Yank" })
+map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward" })
 
 -- ╭────────────────────╮
 -- │ Operator / Motions │
