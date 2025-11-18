@@ -509,7 +509,7 @@ require('mini.indentscope').setup({
 
 require('mini.align').setup()
 require('mini.bracketed').setup({ undo = { suffix = '' } })
-require('mini.jump').setup({ repeat_jump = 'f' })
+require('mini.jump').setup(--[[{ repeat_jump = ';' }]]) -- ; by default
 require('mini.operators').setup()
 require('mini.splitjoin').setup()
 require('mini.surround').setup()
@@ -784,7 +784,6 @@ if not vim.g.vscode then
     }
   })
 
-  -- require('mini.basics').setup()
   require('mini.completion').setup()
   require('mini.cursorword').setup()
   require('mini.icons').setup()
@@ -1398,6 +1397,50 @@ map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward" })
 -- ╭────────────────────╮
 -- │ Operator / Motions │
 -- ╰────────────────────╯
+
+-- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
+map(
+  { "n", "x" },
+  "gT",
+  function()
+    local _, inner_outer_key = pcall(vim.fn.getcharstr)
+    local _, motion_key = pcall(vim.fn.getcharstr)
+
+    if vim.fn.mode() == "n" then
+      vim.cmd.exec([["normal v]] .. inner_outer_key .. motion_key .. [[\<esc>`< "]]) -- empty space or `<\\ or `<` or `<`< ... escape special char since `< waits for a especial char
+    else
+      -- mT = Temp mark
+      -- mS = Start mark
+      -- `T = go to Temp mark
+      -- `S = go to Start mark
+      -- `< = start of recent selection
+      -- `> = end of recent selection
+      vim.cmd.exec([["normal \<esc>mT`>mS`Tv]] .. inner_outer_key .. motion_key .. [[\<esc>`<v`So"]])
+    end
+  end,
+  { desc = "Start of TextObj" }
+)
+map(
+  { "n", "x" },
+  "gt",
+  function()
+    local _, inner_outer_key = pcall(vim.fn.getcharstr)
+    local _, motion_key = pcall(vim.fn.getcharstr)
+
+    if vim.fn.mode() == "n" then
+      vim.cmd.exec([["normal v]] .. inner_outer_key .. motion_key .. [[\<esc>`>"]])
+    else
+      -- mT = Temp mark
+      -- mS = Start mark
+      -- `T = go to Temp mark
+      -- `S = go to Start mark
+      -- `< = start of recent selection
+      -- `> = end of recent selection
+      vim.cmd.exec([["normal \<esc>mT`<mS`Tv]] .. inner_outer_key .. motion_key .. [[\<esc>`>v`So"]])
+    end
+  end,
+  { desc = "End of TextObj" }
+)
 
 map({ "n", "x" }, "gb", '"_d', { desc = "Blackhole Motion/Selected (dot to repeat)" })
 map({ "n", "x" }, "gB", '"_D', { desc = "Blackhole Linewise (dot to repeat)" })
