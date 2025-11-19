@@ -1,6 +1,6 @@
-[submodule "nvim/plugins/site/pack/deps/start/mini.nvim"]
-	path = nvim/plugins/site/pack/deps/start/mini.nvim
-	url = https://github.com/echasnovski/mini.nvim
+[submodule "nvim/plugins/site/pack/deps/opt/mini.nvim"]
+	path = nvim/plugins/site/pack/deps/opt/mini.nvim
+	url = https://github.com/nvim-mini/mini.nvim
 [submodule "nvim/plugins/site/pack/deps/opt/snacks.nvim"]
 	path = nvim/plugins/site/pack/deps/opt/snacks.nvim
 	url = https://github.com/folke/snacks.nvim

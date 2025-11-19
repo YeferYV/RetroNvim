@@ -11,208 +11,188 @@ local nvim_path = vim.env.APPDIR2 and
 -- vim.fn.glob outputs nil if not found
 local retronvim_path = vim.fn.glob("~/.*/extensions/yeferyv.retronvim*/nvim", 0, 1)[1] or nvim_path
 
-local path_package = retronvim_path .. "/plugins/site/"
-local mini_path = path_package .. 'pack/deps/start/mini.nvim'
+local package_path = vim.fn.stdpath('data') .. '/site/pack/core/opt/'
+local mini_path = retronvim_path .. '/plugins/site/pack/deps/opt/mini.nvim'
 
--- Clone 'mini.nvim'
 if not vim.loop.fs_stat(mini_path) then
-  vim.cmd('echo "Installing `mini.nvim`" | redraw')
-  local clone_cmd = { 'git', 'clone', '--filter=blob:none', 'https://github.com/echasnovski/mini.nvim', mini_path }
-  vim.fn.system(clone_cmd)
-  vim.cmd('echo "Installed `mini.nvim`" | redraw')
+  vim.pack.add({
+    { src = 'https://github.com/nvim-mini/mini.nvim', version = 'b409fd1d8b9ea7ec7c0923eb2562b52ed5d1ab0a', },
+    { src = 'https://github.com/folke/snacks.nvim',   version = 'v2.22.0', },
+  })
 end
 
 vim.opt.rtp:prepend(mini_path)
-require('mini.deps').setup({ path = { package = path_package }, job = { timeout = 300000 } })
-vim.cmd('packadd mini.nvim | helptags ALL')
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
-local _, vscode = pcall(require, "vscode-neovim")
-local map = vim.keymap.set
+vim.opt.rtp:append(retronvim_path .. '/plugins/site/pack/deps/opt/snacks.nvim')
+
 local M = {}
+local map = vim.keymap.set
+local autocmd = vim.api.nvim_create_autocmd
+local _, vscode = pcall(require, "vscode-neovim")
+vim.g.mapleader = " " -- <leader> key
 
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  add { source = "folke/snacks.nvim", checkout = "v2.22.0" }
-
-  now(
-    function()
-      local ok, snacks = pcall(require, "snacks")
-      if not ok then return end
-      snacks.setup({
-        explorer = { replace_netrw = true },
-        image = {},
-        indent = {},
-        input = {},
-        picker = {
-          layouts = {
-            -- https://www.reddit.com/r/neovim/comments/1jv6u2y/replicating_nvchads_telescope_look_for_snacks/
-            big_preview = {
-              layout = {
-                box = "horizontal",
-                width = 0.8,  -- vim.o.columns
-                min_width = 120,
-                height = 0.8, -- vim.o.lines
-                {
-                  box = "vertical",
-                  border = "rounded",
-                  title = "{title} {live} {flags}",
-                  { win = "input", height = 1,     border = "bottom" },
-                  { win = "list",  border = "none" },
-                },
-                { win = "preview", title = "{preview}", border = "rounded", width = 2 / 3 },
+  local ok, snacks = pcall(require, "snacks")
+  if ok then
+    snacks.setup({
+      explorer = { replace_netrw = true },
+      image = {},
+      indent = {},
+      input = {},
+      picker = {
+        layouts = {
+          -- https://www.reddit.com/r/neovim/comments/1jv6u2y/replicating_nvchads_telescope_look_for_snacks/
+          big_preview = {
+            layout = {
+              box = "horizontal",
+              width = 0.8,  -- vim.o.columns
+              min_width = 120,
+              height = 0.8, -- vim.o.lines
+              {
+                box = "vertical",
+                border = "rounded",
+                title = "{title} {live} {flags}",
+                { win = "input", height = 1,     border = "bottom" },
+                { win = "list",  border = "none" },
               },
-            },
-            sidebar = {
-              layout = {
-                width = 25
-              },
-            }
-          },
-          sort = {
-            -- default sort is by score, text length and index
-            fields = { "idx", "score:desc", "#text" },
-          },
-          sources = {
-            explorer = { hidden = true, --[[ ignored = true ]] },
-            grep = {
-              layout = "ivy_split",
-              args = { "--sort=path" }
-            }
-          },
-          win = {
-            preview = { keys = { ["<space><space><space>"] = { "cycle_win", mode = { "n" } } } },
-            input = { keys = { ["<space><space>"] = { "cycle_win", mode = { "i", "n" } } } },
-            list = {
-              keys = {
-                ["K"] = { "preview_scroll_up" },
-                ["J"] = { "preview_scroll_down" },
-                ["M"] = { "toggle_maximize" },
-                ["<space>"] = { "cycle_win" },
-                -- ["<S-CR>"] = { "close", mode = { "n", "i" } }, -- <S-CR> already closes the picker if a folder is hovered
-              },
+              { win = "preview", title = "{preview}", border = "rounded", width = 2 / 3 },
             },
           },
-        },
-        styles = {
-          input = {
-            title_pos = "left",
-            relative = "cursor",
-            row = 1,
-            col = -1,
-            width = 30,
-          },
-        },
-        terminal = {
-          win = {
-            width = vim.o.columns,
-            height = vim.o.lines,
-            border = 'rounded',
-            position = "float"
+          sidebar = {
+            layout = {
+              width = 25
+            },
           }
+        },
+        sort = {
+          -- default sort is by score, text length and index
+          fields = { "idx", "score:desc", "#text" },
+        },
+        sources = {
+          explorer = { hidden = true, --[[ ignored = true ]] },
+          grep = {
+            layout = "ivy_split",
+            args = { "--sort=path" }
+          }
+        },
+        win = {
+          preview = { keys = { ["<space><space><space>"] = { "cycle_win", mode = { "n" } } } },
+          input = { keys = { ["<space><space>"] = { "cycle_win", mode = { "i", "n" } } } },
+          list = {
+            keys = {
+              ["K"] = { "preview_scroll_up" },
+              ["J"] = { "preview_scroll_down" },
+              ["M"] = { "toggle_maximize" },
+              ["<space>"] = { "cycle_win" },
+              -- ["<S-CR>"] = { "close", mode = { "n", "i" } }, -- <S-CR> already closes the picker if a folder is hovered
+            },
+          },
+        },
+      },
+      styles = {
+        input = {
+          title_pos = "left",
+          relative = "cursor",
+          row = 1,
+          col = -1,
+          width = 30,
+        },
+      },
+      terminal = {
+        win = {
+          width = vim.o.columns,
+          height = vim.o.lines,
+          border = 'rounded',
+          position = "float"
         }
-      })
-    end
-  )
+      }
+    })
+  end
 end
+
+------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
   -- pacman -S net-tools
   -- apt install net-tools
   if vim.env.APPDATA then return end -- consolelog.nvim breaks neovim on windows
 
-  -- add { source = "chriswritescode-dev/consolelog.nvim", checkout = "a7fe38cbef59d78f669744765f6d8b7b14b27d9a" }
+  map("n", "<leader>ll", "<cmd>ConsoleLogInspect<cr>", { desc = "ConsoleLog Inspect" })
+  map("n", "<leader>lL", "<cmd>ConsoleLogInspectAll<cr>", { desc = "ConsoleLog Inspect All" })
 
-  later(
-    function()
-      map("n", "<leader>ll", "<cmd>ConsoleLogInspect<cr>", { desc = "ConsoleLog Inspect" })
-      map("n", "<leader>lL", "<cmd>ConsoleLogInspectAll<cr>", { desc = "ConsoleLog Inspect All" })
-
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/consolelog.nvim')
-      local ok, consolelog = pcall(require, "consolelog")
-      if not ok then return end
-      consolelog.setup({ keymaps = { enabled = false } })
-    end
-  )
+  vim.opt.rtp:append(package_path .. "consolelog.nvim")
+  local ok, consolelog = pcall(require, "consolelog")
+  if ok then
+    consolelog.setup({ keymaps = { enabled = false } })
+  end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+
 if not vim.g.vscode then
-  -- add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
-
-  now(
+  map(
+    { "n", "i" },
+    "<A-;>",
     function()
-      vim.keymap.set({ "n", "i" }, "<A-;>", function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local state = vim.b[bufnr].nes_state
-        if state then
-          -- Try to jump to the start of the suggestion edit.
-          -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-          local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
-              or (
-                require("copilot-lsp.nes").apply_pending_nes()
-                and require("copilot-lsp.nes").walk_cursor_end_edit()
-              )
-        end
-      end, { desc = "Accept Copilot NES suggestion" })
+      local bufnr = vim.api.nvim_get_current_buf()
+      local state = vim.b[bufnr].nes_state
 
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
-      local ok, copilot_lsp = pcall(require, "copilot-lsp")
-      if not ok then return end
-      copilot_lsp.setup({
-        nes = {
-          move_count_threshold = 1, -- Clear after 1 cursor movements
-        }
-      })
-
-      vim.g.copilot_nes_debounce = 75
-      vim.lsp.enable("copilot_ls")
-    end
+      if state then
+        -- Try to jump to the start of the suggestion edit.
+        -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+        local _ = require("copilot-lsp.nes").walk_cursor_start_edit() or
+            (
+              require("copilot-lsp.nes").apply_pending_nes() and
+              require("copilot-lsp.nes").walk_cursor_end_edit()
+            )
+      end
+    end,
+    { desc = "Accept Copilot NES suggestion" }
   )
+
+  vim.opt.rtp:append(package_path .. "copilot-lsp")
+  local ok, copilot_lsp = pcall(require, "copilot-lsp")
+  if ok then
+    copilot_lsp.setup({
+      nes = {
+        move_count_threshold = 1, -- Clear after 1 cursor movements
+      }
+    })
+    vim.g.copilot_nes_debounce = 75
+    vim.lsp.enable("copilot_ls")
+  else
+    vim.opt.rtp:remove(package_path .. "copilot-lsp")
+  end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+
 if not vim.g.vscode then
-  -- add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
+  map("i", "<A-l>", function() require("neocodeium").accept() end)
+  map("i", "<A-j>", function() require("neocodeium").accept_word() end)
+  map("i", "<A-k>", function() require("neocodeium").accept_line() end)
+  map("i", "<A-]>", function() require("neocodeium").cycle_or_complete() end)
+  map("i", "<A-[>", function() require("neocodeium").cycle_or_complete(-1) end)
 
-  later(
-    function()
-      map(
-        { 'x', 'n', 'i' },
-        '<leader>lg',
-        function() require("sidekick.cli").toggle({ name = "gemini" }) end,
-        { desc = 'Gemini cli' }
-      )
-      map(
-        { 'x', 'n', 'i' },
-        '<leader>lG',
-        function() require("sidekick.cli").prompt() end,
-        { desc = 'Gemini prompt' }
-      )
-
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
-      local ok, sidekick = pcall(require, "sidekick")
-      if not ok then return end
-      sidekick.setup({ nes = { enabled = false } })
-    end
-  )
+  vim.opt.rtp:append(package_path .. "neocodeium")
+  local ok, neocodeium = pcall(require, "neocodeium")
+  if ok then
+    neocodeium.setup()
+  end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+
 if not vim.g.vscode then
-  -- add { source = "monkoose/neocodeium", checkout = "bfe790d78e66adaa95cb50a8c75c64a752336e9c" }
+  map( { 'x', 'n', 'i' }, '<leader>lg', ":Sidekick cli toggle name=gemini<cr>", { desc = 'Gemini cli' })
+  map( { 'x', 'n', 'i' }, '<leader>lG', ":Sidekick cli prompt<cr>", { desc = 'Gemini prompt' })
 
-  later(
-    function()
-      map("i", "<A-l>", function() require("neocodeium").accept() end)
-      map("i", "<A-j>", function() require("neocodeium").accept_word() end)
-      map("i", "<A-k>", function() require("neocodeium").accept_line() end)
-      map("i", "<A-]>", function() require("neocodeium").cycle_or_complete() end)
-      map("i", "<A-[>", function() require("neocodeium").cycle_or_complete(-1) end)
-
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/neocodeium')
-      local ok, neocodeium = pcall(require, "neocodeium")
-      if not ok then return end
-      neocodeium.setup()
-    end
-  )
+  vim.opt.rtp:append(package_path .. "sidekick.nvim")
+  local ok, sidekick = pcall(require, "sidekick")
+  if ok then
+    sidekick.setup({ nes = { enabled = false } })
+  end
 end
 
 -- ╭──────╮
@@ -234,7 +214,6 @@ vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to compl
 vim.opt.winborder = 'rounded'     -- MiniCompletion's info and signature border
 vim.opt.wrap = false              -- display lines as one long line
 vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
-vim.g.mapleader = " "             -- <leader> key
 
 if not vim.g.vscode then
   vim.opt.cmdheight = 0                       -- more space in the neovim command line for displaying messages
@@ -255,8 +234,6 @@ end
 -- ╭──────────────╮
 -- │ Autocommands │
 -- ╰──────────────╯
-
-local autocmd = vim.api.nvim_create_autocmd
 
 -- stop comment prefix on new lines
 autocmd({ "BufEnter" }, { command = "set formatoptions-=cro" })
@@ -509,7 +486,7 @@ require('mini.indentscope').setup({
 
 require('mini.align').setup()
 require('mini.bracketed').setup({ undo = { suffix = '' } })
-require('mini.jump').setup(--[[{ repeat_jump = ';' }]]) -- ; by default
+require('mini.jump').setup( --[[{ repeat_jump = ';' }]]) -- ; by default
 require('mini.operators').setup()
 require('mini.splitjoin').setup()
 require('mini.surround').setup()
@@ -731,37 +708,33 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "PmenuMatch", { bold = true, fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "Search", { fg = "#c0caf5", bg = "#3d59a1" })
 
-  later(
-    function()
-      local function add_vscode_snippets_to_rtp()
-        -- local snippet_dirs = vim.fn.glob("~/.vscode/extensions/*/snippets", 0, 1)
-        -- local snippet_dirs = vim.fn.expand("~/.vscode/extensions/*/snippets", 0, 1)
-        local vscode_extensions = vim.fs.dirname(vim.fs.dirname(retronvim_path))
-        local snippet_dirs = vim.fn.expand(vscode_extensions .. "/*/snippets", 0, 1)
+  local function add_vscode_snippets_to_rtp()
+    -- local snippet_dirs = vim.fn.glob("~/.vscode/extensions/*/snippets", 0, 1)
+    -- local snippet_dirs = vim.fn.expand("~/.vscode/extensions/*/snippets", 0, 1)
+    local vscode_extensions = vim.fs.dirname(vim.fs.dirname(retronvim_path))
+    local snippet_dirs = vim.fn.expand(vscode_extensions .. "/*/snippets", 0, 1)
 
-        for _, dir in ipairs(snippet_dirs) do
-          -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change snippetshtml.code-snippets filetype to json `:set ft=json`
-          -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change trpc.code-snippets         filetype to json `:set ft=json`
-          vim.opt.rtp:append(vim.fs.dirname(dir))
-        end
-      end
-
-      add_vscode_snippets_to_rtp()
-
-      require('mini.snippets').setup({
-        snippets = { require('mini.snippets').gen_loader.from_runtime("*code-snippets") },
-        mappings = {
-          expand = '<a-.>',
-          jump_next = '<a-n>',
-          jump_prev = '<a-p>',
-        }
-      })
-
-      -- vscode snippets inside mini.completion (uninstall the vscode snippet extensions that you don't want to be sourced into mini.completion)
-      -- race condition with lsp completion when pressing `.` causing showing only mini.snippets entries, example in python: `import os; os.`
-      MiniSnippets.start_lsp_server()
+    for _, dir in ipairs(snippet_dirs) do
+      -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change snippetshtml.code-snippets filetype to json `:set ft=json`
+      -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change trpc.code-snippets         filetype to json `:set ft=json`
+      vim.opt.rtp:append(vim.fs.dirname(dir))
     end
-  )
+  end
+
+  add_vscode_snippets_to_rtp()
+
+  require('mini.snippets').setup({
+    snippets = { require('mini.snippets').gen_loader.from_runtime("*code-snippets") },
+    mappings = {
+      expand = '<a-.>',
+      jump_next = '<a-n>',
+      jump_prev = '<a-p>',
+    }
+  })
+
+  -- vscode snippets inside mini.completion (uninstall the vscode snippet extensions that you don't want to be sourced into mini.completion)
+  -- race condition with lsp completion when pressing `.` causing showing only mini.snippets entries, example in python: `import os; os.`
+  require('mini.snippets').start_lsp_server()
 
   require('mini.diff').setup({
     view = {
@@ -787,6 +760,8 @@ if not vim.g.vscode then
   require('mini.completion').setup()
   require('mini.cursorword').setup()
   require('mini.icons').setup()
+  require('mini.icons').mock_nvim_web_devicons()
+  require('mini.icons').tweak_lsp_kind( --[[ "replace" ]])
   require('mini.misc').setup_auto_root()
   require('mini.misc').setup_restore_cursor()
   require('mini.notify').setup({ window = { winblend = 0 } --[[ ,lsp_progress = { enable = false } ]] })
@@ -794,10 +769,8 @@ if not vim.g.vscode then
   require('mini.statusline').setup()
   require('mini.starter').setup()
   require('mini.tabline').setup()
-  MiniIcons.mock_nvim_web_devicons()
-  MiniIcons.tweak_lsp_kind( --[[ "replace" ]])
-  vim.notify = MiniNotify.make_notify() -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
-  vim.opt.completeopt:append('fuzzy')   -- it should be after require("mini.completion").setup())
+  vim.notify = require('mini.notify').make_notify() -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
+  vim.opt.completeopt:append('fuzzy')               -- it should be after require("mini.completion").setup())
 
   if vim.fn.has('nvim-0.12') == 1 then
     vim.opt.pumborder = 'rounded' -- MiniCompletion's suggestion border
@@ -815,9 +788,9 @@ map({ "n" }, "J", "10gj")
 map({ "n" }, "K", "10gk")
 map({ "n" }, "H", "10h")
 map({ "n" }, "L", "10l")
-map({ "n" }, "Y", "yg_", { desc = "Yank forward" })     -- "Y" yank forward by default
+map({ "n" }, "Y", "yg_", { desc = "Yank forward" })          -- "Y" yank forward by default
 map({ "x" }, "Y", "g_y", { desc = "Yank forward" })
-map({ "x" }, "P", "g_P", { desc = "Paste forward" })    -- "P" doesn't change register
+map({ "x" }, "P", "g_P", { desc = "Paste forward" })         -- "P" doesn't change register
 map({ "x" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchanged)" })
 map({ "n", "x" }, "U", "@:", { desc = "repeat `:command`" }) --> :normal A,jkj --> :normal A,j --->  escape char by pression ctrl+v then escape
 map({ "n", "x" }, "\\", "@q", { desc = "repeat q register/macro" })
@@ -1137,6 +1110,7 @@ if not vim.g.vscode then
 
   map("n", "<leader>l", "", { desc = "+LSP" })
   map("n", "<leader>la", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
+  map("n", "<leader>lb", function() require("snacks").picker.diagnostics_buffer() end, { desc = "Buffer Diagnostics" })
   map("n", "<leader>lc", function() require("snacks").picker.lsp_incoming_calls() end, { desc = "Incoming Calls" })
   map("n", "<leader>lC", function() require("snacks").picker.lsp_outgoing_calls() end, { desc = "Outcoming Calls" })
   map("n", "<leader>ld", function() require("snacks").picker.lsp_definitions() end, { desc = "Pick Definition" })
@@ -1148,8 +1122,9 @@ if not vim.g.vscode then
   map("n", "<leader>lM", function() vim.cmd("checkhealth vim.lsp") end, { desc = "LspInfo" })
   map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
   map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = "Open Diagnostic" })
+  map("n", "<leader>lO", function() require("snacks").picker.diagnostics() end, { desc = "Pick Diagnostics" })
   map("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
-  map("n", "<leader>lq", function() require("snacks").picker.loclist() end, { desc = "Pick LocList" })
+  map("n", "<leader>lq", function() require("snacks").picker.loclist() end, { desc = "Pick Location List" })
   map("n", "<leader>lr", function() require("snacks").picker.lsp_references() end, { desc = "Pick References" })
   map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
   map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
@@ -1159,62 +1134,71 @@ if not vim.g.vscode then
 
   ------------------------------------------------------------------------------------------------------------------------
 
-  map("n", "<leader>E", "", { desc = "+Install Extension" })
+  map("n", "<leader>E", "", { desc = "+Extension" })
   map("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
   map(
     "n",
     "<leader>Ec",
     function()
       if vim.env.APPDATA then vim.notify("windows not supported") return end
-      add { source = "chriswritescode-dev/consolelog.nvim", checkout = "a7fe38cbef59d78f669744765f6d8b7b14b27d9a" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/consolelog.nvim')
+
+      vim.pack.add({{ src = 'https://github.com/chriswritescode-dev/consolelog.nvim', version = 'a7fe38cbef59d78f669744765f6d8b7b14b27d9a' }})
+      vim.opt.rtp:append(package_path .. "consolelog.nvim")
       require("consolelog").setup({ keymaps = { enabled = false } })
-      vim.notify("consolelog.nvim requires (debian) ---> apt install net-tools")
+
+      vim.notify("consolelog.nvim requires (debian) ------> apt install net-tools")
       vim.notify("consolelog.nvim requires (archlinux) ---> pacman -S net-tools")
     end,
-    { desc = "ConsoleNinja (consolelog.nvim)" }
+    { desc = "consolelog.nvim install" }
   )
   map(
     "n",
-    "<leader>EC",
+    "<leader>El",
     function()
       local os = vim.uv.os_uname().sysname:lower()
       if os:find('win') then os = "win32" end
+
       -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
       sendSequence(
-        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.395.0/copilot-language-server-' .. os .. '-x64-1.386.0.zip',
+        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.397.0/copilot-language-server-' .. os .. '-x64-1.387.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
-      add { source = "copilotlsp-nvim/copilot-lsp", checkout = "884034b23c3716d55b417984ad092dc2b011115b" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/copilot-lsp')
+
+      vim.pack.add({{ src = 'https://github.com/copilotlsp-nvim/copilot-lsp', version = '884034b23c3716d55b417984ad092dc2b011115b' }})
+      vim.opt.rtp:append(package_path .. "copilot-lsp")
       vim.lsp.enable("copilot_ls")
       vim.notify("relaunch nvim after installation to login to copilot")
     end,
-    { desc = "Copilot-NES (copilot-lsp)" } -- Copilot-NES is free and unlimited
+    { desc = "copilot-lsp install" } -- Copilot-NES is free and unlimited
   )
   map(
     "n",
-    "<leader>Eg",
+    "<leader>En",
     function()
-      sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
-      add { source = "folke/sidekick.nvim", checkout = "v2.1.0" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/sidekick.nvim')
-      require("sidekick").setup({ nes = { enabled = false }})
-    end,
-    { desc = "Gemini (sidekick.nvim)" }  -- Gemini is free and unlimited
-  )
-  map(
-    "n",
-    "<leader>Ew",
-    function()
-      add { source = "monkoose/neocodeium", checkout = "bfe790d78e66adaa95cb50a8c75c64a752336e9c" }
-      vim.opt.rtp:append(path_package .. 'pack/deps/opt/neocodeium')
+      vim.pack.add({{ src = 'https://github.com/monkoose/neocodeium', version = 'bfe790d78e66adaa95cb50a8c75c64a752336e9c' }})
+      vim.opt.rtp:append(package_path .. "neocodeium")
       require("neocodeium").setup()
       vim.notify("to login to windsurf run ---> :NeoCodeium auth")
     end,
-    { desc = "Windsurf (neocodeium)" }
+    { desc = "neocodeium install" }
   )
-  map("n", "<leader>EX", "<cmd>DepsClean<cr>", { desc = "Uninstall Extensions" })
+  map(
+    "n",
+    "<leader>Es",
+    function()
+      sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
+
+      vim.pack.add({{ src = 'https://github.com/folke/sidekick.nvim', version = 'v2.1.0' }})
+      vim.opt.rtp:append(package_path .. "sidekick.nvim")
+      require("sidekick").setup({ nes = { enabled = false } })
+    end,
+    { desc = "sidekick.nvim install" }  -- Gemini is free and unlimited
+  )
+  map("n", "<leader>EC", function() vim.pack.del({"consolelog.nvim"}) vim.notify("relaunch nvim") end, { desc = "consolelog.nvim uninstall" })
+  map("n", "<leader>EL", function() vim.pack.del({"copilot-lsp"}) vim.notify("relaunch nvim") end, { desc = "copilot-lsp uninstall" })
+  map("n", "<leader>EN", function() vim.pack.del({"neocodeium"}) vim.notify("relaunch nvim") end, { desc = "neocodeium uninstall" })
+  map("n", "<leader>ES", function() vim.pack.del({"sidekick.nvim"}) vim.notify("relaunch nvim") end, { desc = "sidekick.nvim uninstall" })
+  map("n", "<leader>EI", function() vim.print(vim.inspect(vim.pack.get())) end, { desc = "installed extensions" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
@@ -1225,7 +1209,7 @@ if not vim.g.vscode then
   map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "keymaps" })
   map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "files" })
   map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "ripgrep" })
-  map("n", "<leader>fn", function() MiniNotify.show_history() end, { desc = "Notify history" })
+  map("n", "<leader>fn", function() require("mini.notify").show_history() end, { desc = "Notify history" })
   map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "projects" })
   map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quick list" })
   map("n", "<leader>fr", function() require("snacks").picker.recent() end, { desc = "recent files" })
@@ -1410,7 +1394,8 @@ map(
     local cmd
 
     if vim.fn.mode() == "n" then
-      cmd = "v" .. inner_outer_key .. motion_key .. "`<    " -- empty spaces or repeat sequence `<`< escapes special char since `< waits for a especial char
+      -- empty spaces or repeat sequence `<`< escapes special char since `< waits for a especial char
+      cmd = "v" .. inner_outer_key .. motion_key .. "`<    "
     else
       -- mT = Temp mark
       -- mS = Start mark
