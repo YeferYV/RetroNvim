@@ -782,8 +782,8 @@ end
 -- │ Navigation │
 -- ╰────────────╯
 
-map({ "i" }, "jk", "<ESC>")
-map({ "i" }, "kj", "<ESC>")
+map({ "i", "x" }, "jk", "<ESC>")
+map({ "i", "x" }, "kj", "<ESC>")
 map({ "n" }, "J", "10gj")
 map({ "n" }, "K", "10gk")
 map({ "n" }, "H", "10h")
@@ -1395,11 +1395,11 @@ map(
 
     if vim.fn.mode() == "n" then
       -- empty spaces or repeat sequence `<`< escapes special char since `< waits for a especial char
-      cmd = "v" .. inner_outer_key .. motion_key .. "`<    "
+      cmd = "v" .. inner_outer_key .. motion_key .. "jk`<    "
     else
       -- mT = Temp mark
       -- mS = Start mark
-      cmd = "mT`>mS`Tv" .. inner_outer_key .. motion_key .. "`<v`So"
+      cmd = "jkmT`>mS`Tv" .. inner_outer_key .. motion_key .. "jk`<v`So"
     end
 
     vim.cmd.exec([["normal ]] .. cmd .. [["]])
@@ -1416,11 +1416,12 @@ map(
     local cmd
 
     if vim.fn.mode() == "n" then
-      cmd = "v" .. inner_outer_key .. motion_key .. "`>"
+      -- escape key with jk (alternative to ) since <esc> doesn't work with macro recording
+      cmd = "v" .. inner_outer_key .. motion_key .. "jk`>"
     else
       -- mT = Temp mark
       -- mS = Start mark
-      cmd = "mT`<mS`Tv" .. inner_outer_key .. motion_key .. "`>v`So"
+      cmd = "jkmT`<mS`Tv" .. inner_outer_key .. motion_key .. "jk`>v`So"
     end
 
     vim.cmd.exec([["normal ]] .. cmd .. [["]])
