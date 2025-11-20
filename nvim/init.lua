@@ -120,6 +120,7 @@ if not vim.g.vscode then
 
   map("n", "<leader>ll", "<cmd>ConsoleLogInspect<cr>", { desc = "ConsoleLog Inspect" })
   map("n", "<leader>lL", "<cmd>ConsoleLogInspectAll<cr>", { desc = "ConsoleLog Inspect All" })
+  map("n", "<leader>l1", "<cmd>ConsoleLogReload<cr>", { desc = "ConsoleLog (Re)Start" })
 
   vim.opt.rtp:append(package_path .. "consolelog.nvim")
   local ok, consolelog = pcall(require, "consolelog")
@@ -253,10 +254,6 @@ autocmd({ "BufWinEnter" }, { pattern = "*.code-snippets", command = "set ft=json
 -- right click menu
 vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
 vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
-
--- consolelog.nvim freezes mini.starter
-autocmd('Filetype', { pattern = 'javascript*', command = "ConsoleLogReload" })
-autocmd('Filetype', { pattern = 'typescript*', command = "ConsoleLogReload" })
 
 autocmd({ "TermEnter", "TermOpen" }, { callback = function() vim.cmd.startinsert() end })
 
