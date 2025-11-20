@@ -124,7 +124,7 @@ if not vim.g.vscode then
   vim.opt.rtp:append(package_path .. "consolelog.nvim")
   local ok, consolelog = pcall(require, "consolelog")
   if ok then
-    consolelog.setup({ keymaps = { enabled = false } })
+    consolelog.setup({ auto_enable = false, keymaps = { enabled = false } })
   end
 end
 
@@ -185,8 +185,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  map( { 'x', 'n', 'i' }, '<leader>lg', ":Sidekick cli toggle name=gemini<cr>", { desc = 'Gemini cli' })
-  map( { 'x', 'n', 'i' }, '<leader>lG', ":Sidekick cli prompt<cr>", { desc = 'Gemini prompt' })
+  map({ 'x', 'n', 'i' }, '<leader>lg', ":Sidekick cli toggle name=gemini<cr>", { desc = 'Gemini cli' })
+  map({ 'x', 'n', 'i' }, '<leader>lG', ":Sidekick cli prompt<cr>", { desc = 'Gemini prompt' })
 
   vim.opt.rtp:append(package_path .. "sidekick.nvim")
   local ok, sidekick = pcall(require, "sidekick")
@@ -253,6 +253,10 @@ autocmd({ "BufWinEnter" }, { pattern = "*.code-snippets", command = "set ft=json
 -- right click menu
 vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
 vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
+
+-- consolelog.nvim freezes mini.starter
+autocmd('Filetype', { pattern = 'javascript*', command = "ConsoleLogReload" })
+autocmd('Filetype', { pattern = 'typescript*', command = "ConsoleLogReload" })
 
 autocmd({ "TermEnter", "TermOpen" }, { callback = function() vim.cmd.startinsert() end })
 
@@ -1143,9 +1147,9 @@ if not vim.g.vscode then
       if vim.env.APPDATA then vim.notify("windows not supported") return end
 
       vim.pack.add({{ src = 'https://github.com/chriswritescode-dev/consolelog.nvim', version = 'a7fe38cbef59d78f669744765f6d8b7b14b27d9a' }})
-      vim.opt.rtp:append(package_path .. "consolelog.nvim")
-      require("consolelog").setup({ keymaps = { enabled = false } })
 
+      vim.notify("relaunch nvim")
+      vim.notify("only available for js, jsx, ts, tsx files")
       vim.notify("consolelog.nvim requires (debian) ------> apt install net-tools")
       vim.notify("consolelog.nvim requires (archlinux) ---> pacman -S net-tools")
     end,
@@ -1155,18 +1159,18 @@ if not vim.g.vscode then
     "n",
     "<leader>El",
     function()
-      local os = vim.uv.os_uname().sysname:lower()
-      if os:find('win') then os = "win32" end
+      local os_uname = vim.uv.os_uname().sysname:lower()
+      local os = os_uname:find("win") and "win32" or os_uname
+      local download_path = '~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server'
+      -- local download_url = 'https://github.com/github/copilot-language-server-release/releases/download/1.397.0/copilot-language-server-' .. os .. '-x64-1.397.0.zip'
 
-      -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
-      sendSequence(
-        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.397.0/copilot-language-server-' .. os .. '-x64-1.397.0.zip',
-        '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
-      )
+      if vim.fn.executable('copilot-language-server') == 0 then
+        sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'mkdir -p ~/.local/bin; cp '.. download_path ..  '~/.local/bin')
+        -- sendSequence ( 'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L' .. download_url, '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"')
+      end
 
       vim.pack.add({{ src = 'https://github.com/copilotlsp-nvim/copilot-lsp', version = '884034b23c3716d55b417984ad092dc2b011115b' }})
-      vim.opt.rtp:append(package_path .. "copilot-lsp")
-      vim.lsp.enable("copilot_ls")
+
       vim.notify("relaunch nvim after installation to login to copilot")
     end,
     { desc = "copilot-lsp install" } -- Copilot-NES is free and unlimited
@@ -1176,8 +1180,8 @@ if not vim.g.vscode then
     "<leader>En",
     function()
       vim.pack.add({{ src = 'https://github.com/monkoose/neocodeium', version = 'bfe790d78e66adaa95cb50a8c75c64a752336e9c' }})
-      vim.opt.rtp:append(package_path .. "neocodeium")
-      require("neocodeium").setup()
+
+      vim.notify("relaunch nvim")
       vim.notify("to login to windsurf run ---> :NeoCodeium auth")
     end,
     { desc = "neocodeium install" }
@@ -1186,11 +1190,13 @@ if not vim.g.vscode then
     "n",
     "<leader>Es",
     function()
-      sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
+      if vim.fn.executable('gemini') == 0 then
+        sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
+      end
 
       vim.pack.add({{ src = 'https://github.com/folke/sidekick.nvim', version = 'v2.1.0' }})
-      vim.opt.rtp:append(package_path .. "sidekick.nvim")
-      require("sidekick").setup({ nes = { enabled = false } })
+
+      vim.notify("relaunch nvim")
     end,
     { desc = "sidekick.nvim install" }  -- Gemini is free and unlimited
   )
