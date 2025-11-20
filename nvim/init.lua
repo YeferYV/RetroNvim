@@ -782,8 +782,8 @@ end
 -- │ Navigation │
 -- ╰────────────╯
 
-map({ "i", "x" }, "jk", "<ESC>")
-map({ "i", "x" }, "kj", "<ESC>")
+map({ "i" }, "jk", "<ESC>") -- disabled on visual mode since is slow
+map({ "i" }, "kj", "<ESC>") -- disabled on visual mode since is slow
 map({ "n" }, "J", "10gj")
 map({ "n" }, "K", "10gk")
 map({ "n" }, "H", "10h")
@@ -1160,7 +1160,7 @@ if not vim.g.vscode then
 
       -- sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'cp ~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server ~/.local/bin')
       sendSequence(
-        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.397.0/copilot-language-server-' .. os .. '-x64-1.387.0.zip',
+        'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L https://github.com/github/copilot-language-server-release/releases/download/1.397.0/copilot-language-server-' .. os .. '-x64-1.397.0.zip',
         '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"'
       )
 
@@ -1395,11 +1395,11 @@ map(
 
     if vim.fn.mode() == "n" then
       -- empty spaces or repeat sequence `<`< escapes special char since `< waits for a especial char
-      cmd = "v" .. inner_outer_key .. motion_key .. "jk`<    "
+      cmd = "v" .. inner_outer_key .. motion_key .. "`<    "
     else
       -- mT = Temp mark
       -- mS = Start mark
-      cmd = "jkmT`>mS`Tv" .. inner_outer_key .. motion_key .. "jk`<v`So"
+      cmd = "mT`>mS`Tv" .. inner_outer_key .. motion_key .. "`<v`So"
     end
 
     vim.cmd.exec([["normal ]] .. cmd .. [["]])
@@ -1416,12 +1416,11 @@ map(
     local cmd
 
     if vim.fn.mode() == "n" then
-      -- escape key with jk (alternative to ) since <esc> doesn't work with macro recording
-      cmd = "v" .. inner_outer_key .. motion_key .. "jk`>"
+      cmd = "v" .. inner_outer_key .. motion_key .. "`>"
     else
       -- mT = Temp mark
       -- mS = Start mark
-      cmd = "jkmT`<mS`Tv" .. inner_outer_key .. motion_key .. "jk`>v`So"
+      cmd = "mT`<mS`Tv" .. inner_outer_key .. motion_key .. "`>v`So"
     end
 
     vim.cmd.exec([["normal ]] .. cmd .. [["]])
