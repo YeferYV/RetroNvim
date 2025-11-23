@@ -5,8 +5,13 @@ show_hidden    = true
 show_symlink   = false
 
 [opener]
+play = [
+	{ run = 'vlc "$@"', orphan = true, for = "unix" },
+	{ run = 'vlc %*',   orphan = true, for = "windows" }
+]
 edit = [
 	{ run = '%EDITOR% %* 2>nul || nvim  %*', block  = true, desc = "$EDITOR", for = "windows" },
-	{ run = 'code %*',                       orphan = true, desc = "code",    for = "windows" },
 	{ run = '${EDITOR:-nvim} "$@"',          block  = true, desc = "$EDITOR", for = "unix" },
+	{ run = 'code %*',                       orphan = true, desc = "vscode",  for = "windows" },
+	{ run = 'code "$@"',                     orphan = true, desc = "vscode",  for = "unix" },
 ]

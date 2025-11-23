@@ -789,7 +789,7 @@
           "bindings": [
             {
               "key": "b",
-              "name": "install brew karabiner ffmpeg mpv poppler wezterm (MacOS)",
+              "name": "install brew karabiner ffmpeg poppler vlc wezterm (MacOS)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
@@ -812,7 +812,7 @@
                   "text": "source ${ZDOTDIR:-~}/.zshrc \n"
                 },
                 {
-                  "text": "brew install --cask karabiner-elements mpv wezterm \n"
+                  "text": "brew install --cask karabiner-elements vlc wezterm \n"
                 },
                 {
                   "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
@@ -821,7 +821,7 @@
             },
             {
               "key": "n",
-              "name": "install nix-env devour ffmpeg mpv poppler wezterm zathura (Linux)",
+              "name": "install nix-env devour ffmpeg poppler vlc wezterm zathura (Linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -840,13 +840,13 @@
                   "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
                 },
                 {
-                  "text": "bash -i -c \"nix-env -iA nixpkgs.devour nixpkgs.zathura \"; \n"
+                  "text": "bash -i -c \"nix-env -iA nixpkgs.devour nixpkgs.zathura nixpkgs.vlc \"; \n"
+                },
+                {
+                  "text": "# curl -C- -o ~/.pixi/bin/vlc -L https://github.com/ivan-hc/VLC-appimage/releases/download/20251121-181227/VLC-media-player_3.0.21-31-archimage5.0-x86_64.AppImage && chmod +x ~/.pixi/bin/vlc \n"
                 },
                 {
                   "text": "curl -C- -o ~/.pixi/bin/wezterm -L https://github.com/wezterm/wezterm/releases/download/nightly/WezTerm-nightly-Ubuntu20.04.AppImage && chmod +x ~/.pixi/bin/wezterm \n"
-                },
-                {
-                  "text": "curl -C- -o ~/.pixi/bin/mpv -L https://github.com/YeferYV/sixelrice/releases/download/v0.0.12/mpv.appimage && chmod +x ~/.pixi/bin/mpv \n"
                 },
                 {
                   "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
@@ -855,7 +855,7 @@
             },
             {
               "key": "s",
-              "name": "install scoop zsh ffmpeg mpv poppler wezterm (Windows)",
+              "name": "install scoop zsh ffmpeg poppler vlc wezterm (Windows)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
@@ -871,7 +871,7 @@
                   "text": "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser; iwr get.scoop.sh | iex \n"
                 },
                 {
-                  "text": "scoop bucket add extras; scoop install mpv msys2 wezterm \n"
+                  "text": "scoop bucket add extras; scoop install vlc msys2 wezterm \n"
                 },
                 {
                   "text": "msys2 -c 'pacman -S --noconfirm zsh' \n"

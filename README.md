@@ -306,47 +306,47 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|  Key Combination   | Description                                 |          compatibility          |
-| :----------------: | :------------------------------------------ | :-----------------------------: |
-|      `ctrl+\`      | toggle panel (terminal) visibility          |             vscode              |
-|      `alt+y`       | send sequence to open yazi                  |             vscode              |
-|    `alt+ctrl+r`    | select from shell history                   |             vscode              |
-|      `alt+0`       | switch to last tab                          |    wezterm/windows-terminal     |
-|    `alt+1...9`     | switch to tab 1...9                         | vscode/wezterm/windows-terminal |
-|      `alt+a`       | Scroll terminal down by page                | vscode/wezterm/windows-terminal |
-|      `alt+q`       | Scroll terminal up by page                  | vscode/wezterm/windows-terminal |
-|      `alt+d`       | Scroll terminal down                        | vscode/wezterm/windows-terminal |
-|      `alt+e`       | Scroll terminal up                          | vscode/wezterm/windows-terminal |
-|   `alt+shift+d`    | Scroll terminal to next command             |         vscode/wezterm          |
-|   `alt+shift+e`    | Scroll terminal to previous command         |         vscode/wezterm          |
-|      `alt+t`       | Scroll terminal to top                      | vscode/wezterm/windows-terminal |
-|      `alt+g`       | Scroll terminal to bottom                   | vscode/wezterm/windows-terminal |
-|      `alt+s`       | Switch to previous tab                      | vscode/wezterm/windows-terminal |
-|      `alt+f`       | Switch to next tab                          | vscode/wezterm/windows-terminal |
-|   `alt+shift+s`    | move tab backward (vscode move to last tab) | vscode/wezterm/windows-terminal |
-|   `alt+shift+f`    | move tab forward (vscode move to last tab)  | vscode/wezterm/windows-terminal |
-|      `alt+c`       | copy                                        | vscode/wezterm/windows-terminal |
-|      `alt+v`       | paste                                       | vscode/wezterm/windows-terminal |
-|    `ctrl+alt+h`    | split horizontal                            | vscode/wezterm/windows-terminal |
-|    `ctrl+alt+v`    | split vertical                              | vscode/wezterm/windows-terminal |
+| Key Combination    | Description                                 |          compatibility          |
+| :----------------- | :------------------------------------------ | :-----------------------------: |
+| `ctrl+\`           | toggle panel (terminal) visibility          |             vscode              |
+| `alt+y`            | send sequence to open yazi                  |             vscode              |
+| `alt+ctrl+r`       | select from shell history                   |             vscode              |
+| `alt+0`            | switch to last tab                          |    wezterm/windows-terminal     |
+| `alt+1...9`        | switch to tab 1...9                         | vscode/wezterm/windows-terminal |
+| `alt+a`            | Scroll terminal down by page                | vscode/wezterm/windows-terminal |
+| `alt+q`            | Scroll terminal up by page                  | vscode/wezterm/windows-terminal |
+| `alt+d`            | Scroll terminal down                        | vscode/wezterm/windows-terminal |
+| `alt+e`            | Scroll terminal up                          | vscode/wezterm/windows-terminal |
+| `alt+shift+d`      | Scroll terminal to next command             |         vscode/wezterm          |
+| `alt+shift+e`      | Scroll terminal to previous command         |         vscode/wezterm          |
+| `alt+t`            | Scroll terminal to top                      | vscode/wezterm/windows-terminal |
+| `alt+g`            | Scroll terminal to bottom                   | vscode/wezterm/windows-terminal |
+| `alt+s`            | Switch to previous tab                      | vscode/wezterm/windows-terminal |
+| `alt+f`            | Switch to next tab                          | vscode/wezterm/windows-terminal |
+| `alt+shift+s`      | move tab backward (vscode move to last tab) | vscode/wezterm/windows-terminal |
+| `alt+shift+f`      | move tab forward (vscode move to last tab)  | vscode/wezterm/windows-terminal |
+| `alt+c`            | copy                                        | vscode/wezterm/windows-terminal |
+| `alt+v`            | paste                                       | vscode/wezterm/windows-terminal |
+| `ctrl+alt+h`       | split horizontal                            | vscode/wezterm/windows-terminal |
+| `ctrl+alt+v`       | split vertical                              | vscode/wezterm/windows-terminal |
 | `ctrl+shift+left`  | resize window left                          | vscode/wezterm/windows-terminal |
 | `ctrl+shift+right` | resize window right                         | vscode/wezterm/windows-terminal |
-|  `ctrl+shift+up`   | resize window up                            | vscode/wezterm/windows-terminal |
+| `ctrl+shift+up`    | resize window up                            | vscode/wezterm/windows-terminal |
 | `ctrl+shift+down`  | resize window down                          | vscode/wezterm/windows-terminal |
-|    `ctrl+left`     | focus left                                  | vscode/wezterm/windows-terminal |
-|    `ctrl+right`    | focus rigth                                 | vscode/wezterm/windows-terminal |
-|     `ctrl+up`      | focus up                                    | vscode/wezterm/windows-terminal |
-|    `ctrl+down`     | focus down                                  | vscode/wezterm/windows-terminal |
-|      `ctrl+t`      | new tab                                     | vscode/wezterm/windows-terminal |
-|      `ctrl+w`      | close tab                                   | vscode/wezterm/windows-terminal |
-|   `ctrl+shift+t`   | move panel to new tab                       | vscode/wezterm/windows-terminal |
-|   `ctrl+shift+w`   | move panel to new window                    | vscode/wezterm/windows-terminal |
-|   `ctrl+shift+n`   | new window                                  | vscode/wezterm/windows-terminal |
-|      `ctrl+;`      | recent tab                                  |             wezterm             |
-|   `shift+space`    | tmux-copy-mode-like                         |    wezterm/windows-terminal     |
-|   `ctrl+shift+f`   | find text                                   | vscode/wezterm/windows-terminal |
-|    `ctrl+plus`     | zoom in                                     | vscode/wezterm/windows-terminal |
-|    `ctrl+minus`    | zoom out                                    | vscode/wezterm/windows-terminal |
+| `ctrl+left`        | focus left                                  | vscode/wezterm/windows-terminal |
+| `ctrl+right`       | focus rigth                                 | vscode/wezterm/windows-terminal |
+| `ctrl+up`          | focus up                                    | vscode/wezterm/windows-terminal |
+| `ctrl+down`        | focus down                                  | vscode/wezterm/windows-terminal |
+| `ctrl+t`           | new tab                                     | vscode/wezterm/windows-terminal |
+| `ctrl+w`           | close tab                                   | vscode/wezterm/windows-terminal |
+| `ctrl+shift+t`     | move panel to new tab                       | vscode/wezterm/windows-terminal |
+| `ctrl+shift+w`     | move panel to new window                    | vscode/wezterm/windows-terminal |
+| `ctrl+shift+n`     | new window                                  | vscode/wezterm/windows-terminal |
+| `ctrl+;`           | recent tab                                  |             wezterm             |
+| `shift+space`      | tmux-copy-mode-like                         |    wezterm/windows-terminal     |
+| `ctrl+shift+f`     | find text                                   | vscode/wezterm/windows-terminal |
+| `ctrl+plus`        | zoom in                                     | vscode/wezterm/windows-terminal |
+| `ctrl+minus`       | zoom out                                    | vscode/wezterm/windows-terminal |
 
 </details>
 
