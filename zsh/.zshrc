@@ -35,7 +35,6 @@ alias  apt="sudo apt -y"
 alias  cht="cht.sh"                       # nix-env -iA nixpkgs.cht-sh
 alias  grep="grep --color=auto"
 alias  ll="ls -l"
-alias  svim="NVIM_APPNAME=sixelrice nvim" # git clone https://github.com/yeferyv/sixelrice ~/.config/sixelrice
 
 # export RETRONVIM_PATH=$(readlink -f $HOME/.*/extensions/yeferyv.retronvim* | head -n1)
 export RETRONVIM_PATH=$(realpath $HOME/.*/extensions/yeferyv.retronvim* | head -n1)
@@ -80,7 +79,6 @@ eval "$(/opt/homebrew/bin/brew              shellenv 2>/dev/null)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)"
 
 # >/dev/null 2>&1 ! diff -q $HOME/.zshrc $ZDOTDIR/.zshrc && [[ "$(realpath $HOME/.zshrc)" != "$(realpath $ZDOTDIR/.zshrc)" ]] && source $HOME/.zshrc
->/dev/null 2>&1 which devour	                       && export SWALLOWER="devour"
 >/dev/null 2>&1 which fzf	                           && source <(fzf --zsh)
 >/dev/null 2>&1 which eza              	             && alias ls="eza --all --icons --group-directories-first"
 >/dev/null 2>&1 which starship                       && eval "$(starship init zsh)"

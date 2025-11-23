@@ -821,7 +821,7 @@
             },
             {
               "key": "n",
-              "name": "install nix-env devour ffmpeg poppler vlc wezterm zathura (Linux)",
+              "name": "install nix-env ffmpeg poppler vlc wezterm zathura (Linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -840,7 +840,7 @@
                   "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
                 },
                 {
-                  "text": "bash -i -c \"nix-env -iA nixpkgs.devour nixpkgs.zathura nixpkgs.vlc \"; \n"
+                  "text": "bash -i -c \"nix-env -iA nixpkgs.zathura nixpkgs.vlc \"; \n"
                 },
                 {
                   "text": "# curl -C- -o ~/.pixi/bin/vlc -L https://github.com/ivan-hc/VLC-appimage/releases/download/20251121-181227/VLC-media-player_3.0.21-31-archimage5.0-x86_64.AppImage && chmod +x ~/.pixi/bin/vlc \n"
