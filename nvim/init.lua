@@ -200,6 +200,7 @@ end
 -- │ Opts │
 -- ╰──────╯
 
+vim.opt.backupcopy = "yes"        -- fixes `next dev --turbopack` file change detection, see `:h file-watcher` and https://github.com/neovim/neovim/issues/1380
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.expandtab = true          -- convert tabs to spaces
 vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
@@ -420,6 +421,7 @@ require("mini.ai").setup({
   custom_textobjects = {
     d = gen_ai_spec.diagnostic(),                                                                                           -- diagnostic textobj
     e = gen_ai_spec.line(),                                                                                                 -- line textobj
+    I = gen_ai_spec.indent(),                                                                                               -- indent textobj including blank-lines
     h = { { "<(%w-)%f[^<%w][^<>]->.-</%1>" }, { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" } },       -- html attribute textobj
     k = { { "\n.-[=:]", "^.-[=:]" }, "^%s*()().-()%s-()=?[!=<>\\+-\\*]?[=:]" },                                             -- key textobj
     v = { { "[=:]()%s*().-%s*()[;,]()", "[=:]=?()%s*().*()().$" } },                                                        -- value textobj
@@ -448,13 +450,13 @@ require("mini.ai").setup({
 
     -- select indent by the same level delimited by comment-lines (outer: includes blank-lines)
     y = function()
-      local start_indent = vim.fn.indent(vim.fn.line('.'))
+      local start_indent      = vim.fn.indent(vim.fn.line('.'))
       local get_comment_regex = "^%s*" .. string.gsub(vim.bo.commentstring, "%%s", ".*") .. "%s*$"
-      local is_blank_line = function(line) return string.match(vim.fn.getline(line), '^%s*$') end
-      local is_comment_line = function(line) return string.find(vim.fn.getline(line), get_comment_regex) end
-      local is_out_of_range = function(line) return vim.fn.indent(line) == -1 end
+      local is_out_of_range   = function(line) return vim.fn.indent(line) == -1 end
+      local is_comment_line   = function(line) return string.find(vim.fn.getline(line), get_comment_regex) end
+      local is_blank_line     = function(line) return string.match(vim.fn.getline(line), '^%s*$') end
 
-      local prev_line = vim.fn.line('.') - 1
+      local prev_line         = vim.fn.line('.') - 1
       while vim.fn.indent(prev_line) == start_indent or is_blank_line(prev_line) do
         if is_out_of_range(prev_line) then break end
         if is_comment_line(prev_line) then break end
@@ -474,15 +476,6 @@ require("mini.ai").setup({
     end
   },
   n_lines = 500, -- search range and required by functions less than 500 LOC
-})
-
-require('mini.indentscope').setup({
-  options = { indent_at_cursor = false, },
-  mappings = {
-    object_scope = 'iI',
-    object_scope_with_border = 'aI',
-  },
-  symbol = '',
 })
 
 require('mini.align').setup()
@@ -553,6 +546,10 @@ if not vim.g.vscode then
       { desc = "html_atrib",  keys = "ah", mode = "x" },
       { desc = "html_atrib",  keys = "ih", mode = "o" },
       { desc = "html_atrib",  keys = "ih", mode = "x" },
+      { desc = "indent",      keys = "aI", mode = "o" },
+      { desc = "indent",      keys = "aI", mode = "x" },
+      { desc = "indent",      keys = "iI", mode = "o" },
+      { desc = "indent",      keys = "iI", mode = "x" },
       { desc = "key",         keys = "ak", mode = "o" },
       { desc = "key",         keys = "ak", mode = "x" },
       { desc = "key",         keys = "ik", mode = "o" },
@@ -601,10 +598,6 @@ if not vim.g.vscode then
       { desc = "hexadecimal", keys = "ax", mode = "x" },
       { desc = "hexadecimal", keys = "ix", mode = "o" },
       { desc = "hexadecimal", keys = "ix", mode = "x" },
-      { desc = "same_indent", keys = "ay", mode = "o" },
-      { desc = "same_indent", keys = "ay", mode = "x" },
-      { desc = "same_indent", keys = "iy", mode = "o" },
-      { desc = "same_indent", keys = "iy", mode = "x" },
       { desc = "user_prompt", keys = "a?", mode = "o" },
       { desc = "user_prompt", keys = "a?", mode = "x" },
       { desc = "user_prompt", keys = "i?", mode = "o" },
@@ -838,9 +831,8 @@ end
 
 -- Quick quit/write
 if not vim.g.vscode then
-  map({ "n" }, "Q", "<cmd>lua vim.cmd('quit')<cr>")
-  map({ "n" }, "R",
-    "<cmd>lua vim.lsp.buf.format({ timeout_ms = 5000 }) MiniTrailspace.trim() vim.cmd('silent write') <cr>")
+  map({ "n" }, "Q", "<cmd>lua vim.cmd.quit()<cr>")
+  map({ "n" }, "R", "<cmd>lua vim.lsp.buf.format{ timeout_ms = 5000 } MiniTrailspace.trim() vim.cmd.write()<cr>")
 else
   map({ "n" }, "Q", function() vscode.call('workbench.action.closeActiveEditor') end)
   map({ "n" }, "R", function()
@@ -858,7 +850,6 @@ if not vim.g.vscode then
   vim.diagnostic.config({
     update_in_insert = true,
     virtual_text = true,
-    float = { border = "rounded" },
     signs = {
       text = {
         [vim.diagnostic.severity.ERROR] = "",
@@ -871,15 +862,15 @@ if not vim.g.vscode then
 
   -- https://neovim.io/doc/user/lsp.html#_quickstart
   vim.lsp.config('*', {
-    -- https://www.reddit.com/r/neovim/comments/1ao6c5a/how_to_make_the_lsp_aware_of_changes_made_to_background_buffers
-    -- `:=vim.lsp.protocol.make_client_capabilities()`
-    capabilities = {
-      workspace = {
-        didChangeWatchedFiles = {
-          dynamicRegistration = true, -- on linux `next dev --turbo` requires `pixi global install inotify-tools`
-        }
-      }
-    },
+    ---- https://www.reddit.com/r/neovim/comments/1ao6c5a/how_to_make_the_lsp_aware_of_changes_made_to_background_buffers
+    ---- `:=vim.lsp.protocol.make_client_capabilities()`
+    -- capabilities = {
+    --   workspace = {
+    --     didChangeWatchedFiles = {
+    --       dynamicRegistration = true, -- on linux if `next dev --turbopack` not working install `pixi global install fswatch` or `pixi global install inotify-tools`, see: https://github.com/neovim/neovim/issues/1380
+    --     }
+    --   }
+    -- },
     root_markers = { '.git' },
   })
 
@@ -947,6 +938,7 @@ if not vim.g.vscode then
       },
     },
   }
+
   -- https://www.reddit.com/r/neovim/comments/1jn3rjw/help_me_understand/
   vim.lsp.config['pyright']               = {
     cmd = { 'pyright-langserver', '--stdio' },
@@ -1291,40 +1283,28 @@ if not vim.g.vscode then
   ------------------------------------------------------------------------------------------------------------------------
 
   map("n", "<leader>u", "", { desc = "+UI toggle" })
-  map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "Buffer Hide" })
-  map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "Buffer Show" })
+  map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "buffer hide" })
+  map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "buffer show" })
   map(
     "n",
     "<leader>uc",
     function()
-      vim.o.foldcolumn = '0'
-      vim.o.signcolumn = 'no'
-      vim.o.statuscolumn = ''
-      vim.opt.foldenable = false
-      vim.opt.number = false
+      vim.o.number       = not vim.o.number
+      vim.o.foldcolumn   = vim.o.number and '1' or '0'
+      vim.o.signcolumn   = vim.o.number and 'auto' or 'no'
+      vim.o.statuscolumn = vim.o.number and '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l ' or ''
+      vim.o.foldenable   = not vim.o.foldenable
     end,
-    { desc = "StatusColumn Hide" }
-  )
-  map(
-    "n",
-    "<leader>uC",
-    function()
-      vim.o.foldcolumn = '1'
-      vim.o.signcolumn = 'auto'
-      vim.o.statuscolumn = '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
-      vim.opt.foldenable = true
-      vim.opt.number = true
-    end,
-    { desc = "StatusColumn Show" }
+    { desc = "statuscolumn toggle" }
   )
   map("n", "<leader>ud", "<cmd>lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())<cr>",
-    { desc = "toggle diagnostic" })
+    { desc = "diagnostic toggle" })
   map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent (press z)" })
   map("n", "<leader>uF", "<cmd>lua vim.o.foldmethod='expr'<cr>", { desc = "fold by lsp (press z)" })
-  map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "toggle cursorline" })
-  map("n", "<leader>up", "<cmd>popup PopUp<cr>", { desc = "Toggle Mouse PopUp" })
-  map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "StatusBar Hide" })
-  map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "StatusBar Show" })
+  map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "cursorline toggle" })
+  map("n", "<leader>up", "<cmd>popup PopUp<cr>", { desc = "mouse-popup toggle" })
+  map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "statusbar hide" })
+  map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "statusbar show" })
   map(
     "n",
     "<leader>uu",
@@ -1338,7 +1318,7 @@ if not vim.g.vscode then
         Hidden = false
       end
     end,
-    { desc = "Hide/Unhide window/terminal" }
+    { desc = "hide/unhide window/terminal" }
   )
 
   ------------------------------------------------------------------------------------------------------------------------
