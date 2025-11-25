@@ -46,23 +46,26 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         run: |
 
-          #####################################################################################################################################################################################################################################################################################################################################################################
+          ##################################################################################################################################################################################################################################################################################################
 
           git submodule update --init;
           rm -rf ./nvim/plugins/site/pack/deps/opt/snacks.nvim/tests
-          rm -rf ./nvim/plugins/site/pack/deps/start/mini.nvim/tests
+          rm -rf ./nvim/plugins/site/pack/deps/opt/mini.nvim/tests
 
           curl -L pixi.sh/install.sh | bash
           export PATH="$HOME/.pixi/bin:$PATH"
           pixi global install p7zip
+          # pixi global install libarchive # curl -L ... | bsdtar -x --directory=/tmp
 
-          curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             | tar -xJf- --directory /tmp                                            && mkdir -p bin/nerd-fonts/patched-fonts/FiraCode              && cp /tmp/{FiraCodeNerdFont-Regular.ttf,FiraCodeNerdFont-Medium.ttf,FiraCodeNerdFont-Bold.ttf} bin/nerd-fonts/patched-fonts/FiraCode
-          curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.ps1                         --create-dirs  --output bin/nerd-fonts/install.ps1
+          mkdir -p bin/nerd-fonts/patched-fonts/FiraCode
+          curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.tar.xz                             --create-dirs --output /tmp/firacode.tar.xz       && tar -xJf /tmp/firacode.tar.xz --directory /tmp && cp /tmp/FiraCodeNerdFont-{Regular,Medium,Bold}.ttf bin/nerd-fonts/patched-fonts/FiraCode
+          curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.ps1                         --create-dirs --output bin/nerd-fonts/install.ps1
 
-          #####################################################################################################################################################################################################################################################################################################################################################################
+          ##################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-x86_64.tar.gz                          | tar -xzf- --directory /tmp                                            && mkdir -p bin/env/bin                                        && cp -r /tmp/nvim-macos-x86_64/* bin/env
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0-prerelease-2/kanata_macos_cmd_allowed_x86_64       --create-dirs  --output bin/env/bin/kanata                              && chmod +x bin/env/bin/kanata
+          mkdir -p bin/env
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-x86_64.tar.gz                          --create-dirs --output /tmp/nvim.tar.gz           && tar -xzf /tmp/nvim.tar.gz --directory /tmp     && cp -r /tmp/nvim-macos-x86_64/*                  bin/env
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0/macos-binaries-x64-v1.10.0.zip                     --create-dirs --output /tmp/kanata.zip            && unzip /tmp/kanata.zip     -d /tmp/kanata       && cp -r /tmp/kanata/kanata_macos_cmd_allowed_x64  bin/env/bin/kanata
 
           (
             mkdir -p bin/pixi_pack
@@ -82,10 +85,10 @@ jobs:
           yes | npx ovsx publish
           rm -rf bin/{environment.sh,env}
 
-          #####################################################################################################################################################################################################################################################################################################################################################################
+          ##################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage                        --create-dirs  --output bin/env/bin/nvim                                && chmod +x bin/env/bin/nvim
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0-prerelease-2/kanata_cmd_allowed                    --create-dirs  --output bin/env/bin/kanata                              && chmod +x bin/env/bin/kanata
+          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage                        --create-dirs --output bin/env/bin/nvim           && chmod +x bin/env/bin/nvim
+          curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0/linux-binaries-x64-v1.10.0.zip                     --create-dirs --output /tmp/kanata.zip            && unzip /tmp/kanata.zip     -d /tmp/kanata       && cp -r /tmp/kanata/kanata_linux_cmd_allowed_x64  bin/env/bin/kanata
 
           (
             mkdir -p bin/pixi_pack
@@ -104,24 +107,22 @@ jobs:
           yes | npx ovsx publish --target linux-x64
           rm -rf bin/{environment.sh,env}
 
-          #####################################################################################################################################################################################################################################################################################################################################################################
+          ##################################################################################################################################################################################################################################################################################################
 
-          curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                                    --create-dirs  --output /tmp/nvim.zip                                   && mkdir -p bin/windows/envs/windows                           && unzip /tmp/nvim.zip -d /tmp/nvim && cp -r /tmp/nvim/nvim-win64 bin/windows/envs/windows/Library
-          curl -L https://github.com/jtroo/kanata/releases/download/v1.10.0-prerelease-2/kanata_cmd_allowed.exe                --create-dirs  --output bin/windows/envs/windows/Library/bin/kanata.exe
-          curl -L https://github.com/prefix-dev/pixi/releases/download/v0.56.0/pixi-x86_64-pc-windows-msvc.zip                 --create-dirs  --output /tmp/pixi.zip                                   && unzip /tmp/pixi.zip -d bin/windows/envs/windows/Library/bin
-          curl -L https://github.com/ip7z/7zip/releases/download/24.09/7zr.exe                                                 --create-dirs  --output bin/7zr.exe
-          curl -L https://github.com/git-for-windows/git/releases/download/v2.50.0.windows.1/MinGit-2.50.0-busybox-64-bit.zip  --create-dirs  --output /tmp/git.zip                                    && unzip /tmp/git.zip  -d /tmp/git                             && cp -r /tmp/git/* bin/windows/envs/windows/Library
+          mkdir -p bin/windows/envs/windows/library
+          mkdir -p powershell/modules/psreadline
+          curl  -L https://github.com/ip7z/7zip/releases/download/24.09/7zr.exe                                                --create-dirs --output bin/7zr.exe
+          curl  -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                                   --create-dirs --output /tmp/nvim.zip              && unzip /tmp/nvim.zip       -d /tmp/nvim         && cp -r /tmp/nvim/nvim-win64/*                                     bin/windows/envs/windows/Library
+          curl  -L https://github.com/jtroo/kanata/releases/download/v1.10.0/windows-binaries-x64-v1.10.0.zip                  --create-dirs --output /tmp/kanata.zip            && unzip /tmp/kanata.zip     -d /tmp/kanata       && cp -r /tmp/kanata/kanata_windows_tty_winIOv2_cmd_allowed_x64.exe bin/windows/envs/windows/Library/bin/kanata.exe
+          curl  -L https://github.com/prefix-dev/pixi/releases/download/v0.56.0/pixi-x86_64-pc-windows-msvc.zip                --create-dirs --output /tmp/pixi.zip              && unzip /tmp/pixi.zip       -d /tmp/pixi         && cp -r /tmp/pixi/pixi.exe                                         bin/windows/envs/windows/Library/bin/pixi.exe
+          curl  -L https://github.com/git-for-windows/git/releases/download/v2.50.0.windows.1/MinGit-2.50.0-busybox-64-bit.zip --create-dirs --output /tmp/git.zip               && unzip /tmp/git.zip        -d /tmp/git          && cp -r /tmp/git/*                                                 bin/windows/envs/windows/Library
+          curl  -L https://cdn.powershellgallery.com/packages/psreadline.2.4.2-beta2.nupkg                                     --create-dirs --output /tmp/psreadline.zip        && unzip /tmp/psreadline.zip -d /tmp/psreadline   && cp -r /tmp/psreadline/*                                          powershell/modules/psreadline
 
           (
             export PIXI_HOME="$PWD/bin/windows"
             pixi global install --platform win-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 lazygit=0.55.0 less=679 m2-file=5.46.2 starship=1.22.1 ripgrep=14.1.1 yazi=25.5.31 7zip=24.08 --environment windows
             mv bin/windows/envs/windows/bin/{bat.exe,less.exe,lesskey.exe,rg.exe,starship.exe} bin/windows/envs/windows/Library/bin/
-          )
-          (
-            mkdir -p powershell/modules/psreadline
-            curl -L https://cdn.powershellgallery.com/packages/psreadline.2.4.2-beta2.nupkg                                    --create-dirs  --output /tmp/psreadline.zip                             && mkdir -p powershell/modules/psreadline                      && unzip /tmp/psreadline.zip -d powershell/modules/psreadline
-          )
-          (
+            rm bin/windows/envs/windows/Library/bin/nvim.pdb # shipped in nightly builds
             cd bin
             7z a -mx9 windows.7z windows
           )
@@ -131,7 +132,7 @@ jobs:
           npx       vsce publish --target win32-x64
           yes | npx ovsx publish --target win32-x64
 
-          #####################################################################################################################################################################################################################################################################################################################################################################
+          ##################################################################################################################################################################################################################################################################################################
 
       - name: Github release 📦
         if: ${{ steps.release.outputs.release_created }}
