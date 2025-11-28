@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const path = require('path');
 const os = require('os');
+const process = require('process');
 const fs = require('fs');
 const child_process = require('child_process');
 
@@ -52,7 +53,7 @@ function setNeovimPath(homeExtension) {
 
   // decompress terminal dependencies
   if (os.platform() == "win32" && fs.existsSync(pixiPathWindows) === false) {
-    child_process.exec('try { cd '+ homeExtension +'/bin; ./7zr.exe x windows.7z; } catch {};')
+    child_process.exec('powershell -c "try { cd '+ homeExtension +'/bin; ./7zr.exe x windows.7z; }" catch {}')
   }
   if (os.platform() == "linux" && fs.existsSync(pixiPathLinux) === false) {
     child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
@@ -93,6 +94,54 @@ function activate(context) {
   // vscode.window.showInformationMessage(context.extensionUri);
   // vscode.window.showInformationMessage(context.extensionPath);
   // vscode.window.showInformationMessage(context.extension);
+
+  const fzf_preview       = "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi"
+  const home              = os.homedir();
+  const dotexe            = os.platform() == "win32" ? '.exe' : ''
+  const bin_path          = os.platform() == "win32" ? '/bin/windows/envs/windows/Library/bin/' : '/bin/env/bin/'
+  const retronvim_bin     = path.join(context.extensionPath, bin_path)
+  const init_lua          = path.join(context.extensionPath, '/nvim/init.lua')
+  const yazi_config_home  = path.join(context.extensionPath, '/yazi')
+  const yazi_file_one     = path.join(context.extensionPath, '/bin/windows/envs/windows/Library/usr/bin/file.exe')
+  const mingw_path        = path.join(context.extensionPath, '/bin/windows/envs/windows/Library/mingw64/bin;')
+  const win_path          = retronvim_bin + `;${home}\\.pixi\\bin;${home}\\.local\\bin;${home}appdata\\local\\pnpm;` + mingw_path + process.env.PATH
+  const unix_path         = retronvim_bin + `:${home}/pixi/bin:${home}/.local/bin:${home}/Library/pnpm:${home}/Library/pnpm:` + process.env.PATH
+  const get_path          = os.platform() == "win32" ? win_path : unix_path
+  const get_yazi_file_one = os.platform() == "win32" ? yazi_file_one : null
+
+  let open_yazi = vscode.commands.registerCommand("retronvim.yazi", () => {
+    let curr_file = vscode.window.activeTextEditor?.document.uri.fsPath || ""
+
+    let yaziTerminal = vscode.window.createTerminal({
+      name: "Yazi",
+      shellPath: "yazi",
+      shellArgs: curr_file ? [curr_file] : [],
+      location: vscode.TerminalLocation.Editor,
+      env: {
+        BAT_THEME:"base16",
+        EDITOR: "code",
+        FZF_DEFAULT_OPTS: fzf_preview,
+        PATH: get_path,
+        VIMINIT: `lua vim.cmd.source([[${init_lua}]])`,
+        YAZI_CONFIG_HOME: yazi_config_home,
+        YAZI_FILE_ONE: get_yazi_file_one,
+        YAZI_CMD: 'ya emit quit',
+      },
+    })
+
+    // yaziTerminal.show(); // not required if vscode.TerminalLocation.Editor
+  })
+
+  let open_lazygit = vscode.commands.registerCommand("retronvim.lazygit", () => {
+
+    vscode.window.createTerminal({
+      name: "Lazygit",
+      shellPath: retronvim_bin + 'lazygit' + dotexe,
+      location: vscode.TerminalLocation.Editor,
+    })
+  })
+
+  context.subscriptions.push(open_yazi, open_lazygit);
 }
 
 exports.activate = activate;

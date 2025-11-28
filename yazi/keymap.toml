@@ -31,12 +31,13 @@ prepend_keymap = [
 	{ on = [ "f", "z" ], run = "find_do '^z' --smart", desc = "find ^z" },
 
 	# Filter
-	{ on = [ "F" ],      run = """ filter --smart                                          """,                  desc = "Filter" },
-	{ on = [ "g", "d" ], run = """ cd ~/Documents                                          """,                  desc = "Goto ~/Documents" },
-	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                          """,                  desc = "Goto ~/Downloads" },
-	{ on = [ "g", "r" ], run = """ shell -- ya emit cd "$(git rev-parse --show-toplevel)"  """,                  desc = "Goto git root" },
-	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never "$@"  """, for = "unix",    desc = "Bat open selected" },
-	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never  %*   """, for = "windows", desc = "Bat open selected" },
+	{ on = [ "F" ],      run = """ filter --smart                                                        """,                  desc = "Filter" },
+	{ on = [ "g", "d" ], run = """ cd ~/Documents                                                        """,                  desc = "Goto ~/Documents" },
+	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                                        """,                  desc = "Goto ~/Downloads" },
+	{ on = [ "g", "r" ], run = """ shell --                ya emit cd "$(git rev-parse --show-toplevel)" """, for = "unix",    desc = "Goto git root" },
+	{ on = [ "g", "r" ], run = """ shell -- powershell -c "ya emit cd  $(git rev-parse --show-toplevel)" """, for = "windows", desc = "Goto git root" }, # bracket e.g. [directory] and whitespaces e.g. /direc tory/ supported
+	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never "$@"                """, for = "unix",    desc = "Bat open selected" },
+	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never  %*                 """, for = "windows", desc = "Bat open selected" },
 
   # Navigation
 	{ on = [   "J"   ], run = "seek 1",    desc = "preview down 3 lines" },
@@ -55,10 +56,8 @@ prepend_keymap = [
 	{ on = [ '"' ],       run = "plugin bookmarks delete", desc = "bookmark delete" },
 
   # Shell
-	{ on = [ "s", "c" ], run = """ shell          -- code "$@"                                                     """, for = "unix",    desc = "vscode" },
-	{ on = [ "s", "c" ], run = """ shell          -- code  %*                                                      """, for = "windows", desc = "vscode" },
-	{ on = [ "s", "C" ], run = """ shell          -- google-chrome "$@" || google-chrome-stable "$@"               """, for = "unix",    desc = "chrome (to drag and drop)" }, # or copy file path into the browser to drag and drop from download icon (images are draggable, some files you need right-click to download)
-	{ on = [ "s", "C" ], run = """ shell          -- chrome  %*                                                    """, for = "windows", desc = "chrome (to drag and drop)" }, # or copy file path into the browser to drag and drop from download icon (images are draggable, some files you need right-click to download)
+	{ on = [ "s", "c" ], run = """ shell          -- google-chrome "$@" || google-chrome-stable "$@"               """, for = "unix",    desc = "chrome (to drag and drop)" }, # or copy file path into the browser to drag and drop from download icon (images are draggable, some files you need right-click to download)
+	{ on = [ "s", "c" ], run = """ shell          -- chrome  %*                                                    """, for = "windows", desc = "chrome (to drag and drop)" }, # or copy file path into the browser to drag and drop from download icon (images are draggable, some files you need right-click to download)
 	{ on = [ "s", "D" ], run = """ search fd                                                                       """,                  desc = "fd search" },
 	{ on = [ "s", "f" ], run = """ shell --block  -- nvim -c "lua Snacks.picker.files()"                           """,                  desc = "neovim fzf" },     # on current directory
 	{ on = [ "s", "g" ], run = """ shell --block  -- nvim -c "lua Snacks.picker.grep()"                            """,                  desc = "neovim ripgrep" }, # on current directory, type `.` dot to show all files
@@ -69,11 +68,13 @@ prepend_keymap = [
 	{ on = [ "s", "n" ], run = """ shell --block  -- nvim "$@"                                                     """, for = "unix",    desc = "neovim" },    # opens all selections
 	{ on = [ "s", "n" ], run = """ shell --block  -- nvim  %*                                                      """, for = "windows", desc = "neovim" },    # opens all selections
   { on = [ "s", "p" ], run = """ shell          -- zathura --config-dir="$ZATHURARC" "$@" &                      """, for = "unix",    desc = "zathura" },   # linux only, hyprland has builtin togglespecialworkspace alternative for swallow window
-	{ on = [ "s", "s" ], run = """ shell --block  -- zsh                                                           """, for = "unix",    desc = "zsh" },
-	{ on = [ "s", "s" ], run = """ shell --block  -- set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh """, for = "windows", desc = "msys2 zsh" },
+	{ on = [ "s", "s" ], run = """ shell          -- code "$@"                                                     """, for = "unix",    desc = "vscode" },
+	{ on = [ "s", "s" ], run = """ shell          -- code  %*                                                      """, for = "windows", desc = "vscode" },
 	{ on = [ "s", "t" ], run = """ search_do rg                                                                    """,                  desc = "tree view" },
 	{ on = [ "s", "v" ], run = """ shell --orphan -- vlc --avcodec-hw=none "$@"                                    """, for = "unix",    desc = "vlc (no gpu)" }, # disables hardware decoding which fixes no video output due to gpu drivers (--avcodec-hw=vdpau also works on archlinux or configure it in the GUI) see: https://wiki.archlinux.org/title/VLC_media_player
 	{ on = [ "s", "v" ], run = """ shell --orphan -- vlc --avcodec-hw=none %*                                      """, for = "windows", desc = "vlc (no gpu)" }, # disables hardware decoding which fixes no video output due to gpu drivers (--avcodec-hw=vdpau also works on archlinux or configure it in the GUI) see: https://wiki.archlinux.org/title/VLC_media_player
+	{ on = [ "s", "w" ], run = """ shell --block  -- zsh                                                           """, for = "unix",    desc = "zsh" },
+	{ on = [ "s", "w" ], run = """ shell --block  -- set "HOME=/c/Users/%USERNAME%" && msys2 -full-path -shell zsh """, for = "windows", desc = "zsh (msys2)" },
 	{ on = [ "s", "x" ], run = """ shell --orphan -- xdg-open "$1"                                                 """, for = "unix",    desc = "xdg-open" },  # linux only, hyprland has builtin togglespecialworkspace alternative for swallow wnidow
 	{ on = [ "s", "z" ], run = """ shell          -- 7z a -tzip $1.zip "$@"                                        """, for = "unix",    desc = "7zip selection" },
 	{ on = [ "s", "z" ], run = """ shell          -- 7z a -tzip %1.zip  %*                                         """, for = "windows", desc = "7zip selection" },
@@ -103,16 +104,17 @@ on = [ "s", "S" ]
 run = '''
   shell
   --block
+  -- powershell -noexit -c "set-psreadlineoption -editmode vi; function y() { yazi $PWD --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); };"
+'''
+for = "windows"
+desc = "powershell" # bracket e.g. [directory] and whitespaces e.g. /direc tory/ supported
+
+[[mgr.append_keymap]]
+on = [ "s", "W" ]
+run = '''
+  shell
+  --block
   -- bash -c 'y() { yazi --cwd-file=$HOME/.yazi; cd \"$(cat $HOME/.yazi)\"; }; export -f y; stty echo; bash -o vi'
 '''
 desc = "bash"
 
-[[mgr.append_keymap]]
-on = [ "s", "w" ]
-run = '''
-  shell
-  --block
-  -- powershell -noexit -c "set-psreadlineoption -editmode vi; function y() { yazi $PWD --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); };"
-'''
-for = "windows"
-desc = "powershell"

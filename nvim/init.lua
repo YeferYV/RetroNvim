@@ -114,17 +114,13 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  -- pacman -S net-tools
-  -- apt install net-tools
-  if vim.env.APPDATA then return end -- consolelog.nvim breaks neovim on windows
-
   map("n", "<leader>ll", "<cmd>ConsoleLogInspect<cr>", { desc = "ConsoleLog Inspect" })
   map("n", "<leader>lL", "<cmd>ConsoleLogInspectAll<cr>", { desc = "ConsoleLog Inspect All" })
   map("n", "<leader>l1", "<cmd>ConsoleLogReload<cr>", { desc = "ConsoleLog (Re)Start" })
 
   vim.opt.rtp:append(package_path .. "consolelog.nvim")
   local ok, consolelog = pcall(require, "consolelog")
-  if ok then
+  if ok and not vim.env.APPDATA then -- consolelog.nvim breaks neovim on windows
     consolelog.setup({ auto_enable = false, keymaps = { enabled = false } })
   end
 end
@@ -279,13 +275,7 @@ local ns = vim.api.nvim_create_namespace("flash")
 
 vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#c0caf5", bg = "#FF007C" })
 
-M.labels = {
-  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
-  "y", "z",
-  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
-  "Y", "Z"
-}
-
+M.labels = vim.split('abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ', '')
 M.results = {}
 M.cmdline = ""
 

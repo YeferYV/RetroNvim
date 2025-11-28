@@ -1,11 +1,17 @@
 # psreadline version 2.3 enables:    `Set-PSReadLineOption -PredictionSource History`
 # psreadline version 2.3 enabled by: `$env:psmodulepath="$HOME/.vscode/extensions/yeferyv.retronvim/powershell/modules;$env:psmodulepath"; powershell`
 
+$ESC = "$([char]0x1b)"
+
+function fix_path() { $args -replace "\[", "```[" -replace "\]", "```]"; } # cd to bracket directory for nextjs e.g. /[direc tory]/
+
+function clear_cmd() { write-host -NoNewline "${ESC}[A${ESC}[K"; }
+
 function ll() { eza --long --all --icons --group-directories-first $args; }
 
-function y() { yazi $PWD --cwd-file=$HOME/.yazi $args; cd $(cat $HOME/.yazi); write-host -NoNewline "`e[A`e[K"; }
+function y() { yazi $PWD --cwd-file=$HOME/.yazi $args; cd $(fix_path $(cat $HOME/.yazi)); clear_cmd  }
 
-function yy() { start-process -NoNewWindow -Wait yazi -ArgumentList $PWD,"--cwd-file=$HOME/.yazi"; cd $(cat $HOME/.yazi); } # start-process is a equivalent of </dev/tty
+function yy() { start-process -NoNewWindow -Wait yazi -WorkingDirectory $(fix_path $PWD) -ArgumentList "--cwd-file=$HOME/.yazi"; cd $(fix_path $(cat $HOME/.yazi)); } # start-process is a equivalent of </dev/tty
 
 function action() { [Microsoft.PowerShell.PSConsoleReadLine]::$args(); }
 
@@ -16,7 +22,6 @@ function fzf_history() { return (Get-Content $env:APPDATA\Microsoft\Windows\Powe
 # https://github.com/PowerShell/PSReadLine/issues/3159
 function cursor {
   # $esc = [char]27
-  $ESC = "$([char]0x1b)"
 
   if ($args[0] -eq 'command') {
     # write-host -nonewline "`e[2 q";     # not supported on powershell version 5

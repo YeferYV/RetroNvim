@@ -55,6 +55,16 @@
     "url": "https://github.com/YeferYV/RetroNvim/issues"
   },
   "contributes": {
+		"commands": [
+			{
+				"command": "retronvim.yazi",
+				"title": "RetroNvim: Yazi"
+			},
+			{
+				"command": "retronvim.lazygit",
+				"title": "RetroNvim: Lazygit"
+			}
+		],
     "themes": [
       {
         "label": "retronvim_base16",
@@ -158,6 +168,7 @@
         "powershell (retronvim)": {
           "path": "powershell",
           "args": [
+            "-noprofile",
             "-executionpolicy",
             "bypass",
             "-c",
@@ -681,22 +692,7 @@
             {
               "key": "g",
               "name": "Lazygit",
-              "command": "runCommands",
-              "args": {
-                "commands": [
-                  {
-                    "command": "workbench.action.createTerminalEditor"
-                  },
-                  {
-                    "command": "workbench.action.terminal.sendSequence",
-                    "args": [
-                      {
-                        "text": "lazygit; exit\n"
-                      }
-                    ]
-                  }
-                ]
-              }
+              "command": "retronvim.lazygit"
             },
             {
               "key": "j",
@@ -887,6 +883,20 @@
               "commands": [
                 "workbench.panel.output.focus",
                 "workbench.action.reloadWindow"
+              ]
+            },
+            {
+              "key": "g",
+              "name": "GUI keyboard repeat rate (Windows) ",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "control keyboard \n"
+                }
               ]
             },
             {
@@ -1177,7 +1187,7 @@
                   "text": "pixi global install go \n"
                 },
                 {
-                  "text": "pixi curl cht.sh/go \n"
+                  "text": "pixi exec curl cht.sh/go \n"
                 },
                 null,
                 {
@@ -2462,28 +2472,11 @@
           "key": "y",
           "name": "+File Manager (alt+y reopens)",
           "bindings": [
-            {
-              "key": "y",
-              "name": "open and export `y` command (on new terminal)",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); }; y; clear\n"
-                }
-              ]
-            },
-            {
-              "key": "O",
-              "name": "open y='cd when yazi exits, press q to exit yazi' (on current terminal)",
-              "command": "workbench.action.terminal.sendSequence",
-              "args": {
-                "text": "y\n"
-              }
-            },
+						{
+							"key": "y",
+							"name": "yazi file manager",
+							"command": "retronvim.yazi"
+						},
             {
               "key": "Y",
               "name": "print sequence to export `y` command (on current terminal)",
