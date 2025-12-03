@@ -31,13 +31,13 @@ prepend_keymap = [
 	{ on = [ "f", "z" ], run = "find_do '^z' --smart", desc = "find ^z" },
 
 	# Filter
-	{ on = [ "F" ],      run = """ filter --smart                                                        """,                  desc = "Filter" },
-	{ on = [ "g", "d" ], run = """ cd ~/Documents                                                        """,                  desc = "Goto ~/Documents" },
-	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                                        """,                  desc = "Goto ~/Downloads" },
-	{ on = [ "g", "r" ], run = """ shell --                ya emit cd "$(git rev-parse --show-toplevel)" """, for = "unix",    desc = "Goto git root" },
-	{ on = [ "g", "r" ], run = """ shell -- powershell -c "ya emit cd  $(git rev-parse --show-toplevel)" """, for = "windows", desc = "Goto git root" }, # bracket e.g. [directory] and whitespaces e.g. /direc tory/ supported
-	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never "$@"                """, for = "unix",    desc = "Bat open selected" },
-	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never  %*                 """, for = "windows", desc = "Bat open selected" },
+	{ on = [ "F" ],      run = """ filter --smart                                                                           """,                  desc = "Filter" },
+	{ on = [ "g", "d" ], run = """ cd ~/Documents                                                                           """,                  desc = "Goto ~/Documents" },
+	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                                                           """,                  desc = "Goto ~/Downloads" },
+	{ on = [ "g", "r" ], run = """ shell --                           ya emit cd "$(git         rev-parse --show-toplevel)" """, for = "unix",    desc = "Goto git root" },
+	{ on = [ "g", "r" ], run = """ shell -- powershell -noprofile -c "ya emit cd  $(git -C %CD% rev-parse --show-toplevel)" """, for = "windows", desc = "Goto git root" }, # bracket e.g. [directory] and whitespaces e.g. /direc tory/ supported
+	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never "$@"                                   """, for = "unix",    desc = "Bat open selected" },
+	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never  %*                                    """, for = "windows", desc = "Bat open selected" },
 
   # Navigation
 	{ on = [   "J"   ], run = "seek 1",    desc = "preview down 3 lines" },
@@ -104,7 +104,7 @@ on = [ "s", "S" ]
 run = '''
   shell
   --block
-  -- powershell -noexit -c "set-psreadlineoption -editmode vi; function y() { yazi $PWD --cwd-file=$HOME/.yazi; cd $(cat $HOME/.yazi); };"
+  -- powershell -noexit -c " cd $((echo %CD%) -replace '\[', '`[' -replace '\]', '`]'); set-psreadlineoption -editmode vi "
 '''
 for = "windows"
 desc = "powershell" # bracket e.g. [directory] and whitespaces e.g. /direc tory/ supported

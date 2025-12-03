@@ -6,13 +6,13 @@ show_symlink   = false
 
 [opener]
 play = [
-	{ run = """ "vlc "$@" """, orphan = true, for = "unix" },
-	{ run = """ "vlc  %*  """, orphan = true, for = "windows" }
+	{ run = """ vlc "$@" """, orphan = true, for = "unix" },
+	{ run = """ vlc  %*  """, orphan = true, for = "windows" }
 ]
 edit = [
-	# { run = """  %EDITOR%  %*  2>nul  ||  nvim  %*  &  powershell  -noprofile  -c   "$env:YAZI_CMD" """, block  = true, desc = "$EDITOR", for = "windows" },
-	{ run = """ powershell -noprofile -c "try { & $env:EDITOR %* } catch { & nvim %* } $env:YAZI_CMD" """, block  = true, desc = "$EDITOR", for = "windows" },
-	{ run = """ ${EDITOR:-nvim} "$@";                                                      $YAZI_CMD  """, block  = true, desc = "$EDITOR", for = "unix" },
-	{ run = """ code  %*                                                                              """, orphan = true, desc = "vscode",  for = "windows" },
-	{ run = """ code "$@"                                                                             """, orphan = true, desc = "vscode",  for = "unix" },
+	# { run = """  %EDITOR%  %*  2>nul  ||  nvim  %*  &  powershell  -noprofile  -c    "try { iex $env:YAZI_CMD } catch { exit 0 }" """, block  = true, desc = "$EDITOR", for = "windows" },
+	{ run = """ powershell -noprofile -c "try { & $env:EDITOR %* } catch { & nvim %* }; try { iex $env:YAZI_CMD } catch { exit 0 }" """, block  = true, desc = "$EDITOR", for = "windows" },
+	{ run = """ ${EDITOR:-nvim} "$@";                                                                 $YAZI_CMD                     """, block  = true, desc = "$EDITOR", for = "unix" },
+	{ run = """ code  %*                                                                                                            """, orphan = true, desc = "vscode",  for = "windows" },
+	{ run = """ code "$@"                                                                                                           """, orphan = true, desc = "vscode",  for = "unix" },
 ]
