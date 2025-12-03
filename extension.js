@@ -1,32 +1,32 @@
-const vscode = require('vscode');
-const path = require('path');
-const os = require('os');
-const process = require('process');
-const fs = require('fs');
+const vscode        = require('vscode');
+const path          = require('path');
+const os            = require('os');
+const process       = require('process');
+const fs            = require('fs');
 const child_process = require('child_process');
 
 function setNeovimPath(homeExtension) {
   // Construct the dynamic path
-  const homeDirectory = os.homedir();
-  const yaziBookmarkPath = path.join(homeDirectory, 'appdata/roaming/yazi/state');
-  const nerdfontPath = path.join(homeExtension, '/bin/nerd-fonts/patched-fonts/FiraCode');
-  const nerdfontPathLinux = path.join(homeDirectory, '.local/share/fonts/FiraCode');
-  const nerdfontPathMacos = path.join(homeDirectory, 'Library/Fonts/FiraCode');
+  const homeDirectory       = os.homedir();
+  const yaziBookmarkPath    = path.join(homeDirectory, 'appdata/roaming/yazi/state');
+  const nerdfontPath        = path.join(homeExtension, '/bin/nerd-fonts/patched-fonts/FiraCode');
+  const nerdfontPathLinux   = path.join(homeDirectory, '.local/share/fonts/FiraCode');
+  const nerdfontPathMacos   = path.join(homeDirectory, 'Library/Fonts/FiraCode');
   const nerdfontPathWindows = path.join(homeDirectory, 'AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf');
-  const nvimPath = path.join(homeDirectory, '/.vscode/extensions/yefery.retronvim');
-  const nvimPathLinux = path.join(homeExtension, '/bin/env/bin/nvim');
-  const nvimPathMacos = path.join(homeExtension, '/bin/env/bin/nvim');
-  const nvimPathWindows = path.join(homeExtension, '/bin/windows/envs/windows/Library/bin/nvim.exe');
-  const pixiPathLinux = path.join(homeExtension, '/bin/env/bin/pixi');
-  const pixiPathMacos = path.join(homeExtension, '/bin/env/bin/pixi');
-  const pixiPathWindows = path.join(homeExtension, '/bin/windows/envs/windows/library/bin/pixi.exe');
-  const initDotLuaPath = path.join(homeExtension, '/nvim/init.lua');
+  const nvimPath            = path.join(homeDirectory, '/.vscode/extensions/yefery.retronvim');
+  const nvimPathUnix        = path.join(homeExtension, '/bin/env/bin/nvim');
+  const nvimPathWindows     = path.join(homeExtension, '/bin/windows/envs/windows/Library/bin/nvim.exe');
+  const gitPathUnix         = path.join(homeExtension, '/bin/env/bin/git');
+  const gitPathWindows      = path.join(homeExtension, '/bin/windows/envs/windows/Library/mingw64/bin/git.exe');
+  const initDotLuaPath      = path.join(homeExtension, '/nvim/init.lua');
 
   if (os.platform() == "win32") {
-    var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
     fs.mkdir(yaziBookmarkPath, { recursive: true }, (err) => { if (err) { vscode.window.showErrorMessage(`${err.message}`) }} );
+    var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
+    var gitPath = gitPathWindows
   } else {
     var pixiPath = "./.pixi/envs/default/bin/python"
+    var gitPath = gitPathUnix
   }
 
   // install locally nerd-fonts
@@ -52,13 +52,13 @@ function setNeovimPath(homeExtension) {
   }
 
   // decompress terminal dependencies
-  if (os.platform() == "win32" && fs.existsSync(pixiPathWindows) === false) {
+  if (os.platform() == "win32" && fs.existsSync(gitPathWindows) === false) {
     child_process.exec('powershell -c "try { cd '+ homeExtension +'/bin; ./7zr.exe x windows.7z; }" catch {}')
   }
-  if (os.platform() == "linux" && fs.existsSync(pixiPathLinux) === false) {
+  if (os.platform() == "linux" && fs.existsSync(gitPathUnix) === false) {
     child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
   }
-  if (os.platform() == "darwin" && fs.existsSync(pixiPathMacos) === false) {
+  if (os.platform() == "darwin" && fs.existsSync(gitPathUnix) === false) {
     child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
   }
 
@@ -67,17 +67,18 @@ function setNeovimPath(homeExtension) {
 
   // config.update("telemetry.telemetryLevel", "off", vscode.ConfigurationTarget.Global)
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
-  // config.update("terminal.integrated.windowsUseConptyDll", vscode.ConfigurationTarget.Global) // for yazi image preview on windows but sometimes yazi refuses to open
-  config.update( "extensions.experimental.affinity", { "asvetliakov.vscode-neovim": 1, "vscodevim.vim": 2 }, vscode.ConfigurationTarget.Global);
+  config.update("extensions.experimental.affinity", { "asvetliakov.vscode-neovim": 1, "vscodevim.vim": 2 }, vscode.ConfigurationTarget.Global);
+  config.update("git.path", gitPath, vscode.ConfigurationTarget.Global)
   config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)
+  config.update("terminal.integrated.windowsUseConptyDll", true, vscode.ConfigurationTarget.Global) // for yazi image preview on windows but sometimes yazi refuses to open
   config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
   config.update("window.customMenuBarAltFocus", false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
   config.update("windsurf.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global)
   config.update("windsurf.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global)
   config.update("extensions.gallery.itemUrl", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
   config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace fo rcursor
-  config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathLinux, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathMacos, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathUnix, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathUnix, vscode.ConfigurationTarget.Global)
   config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
 	config.update('vscode-neovim.neovimInitVimPaths.linux', initDotLuaPath, vscode.ConfigurationTarget.Global)
 	config.update('vscode-neovim.neovimInitVimPaths.darwin', initDotLuaPath, vscode.ConfigurationTarget.Global)
