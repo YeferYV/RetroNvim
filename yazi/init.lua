@@ -1,5 +1,6 @@
-require("session"):setup { sync_yanked = true }
 require("bookmarks"):setup()
+require("session"):setup { sync_yanked = true }
+require("smart-enter"):setup { open_multi = true }
 
 Status:children_add(function(self)
   local h = self._current.hovered

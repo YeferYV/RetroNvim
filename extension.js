@@ -47,9 +47,7 @@ function setNeovimPath(homeExtension) {
   }
 
   // remove ~/.vscode/extensions/yefery.retronvim created by retronvim/nvim/init.lua when retronvim extensions was not installed previously
-  if (fs.existsSync(nvimPath)) {
-    fs.rmSync(nvimPath, { recursive: true })
-  }
+  fs.existsSync(nvimPath) && fs.rmSync(nvimPath, { recursive: true })
 
   // decompress terminal dependencies
   if (os.platform() == "win32" && fs.existsSync(gitPathWindows) === false) {
@@ -80,9 +78,9 @@ function setNeovimPath(homeExtension) {
   config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathUnix, vscode.ConfigurationTarget.Global)
   config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathUnix, vscode.ConfigurationTarget.Global)
   config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
-	config.update('vscode-neovim.neovimInitVimPaths.linux', initDotLuaPath, vscode.ConfigurationTarget.Global)
-	config.update('vscode-neovim.neovimInitVimPaths.darwin', initDotLuaPath, vscode.ConfigurationTarget.Global)
-	config.update('vscode-neovim.neovimInitVimPaths.win32', initDotLuaPath, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimInitVimPaths.linux', initDotLuaPath, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimInitVimPaths.darwin', initDotLuaPath, vscode.ConfigurationTarget.Global)
+  config.update('vscode-neovim.neovimInitVimPaths.win32', initDotLuaPath, vscode.ConfigurationTarget.Global)
 }
 
 // You can call this function in your extension's activate function or based on certain events
@@ -104,6 +102,7 @@ function activate(context) {
   const init_lua          = path.join(context.extensionPath, '/nvim/init.lua')
   const yazi_config_home  = path.join(context.extensionPath, '/yazi')
   const yazi_file_one     = path.join(context.extensionPath, '/bin/windows/envs/windows/Library/usr/bin/file.exe')
+  const yazi_choosen_file = path.join(home, '/.yazi')
   const mingw_path        = path.join(context.extensionPath, '/bin/windows/envs/windows/Library/mingw64/bin;')
   const win_path          = retronvim_bin + `;${home}\\.pixi\\bin;${home}\\.local\\bin;${home}appdata\\local\\pnpm;` + mingw_path + process.env.PATH
   const unix_path         = retronvim_bin + `:${home}/pixi/bin:${home}/.local/bin:${home}/Library/pnpm:${home}/Library/pnpm:` + process.env.PATH
@@ -112,25 +111,42 @@ function activate(context) {
 
   let open_yazi = vscode.commands.registerCommand("retronvim.yazi", () => {
     let curr_file = vscode.window.activeTextEditor?.document.uri.fsPath || ""
+    let yazi_args = curr_file ? ["--chooser-file", yazi_choosen_file, curr_file] : ["--chooser-file", yazi_choosen_file]
+
+    fs.existsSync(yazi_choosen_file) && fs.rmSync(yazi_choosen_file)
 
     let yaziTerminal = vscode.window.createTerminal({
       name: "Yazi",
       shellPath: "yazi",
-      shellArgs: curr_file ? [curr_file] : [],
+      shellArgs: yazi_args,
       location: vscode.TerminalLocation.Editor,
       env: {
-        BAT_THEME:"base16",
-        EDITOR: "code",
+        // EDITOR: "code",
+        // YAZI_CMD: 'ya emit quit',
+        BAT_THEME: "base16",
         FZF_DEFAULT_OPTS: fzf_preview,
         PATH: get_path,
         VIMINIT: `lua vim.cmd.source([[${init_lua}]])`,
         YAZI_CONFIG_HOME: yazi_config_home,
         YAZI_FILE_ONE: get_yazi_file_one,
-        YAZI_CMD: 'ya emit quit',
       },
     })
 
     // yaziTerminal.show(); // not required if vscode.TerminalLocation.Editor
+
+    // https://github.com/dautroc/yazi-vscode/blob/main/src/extension.ts
+    const closeSubscription = vscode.window.onDidCloseTerminal(async (terminal) => {
+      if (terminal === yaziTerminal && fs.existsSync(yazi_choosen_file)) {
+
+          const filePaths = fs.readFileSync(yazi_choosen_file, "utf8").trim().split('\n')
+
+          for (const filePath of filePaths) {
+            const doc = await vscode.workspace.openTextDocument(filePath);
+            await vscode.window.showTextDocument(doc, { preview: false });
+          }
+      }
+      closeSubscription.dispose();
+    })
   })
 
   let open_lazygit = vscode.commands.registerCommand("retronvim.lazygit", () => {
