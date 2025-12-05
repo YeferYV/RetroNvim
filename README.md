@@ -231,6 +231,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |          `shift+space`           |     `n`     | show whichkey menu (Windows, Linux, Mac)              |    vscode     |
 |           `alt+space`            |     `n`     | show whichkey menu (Linux, Mac)                       |    vscode     |
 |             `space`              |     `n`     | show whichkey menu                                    |    neovim     |
+|             `alt+o`              | `n`,`i`,`x` | yazi file manager (selection is open with vscode)     |    vscode     |
 |             `alt+c`              |     `i`     | copy                                                  | vscode/neovim |
 |             `alt+v`              |     `i`     | paste                                                 | vscode/neovim |
 |               `jk`               |     `i`     | enter vim normal mode                                 | vscode/neovim |

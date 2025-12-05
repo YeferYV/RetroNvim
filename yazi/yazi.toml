@@ -10,9 +10,8 @@ play = [
 	{ run = """ vlc  %*  """, orphan = true, for = "windows" }
 ]
 edit = [
-	# { run = """  %EDITOR%  %*  2>nul  ||  nvim  %*  &  powershell  -noprofile  -c    "try { iex $env:YAZI_CMD } catch { exit 0 }" """, block  = true, desc = "$EDITOR", for = "windows" },
-	{ run = """ powershell -noprofile -c "try { & $env:EDITOR %* } catch { & nvim %* }; try { iex $env:YAZI_CMD } catch { exit 0 }" """, block  = true, desc = "$EDITOR", for = "windows" },
-	{ run = """ ${EDITOR:-nvim} "$@";                                                                 $YAZI_CMD                     """, block  = true, desc = "$EDITOR", for = "unix" },
-	{ run = """ code  %*                                                                                                            """, orphan = true, desc = "vscode",  for = "windows" },
-	{ run = """ code "$@"                                                                                                           """, orphan = true, desc = "vscode",  for = "unix" },
+	{ run = """  %EDITOR%  %*  2>nul  ||  nvim  %*  &  %YAZI_CMD%  2>nul  &  exit  0  """, block  = true, desc = "$EDITOR", for = "windows" },
+	{ run = """ ${EDITOR:-nvim} "$@";                  $YAZI_CMD                      """, block  = true, desc = "$EDITOR", for = "unix" },
+	{ run = """ code  %*                                                              """, orphan = true, desc = "vscode",  for = "windows" },
+	{ run = """ code "$@"                                                             """, orphan = true, desc = "vscode",  for = "unix" },
 ]

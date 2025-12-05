@@ -2470,11 +2470,11 @@
         },
         {
           "key": "y",
-          "name": "+File Manager (alt+y reopens)",
+          "name": "+File Manager",
           "bindings": [
 						{
 							"key": "y",
-							"name": "yazi file manager",
+							"name": "yazi file manager (shortcut alt+o or alt+y)",
 							"command": "retronvim.yazi"
 						},
             {
@@ -2482,7 +2482,7 @@
               "name": "print sequence to export `y` command (on current terminal)",
               "command": "workbench.action.terminal.sendSequence",
               "args": {
-                "text": "function y() { yazi --cwd-file=$HOME/.yazi \"$@\"; cd $(cat $HOME/.yazi); }"
+                "text": "function y { yazi --cwd-file=$HOME/.yazi \"$@\"; cd \"$(cat $HOME/.yazi)\"; } # on powershell [directory] requires fix_path"
               }
             },
             {
@@ -2607,7 +2607,7 @@
     },
     "keybindings": [
       {
-        "name": "------------------------------------------- editor keymaps -------------------------------------------"
+        "name": "---------------------------------------- file explorer keymaps ---------------------------------------"
       },
       {
         "key": "shift+u",
@@ -2770,6 +2770,9 @@
         "when": "listFocus && !inputFocus"
       },
       {
+        "name": "------------------------------------------- editor keymaps -------------------------------------------"
+      },
+      {
         "key": "ctrl+\\",
         "command": "workbench.action.togglePanel"
       },
@@ -2780,6 +2783,10 @@
       {
         "key": "alt+space",
         "command": "whichkey.show"
+      },
+      {
+        "key": "alt+o",
+        "command": "retronvim.yazi"
       },
       {
         "key": "alt+c",
