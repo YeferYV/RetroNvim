@@ -51,6 +51,7 @@ Set-PSReadLineKeyHandler -key alt+h  -Function ViCommandMode
 Set-PSReadlineKeyHandler -key tab    -Function MenuComplete
 
 $env:RETRONVIM_PATH=(Get-ChildItem -Path "$HOME\.*\extensions\yeferyv.retronvim*" | Select-Object -First 1).FullName
+$env:RETRONVIM_BIN="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library"
 $env:BAT_THEME="base16"
 $env:EDITOR="nvim"
 $env:FZF_DEFAULT_OPTS="--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'"
@@ -59,9 +60,9 @@ $env:HOME=$env:USERPROFILE # fot ~/.gitconfig
 $env:LESS="--ignore-case"                         # bat search case insensitive
 $env:LESSKEYIN="$env:RETRONVIM_PATH/yazi/lesskey" # bat keymaps
 $env:LESSHISTFILE="-"                             # bat no history
-$env:PATH="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin;$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\mingw64\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\.local\bin;${env:PATH};"
+$env:MSYS2_BIN="$env:HOME\scoop\apps\msys2\current\usr\bin"
+$env:PATH="$env:RETRONVIM_BIN\bin;$env:RETRONVIM_BIN\usr\bin;$env:RETRONVIM_BIN\mingw64\bin;$env:MSYS2_BIN;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\.local\bin;${env:PATH};"
 $env:PNPM_HOME="$HOME/appdata/local/pnpm"
-$env:RETRONVIM_BIN="$env:RETRONVIM_PATH\bin\windows\envs\windows\Library\bin"
 $env:STARSHIP_CONFIG="$env:RETRONVIM_PATH/powershell/starship.toml"
 $env:SHELL="powershell"
 $env:VIMINIT="lua vim.cmd.source(vim.env.RETRONVIM_PATH .. [[/nvim/init.lua]])"

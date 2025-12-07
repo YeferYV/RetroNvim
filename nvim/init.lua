@@ -193,6 +193,39 @@ if not vim.g.vscode then
   end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+
+if not vim.g.vscode then
+  vim.opt.rtp:append(package_path .. "windsurf.nvim")
+  vim.opt.rtp:append(package_path .. "plenary.nvim")
+  local ok, codeium = pcall(require, "codeium")
+
+  if ok then
+    codeium.setup({
+      idle_delay = 50,
+      enable_cmp_source = false,
+      virtual_text = {
+        enabled = true,
+        key_bindings = {
+          accept = "<A-l>",
+          accept_word = "<A-j>",
+          accept_line = "<A-k>",
+          next = "<A-]>",
+          prev = "<A-[>",
+        }
+      },
+      tools = {
+        uuidgen = vim.env.APPDATA and vim.env.HOME .. "\\scoop\\apps\\msys2\\current\\usr\\bin\\uuidgen.exe" or 'uuidgen',
+        curl = vim.env.APPDATA and vim.env.HOME .. "\\scoop\\apps\\msys2\\current\\usr\\bin\\curl.exe" or 'curl',
+        gzip = vim.env.APPDATA and vim.env.HOME .. "\\scoop\\apps\\msys2\\current\\usr\\bin\\gzip.exe" or 'gzip'
+      },
+    })
+
+    -- https://github.com/Exafunction/windsurf.nvim/issues/168
+    require('codeium.util').get_newline = function() return "\n" end
+  end
+end
+
 -- ╭──────╮
 -- │ Opts │
 -- ╰──────╯
@@ -213,6 +246,7 @@ vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to compl
 vim.opt.winborder = 'rounded'     -- MiniCompletion's info and signature border
 vim.opt.wrap = false              -- display lines as one long line
 vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
+-- vim.opt.pumheight = 5             -- cmdline completion menu height
 
 if not vim.g.vscode then
   vim.opt.cmdheight = 0                       -- more space in the neovim command line for displaying messages
@@ -647,6 +681,7 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
+  vim.api.nvim_set_hl(0, "CodeiumSuggestion", { fg = "#444b6a" })
   vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#787c99" })
   vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = "#a9b1d6" })
   vim.api.nvim_set_hl(0, "SnacksPickerDirectory", { fg = "#5555cc" })
@@ -741,6 +776,7 @@ if not vim.g.vscode then
     }
   })
 
+  -- require('mini.cmdline').setup() -- FIXME: not closing popup when using with M.flash
   require('mini.completion').setup()
   require('mini.cursorword').setup()
   require('mini.icons').setup()
@@ -1188,10 +1224,27 @@ if not vim.g.vscode then
     end,
     { desc = "sidekick.nvim install" }  -- Gemini is free and unlimited
   )
+  map(
+    "n",
+    "<leader>Ew",
+    function()
+      if vim.env.APPDATA and vim.fn.executable('msys2') == 0 then
+        sendSequence("scoop install msys2; msys2")
+      end
+
+      vim.pack.add({{ src = 'https://github.com/Exafunction/windsurf.nvim', checkout = "821b570b526dbb05b57aa4ded578b709a704a38a" }})
+      vim.pack.add({{ src = 'https://github.com/nvim-lua/plenary.nvim', checkout = "b9fd5226c2f76c951fc8ed5923d85e4de065e509" }})
+
+      vim.notify("relaunch neovim")
+      vim.notify("to login to windsurf run ---> :Codeium auth")
+    end,
+    { desc = "windsurf.nvim install" }
+  )
   map("n", "<leader>EC", function() vim.pack.del({"consolelog.nvim"}) vim.notify("relaunch nvim") end, { desc = "consolelog.nvim uninstall" })
   map("n", "<leader>EL", function() vim.pack.del({"copilot-lsp"}) vim.notify("relaunch nvim") end, { desc = "copilot-lsp uninstall" })
   map("n", "<leader>EM", function() vim.pack.del({"supermaven-nvim"}) vim.notify("relaunch nvim") end, { desc = "supermaven-nvim uninstall" })
   map("n", "<leader>ES", function() vim.pack.del({"sidekick.nvim"}) vim.notify("relaunch nvim") end, { desc = "sidekick.nvim uninstall" })
+  map("n", "<leader>EW", function() vim.pack.del({"windsurf.nvim", "plenary.nvim"}) vim.notify("relaunch nvim") end, { desc = "windsurf.nvim uninstall" })
   map("n", "<leader>EI", function() vim.print(vim.inspect(vim.pack.get())) end, { desc = "installed extensions" })
 
   ------------------------------------------------------------------------------------------------------------------------

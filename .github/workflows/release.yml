@@ -72,7 +72,7 @@ jobs:
             cd       bin/pixi_pack
             pixi init
             pixi global install pixi-pack=0.7.1
-            pixi add  --platform osx-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.55.0 less=679 pixi=0.56.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 # nvim=0.11.2 complains about treesitter for lua filetype
+            pixi add  --platform osx-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 git=2.49.0 lazygit=0.57.0 less=679 pixi=0.60.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 # nvim=0.11.2 complains about treesitter for lua filetype
             pixi-pack --platform osx-64 --create-executable
             cp    environment.sh ..
             cd ..
@@ -95,7 +95,7 @@ jobs:
             cd       bin/pixi_pack
             pixi init
             pixi global install pixi-pack=0.7.1
-            pixi add  --platform linux-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 git=2.49.0 lazygit=0.55.0 less=679 pixi=0.56.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 zsh=5.9 # nvim=0.11.2 complains about treesitter for lua filetype
+            pixi add  --platform linux-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 git=2.49.0 lazygit=0.57.0 less=679 pixi=0.60.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 zsh=5.9 # nvim=0.11.2 complains about treesitter for lua filetype
             pixi-pack --platform linux-64 --create-executable
             cp    environment.sh ..
             cd ..
@@ -114,13 +114,13 @@ jobs:
           curl  -L https://github.com/ip7z/7zip/releases/download/24.09/7zr.exe                                                --create-dirs --output bin/7zr.exe
           curl  -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                                   --create-dirs --output /tmp/nvim.zip              && unzip /tmp/nvim.zip       -d /tmp/nvim         && cp -r /tmp/nvim/nvim-win64/*                                     bin/windows/envs/windows/Library
           curl  -L https://github.com/jtroo/kanata/releases/download/v1.10.0/windows-binaries-x64-v1.10.0.zip                  --create-dirs --output /tmp/kanata.zip            && unzip /tmp/kanata.zip     -d /tmp/kanata       && cp -r /tmp/kanata/kanata_windows_tty_winIOv2_cmd_allowed_x64.exe bin/windows/envs/windows/Library/bin/kanata.exe
-          curl  -L https://github.com/prefix-dev/pixi/releases/download/v0.56.0/pixi-x86_64-pc-windows-msvc.zip                --create-dirs --output /tmp/pixi.zip              && unzip /tmp/pixi.zip       -d /tmp/pixi         && cp -r /tmp/pixi/pixi.exe                                         bin/windows/envs/windows/Library/bin/pixi.exe
+          curl  -L https://github.com/prefix-dev/pixi/releases/download/v0.60.0/pixi-x86_64-pc-windows-msvc.zip                --create-dirs --output /tmp/pixi.zip              && unzip /tmp/pixi.zip       -d /tmp/pixi         && cp -r /tmp/pixi/pixi.exe                                         bin/windows/envs/windows/Library/bin/pixi.exe
           curl  -L https://github.com/git-for-windows/git/releases/download/v2.50.0.windows.1/MinGit-2.50.0-busybox-64-bit.zip --create-dirs --output /tmp/git.zip               && unzip /tmp/git.zip        -d /tmp/git          && cp -r /tmp/git/*                                                 bin/windows/envs/windows/Library
           curl  -L https://cdn.powershellgallery.com/packages/psreadline.2.4.2-beta2.nupkg                                     --create-dirs --output /tmp/psreadline.zip        && unzip /tmp/psreadline.zip -d /tmp/psreadline   && cp -r /tmp/psreadline/*                                          powershell/modules/psreadline
 
           (
             export PIXI_HOME="$PWD/bin/windows"
-            pixi global install --platform win-64 bat=0.25.0 eza=0.21.4 fzf=0.62.0 lazygit=0.55.0 less=679 m2-file=5.46.2 starship=1.22.1 ripgrep=14.1.1 yazi=25.5.31 7zip=24.08 --environment windows
+            pixi global install --platform win-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 lazygit=0.57.0 less=679 m2-file=5.46.2 starship=1.22.1 ripgrep=14.1.1 yazi=25.5.31 7zip=24.08 --environment windows
             mv bin/windows/envs/windows/bin/{bat.exe,less.exe,lesskey.exe,rg.exe,starship.exe} bin/windows/envs/windows/Library/bin/
             rm bin/windows/envs/windows/Library/bin/nvim.pdb # shipped in nightly builds
             cd bin
