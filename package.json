@@ -1428,7 +1428,7 @@
                   "text": "code --install-extension Google.geminicodeassist --install-extension MarsCode.marscode-extension          --install-extension sourcegraph.amp          --install-extension AbdulkaderSafi.file-explorer       \n"
                 },
                 {
-                  "text": "code --install-extension mathematic.vscode-pdf                                                                                                                                                                \n"
+                  "text": "code --install-extension mathematic.vscode-pdf   --install-extension supermaven.supermaven                                                                                                                    \n"
                 }
               ]
             },

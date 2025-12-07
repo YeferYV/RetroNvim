@@ -166,16 +166,17 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  map("i", "<A-l>", function() require("neocodeium").accept() end)
-  map("i", "<A-j>", function() require("neocodeium").accept_word() end)
-  map("i", "<A-k>", function() require("neocodeium").accept_line() end)
-  map("i", "<A-]>", function() require("neocodeium").cycle_or_complete() end)
-  map("i", "<A-[>", function() require("neocodeium").cycle_or_complete(-1) end)
+  vim.opt.rtp:append(package_path .. "supermaven-nvim")
+  local ok, supermaven = pcall(require, "supermaven-nvim")
 
-  vim.opt.rtp:append(package_path .. "neocodeium")
-  local ok, neocodeium = pcall(require, "neocodeium")
   if ok then
-    neocodeium.setup()
+    supermaven.setup {
+      keymaps = {
+        accept_suggestion = "<A-l>",
+        clear_suggestion = "<A-k>",
+        accept_word = "<A-j>",
+      }
+    }
   end
 end
 
@@ -646,7 +647,6 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "NeoCodeiumSuggestion", { fg = "#444b6a" })
   vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#787c99" })
   vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = "#a9b1d6" })
   vim.api.nvim_set_hl(0, "SnacksPickerDirectory", { fg = "#5555cc" })
@@ -1127,10 +1127,10 @@ if not vim.g.vscode then
 
       vim.pack.add({{ src = 'https://github.com/chriswritescode-dev/consolelog.nvim', version = 'a7fe38cbef59d78f669744765f6d8b7b14b27d9a' }})
 
-      vim.notify("relaunch nvim")
       vim.notify("only available for js, jsx, ts, tsx files")
       vim.notify("consolelog.nvim requires (debian) ------> apt install net-tools")
       vim.notify("consolelog.nvim requires (archlinux) ---> pacman -S net-tools")
+      vim.notify("relaunch neovim")
     end,
     { desc = "consolelog.nvim install" }
   )
@@ -1150,20 +1150,29 @@ if not vim.g.vscode then
 
       vim.pack.add({{ src = 'https://github.com/copilotlsp-nvim/copilot-lsp', version = '884034b23c3716d55b417984ad092dc2b011115b' }})
 
-      vim.notify("relaunch nvim after installation to login to copilot")
+      vim.notify("relaunch neovim after installation to login to copilot")
     end,
     { desc = "copilot-lsp install" } -- Copilot-NES is free and unlimited
   )
   map(
     "n",
-    "<leader>En",
+    "<leader>Em",
     function()
-      vim.pack.add({{ src = 'https://github.com/monkoose/neocodeium', version = 'bfe790d78e66adaa95cb50a8c75c64a752336e9c' }})
 
-      vim.notify("relaunch nvim")
-      vim.notify("to login to windsurf run ---> :NeoCodeium auth")
+      local sm_agent_path = vim.env.HOME .. "\\.supermaven\\binary\\v20\\windows-x86_64\\sm-agent.exe"
+      local download_url = "https://supermaven-public.s3.amazonaws.com/sm-agent/v2/8/windows-msvc/x86_64/sm-agent.exe"
+
+      -- download supermaven executable manually since powershell v5 can't download it
+      if (vim.fn.has('win32') == 1 and vim.fn.executable(sm_agent_path) == 0) then
+        sendSequence('pixi exec curl --create-dirs --output "' .. sm_agent_path .. '" "' .. download_url .. '" ')
+      end
+
+      vim.pack.add({{ src = "https://github.com/supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }})
+
+      vim.notify("requires a ramdom ID ---> :SupermavenUseFree")
+      vim.notify("relaunch neovim")
     end,
-    { desc = "neocodeium install" }
+    { desc = "supermaven-nvim install" }
   )
   map(
     "n",
@@ -1175,13 +1184,13 @@ if not vim.g.vscode then
 
       vim.pack.add({{ src = 'https://github.com/folke/sidekick.nvim', version = 'v2.1.0' }})
 
-      vim.notify("relaunch nvim")
+      vim.notify("relaunch neovim")
     end,
     { desc = "sidekick.nvim install" }  -- Gemini is free and unlimited
   )
   map("n", "<leader>EC", function() vim.pack.del({"consolelog.nvim"}) vim.notify("relaunch nvim") end, { desc = "consolelog.nvim uninstall" })
   map("n", "<leader>EL", function() vim.pack.del({"copilot-lsp"}) vim.notify("relaunch nvim") end, { desc = "copilot-lsp uninstall" })
-  map("n", "<leader>EN", function() vim.pack.del({"neocodeium"}) vim.notify("relaunch nvim") end, { desc = "neocodeium uninstall" })
+  map("n", "<leader>EM", function() vim.pack.del({"supermaven-nvim"}) vim.notify("relaunch nvim") end, { desc = "supermaven-nvim uninstall" })
   map("n", "<leader>ES", function() vim.pack.del({"sidekick.nvim"}) vim.notify("relaunch nvim") end, { desc = "sidekick.nvim uninstall" })
   map("n", "<leader>EI", function() vim.print(vim.inspect(vim.pack.get())) end, { desc = "installed extensions" })
 
