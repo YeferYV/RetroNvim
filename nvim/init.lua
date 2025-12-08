@@ -1176,11 +1176,15 @@ if not vim.g.vscode then
     function()
       local os_uname = vim.uv.os_uname().sysname:lower()
       local os = os_uname:find("win") and "win32" or os_uname
-      local download_path = '~/.cache/node_modules/@github/copilot-language-server/native/' .. os .. '-x64/copilot-language-server'
+      local dotexe = vim.env.APPDATA and '.exe' or ''
+      local download_path = '$HOME/.cache/node_modules/.pnpm/node_modules/@github/copilot-language-server-' .. os .. '-x64/copilot-language-server' .. dotexe
       -- local download_url = 'https://github.com/github/copilot-language-server-release/releases/download/1.397.0/copilot-language-server-' .. os .. '-x64-1.397.0.zip'
 
+      vim.loop.fs_mkdir(vim.env.HOME .. '/.local', tonumber('777', 8))     -- chmod 777 ~/.local
+      vim.loop.fs_mkdir(vim.env.HOME .. '/.local/bin', tonumber('777', 8)) -- chmod 777 ~/.local/bin
+
       if vim.fn.executable('copilot-language-server') == 0 then
-        sendSequence('pixi g install pnpm; pnpm install --dir ~/.cache @github/copilot-language-server', 'mkdir -p ~/.local/bin; cp '.. download_path ..  '~/.local/bin')
+        sendSequence('pixi g install pnpm; pnpm install --dir $HOME/.cache @github/copilot-language-server', 'cp '.. download_path ..  ' $HOME/.local/bin')
         -- sendSequence ( 'pixi exec curl -C- -o $HOME/.cache/copilot.zip -L' .. download_url, '7z x $HOME/.cache/copilot.zip -o"$HOME/.local/bin"')
       end
 
