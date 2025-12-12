@@ -183,8 +183,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  map({ 'x', 'n', 'i' }, '<leader>lg', ":Sidekick cli toggle name=gemini<cr>", { desc = 'Gemini cli' })
-  map({ 'x', 'n', 'i' }, '<leader>lG', ":Sidekick cli prompt<cr>", { desc = 'Gemini prompt' })
+  map({ 'x', 'n', 'i' }, '<leader>lg', "<cmd>Sidekick cli toggle name=gemini<cr>", { desc = 'Gemini cli' })
+  map({ 'x', 'n', 'i' }, '<leader>lG', "<cmd>Sidekick cli prompt<cr>", { desc = 'Gemini prompt' })
 
   vim.opt.rtp:append(package_path .. "sidekick.nvim")
   local ok, sidekick = pcall(require, "sidekick")
@@ -230,7 +230,8 @@ end
 -- │ Opts │
 -- ╰──────╯
 
-vim.opt.backupcopy = "yes"        -- fixes `next dev --turbopack` file change detection, see `:h file-watcher` and https://github.com/neovim/neovim/issues/1380
+vim.opt.backupcopy =
+"yes"                             -- fixes `next dev --turbopack` file change detection, see `:h file-watcher` and https://github.com/neovim/neovim/issues/1380
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.expandtab = true          -- convert tabs to spaces
 vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
@@ -1504,9 +1505,11 @@ map({ "n", "o", "x" }, "gC", function() require('mini.comment').textobject() end
 map({ "n", "o", "x" }, "gD", function() require('mini.diff').textobject() end, { desc = "select diff/hunk" })
 map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent_noblanks" })
 map({ "o", "x" }, "ai", "<cmd>normal Viiok<cr>", { desc = "indent_noblanks" })
-map({ "o", "x" }, "iy", ":lua _G.skip_blank_line=true  MiniAi.select_textobject('i','y')<cr>", { desc = "same_indent" })
-map({ "o", "x" }, "ay", ":lua _G.skip_blank_line=false MiniAi.select_textobject('i','y')<cr>", { desc = "same_indent" })
-map({ "x" }, "iz", ":<c-u>normal! [zjV]z<cr>", { silent = true, desc = "inner fold" })
-map({ "x" }, "az", ":<c-u>normal! [zV]z<cr>", { silent = true, desc = "outer fold" })
-map({ "o" }, "iz", ":normal Viz<cr>", { silent = true, desc = "inner fold" })
-map({ "o" }, "az", ":normal Vaz<cr>", { silent = true, desc = "outer fold" })
+map({ "o", "x" }, "iy", "<cmd>lua _G.skip_blank_line=true  MiniAi.select_textobject('i','y')<cr>",
+  { desc = "same_indent" }) -- `:lua` asks for `Press ENTER or type command to continue` if window is small
+map({ "o", "x" }, "ay", "<cmd>lua _G.skip_blank_line=false MiniAi.select_textobject('i','y')<cr>",
+  { desc = "same_indent" }) -- `:lua` asks for `Press ENTER or type command to continue` if window is small
+map({ "x" }, "iz", "<cmd><c-u>normal! [zjV]z<cr>", { silent = true, desc = "inner fold" })
+map({ "x" }, "az", "<cmd><c-u>normal! [zV]z<cr>", { silent = true, desc = "outer fold" })
+map({ "o" }, "iz", "<cmd>normal Viz<cr>", { silent = true, desc = "inner fold" })
+map({ "o" }, "az", "<cmd>normal Vaz<cr>", { silent = true, desc = "outer fold" })

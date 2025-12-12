@@ -155,6 +155,10 @@ function activate(context) {
       name: "Lazygit",
       shellPath: retronvim_bin + 'lazygit' + dotexe,
       location: vscode.TerminalLocation.Editor,
+      env: {
+        PATH: get_path,
+        VIMINIT: `lua vim.cmd.source([[${init_lua}]])`,
+      },
     })
   })
 

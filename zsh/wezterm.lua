@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
 local home = os.getenv("HOME") or os.getenv("USERPROFILE")
-local retronvim_path = wezterm.glob(home .. '/.vscode/extensions/yeferyv.retronvim*')[1] or os.getenv("APPDIR3")
+local retronvim_path = wezterm.glob(home .. '/.*/extensions/yeferyv.retronvim*')[1] or os.getenv("APPDIR3")
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then default_prog = { "powershell", "-nologo", "-noexit", "-file", retronvim_path .. "/powershell/profile.ps1" } end
 if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then default_prog = { "zsh" } end
