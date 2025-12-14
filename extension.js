@@ -18,15 +18,19 @@ function setNeovimPath(homeExtension) {
   const nvimPathWindows     = path.join(homeExtension, '/bin/windows/envs/windows/Library/bin/nvim.exe');
   const gitPathUnix         = path.join(homeExtension, '/bin/env/bin/git');
   const gitPathWindows      = path.join(homeExtension, '/bin/windows/envs/windows/Library/mingw64/bin/git.exe');
+  const javaPathUnix        = path.join(homeDirectory, '/.pixi/envs/openjdk/lib/jvm');
+  const javaPathWindows     = path.join(homeDirectory, '/.pixi/envs/openjdk/Library/lib/jvm');
   const initDotLuaPath      = path.join(homeExtension, '/nvim/init.lua');
 
   if (os.platform() == "win32") {
     fs.mkdir(yaziBookmarkPath, { recursive: true }, (err) => { if (err) { vscode.window.showErrorMessage(`${err.message}`) }} );
-    var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
     var gitPath = gitPathWindows
+    var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
+    var javaPath = javaPathWindows
   } else {
-    var pixiPath = "./.pixi/envs/default/bin/python"
     var gitPath = gitPathUnix
+    var pixiPath = "./.pixi/envs/default/bin/python"
+    var javaPath = javaPathUnix
   }
 
   // install locally nerd-fonts
@@ -66,21 +70,23 @@ function setNeovimPath(homeExtension) {
   // config.update("telemetry.telemetryLevel", "off", vscode.ConfigurationTarget.Global)
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
   config.update("extensions.experimental.affinity", { "asvetliakov.vscode-neovim": 1, "vscodevim.vim": 2 }, vscode.ConfigurationTarget.Global);
-  config.update("git.path", gitPath, vscode.ConfigurationTarget.Global)
-  config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)
-  config.update("terminal.integrated.windowsUseConptyDll", true, vscode.ConfigurationTarget.Global) // for yazi image preview on windows but sometimes yazi refuses to open
-  config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
-  config.update("window.customMenuBarAltFocus", false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
-  config.update("windsurf.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global)
-  config.update("windsurf.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global)
   config.update("extensions.gallery.itemUrl", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
   config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace fo rcursor
-  config.update('vscode-neovim.neovimExecutablePaths.linux', nvimPathUnix, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimExecutablePaths.darwin', nvimPathUnix, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimExecutablePaths.win32', nvimPathWindows, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimInitVimPaths.linux', initDotLuaPath, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimInitVimPaths.darwin', initDotLuaPath, vscode.ConfigurationTarget.Global)
-  config.update('vscode-neovim.neovimInitVimPaths.win32', initDotLuaPath, vscode.ConfigurationTarget.Global)
+  config.update("git.path", gitPath, vscode.ConfigurationTarget.Global)
+  config.update("java.configuration.runtimes", [{ "name": "JavaSE-25", "path": javaPath, "default": true }], vscode.ConfigurationTarget.Global);
+  config.update("java.jdt.ls.java.home", javaPath, vscode.ConfigurationTarget.Global)
+  config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)
+  config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
+  config.update("terminal.integrated.windowsUseConptyDll", true, vscode.ConfigurationTarget.Global) // for yazi image preview on windows but sometimes yazi refuses to open
+  config.update("vscode-neovim.neovimExecutablePaths.darwin", nvimPathUnix, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimExecutablePaths.linux", nvimPathUnix, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimExecutablePaths.win32", nvimPathWindows, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimInitVimPaths.darwin", initDotLuaPath, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimInitVimPaths.linux", initDotLuaPath, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimInitVimPaths.win32", initDotLuaPath, vscode.ConfigurationTarget.Global)
+  config.update("window.customMenuBarAltFocus", false, vscode.ConfigurationTarget.Global) // Windows's alt sometimes conflicts with whichkey
+  config.update("windsurf.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global)
+  config.update("windsurf.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global)
 }
 
 // You can call this function in your extension's activate function or based on certain events

@@ -55,16 +55,16 @@
     "url": "https://github.com/YeferYV/RetroNvim/issues"
   },
   "contributes": {
-		"commands": [
-			{
-				"command": "retronvim.yazi",
-				"title": "RetroNvim: Yazi"
-			},
-			{
-				"command": "retronvim.lazygit",
-				"title": "RetroNvim: Lazygit"
-			}
-		],
+    "commands": [
+      {
+        "command": "retronvim.yazi",
+        "title": "RetroNvim: Yazi"
+      },
+      {
+        "command": "retronvim.lazygit",
+        "title": "RetroNvim: Lazygit"
+      }
+    ],
     "themes": [
       {
         "label": "retronvim_base16",
@@ -1039,7 +1039,7 @@
         },
         {
           "key": "I",
-          "name": "+Install Programming languages (vscode-extension included)",
+          "name": "+Install programming-languages + framework-extensions",
           "bindings": [
             {
               "key": "a",
@@ -1245,9 +1245,10 @@
             },
             {
               "key": "J",
-              "name": "java",
+              "name": "java + springboot",
               "commands": [
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -1257,17 +1258,20 @@
               "args": [
                 null,
                 {
-                  "text": "pixi global install gradle openjdk \n"
+                  "text": "pixi global install gradle maven openjdk=25 \n"
                 },
                 {
                   "text": "pixi exec curl cht.sh/gradle \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/mvn \n"
                 },
                 {
                   "text": "pixi exec curl cht.sh/java \n"
                 },
                 null,
                 {
-                  "text": "code --install-extension vscjava.vscode-java-pack \n"
+                  "text": "code --install-extension vscjava.vscode-java-pack --install-extension vmware.vscode-boot-dev-pack --install-extension developersoapbox.vscode-springboot-snippets \n"
                 }
               ]
             },
@@ -2472,11 +2476,11 @@
           "key": "y",
           "name": "+File Manager",
           "bindings": [
-						{
-							"key": "y",
-							"name": "yazi file manager (shortcut alt+o or alt+y)",
-							"command": "retronvim.yazi"
-						},
+            {
+              "key": "y",
+              "name": "yazi file manager (shortcut alt+o or alt+y)",
+              "command": "retronvim.yazi"
+            },
             {
               "key": "Y",
               "name": "print sequence to export `y` command (on current terminal)",
