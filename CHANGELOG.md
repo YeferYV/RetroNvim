@@ -6,6 +6,32 @@
 * **ci:** PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR for ripdrag build ([f7cb9a4](https://github.com/YeferYV/RetroNvim/commit/f7cb9a4220095bae2d84bae6ee97608d99b44e03))
 * **wezterm:** auto load retronvim's profile.ps1 ([525404e](https://github.com/YeferYV/RetroNvim/commit/525404e8691c353cd66f4bf32ed0a13d6c09c5a2))
 
+## [0.4.3](https://github.com/YeferYV/RetroNvim/compare/v0.4.2...v0.4.3) (2025-12-15)
+
+
+### Bug Fixes
+
+* **extension.js:** faster way to open yazi ([da27ca6](https://github.com/YeferYV/RetroNvim/commit/da27ca6853ad8c22baee7a212dfb0fb9a0d34523))
+* **extension.js:** include java framework configs and extensions ([cb7576f](https://github.com/YeferYV/RetroNvim/commit/cb7576fc43fd247405720ddbbb4c35dcee1d07d3))
+* **extension.js:** lazygit requires git ([92d15ae](https://github.com/YeferYV/RetroNvim/commit/92d15ae6549761df3f0911281e0842961edccbff))
+* **keybinding.json:** `!inputFocus` doesn't trigger search key `/` ([7edfe73](https://github.com/YeferYV/RetroNvim/commit/7edfe730adf3b88562dddf8c32ea77772643d04c))
+* **keybindings.json:** `ctrl+f` searches file inside explorer since `/` doesn't work on cvim ([2120dff](https://github.com/YeferYV/RetroNvim/commit/2120dffbbdae2cc6e38e07649f011995ade5f15d))
+* **nvim:** `@github/copilot-language-server` location path has changed and also works on windows ([78fdbc3](https://github.com/YeferYV/RetroNvim/commit/78fdbc3a2daf3aa7f192c19588d641e5cebd0872))
+* **nvim:** `jk` on visual mode is slow ([7d3a181](https://github.com/YeferYV/RetroNvim/commit/7d3a18143a82f0ae00816540da175a0bcb9a96dc))
+* **nvim:** `preview git hunk` deleted hunk takes out one line + terminal keymaps ([29a8e0a](https://github.com/YeferYV/RetroNvim/commit/29a8e0a70b0ab761a1df8ac52e93f547c26f52af))
+* **nvim:** `preview git hunk` with `[directory]` now works ([ec679bb](https://github.com/YeferYV/RetroNvim/commit/ec679bbf08928e490aba0b296f9a37fb7adccefa))
+* **nvim:** consolelog.nvim freezes mini.starter ([95092fc](https://github.com/YeferYV/RetroNvim/commit/95092fcace59aade80610183d59c14a20c792dcd))
+* **nvim:** file change detection used by `next dev --turbopack`, `git`, etc ([97d038f](https://github.com/YeferYV/RetroNvim/commit/97d038fc28d0a428d45dfdbc7a68e409f3701b42))
+* **nvim:** manually start ConsoleLog since it breaks mini.starter ([f5f4800](https://github.com/YeferYV/RetroNvim/commit/f5f48006561907bb21f69817a5659de1448d615e))
+* **nvim:** neocodeium doesn't work on windows and supermaven completion still works ([1c85590](https://github.com/YeferYV/RetroNvim/commit/1c855907a7cbf13221ba3bb59f9eb7c30c1f09d2))
+* **nvim:** windsurf.nvim requires msys2 on windows ([7c750de](https://github.com/YeferYV/RetroNvim/commit/7c750deb60010970e04d561427f4d309cf83f985))
+* **powershell:** bracket directory support + auto close for yazi ([d626ccb](https://github.com/YeferYV/RetroNvim/commit/d626ccb78cf27484f12cff68cbb6df38212faf59))
+* **settings.json:** vscode's git cannot find retronvim's git ([324ba7f](https://github.com/YeferYV/RetroNvim/commit/324ba7f0d9bc7b9c2bde6e59e7690b6e5250b032))
+* **yazi:** fzf sorted ([658fa44](https://github.com/YeferYV/RetroNvim/commit/658fa4483d47d6ea480549e70ddfdde9c4b53d98))
+* **yazi:** now powershell can be open inside bracket directory e.g. [directory] ([066713f](https://github.com/YeferYV/RetroNvim/commit/066713f3d0680c07b68c12dd25503a11c5290d24))
+* **yazi:** powershell splits `%*` by white-spaces not by end-of-line ([6fa640d](https://github.com/YeferYV/RetroNvim/commit/6fa640d7c98189f052bbe946fefbcdf8e054d573))
+* **yazi:** removing devour which is not supported on wayland ([d8fd227](https://github.com/YeferYV/RetroNvim/commit/d8fd22767700e4ab0cf7b85cf4cb89673b855587))
+
 ## [0.4.2](https://github.com/YeferYV/RetroNvim/compare/v0.4.1...v0.4.2) (2025-11-08)
 
 
