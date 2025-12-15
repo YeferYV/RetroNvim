@@ -184,36 +184,37 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|   Key Combination   | Description                                                             | compatibility |
-| :-----------------: | :---------------------------------------------------------------------- | :-----------: |
-|         `/`         | search                                                                  | vscode/neovim |
-|         `a`         | create new file or folder (`path/to/file` creates 2 folders and 1 file) | vscode/neovim |
-|         `d`         | delete file                                                             | vscode/neovim |
-|        `gg`         | focus first file                                                        | vscode/neovim |
-|         `G`         | focus last file                                                         | vscode/neovim |
-|         `h`         | collapse list                                                           | vscode/neovim |
-|         `j`         | move down                                                               | vscode/neovim |
-|         `k`         | move up                                                                 | vscode/neovim |
-|   `l` or `enter`    | open directory/file passing focus                                       | vscode/neovim |
-|         `J`         | move focus down 10 times in list view                                   |    vscode     |
-|         `K`         | move focus up 10 times in list view                                     |    vscode     |
-|         `L`         | open and toggle sidebar visibility                                      |    vscode     |
-|   `o` or `space`    | open without passing focus replacing current tab                        |    vscode     |
-|         `O`         | open without passing focus in a new tab                                 |    vscode     |
-|         `p`         | paste file                                                              | vscode/neovim |
-|         `q`         | close sidebar visibility                                                | vscode/neovim |
-|         `r`         | rename file                                                             | vscode/neovim |
-|         `v`         | open selected file to the side and toggle sidebar visibility            |    vscode     |
-|         `V`         | open selected file to the bottom and toggle sidebar visibility          |    vscode     |
-|      `ctrl+v`       | open selected file to the side and toggle sidebar visibility            |    neovim     |
-|      `ctrl+s`       | open selected file to the bottom and toggle sidebar visibility          |    neovim     |
-|         `m`         | cut/move file                                                           |    neovim     |
-|         `x`         | cut file                                                                |    vscode     |
-|         `y`         | copy file                                                               | vscode/neovim |
-|       `Down`        | focus down and preview file                                             | vscode/neovim |
-|        `Up`         | focus up and preview file                                               | vscode/neovim |
-| `<unmapped letter>` | find (by first `<unmapped letter>` of file/folder) and jump             |    vscode     |
-|         `?`         | show all snacks explorer keymaps                                        |    neovim     |
+|   Key Combination   | Description                                                                                      | compatibility |
+| :-----------------: | :----------------------------------------------------------------------------------------------- | :-----------: |
+|      `ctrl+f`       | search file [`/` doesn't work on cvim](https://github.com/vscode-neovim/vscode-neovim/pull/1015) |    vscode     |
+|         `/`         | search file                                                                                      |    neovim     |
+|         `a`         | create new file or folder (`path/to/file` creates 2 folders and 1 file)                          | vscode/neovim |
+|         `d`         | delete file                                                                                      | vscode/neovim |
+|        `gg`         | focus first file                                                                                 | vscode/neovim |
+|         `G`         | focus last file                                                                                  | vscode/neovim |
+|         `h`         | collapse list                                                                                    | vscode/neovim |
+|         `j`         | move down                                                                                        | vscode/neovim |
+|         `k`         | move up                                                                                          | vscode/neovim |
+|   `l` or `enter`    | open directory/file passing focus                                                                | vscode/neovim |
+|         `J`         | move focus down 10 times in list view                                                            |    vscode     |
+|         `K`         | move focus up 10 times in list view                                                              |    vscode     |
+|         `L`         | open and toggle sidebar visibility                                                               |    vscode     |
+|   `o` or `space`    | open without passing focus replacing current tab                                                 |    vscode     |
+|         `O`         | open without passing focus in a new tab                                                          |    vscode     |
+|         `p`         | paste file                                                                                       | vscode/neovim |
+|         `q`         | close sidebar visibility                                                                         | vscode/neovim |
+|         `r`         | rename file                                                                                      | vscode/neovim |
+|         `v`         | open selected file to the side and toggle sidebar visibility                                     |    vscode     |
+|         `V`         | open selected file to the bottom and toggle sidebar visibility                                   |    vscode     |
+|      `ctrl+v`       | open selected file to the side and toggle sidebar visibility                                     |    neovim     |
+|      `ctrl+s`       | open selected file to the bottom and toggle sidebar visibility                                   |    neovim     |
+|         `m`         | cut/move file                                                                                    |    neovim     |
+|         `x`         | cut file                                                                                         |    vscode     |
+|         `y`         | copy file                                                                                        | vscode/neovim |
+|       `Down`        | focus down and preview file                                                                      | vscode/neovim |
+|        `Up`         | focus up and preview file                                                                        | vscode/neovim |
+| `<unmapped letter>` | find (by first `<unmapped letter>` of file/folder) and jump                                      |    vscode     |
+|         `?`         | show all snacks explorer keymaps                                                                 |    neovim     |
 
 </details>
 

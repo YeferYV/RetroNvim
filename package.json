@@ -912,10 +912,10 @@
               "args": [
                 null,
                 {
-                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 210     \" \n"
+                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 300     \" \n"
                 },
                 {
-                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 7        \" \n"
+                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 5        \" \n"
                 },
                 {
                   "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \" \n"
@@ -2615,9 +2615,9 @@
         "when": "editorTextFocus && (vim.mode == 'Normal' || neovim.mode == 'normal')"
       },
       {
-        "key": "/",
+        "key": "ctrl+f",
         "command": "list.find",
-        "when": "listFocus && listSupportsFind"
+        "when": "listFocus && listSupportsFind && !inputFocus"
       },
       {
         "key": "a",

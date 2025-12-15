@@ -10,11 +10,11 @@ fpath=(~/.nix-profile/share/zsh/site-functions/ $fpath)        # activates tab c
 
 # linux keyboard repeat rate
 (
-  [[ -e $XAUTHORITY                  ]] && xset b off r rate 210 70                2>/dev/null
-  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_delay 210      2>/dev/null
-  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_rate 70        2>/dev/null
-  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_delay 210  2>/dev/null
-  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_rate 70    2>/dev/null
+  [[ -e $XAUTHORITY                  ]] && xset b off r rate 300 50                2>/dev/null
+  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_delay 300      2>/dev/null
+  [[ -e $SWAYSOCK                    ]] && swaymsg input "*" repeat_rate 50        2>/dev/null
+  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_delay 300  2>/dev/null
+  [[ -e $HYPRLAND_INSTANCE_SIGNATURE ]] && hyprctl keyword input:repeat_rate 50    2>/dev/null
 )
 
 # Change cursor shape for different vi modes.
@@ -66,11 +66,11 @@ export YAZI_CONFIG_HOME="$RETRONVIM_PATH/yazi"
 [[ "$OSTYPE" == "cygwin"                   ]] && export PATH="$RETRONVIM_PATH/bin/windows/envs/windows/Library/bin:$HOME/appdata/local/pnpm:$HOME/.pixi/bin:$HOME/.console-ninja/.bin:$PATH:$HOME/.local/bin"
 [[ "$OSTYPE" == "cygwin"                   ]] && export PNPM_HOME="$HOME/appdata/local/pnpm"
 [[ "$OSTYPE" == "cygwin"                   ]] && export SHELL="/bin/zsh"
-[[ "$OSTYPE" == "cygwin"                   ]] && export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
 [[ "$OSTYPE" != "cygwin"                   ]] && alias  pacman="sudo pacman --noconfirm"
 [[ "$TERM_PROGRAM" == "vscode"             ]] && source "$(code --locate-shell-integration-path zsh)"
 [[ ! -e $RETRONVIM_PATH/bin/env/bin/pixi   ]] && (cd $RETRONVIM_PATH/bin && ./environment.sh) 2>/dev/null
 
+export ZDOTDIR="$RETRONVIM_PATH/zsh" # for `nvim -cterm` on Windows should be after `code --locate-shell-integration-path zsh`
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
