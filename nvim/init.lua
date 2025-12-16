@@ -247,7 +247,7 @@ vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to compl
 vim.opt.winborder = 'rounded'     -- MiniCompletion's info and signature border
 vim.opt.wrap = false              -- display lines as one long line
 vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
--- vim.opt.pumheight = 5             -- cmdline completion menu height
+
 
 if not vim.g.vscode then
   vim.opt.cmdheight = 0                       -- more space in the neovim command line for displaying messages
@@ -280,8 +280,6 @@ local f = function(args) vim.b[args.buf].minicompletion_disable = true end
 autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
 autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
--- https://www.reddit.com/r/neovim/comments/xgziol/setting_html_syntax_highlight_prevent_the_svelte
-autocmd({ "BufWinEnter" }, { pattern = "*.svelte", command = "syntax on | set syntax=html" })
 autocmd({ "BufWinEnter" }, { pattern = "*.code-snippets", command = "set ft=json" })
 
 -- right click menu
@@ -794,8 +792,15 @@ if not vim.g.vscode then
   vim.opt.completeopt:append('fuzzy')               -- it should be after require("mini.completion").setup())
 
   if vim.fn.has('nvim-0.12') == 1 then
-    vim.opt.pumborder = 'rounded' -- MiniCompletion's suggestion border
-    vim.api.nvim_set_hl(0, "Pmenu", { bg = "NONE" })
+    vim.opt.pumborder = 'rounded'                    -- enable mini.completion border
+    vim.api.nvim_set_hl(0, "Pmenu", { bg = "NONE" }) -- transparent mini.completion
+
+    ---> https://neovim.io/doc/user/cmdline.html#cmdline-autocompletion
+    ---> not working wit M.flash()
+    -- autocmd({ "CmdlineChanged" }, { pattern = "[:/?]", command = "call wildtrigger()" })
+    -- autocmd({ "CmdlineEnter" }, { pattern = "[/?]", command = "set pumheight=5" })
+    -- autocmd({ "CmdlineLeave" }, { pattern = "[/?]", command = "set pumheight&" })
+    -- vim.opt.wildmode="noselect:lastused,full"        -- enable cmdline tab cycle
   end
 end
 
@@ -903,16 +908,6 @@ if not vim.g.vscode then
 
   -- pnpm packages on Windows 11 requires `.cmd`
   local dotcmd                            = vim.env.APPDATA and '.cmd' or ''
-
-  vim.lsp.config['astro']                 = {
-    cmd = { 'astro-ls' .. dotcmd, '--stdio' },
-    init_options = {
-      typescript = {
-        tsdk = vim.env.HOME .. '/.pixi/envs/neovim-lsp/lib/node_modules/typescript/lib'
-      },
-    },
-    filetypes = { 'astro' }
-  }
 
   -- https://github.com/LunarVim/Neovim-from-scratch/blob/master/lua/user/lsp/settings/jsonls.lua
   -- to have intellisense for your-file.json add `"$schema": "https://json.schemastore.org/<your-file>.json"`
@@ -1035,11 +1030,11 @@ if not vim.g.vscode then
 
   -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
   vim.lsp.config['bashls']                = { cmd = { 'bash-language-server' .. dotcmd, 'start' }, filetypes = { 'bash', 'sh' } }
-  vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'astro', 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'svelte', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
+  vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
   vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server' .. dotcmd, '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
   vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver' .. dotcmd, '--stdio' }, filetypes = { 'dockerfile' } }
-  vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server' .. dotcmd, '--stdio' }, filetypes = { 'astro', 'css', 'html', 'htmldjango', 'javascriptreact', 'svelte', 'typescriptreact', 'vue', 'htmlangular' } }
+  vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server' .. dotcmd, '--stdio' }, filetypes = { 'css', 'html', 'htmldjango', 'javascriptreact', 'typescriptreact', 'vue', 'htmlangular' } }
   vim.lsp.config['gopls']                 = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
   vim.lsp.config['html']                  = { cmd = { 'node', 'vscode-html-language-server' .. dotcmd, '--stdio' }, filetypes = { 'html', 'templ' } }
   vim.lsp.config['intelephense']          = { cmd = { 'intelephense' .. dotcmd, '--stdio' }, filetypes = { 'php' } }
@@ -1052,14 +1047,12 @@ if not vim.g.vscode then
   vim.lsp.config['rust_analyzer']         = { cmd = { 'rust-analyzer' }, filetypes = { 'rust' } }
   vim.lsp.config['sqlls']                 = { cmd = { 'sql-language-server' .. dotcmd, 'up', '--method', 'stdio' }, filetypes = { 'sql', 'mysql' } }
   vim.lsp.config['sqls']                  = { cmd = { 'sqls' }, filetypes = { 'sql', 'mysql' } }
-  vim.lsp.config['svelte']                = { cmd = { 'svelteserver' .. dotcmd, '--stdio' }, filetypes = { 'svelte' } }
-  vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server' .. dotcmd, '--stdio' }, filetypes = { 'astro', 'astro-markdown', 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'templ' } }
+  vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server' .. dotcmd, '--stdio' }, filetypes = { 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'templ' } }
   vim.lsp.config['taplo']                 = { cmd = { 'taplo', 'lsp', 'stdio' }, filetypes = { 'toml' } }
   vim.lsp.config['terraformls']           = { cmd = { 'terraform-ls', 'serve' }, filetypes = { 'terraform', 'terraform-vars' } }
   vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server' .. dotcmd, '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
 
   vim.lsp.enable({
-    'astro',
     'bashls', 'biome',
     'clangd', 'cssls', 'copilot',
     'dockerls',
@@ -1074,7 +1067,7 @@ if not vim.g.vscode then
     'omnisharp',
     'prismals', 'pylsp', 'pyright',
     'ruff', 'rust_analyzer',
-    'sqlls', 'sqls', 'svelte',
+    'sqlls', 'sqls',
     'tailwindcss', 'taplo', 'terraformls', 'ts_ls',
     'volar',
     'yamlls'
@@ -1093,7 +1086,6 @@ if not vim.g.vscode then
   ---@format disable
   --vipga, --> to format manually
   map("n", "<leader>L", "", { desc = "+LSP installer" }) -- relaunch nvim to autostart the new installed lsp
-  map("n", "<leader>La",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @astrojs/language-server typescript') end,             { desc = "astro" })                       -- (no formatter use biome instead)
   map("n", "<leader>Lb",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g bash-language-server') end,                            { desc = "bashls" })                      -- (no formatter press `=` to format selection)
   map("n", "<leader>LB",  function() sendSequence('pixi g install biome --environment neovim-lsp') end,                                               { desc = "biome (formatter+eslint)" })    -- https://biomejs.dev/internals/language-support/
   map("n", "<leader>Lc",  function() sendSequence('pixi g install clang-tools --expose clangd') end,                                                  { desc = "clangd" })                      -- (+formatter)
@@ -1117,7 +1109,6 @@ if not vim.g.vscode then
   map("n", "<leader>LR",  function() sendSequence('pixi g install rust --with rust-src') end,                                                         { desc = "rust_analyzer" })               -- (+formatter)
   map("n", "<leader>Lsq", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g sql-language-server vscode-jsonrpc') end,              { desc = "sqlls(-formatter +linter)" })   -- (no formatter use sqls)
   map("n", "<leader>LsQ", function() sendSequence('pixi g install sqls --environment neovim-lsp') end,                                                { desc = "sqls (+formatter -linter)" })
-  map("n", "<leader>Lsv", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g svelte-language-server') end,                          { desc = "svelte" })                      -- (no formatter use biome)
   map("n", "<leader>Lta", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @tailwindcss/language-server') end,                    { desc = "tailwindcss" })
   map("n", "<leader>LtA", function() sendSequence('pixi g install taplo --environment neovim-lsp') end,                                               { desc = "taplo (toml)" })                -- (+formatter)
   map("n", "<leader>Lte", function() sendSequence('pixi g install terraform-ls --environment neovim-lsp') end,                                        { desc = "terraformls" })                 -- (no formatter press `=` to format selection)

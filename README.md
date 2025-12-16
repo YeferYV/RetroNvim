@@ -124,7 +124,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |    `gt` / `gT`    | vscode-neovim |   `n`,`x`   |        `.`        |       `\` / `\|`       | +go to end/start of textobj                                               | followed by text-object                  |                                              | selects form cursor position       | `vgtiq` selects until end of quotation (`\` to repeat)                              |
 |    `qq ... q`     | vscode-neovim |   `n`,`x`   |        `.`        |   `\` or `@q` + `@@`   | repeats ... macro                                                         | followed by text-object                  |                                              | selects form cursor position       | `qqviqq` selects quotation (`\` to repeat)                                          |
 |    `qw ... q`     | vscode-neovim |   `n`,`x`   |        `.`        |  `\|` or `@w` + `@@`   | repeats ... macro                                                         | followed by text-object                  |                                              | selects form cursor position       | `qwdiqq` delete inner quotation (`\| ` to repeat)                                   |
-|     `gu`/`gU`     |               |   `n`,`x`   |        `.`        |                        | +to lowercase/uppercase                                                   | requires a text-object                   |                                              | applies to selection               | `gUiw` (neovim only) or `viwgU` lowercases a word                                   |
+|     `gu`/`gU`     |               |   `n`,`x`   |        `.`        |                        | +to lowercase/uppercase                                                   | requires a text-object                   |                                              | applies to selection               | `gUiw` (neovim and cvim only) or `viwgU` uppercase a word                           |
 |       `gv`        |               |   `n`,`x`   |                   |                        | last selected                                                             | finds and jumps                          |                                              | reselects                          | `vgv` selects last selection                                                        |
 |       `gw`        |               |   `n`,`x`   |        `.`        |                        | split/join comments/lines 80chars (keeps cursor position)                 | requires a text-object                   |                                              | applies to selection               | `gwip` or `vipgw` split/join a paragraph limited by 80 characters                   |
 |       `gx`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +exchange (text) Operator                                                 | followed by text-object/motion           |                                              | uses selection                     | `gxiw` or `viwgx` exchanges word with another `gxiw` or `viwgx` or `.`              |
@@ -537,6 +537,22 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   [`zsh-fast-syntax-highlighting`](https://github.com/zdharma-continuum/fast-syntax-highlighting) as git-submodules; and
   [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts) for terminal icons
 
+- Retronvim comes with an installer for frameworks (LSP + formatters + snippets + binaries + cheatsheets) for:
+  `angular`, `ansible`, `AWS`,
+  `c`, `c++`, `c#`,
+  `docker`, `django`
+  `expo`,
+  `fastapi`, `flask`,
+  `go`, `graphql`,
+  `kotlin`, `kubernetes`,
+  `laravel`,
+  `nextjs`,
+  `prisma`,
+  `scikit-learn`, `springboot`, `supabase`,
+  `rust`,
+  `terraform`,
+  `vue`
+
 - Retronvim/nvim comes with an installer for
   [supermaven](https://github.com/supermaven-inc/supermaven-nvim) (free copilot/windsurf),
   [windsurf.nvim](https://github.com/Exafunction/windsurf.nvim) (free copilot),
@@ -544,26 +560,25 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes which is free and unlimited),
   [consolelog.nvim](https://github.com/chriswritescode-dev/consolelog.nvim) (console ninja requires `apt install net-tools`, Windows not supported) and
   LSP + formatters for:
-  `astro`, `angular`,
+  `angular`,
   `bash`, `biome`, `black`,
   `c`, `c++`, `c#`, `cmake`, `css`,
   `docker`,
   `emmet`,
   `go`,
   `html`,
-  `php`,
   `java`, `javascript`, `json`,
   `lua`,
   `markdown`,
-  `prisma`, `python`, `prettier`,
+  `php`, `prisma`, `python`, `prettier`,
   `rust`,
-  `sql`, `svelte`,
+  `sql`,
   `tailwind`, `toml`, `terraform`, `typescript`,
   `react`,
   `vue`,
   `yaml`
 
-- Retronvim/nvim searches for `~/.*/extensions/*/snippets/*code-snippets` (alphabetically first `~/.cursor` otherwise `~/.vscode` otherwise `~/.windsurf`) and adds them to `mini.completion`
+- Retronvim/nvim searches for `~/.*/extensions/*/snippets/*code-snippets` (alphabetically first `~/.antigravity` otherwise `~/.cursor` otherwise `~/.vscode` otherwise `~/.windsurf`) and adds them to `mini.completion`
 
 - Retronvim comes with [bat's base16](https://github.com/sharkdp/bat/blob/master/assets/themes/base16.tmTheme) syntax highlighting generated by `npx yo code --extensionType colortheme` and a editor theme generated using https://themes.vscode.one
 

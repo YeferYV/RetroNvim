@@ -69,6 +69,8 @@ function setNeovimPath(homeExtension) {
 
   // config.update("telemetry.telemetryLevel", "off", vscode.ConfigurationTarget.Global)
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
+  config.update("antigravity.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
+  config.update("antigravity.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace fo rcursor
   config.update("extensions.experimental.affinity", { "asvetliakov.vscode-neovim": 1, "vscodevim.vim": 2 }, vscode.ConfigurationTarget.Global);
   config.update("extensions.gallery.itemUrl", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
   config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace fo rcursor
@@ -168,7 +170,12 @@ function activate(context) {
     })
   })
 
-  context.subscriptions.push(open_yazi, open_lazygit);
+  const show_message = vscode.commands.registerCommand( "retronvim.show_message", (args) => {
+      vscode.window.showInformationMessage(args.text);
+    },
+  );
+
+  context.subscriptions.push(open_yazi, open_lazygit, show_message);
 }
 
 exports.activate = activate;

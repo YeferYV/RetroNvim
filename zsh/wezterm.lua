@@ -7,6 +7,23 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then default_prog = { "powe
 if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then default_prog = { "zsh" } end
 
 return {
+  -- https://github.com/wezterm/wezterm/pull/7420
+  -- cursor_trail = {
+  --   enabled = true,
+  --   -- dwell_threshold controls the amount of time the cursor must sit still
+  --   -- to draw a trail.
+  --   dwell_threshold = 0,
+  --   -- distance_threshold defines the radius in cells the cursor must jump before
+  --   -- a trail is drawn.
+  --   distance_threshold = 0,
+  --   -- duration is the animation time in milliseconds for leading edges of the trail to reach the cursor
+  --   duration = 30,
+  --   -- spread is a multiplier for duration applied to the trailing edges of the quad used to render the trail. This increases the apparent smear.
+  --   -- this is a text
+  --   spread = 30,
+  --   opacity = 1,
+  -- },
+  -- animation_fps = 60,
   audible_bell = "Disabled",
   bold_brightens_ansi_colors = false, --> for i in {0..255}; do; printf "\033[${i};1m color${i}"; done
   default_prog = default_prog,

@@ -32,10 +32,10 @@ prepend_keymap = [
 
 	# Filter
 	{ on = [ "F" ],      run = """ filter --smart                                                                             """,                  desc = "Filter" },
-	{ on = [ "g", "d" ], run = """ cd ~/Documents                                                                             """,                  desc = "Goto ~/Documents" },
-	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                                                             """,                  desc = "Goto ~/Downloads" },
-	{ on = [ "g", "r" ], run = """ shell --                           ya emit cd "$(git           rev-parse --show-toplevel)" """, for = "unix",    desc = "Goto git root" },
-	{ on = [ "g", "r" ], run = """ shell -- powershell -noprofile -c "ya emit cd  $(git -C '%CD%' rev-parse --show-toplevel)" """, for = "windows", desc = "Goto git root" }, # bracket e.g. [directory] and whitespaces e.g. /direc tory/ supported
+	{ on = [ "g", "d" ], run = """ cd ~/Documents                                                                             """,                  desc = "Go ~/Documents" },
+	{ on = [ "g", "D" ], run = """ cd ~/Downloads                                                                             """,                  desc = "Go ~/Downloads" },
+	{ on = [ "g", "r" ], run = """ shell --                           ya emit cd "$(git           rev-parse --show-toplevel)" """, for = "unix",    desc = "Go to git root" },
+	{ on = [ "g", "r" ], run = """ shell -- powershell -noprofile -c "ya emit cd  $(git -C '%CD%' rev-parse --show-toplevel)" """, for = "windows", desc = "Go to git root" }, # bracket e.g. [directory] and whitespaces e.g. /direc tory/ supported
 	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never "$@"                                     """, for = "unix",    desc = "Bat open selected" },
 	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never  %*                                      """, for = "windows", desc = "Bat open selected" },
 

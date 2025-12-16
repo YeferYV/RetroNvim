@@ -63,6 +63,10 @@
       {
         "command": "retronvim.lazygit",
         "title": "RetroNvim: Lazygit"
+      },
+      {
+        "command": "retronvim.show_message",
+        "title": "RetroNvim: Show Message"
       }
     ],
     "themes": [
@@ -93,6 +97,7 @@
       },
       "editor.renderLineHighlight": "none",
       "editor.renderWhitespace": "none",
+      "editor.snippetSuggestions": "top",
       "editor.suggest.insertMode": "replace",
       "editor.suggest.selectionMode": "never",
       "editor.stickyScroll.enabled": false,
@@ -110,7 +115,10 @@
       "geminicodeassist.inlineSuggestions.suggestionSpeed": "Fast",
       "git.autofetch": true,
       "git.mergeEditor": true,
+      "github.copilot.chat.notebook.enhancedNextEditSuggestions.enabled": true,
+      "github.copilot.nextEditSuggestions.eagerness": "high",
       "github.copilot.nextEditSuggestions.enabled": true,
+      "github.copilot.nextEditSuggestions.extendedRange": true,
       "json.format.keepLines": true,
       "multiDiffEditor.experimental.enabled": true,
       "scm.defaultViewMode": "tree",
@@ -391,17 +399,17 @@
       "whichkey.bindings": [
         {
           "key": ";",
-          "name": "Repeat Which-key",
+          "name": "Repeat whichkey",
           "command": "whichkey.repeatMostRecent"
         },
         {
           "key": "/",
-          "name": "Fuzzy find Wich-key",
+          "name": "Fuzzy find whichkey",
           "command": "whichkey.searchBindings"
         },
         {
           "key": "b",
-          "name": "+Buffers (Editors/Tabs)",
+          "name": "+Buffers (editors/tabs)",
           "bindings": [
             {
               "key": ";",
@@ -589,7 +597,7 @@
         },
         {
           "key": "e",
-          "name": "Toggle Explorer",
+          "name": "Toggle explorer",
           "type": "conditional",
           "bindings": [
             {
@@ -632,7 +640,7 @@
         },
         {
           "key": "f",
-          "name": "Find File",
+          "name": "Find file",
           "command": "workbench.action.quickOpen"
         },
         {
@@ -781,7 +789,7 @@
         },
         {
           "key": "i",
-          "name": "+Install Extra Dependencies",
+          "name": "+Install extra dependencies",
           "bindings": [
             {
               "key": "b",
@@ -857,7 +865,8 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
+                "workbench.action.terminal.sendSequence",
+                "retronvim.show_message"
               ],
               "args": [
                 {
@@ -874,6 +883,9 @@
                 },
                 {
                   "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
+                },
+                {
+                  "text": "relaunch vscode"
                 }
               ]
             },
@@ -907,7 +919,8 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
+                "workbench.action.terminal.sendSequence",
+                "retronvim.show_message"
               ],
               "args": [
                 null,
@@ -922,6 +935,9 @@
                 },
                 {
                   "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27                \" \n"
+                },
+                {
+                  "text": "relogin to Windows"
                 }
               ]
             },
@@ -930,18 +946,22 @@
               "name": "Increase keyboard repeat rate (MacOS) ",
               "commands": [
                 "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
+                "workbench.action.terminal.sendSequence",
+                "retronvim.show_message"
               ],
               "args": [
                 null,
                 {
                   "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n"
+                },
+                {
+                  "text": "relogin to MacOS"
                 }
               ]
             },
             {
               "key": "k",
-              "name": "Start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
+              "name": "start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence"
@@ -957,7 +977,7 @@
             },
             {
               "key": "K",
-              "name": "Start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
+              "name": "start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence"
@@ -1039,43 +1059,97 @@
         },
         {
           "key": "I",
-          "name": "+Install programming-languages + framework-extensions",
+          "name": "+Install frameworks",
           "bindings": [
             {
               "key": "a",
-              "name": "angular (javascript)",
+              "name": "angular + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=6dDrcocX7Gg'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=yJdh1_FbtjU'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=wn2y_Z0r3ok'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pnpm create vite; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/ng \n"
+                },
                 null,
                 {
                   "text": "pixi global install angular-cli \n"
                 },
                 {
-                  "text": "# pnpm create vite \n pixi exec curl cht.sh/ng \n"
+                  "text": "code --install-extension Angular.ng-template      --install-extension SMITPATELSP.angular-snippets-sp \n"
                 },
-                null,
                 {
-                  "text": "code --install-extension loiane.angular-extension-pack \n"
+                  "text": "code --install-extension usernamehw.errorlens     --install-extension SMITPATELSP.tailwind-css-snippets-sp \n"
+                },
+                {
+                  "text": "code --install-extension emranweb.daisyui-snippet \n"
                 }
               ]
             },
             {
               "key": "A",
-              "name": "astro (javascript)",
+              "name": "AWS",
               "commands": [
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 null,
                 {
-                  "text": "code --install-extension astro-build.astro-vscode; # pnpm create astro \n"
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://roadmap.sh/aws'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/awscli'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=fnFVcYWaIbw'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/playlist?list=PL0X6fGhFFNTcU-_MCPe9dkH6sqmgfhy_M'; \n"
+                },
+                null,
+                {
+                  "text": "pixi global install awscli \n"
+                },
+                {
+                  "text": "code --install-extension AmazonWebServices.aws-toolkit-vscode \n"
                 }
               ]
             },
@@ -1087,17 +1161,21 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 null,
                 {
-                  "text": "pixi global install cmake cxx-compiler --environment cxx-compiler --expose gcc --expose g++ --expose cmake \n"
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; \n "
                 },
                 {
                   "text": "pixi exec curl cht.sh/g++ \n"
                 },
                 null,
+                {
+                  "text": "pixi global install cmake cxx-compiler --environment cxx-compiler --expose gcc --expose g++ --expose cmake \n"
+                },
                 {
                   "text": "code --install-extension ms-vscode.cpptools-extension-pack \n"
                 }
@@ -1105,25 +1183,37 @@
             },
             {
               "key": "C",
-              "name": "c#",
+              "name": "c# + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 null,
                 {
-                  "text": "pixi global install dotnet-sdk --expose dotnet \n"
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=PY6uD1fgzZA'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/playlist?list=PLYpjLpq5ZDGvtV1cDOubGLP1vpVrV2_kv'; \n"
                 },
                 {
                   "text": "pixi exec curl cht.sh/dotnet \n"
                 },
                 null,
                 {
-                  "text": "code --install-extension ms-dotnettools.csdevkit \n"
+                  "text": "pixi global install dotnet-sdk --expose dotnet \n"
+                },
+                {
+                  "text": "code --install-extension ms-dotnettools.csdevkit --install-extension SMITPATELSP.dotnet-snippets-sp \n"
                 }
               ]
             },
@@ -1136,31 +1226,367 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 null,
                 {
-                  "text": "pixi exec shell -c 'brew install --cask docker          2>/dev/null' \n"
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
                 },
                 {
-                  "text": "pixi exec shell -c 'nix-env -iA nixpkgs.docker          2>/dev/null' \n"
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=rIrNIzy6U_g'; "
                 },
                 {
-                  "text": "pixi exec shell -c 'winget install docker.dockerdesktop 2>/dev/null' \n"
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=gAkwW2tuIqE'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/docker'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/dockerfile'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/docker-compose'; \n "
                 },
                 {
                   "text": "pixi exec curl cht.sh/docker \n"
                 },
                 null,
                 {
+                  "text": "pixi exec shell -c 'brew install --cask docker-desktop  2>/dev/null' \n"
+                },
+                {
+                  "text": "pixi exec shell -c 'yay -S docker                        2>/dev/null' \n"
+                },
+                {
+                  "text": "pixi exec shell -c 'winget install docker.dockerdesktop 2>/dev/null' \n"
+                },
+                {
                   "text": "code --install-extension ms-azuretools.vscode-docker \n"
                 }
               ]
             },
             {
+              "key": "D",
+              "name": "django + supabase",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=GaPAGkJDzGQ'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=M6cfT2pqpSc'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/python'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/django'; \n "
+                },
+                {
+                  "text": "pixi exec curl cht.sh/pixi \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/django-admin \n"
+                },
+                null,
+                {
+                  "text": "pixi global install python django \n"
+                },
+                {
+                  "text": "code --install-extension ms-python.black-formatter      --install-extension ms-python.python      \n"
+                },
+                {
+                  "text": "code --install-extension SMITPATELSP.django-snippets-sp --install-extension jjjermiah.pixi-vscode \n"
+                }
+              ]
+            },
+            {
+              "key": "e",
+              "name": "expo + supabase",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=IxfnhAHnfCM'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://github.com/expo/examples'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pnpm create expo-app --example with-nextjs; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pnpm create expo-app --example with-tailwindcss; \n"
+                },
+                null,
+                {
+                  "text": "pixi global install nodejs pnpm \n"
+                },
+                {
+                  "text": "code --install-extension usernamehw.errorlens --install-extension Cre8steveDev.react-native-and-expo-code-snippets \n"
+                }
+              ]
+            },
+            {
+              "key": "f",
+              "name": "fastapi + supabase",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=2X8B_X2c27Q'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=sS6Qe8svDfc'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/python'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/fastapi'; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/pixi \n"
+                },
+                null,
+                {
+                  "text": "pixi global install python \n"
+                },
+                {
+                  "text": "code --install-extension ms-python.black-formatter       --install-extension ms-python.python \n"
+                },
+                {
+                  "text": "code --install-extension SMITPATELSP.fastapi-snippets-sp --install-extension jjjermiah.pixi-vscode \n"
+                }
+              ]
+            },
+            {
               "key": "F",
+              "name": "flask + supabase",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=fHQWTsWqBdE'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=M6cfT2pqpSc'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/python'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/flask'; \n "
+                },
+                {
+                  "text": "pixi exec curl cht.sh/pixi \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/flask \n"
+                },
+                null,
+                {
+                  "text": "pixi global install python flask \n"
+                },
+                {
+                  "text": "code --install-extension ms-python.black-formatter     --install-extension ms-python.python      \n"
+                },
+                {
+                  "text": "code --install-extension SMITPATELSP.flask-snippets-sp --install-extension jjjermiah.pixi-vscode \n"
+                }
+              ]
+            },
+            {
+              "key": "g",
+              "name": "github actions + nginx",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=yfBtjLxn_6k'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=pgoZFKgoiDk'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=JKxlsvZXG7c'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=q8OleYuqntY'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/nginx'; \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension redhat.vscode-yaml          --install-extension pangestugalih.complete-devops-snippets \n"
+                },
+                {
+                  "text": "code --install-extension ahmadalli.vscode-nginx-conf \n"
+                }
+              ]
+            },
+            {
+              "key": "G",
+              "name": "go",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=aLVJY-1dKz8'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=JECZTdEJnOI'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/go'; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/go \n"
+                },
+                null,
+                {
+                  "text": "pixi global install go \n"
+                },
+                {
+                  "text": "code --install-extension golang.Go                --install-extension RomanBolovintsev.go-sqlx-snippets \n"
+                },
+                {
+                  "text": "code --install-extension snippington.snp-go-basic --install-extension go-snippets.go-fast-snippets \n"
+                },
+                {
+                  "text": "code --install-extension Dhikilabs.gin-snippets \n"
+                }
+              ]
+            },
+            {
+              "key": "h",
+              "name": "graphql",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=BNYwj0ZvU1U'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/graphql'; \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension chris-noring.graphql-snippets  --install-extension apollographql.vscode-apollo \n"
+                }
+              ]
+            },
+            {
+              "key": "H",
               "name": "FigmaToCode and AutoHTML (installer link) ",
               "commands": [
                 "vscode.open",
@@ -1172,40 +1598,15 @@
               ]
             },
             {
-              "key": "g",
-              "name": "go",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "pixi global install go \n"
-                },
-                {
-                  "text": "pixi exec curl cht.sh/go \n"
-                },
-                null,
-                {
-                  "text": "code --install-extension golang.Go \n"
-                }
-              ]
-            },
-            {
               "key": "j",
-              "name": "javascript",
+              "name": "javascript + css",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -1214,32 +1615,26 @@
               "args": [
                 null,
                 {
-                  "text": "pixi global install nodejs pnpm \n"
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
                 },
                 {
-                  "text": "pixi exec curl cht.sh/node \n"
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.creative-tim.com/twcomponents/cheatsheet/'; "
                 },
                 {
-                  "text": "pixi exec curl cht.sh/pnpm \n"
-                },
-                {
-                  "text": "# pnpm create next-app --example prisma-postgres \n"
-                },
-                {
-                  "text": "# pnpm create expo-app --example with-nextjs \n"
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/javascript'; \n"
                 },
                 null,
                 {
-                  "text": "code --install-extension WallabyJs.console-ninja  --install-extension bradlc.vscode-tailwindcss         --install-extension esbenp.prettier-vscode                         --install-extension prisma.prisma             \n"
+                  "text": "code --install-extension WallabyJs.console-ninja       --install-extension esbenp.prettier-vscode \n"
                 },
                 {
-                  "text": "code --install-extension emranweb.daisyui-snippet --install-extension imgildev.vscode-nextjs-generator  --install-extension supabase-snippets.supabase-javascript-snippets --install-extension SohanEmon.firebase-wizard \n"
+                  "text": "code --install-extension bradlc.vscode-tailwindcss     --install-extension a-smiggle.chills \n"
                 },
                 {
-                  "text": "code --install-extension a-smiggle.chills         --install-extension formulahendry.auto-rename-tag     --install-extension rangav.vscode-thunder-client                   --install-extension usernamehw.errorlens      \n"
+                  "text": "code --install-extension formulahendry.auto-rename-tag --install-extension rangav.vscode-thunder-client \n"
                 },
                 {
-                  "text": "code --install-extension PayPal.vscode-paypal     --install-extension chris-noring.graphql-snippets     --install-extension amjarmed.100-nextjs-snippets                   --install-extension ImKKingshuk.xsnippets     \n"
+                  "text": "code --install-extension SohanEmon.firebase-wizard     --install-extension PayPal.vscode-paypal \n"
                 }
               ]
             },
@@ -1252,13 +1647,24 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "retronvim.show_message"
               ],
               "args": [
                 null,
                 {
-                  "text": "pixi global install gradle maven openjdk=25 \n"
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=Nefd6qdpdSI'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=9t8VVWebRFM'; \n"
                 },
                 {
                   "text": "pixi exec curl cht.sh/gradle \n"
@@ -1271,12 +1677,661 @@
                 },
                 null,
                 {
-                  "text": "code --install-extension vscjava.vscode-java-pack --install-extension vmware.vscode-boot-dev-pack --install-extension developersoapbox.vscode-springboot-snippets \n"
+                  "text": "pixi global install gradle maven openjdk=25 \n"
+                },
+                {
+                  "text": "code --install-extension vscjava.vscode-java-pack                    --install-extension vmware.vscode-boot-dev-pack  \n"
+                },
+                {
+                  "text": "code --install-extension developersoapbox.vscode-springboot-snippets --install-extension Joagz.spring-gen \n"
+                },
+                {
+                  "text": "relaunch vscode"
                 }
               ]
             },
             {
               "key": "k",
+              "name": "kotlin + supabase",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=vPTRcm-PfAg'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=eox4EE66nXw'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=OwlTKWGSImU'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://medium.com/@vimleshyadavparv/react-vs-jetpack-compose-a-friendly-comparison-of-two-declarative-ui-frameworks-b8b6a94516fa'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/kotlin'; \n"
+                },
+                null,
+                {
+                  "text": "pixi global install kotlin openjdk=25 \n"
+                },
+                {
+                  "text": "code --install-extension fwcd.kotlin \n"
+                }
+              ]
+            },
+            {
+              "key": "K",
+              "name": "kubernetes + nginx",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=noJmOirhHKM'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=yHImZFs93EI'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=X9fSMGkjtug'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=DCoBcpOA7W4'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=JHdnasrZKyU'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://roadmap.sh/kubernetes'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/kubernetes'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'docker run -d --restart=unless-stopped --privileged -p 80:80 -p 443:443 rancher/rancher'; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/kubernetes-run; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/kubernetes-create; \n"
+                },
+                null,
+                {
+                  "text": "pixi global install kubernetes \n"
+                },
+                {
+                  "text": "pixi exec shell -c 'brew install --cask docker-desktop   2>/dev/null' \n"
+                },
+                {
+                  "text": "pixi exec shell -c 'yay -S docker-desktop                2>/dev/null' \n"
+                },
+                {
+                  "text": "pixi exec shell -c 'winget install docker.dockerdesktop  2>/dev/null' \n"
+                },
+                {
+                  "text": "code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools --install-extension pangestugalih.complete-devops-snippets \n"
+                }
+              ]
+            },
+            {
+              "key": "M",
+              "name": "mysql postgresql (installer link) ",
+              "commands": [
+                "vscode.open",
+                "vscode.open",
+                "vscode.open",
+                "vscode.open",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                "https://hub.docker.com/_/mysql",
+                "https://hub.docker.com/_/postgres",
+                "https://devhints.io/mysql",
+                "https://devhints.io/docker",
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=Cz3WcZLRaWc'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- docker run --name some-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pixi global install mysql postgresql; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- mysql -h 127.0.0.1 -u root -pmy-secret-pw; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- PGPASSWORD=mysecretpassword psql -h localhost -p 5432 -U postgres; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- psql 'postgresql://postgres:mysecretpassword@localhost:5432/postgres'; \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension dineug.vuerd-vscode               --install-extension ms-ossdata.vscode-pgsql \n"
+                },
+                {
+                  "text": "code --install-extension Bowlerr.sqlite-intelliview-vscode --install-extension cweijan.vscode-mysql-client2 \n"
+                },
+                {
+                  "text": "code --install-extension joe-re.sql-language-server        --install-extension inferrinizzard.prettier-sql-vscode \n"
+                }
+              ]
+            },
+            {
+              "key": "n",
+              "name": "nextjs + prisma",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://github.com/vercel/next.js/tree/canary/examples'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://github.com/prisma/prisma-examples/tree/latest/orm'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=5k7ZGhL3pI0'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=etyCqA7DnnI'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=gimSKEsWYb4'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=c_-b_isI4vg'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/react'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pnpm create next-app --example prisma-postgres; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pnpx try-prisma --template betterauth-nextjs; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pnpm create t3-app \n"
+                },
+                null,
+                {
+                  "text": "pixi global install nodejs pnpm \n"
+                },
+                {
+                  "text": "code --install-extension imgildev.vscode-nextjs-generator --install-extension emranweb.daisyui-snippet \n"
+                },
+                {
+                  "text": "code --install-extension ImKKingshuk.xsnippets            --install-extension amjarmed.100-nextjs-snippets \n"
+                },
+                {
+                  "text": "code --install-extension usernamehw.errorlens             --install-extension SMITPATELSP.tailwind-css-snippets-sp \n"
+                },
+                {
+                  "text": "code --install-extension prisma.prisma \n"
+                }
+              ]
+            },
+            {
+              "key": "N",
+              "name": "nextjs + supabase",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://github.com/vercel/next.js/tree/canary/examples'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=kyphLGnSz6Q'; \n"
+                },
+                null,
+                {
+                  "text": "pixi global install nodejs pnpm \n"
+                },
+                {
+                  "text": "code --install-extension imgildev.vscode-nextjs-generator --install-extension emranweb.daisyui-snippet \n"
+                },
+                {
+                  "text": "code --install-extension ImKKingshuk.xsnippets            --install-extension amjarmed.100-nextjs-snippets \n"
+                },
+                {
+                  "text": "code --install-extension usernamehw.errorlens             --install-extension SMITPATELSP.tailwind-css-snippets-sp \n"
+                },
+                {
+                  "text": "code --install-extension supabase-snippets.supabase-javascript-snippets \n"
+                }
+              ]
+            },
+            {
+              "key": "o",
+              "name": "devops roadmap",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://roadmap.sh/devops?r=devops-beginner'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://roadmap.sh/devops'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=qMfptwXpVmg'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=D4cixQ_Ek4Y'; \n"
+                }
+              ]
+            },
+            {
+              "key": "p",
+              "name": "python + scikit-learn",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/python'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/tensorflow'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/pandas'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/numpy'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/matplotlib'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=SIEaLBXr0rk'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=EMoLTicNR6w'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/playlist?list=PLfFghEzKVmjvuSA67LszN1dZ-Dd_pkus6'; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/pixi \n"
+                },
+                null,
+                {
+                  "text": "pixi global install python \n"
+                },
+                {
+                  "text": "code --install-extension ms-python.black-formatter             --install-extension ms-python.python \n"
+                },
+                {
+                  "text": "code --install-extension jjjermiah.pixi-vscode                 --install-extension snippington.snp-pandas-basic \n"
+                },
+                {
+                  "text": "code --install-extension devil-cyber.keras-snippet             --install-extension changkaiyan.tf2snippets \n"
+                },
+                {
+                  "text": "code --install-extension analytic-signal.snippets-scikit-learn --install-extension WangQvQ.Easy-PyTorch \n"
+                }
+              ]
+            },
+            {
+              "key": "P",
+              "name": "php + laravel",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=cdlHJeHVFW4'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/php'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/laravel'; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/composer \n"
+                },
+                null,
+                {
+                  "text": "pixi global install php \n"
+                },
+                {
+                  "text": "code --install-extension kokororin.vscode-phpfmt         --install-extension zobo.php-intellisense \n"
+                },
+                {
+                  "text": "code --install-extension SMITPATELSP.laravel-snippets-sp \n"
+                }
+              ]
+            },
+            {
+              "key": "r",
+              "name": "rust",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/rust'; \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/rustc \n"
+                },
+                {
+                  "text": "pixi exec curl cht.sh/cargo \n"
+                },
+                null,
+                {
+                  "text": "pixi global install rust --with rust-src \n"
+                },
+                {
+                  "text": "code --install-extension rust-lang.rust-analyzer \n"
+                }
+              ]
+            },
+            {
+              "key": "R",
+              "name": "dokploy and railway (installer link) ",
+              "commands": [
+                "vscode.open",
+                "vscode.open"
+              ],
+              "args": [
+                "https://dokploy.com",
+                "https://railway.com/dashboard"
+              ]
+            },
+            {
+              "key": "s",
+              "name": "ansible + nginx",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/ansible-guide'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/ansible-modules'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=5hycyr-8EKs'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/shorts/am9dazrQqys'; \n"
+                },
+                null,
+                {
+                  "text": "pixi global install ansible \n"
+                },
+                {
+                  "text": "code --install-extension redhat.vscode-yaml --install-extension pangestugalih.complete-devops-snippets \n"
+                }
+              ]
+            },
+            {
+              "key": "t",
+              "name": "terraform",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://roadmap.sh/terraform'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/terraform'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=s1tMZFjSxtg'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=bStIFxbD1fo'; \n"
+                },
+                null,
+                {
+                  "text": "pixi global install terraform \n"
+                },
+                {
+                  "text": "code --install-extension HashiCorp.terraform --install-extension pangestugalih.complete-devops-snippets \n"
+                }
+              ]
+            },
+            {
+              "key": "v",
+              "name": "vue",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "clear; pixi exec pyfiglet --color=BLUE --font=ansi_shadow --width=120 '      CHEAT SHEET'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://cheatsheets.zip/vue'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://devhints.io/vue'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=VldVWN2i710'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=RhZZ0whiuT8'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- pnpm create vite; \n"
+                },
+                null,
+                {
+                  "text": "code --install-extension vue.volar                      --install-extension biomejs.biome \n"
+                },
+                {
+                  "text": "code --install-extension usernamehw.errorlens           --install-extension SMITPATELSP.tailwind-css-snippets-sp \n"
+                },
+                {
+                  "text": "code --install-extension SMITPATELSP.nuxtjs-snippets-sp --install-extension emranweb.daisyui-snippet \n"
+                }
+              ]
+            },
+            {
+              "key": "y",
+              "name": "toml and yaml",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "code --install-extension tamasfe.even-better-toml --install-extension redhat.vscode-yaml \n"
+                }
+              ]
+            },
+            {
+              "key": "Y",
               "name": "jupyter and kaggle",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1302,120 +2357,14 @@
               ]
             },
             {
-              "key": "M",
-              "name": "Mysql Postgresql (installer link) ",
-              "commands": [
-                "vscode.open",
-                "vscode.open",
-                "vscode.open",
-                "vscode.open",
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                "https://hub.docker.com/_/mysql",
-                "https://hub.docker.com/_/postgres",
-                "https://devhints.io/mysql",
-                "https://devhints.io/docker",
-                null,
-                {
-                  "text": "code --install-extension joe-re.sql-language-server --install-extension qwtel.sqlite-viewer --install-extension inferrinizzard.prettier-sql-vscode \n"
-                }
-              ]
-            },
-            {
-              "key": "p",
-              "name": "python",
+              "key": "+",
+              "name": "AI + extra extensions",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "pixi global install python \n"
-                },
-                {
-                  "text": "pixi exec curl cht.sh/python \n"
-                },
-                {
-                  "text": "pixi exec curl cht.sh/pixi \n"
-                },
-                null,
-                {
-                  "text": "code --install-extension ms-python.black-formatter    --install-extension ms-python.python          --install-extension jjjermiah.pixi-vscode   \n"
-                },
-                {
-                  "text": "code --install-extension snippington.snp-pandas-basic --install-extension devil-cyber.keras-snippet --install-extension changkaiyan.tf2snippets \n"
-                }
-              ]
-            },
-            {
-              "key": "P",
-              "name": "php",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "pixi global install php \n"
-                },
-                {
-                  "text": "pixi exec curl cht.sh/php \n"
-                },
-                {
-                  "text": "pixi exec curl cht.sh/composer \n"
-                },
-                null,
-                {
-                  "text": "code --install-extension zobo.php-intellisense --install-extension DEVSENSE.composer-php-vscode --install-extension onecentlin.laravel-extension-pack \n"
-                }
-              ]
-            },
-            {
-              "key": "r",
-              "name": "rust",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "pixi global install rust --with rust-src \n"
-                },
-                {
-                  "text": "pixi exec curl cht.sh/rustc \n"
-                },
-                {
-                  "text": "pixi exec curl cht.sh/cargo \n"
-                },
-                null,
-                {
-                  "text": "code --install-extension rust-lang.rust-analyzer \n"
-                }
-              ]
-            },
-            {
-              "key": "R",
-              "name": "retronvim extra extensions",
-              "commands": [
-                "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
@@ -1423,66 +2372,25 @@
               "args": [
                 null,
                 {
-                  "text": "code --install-extension alefragnani.Bookmarks   --install-extension usernamehw.errorlens                 --install-extension lamartire.git-indicators --install-extension christian-kohler.path-intellisense \n"
+                  "text": "code --install-extension alefragnani.Bookmarks        --install-extension Katsute.code-background \n"
                 },
                 {
-                  "text": "code --install-extension Katsute.code-background --install-extension DanielPriestley.poimandres-alternate --install-extension miguelsolorio.symbols    --install-extension drewxs.tokyo-night-dark            \n"
+                  "text": "code --install-extension lamartire.git-indicators     --install-extension christian-kohler.path-intellisense \n"
                 },
                 {
-                  "text": "code --install-extension Google.geminicodeassist --install-extension MarsCode.marscode-extension          --install-extension sourcegraph.amp          --install-extension AbdulkaderSafi.file-explorer       \n"
+                  "text": "code --install-extension AbdulkaderSafi.file-explorer --install-extension miguelsolorio.symbols \n"
                 },
                 {
-                  "text": "code --install-extension mathematic.vscode-pdf   --install-extension supermaven.supermaven                                                                                                                    \n"
-                }
-              ]
-            },
-            {
-              "key": "s",
-              "name": "svelte (javascript)",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "code --install-extension svelte.svelte-vscode  --install-extension biomejs.biome \n"
+                  "text": "code --install-extension drewxs.tokyo-night-dark      --install-extension DanielPriestley.poimandres-alternate \n"
                 },
                 {
-                  "text": "# pnpm create vite \n pixi exec curl cht.sh/vite \n"
-                }
-              ]
-            },
-            {
-              "key": "v",
-              "name": "vue (javascript)",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "code --install-extension mubaidr.vuejs-extension-pack  --install-extension biomejs.biome \n"
+                  "text": "code --install-extension Google.geminicodeassist      --install-extension MarsCode.marscode-extension \n"
                 },
                 {
-                  "text": "# pnpm create vite \n pixi exec curl cht.sh/vite \n "
-                }
-              ]
-            },
-            {
-              "key": "y",
-              "name": "toml and yaml",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
+                  "text": "code --install-extension sourcegraph.amp              --install-extension supermaven.supermaven \n"
+                },
                 {
-                  "text": "code --install-extension tamasfe.even-better-toml --install-extension redhat.vscode-yaml \n"
+                  "text": "code --install-extension usernamehw.errorlens \n"
                 }
               ]
             }
@@ -1697,7 +2605,7 @@
         },
         {
           "key": "o",
-          "name": "Focus Explorer",
+          "name": "Focus explorer",
           "command": "workbench.view.explorer"
         },
         {
@@ -1843,15 +2751,21 @@
           "bindings": [
             {
               "key": "c",
-              "name": "open chatgpt.com",
-              "command": "vscode.open",
-              "args": "https://chatgpt.com"
-            },
-            {
-              "key": "C",
               "name": "open cheat.sh",
               "command": "vscode.open",
               "args": "https://cheat.sh"
+            },
+            {
+              "key": "C",
+              "name": "open cheatsheets.zip",
+              "command": "vscode.open",
+              "args": "https://cheatsheets.zip"
+            },
+            {
+              "key": "d",
+              "name": "open deepseek.com",
+              "command": "vscode.open",
+              "args": "https://chat.deepseek.com"
             },
             {
               "key": "d",
@@ -1865,9 +2779,34 @@
               "command": "editor.action.startFindReplaceAction"
             },
             {
+              "key": "k",
+              "name": "open kimi.com",
+              "command": "vscode.open",
+              "args": "https://www.kimi.com"
+            },
+            {
+              "key": "q",
+              "name": "open qwen.ai",
+              "command": "vscode.open",
+              "args": "https://chat.qwen.ai"
+            },
+            {
               "key": "p",
               "name": "Project",
               "command": "workbench.action.replaceInFiles"
+            },
+            {
+              "key": "P",
+              "name": "classless components (picocss.com)",
+              "commands": [
+                "vscode.open",
+                "vscode.open"
+              ],
+              "args": [
+                "https://picocss.com",
+                "https://medium.com/frontendweb/how-to-use-pico-css-and-next-js-d610c235416e"
+              ]
+
             },
             {
               "key": "r",
@@ -1910,7 +2849,7 @@
               "key": "v",
               "name": "6000+ tailwind elements (uiverse.io)",
               "command": "vscode.open",
-              "args": "https://uiverse.io/"
+              "args": "https://uiverse.io"
             },
             {
               "key": "w",
@@ -1923,6 +2862,12 @@
               "name": "600+ tailwind components (creative-tim.com)",
               "command": "vscode.open",
               "args": "https://www.creative-tim.com/twcomponents"
+            },
+            {
+              "key": "z",
+              "name": "open z.ai",
+              "command": "vscode.open",
+              "args": "https://chat.z.ai"
             }
           ]
         },
@@ -2339,7 +3284,7 @@
         },
         {
           "key": "v",
-          "name": "Open/Move Terminal to Vertical split",
+          "name": "Open/Move terminal to vertical split",
           "commands": [
             "workbench.action.positionPanelRight",
             "workbench.action.terminal.focus"
@@ -2347,7 +3292,7 @@
         },
         {
           "key": "V",
-          "name": "Open/Move Terminal to Horizontal split",
+          "name": "Open/Move terminal to horizontal split",
           "commands": [
             "workbench.action.positionPanelBottom",
             "workbench.action.terminal.focus"
@@ -2469,12 +3414,12 @@
         },
         {
           "key": "x",
-          "name": "Close active editor",
+          "name": "Close tab",
           "command": "workbench.action.closeActiveEditor"
         },
         {
           "key": "y",
-          "name": "+File Manager",
+          "name": "+File manager",
           "bindings": [
             {
               "key": "y",
@@ -2495,14 +3440,6 @@
               "command": "workbench.action.terminal.sendSequence",
               "args": {
                 "text": "function vi() { sh -c \"$EDITOR $@\"; } # ($EDITOR) # eval $EDITOR # iex $env:EDITOR \n"
-              }
-            },
-            {
-              "key": "C",
-              "name": "print sequence to clear_previous_line (on current terminal)",
-              "command": "workbench.action.terminal.sendSequence",
-              "args": {
-                "text": "printf '\\x1b[2A\\x1b[K'\n"
               }
             },
             {
