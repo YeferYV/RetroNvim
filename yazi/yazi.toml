@@ -6,12 +6,10 @@ show_symlink   = false
 
 [opener]
 play = [
-	{ run = """ vlc "$@" """, orphan = true, for = "unix" },
-	{ run = """ vlc  %*  """, orphan = true, for = "windows" }
+	{ run = """ vlc %s """, orphan = true },
 ]
 edit = [
-	{ run = """  %EDITOR%  %*  2>nul  ||  nvim  %*  &  %YAZI_CMD%  2>nul  &  exit  0  """, block  = true, desc = "$EDITOR", for = "windows" },
-	{ run = """ ${EDITOR:-nvim} "$@";                  $YAZI_CMD                      """, block  = true, desc = "$EDITOR", for = "unix" },
-	{ run = """ code  %*                                                              """, orphan = true, desc = "vscode",  for = "windows" },
-	{ run = """ code "$@"                                                             """, orphan = true, desc = "vscode",  for = "unix" },
+	{ run = """  %EDITOR%  %s  2>nul  ||  nvim  %s  &  exit  0  """, block  = true, desc = "$EDITOR", for = "windows" },
+	{ run = """ ${EDITOR:-nvim} %s                              """, block  = true, desc = "$EDITOR", for = "unix" },
+	{ run = """ code  %s                                        """, orphan = true, desc = "vscode" },
 ]

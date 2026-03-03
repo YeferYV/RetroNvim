@@ -1,40 +1,26 @@
 [mgr]
-# cwd           = { fg = "#6c6c6c" }
 cwd           = { fg = "#7aa2f7" }
 border_symbol = " "
-# hovered     = { bg = "#3c3c3c" }
-hovered     = { bg = "#2c2c3c" }
+
+[indicator]
+current = { bg = "#2c2c3c" }
 
 [filetype]
 
 rules = [
-	# Images
-	{ mime = "image/*", fg = "magenta" },
+	{ url = "*",  is = "orphan", fg = "red" },
+	{ url = "*",  is = "link",   fg = "cyan" },
+	{ url = "*/", is = "link",   fg = "cyan" },
+	{ url = "*",  is = "exec",   fg = "green" },
+	{ url = "*/",                fg = "#7aa2f7" },
+]
 
-	# Media
-	{ mime = "{audio,video}/*", fg = "magenta" },
+[icon]
 
-	# Archives
-	{ mime = "application/{,g}zip", fg = "yellow" },
-	{ mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", fg = "yellow" },
-
-	# Documents
-	{ mime = "application/{pdf,doc,rtf,vnd.*}", fg = "magenta" },
-
-	# Empty files
-	{ mime = "inode/x-empty", fg = "yellow" },
-
-	# Special files
-	{ name = "*/", is = "link", fg = "cyan" },
-	{ name = "*", is = "link"  , fg = "cyan" },
-	{ name = "*", is = "orphan", bg = "red" },
-	{ name = "*", is = "exec"  , fg = "green" },
-
-  # Directory (should be after special files otherwise will override it)
-	# { mime = "inode/*", fg = "#6c6c6c" },
-	{ mime = "inode/*", fg = "#7aa2f7" },
-
-	# Fallback
-	{ name = "*/", fg = "blue" },
-
+conds = [
+	{ if = "orphan", text = "", fg = "red" },
+	{ if = "link",   text = "", fg = "cyan" },
+	{ if = "dir",    text = "", fg = "#7aa2f7" },
+	{ if = "exec",   text = "", fg = "green" },
+	{ if = "!dir",   text = ""               },
 ]

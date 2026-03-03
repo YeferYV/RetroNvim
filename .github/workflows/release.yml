@@ -72,7 +72,7 @@ jobs:
             cd       bin/pixi_pack
             pixi init
             pixi global install pixi-pack=0.7.1
-            pixi add  --platform osx-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 git=2.52.0 lazygit=0.57.0 less=679 pixi=0.60.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 # nvim=0.11.2 complains about treesitter for lua filetype
+            pixi add  --platform osx-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 git=2.52.0 lazygit=0.57.0 less=679 pixi=0.60.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=26.1.22 # nvim=0.11.2 complains about treesitter for lua filetype
             pixi-pack --platform osx-64 --create-executable
             cp    environment.sh ..
             cd ..
@@ -95,7 +95,7 @@ jobs:
             cd       bin/pixi_pack
             pixi init
             pixi global install pixi-pack=0.7.1
-            pixi add  --platform linux-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 git=2.52.0 lazygit=0.57.0 less=679 pixi=0.60.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=25.5.31 zsh=5.9 # nvim=0.11.2 complains about treesitter for lua filetype
+            pixi add  --platform linux-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 git=2.52.0 lazygit=0.57.0 less=679 pixi=0.60.0 p7zip=16.02 ripgrep=14.1.1 starship=1.22.1 yazi=26.1.22 zsh=5.9 # nvim=0.11.2 complains about treesitter for lua filetype
             pixi-pack --platform linux-64 --create-executable
             cp    environment.sh ..
             cd ..
@@ -120,7 +120,7 @@ jobs:
 
           (
             export PIXI_HOME="$PWD/bin/windows"
-            pixi global install --platform win-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 lazygit=0.57.0 less=679 m2-file=5.46.2 starship=1.22.1 ripgrep=14.1.1 yazi=25.5.31 7zip=24.08 --environment windows
+            pixi global install --platform win-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 lazygit=0.57.0 less=679 m2-file=5.46.2 starship=1.22.1 ripgrep=14.1.1 yazi=26.1.22 7zip=24.08 --environment windows
             mv bin/windows/envs/windows/bin/{bat.exe,less.exe,lesskey.exe,rg.exe,starship.exe} bin/windows/envs/windows/Library/bin/
             rm bin/windows/envs/windows/Library/bin/nvim.pdb # shipped in nightly builds
             cd bin
