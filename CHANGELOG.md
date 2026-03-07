@@ -25,6 +25,13 @@
 * **yazi:** powershell splits `%*` by white-spaces not by end-of-line ([6fa640d](https://github.com/YeferYV/RetroNvim/commit/6fa640d7c98189f052bbe946fefbcdf8e054d573))
 * **yazi:** removing devour which is not supported on wayland ([d8fd227](https://github.com/YeferYV/RetroNvim/commit/d8fd22767700e4ab0cf7b85cf4cb89673b855587))
 
+## [0.4.4](https://github.com/YeferYV/RetroNvim/compare/v0.4.3...v0.4.4) (2026-03-07)
+
+
+### Bug Fixes
+
+* **release.yml:** lowercase typo + skip `rm nvim.pdb` exit-code ([75662ef](https://github.com/YeferYV/RetroNvim/commit/75662ef9ddb6a05bc15fcc0b6d3103cc6a657ed3))
+
 ## [0.4.2](https://github.com/YeferYV/RetroNvim/compare/v0.4.1...v0.4.2) (2025-11-08)
 
 
