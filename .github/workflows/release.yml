@@ -109,7 +109,7 @@ jobs:
 
           ##################################################################################################################################################################################################################################################################################################
 
-          mkdir -p bin/windows/envs/windows/library
+          mkdir -p bin/windows/envs/windows/Library
           mkdir -p powershell/modules/psreadline
           curl  -L https://github.com/ip7z/7zip/releases/download/24.09/7zr.exe                                                --create-dirs --output bin/7zr.exe
           curl  -L https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip                                   --create-dirs --output /tmp/nvim.zip              && unzip /tmp/nvim.zip       -d /tmp/nvim         && cp -r /tmp/nvim/nvim-win64/*                                     bin/windows/envs/windows/Library
@@ -121,9 +121,9 @@ jobs:
           (
             export PIXI_HOME="$PWD/bin/windows"
             pixi global install --platform win-64 bat=0.26.1 eza=0.21.4 fzf=0.67.0 lazygit=0.57.0 less=679 m2-file=5.46.2 starship=1.22.1 ripgrep=14.1.1 yazi=26.1.22 7zip=24.08 --environment windows
-            mv bin/windows/envs/windows/bin/{bat.exe,less.exe,lesskey.exe,rg.exe,starship.exe} bin/windows/envs/windows/Library/bin/
-            rm bin/windows/envs/windows/Library/bin/nvim.pdb # shipped in nightly builds
-            cd bin
+            mv    bin/windows/envs/windows/bin/{bat.exe,less.exe,lesskey.exe,rg.exe,starship.exe} bin/windows/envs/windows/Library/bin/
+            rm -f bin/windows/envs/windows/Library/bin/nvim.pdb # shipped in nightly builds
+            cd    bin
             7z a -mx9 windows.7z windows
           )
 
