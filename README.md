@@ -554,11 +554,11 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   `vue`
 
 - Retronvim/nvim comes with an installer for
+  [treesitter](https://github.com/usagi-flow/evil-helix) (treesitter support from evil-helix),
   [supermaven](https://github.com/supermaven-inc/supermaven-nvim) (free copilot/windsurf),
   [windsurf.nvim](https://github.com/Exafunction/windsurf.nvim) (free copilot),
   [sidekick.nvim](https://github.com/folke/sidekick.nvim) (AI agents integration to neovim like gemini),
   [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes which is free and unlimited),
-  [consolelog.nvim](https://github.com/chriswritescode-dev/consolelog.nvim) (console ninja requires `apt install net-tools`, Windows not supported) and
   LSP + formatters for:
   `angular`,
   `bash`, `biome`, `black`,
@@ -631,5 +631,6 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
 - [vspacecode](https://github.com/vspacecode/vspacecode) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
 - [leaderKey](https://github.com/JimmyZJX/leaderkey) (a faster whichkey with ripgrep/fzf integration) whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
+- [evil-helix](https://github.com/usagi-flow/evil-helix) helix fork with vim keybindings + buitin tressitter textobjects + lspconfig + mini.completion + gitsigns + whichkey + file explorer + telescope + colorschemes + bufferline
 
 </details>
