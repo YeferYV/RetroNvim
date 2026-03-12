@@ -2,10 +2,27 @@
 {
   "$help": "https://aka.ms/terminal-documentation",
   "$schema": "https://aka.ms/terminal-profiles-schema",
+  "actions":
+  [
+    {
+      "command": {
+        "action": "multipleActions",
+        "actions": [
+          "selectAll",
+          "copy",
+          {
+            "action": "newTab",
+            "commandline": "%USERPROFILE%/.pixi/bin/nvim -c \"put +\" -c \"map q :qa!<cr>\" "
+          }
+        ]
+      },
+      "id": "user.copymode"
+    }
+  ],
   "copyFormatting": "none",
   "copyOnSelect": true,
   "defaultInputScope": "alphanumericHalfWidth",
-  "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+  "defaultProfile": "{00000000-0000-0000-0000-000000000000}",
   "launchMode": "maximized",
   "keybindings": [
 
@@ -47,14 +64,14 @@
     {"id": "Terminal.MovePaneToTab",      "keys": "ctrl+shift+t"},
     {"id": "Terminal.MoveTabToNewWindow", "keys": "ctrl+shift+w"},
     {"id": "Terminal.OpenNewWindow",      "keys": "ctrl+shift+n"},
-    {"id": "Terminal.ToggleMarkMode",     "keys": "shift+space"},
+    {"id": "user.copymode",               "keys": "shift+space" },
     {"id": "Terminal.FindText",           "keys": "ctrl+shift+f"}
 
   ],
   "profiles": {
     "defaults": {
       // "backgroundImage": "desktopWallpaper",
-      "backgroundImage": "%USERPROFILE%\\Documents\\WindowsPowershell\\retronvim.jpg",
+      "backgroundImage": "%USERPROFILE%\\.pixi\\envs\\retronvim\\opt\\retronvim\\assets\\retronvim.jpg",
       "backgroundImageOpacity": 0.15,
       "colorScheme": "bat_base16_tmTheme",
       "compatibility.input.forceVT": true,
@@ -65,7 +82,7 @@
     },
     "list": [
       {
-        "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -nologo",
+        "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -nologo -noexit -c \"set-psreadlineoption -editmode vi\"",
         "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
         "hidden": false,
         "name": "Windows PowerShell"
@@ -83,13 +100,15 @@
         "source": "Windows.Terminal.Azure"
       },
       {
-        "commandline": "msys2.cmd -full-path -shell zsh -c 'export HOME=/c/Users/$USER; export ZDOTDIR=\"$(print -l $HOME/.vscode/extensions/yeferyv.retronvim*/zsh | head -n1)\"; zsh -l'",
-        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b9}",
+        "commandline": "%USERPROFILE%\\.pixi\\bin\\zsh.exe",
+        "guid": "{00000000-0000-0000-0000-000000000000}",
         "hidden": false,
-        "name": "zsh (MSYS2)"
+        "name": "zsh (retronvim)",
+        "startingDirectory": "%USERPROFILE%"
       }
     ]
   },
+  "rendering.graphicsAPI": "direct3d11",
   "schemes": [
     {
       "background": "#000000",

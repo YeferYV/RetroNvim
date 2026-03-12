@@ -1,7 +1,7 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/powershell/wezterm/windows-terminal setup",
+  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/wezterm/windows-terminal setup",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -41,7 +41,6 @@
     "zsh",
     "msys2",
     "base16",
-    "powershell",
     "wezterm",
     "windows-terminal",
     "terminal"
@@ -63,6 +62,18 @@
       {
         "command": "retronvim.lazygit",
         "title": "RetroNvim: Lazygit"
+      },
+      {
+        "command": "retronvim.terminal_copymode",
+        "title": "RetroNvim: Terminal Copy Mode"
+      },
+      {
+        "command": "retronvim.nvim_panel_terminal",
+        "title": "RetroNvim: Neovim Panel Terminal"
+      },
+      {
+        "command": "retronvim.nvim_tab_terminal",
+        "title": "RetroNvim: Neovim Tab Terminal"
       },
       {
         "command": "retronvim.show_message",
@@ -146,47 +157,22 @@
       "terminal.integrated.suggest.enabled": true,
       "terminal.integrated.profiles.osx": {
         "zsh (retronvim)": {
-          "path": "zsh",
-          "args": [
-            "-c",
-            "export ZDOTDIR=\"$(ls -d $HOME/.*/extensions/yeferyv.retronvim*/zsh | head -n1)\"; zsh"
-          ]
+          "path": "${HOME}/.pixi/bin/zsh"
         }
       },
       "terminal.integrated.profiles.linux": {
         "zsh (retronvim)": {
-          "path": "bash",
-          "args": [
-            "-c",
-            "export ZDOTDIR=\"$(echo ~/.*/extensions/yeferyv.retronvim*/zsh | cut -d' ' -f1)\"; $ZDOTDIR/../bin/env/bin/zsh"
-          ]
+          "path": "${HOME}/.pixi/bin/zsh"
         }
       },
       "terminal.integrated.profiles.windows": {
-        "zsh (MSYS2)": {
-          "path": "msys2.cmd",
-          "args": [
-            "-full-path",
-            "-shell",
-            "zsh",
-            "-c",
-            "export HOME=/c/Users/$USER; export ZDOTDIR=$(printf ~/.*/extensions/yeferyv.retronvim*/zsh | head -n1); zsh -l"
-          ]
-        },
-        "powershell (retronvim)": {
-          "path": "powershell",
-          "args": [
-            "-noprofile",
-            "-executionpolicy",
-            "bypass",
-            "-c",
-            "$env:retronvim_path=(Get-ChildItem -Path \"$HOME/.*/extensions/yeferyv.retronvim*\" | Select-Object -First 1).FullName; $env:psmodulepath=\"$env:retronvim_path/powershell/modules;$env:psmodulepath\"; powershell -nologo -noexit -file \"$env:retronvim_path/powershell/profile.ps1\""
-          ]
+        "zsh (retronvim)": {
+          "path": "${env:USERPROFILE}\\.pixi\\bin\\zsh.exe"
         }
       },
       "terminal.integrated.defaultProfile.osx": "zsh (retronvim)",
       "terminal.integrated.defaultProfile.linux": "zsh (retronvim)",
-      "terminal.integrated.defaultProfile.windows": "powershell (retronvim)",
+      "terminal.integrated.defaultProfile.windows": "zsh (retronvim)",
       "terminal.integrated.enableKittyKeyboardProtocol": false,
       "trae.chatLanguage": "en",
       "vim.camelCaseMotion.enable": true,
@@ -372,6 +358,7 @@
       "zenMode.fullScreen": false,
       "zenMode.hideLineNumbers": false,
       "workbench.colorTheme": "retronvim_base16",
+      "workbench.editor.useModal": "off",
       "workbench.iconTheme": "symbols",
       "workbench.colorCustomizations": {
         "[retronvim_base16][Tokyo Night Dark][Poimandres Alternate]": {
@@ -400,21 +387,31 @@
       "whichkey.bindings": [
         {
           "key": ";",
-          "name": "Repeat whichkey",
+          "icon": "keyboard",
+          "name": "repeat whichkey",
           "command": "whichkey.repeatMostRecent"
         },
         {
           "key": "/",
-          "name": "Fuzzy find whichkey",
+          "icon": "search-fuzzy",
+          "name": "fuzzy find whichkey",
           "command": "whichkey.searchBindings"
         },
         {
+          "key": " ",
+          "icon": "terminal",
+          "name": "terminal copy mode (q to exit)",
+          "command": "retronvim.terminal_copymode"
+        },
+        {
           "key": "b",
-          "name": "+Buffers (editors/tabs)",
+          "icon": "window",
+          "name": "+buffers (editors/tabs)",
           "bindings": [
             {
               "key": ";",
-              "name": "Recent editor",
+              "icon": "clock",
+              "name": "recent editor",
               "commands": [
                 "workbench.action.quickOpenPreviousRecentlyUsedEditor",
                 "workbench.action.acceptSelectedQuickOpenItem"
@@ -422,133 +419,165 @@
             },
             {
               "key": "b",
-              "name": "Find editors",
+              "icon": "search",
+              "name": "find editors",
               "command": "workbench.action.showAllEditors"
             },
             {
               "key": "B",
-              "name": "Recent editors",
+              "icon": "clock",
+              "name": "recent editors",
               "command": "workbench.action.quickOpenPreviousRecentlyUsedEditor"
             },
             {
               "key": "c",
+              "icon": "stop",
               "name": "force close editor",
               "command": "workbench.action.revertAndCloseActiveEditor"
             },
             {
               "key": "C",
-              "name": "Close other editors",
+              "icon": "close-all",
+              "name": "close other editors",
               "command": "workbench.action.closeOtherEditors"
             },
             {
               "key": "s",
-              "name": "Previous editor",
+              "icon": "arrow-left",
+              "name": "previous editor",
               "command": "workbench.action.previousEditor"
             },
             {
               "key": "f",
-              "name": "Next editor",
+              "icon": "arrow-right",
+              "name": "next editor",
               "command": "workbench.action.nextEditor"
             },
             {
               "key": "S",
-              "name": "Move editor left in group",
+              "icon": "arrow-circle-left",
+              "name": "move editor left in group",
               "command": "workbench.action.moveEditorLeftInGroup"
             },
             {
               "key": "F",
-              "name": "Move editor right in group",
+              "icon": "arrow-circle-right",
+              "name": "move editor right in group",
               "command": "workbench.action.moveEditorRightInGroup"
             },
             {
               "key": "h",
-              "name": "Move editor into left group",
+              "icon": "triangle-left",
+              "name": "move editor into left group",
               "command": "workbench.action.moveEditorToLeftGroup"
             },
             {
               "key": "j",
-              "name": "Move editor into below group",
+              "icon": "triangle-down",
+              "name": "move editor into below group",
               "command": "workbench.action.moveEditorToBelowGroup"
             },
             {
               "key": "k",
-              "name": "Move editor into above group",
+              "icon": "triangle-up",
+              "name": "move editor into above group",
               "command": "workbench.action.moveEditorToAboveGroup"
             },
             {
               "key": "l",
-              "name": "Move editor into right group",
+              "icon": "triangle-right",
+              "name": "move editor into right group",
               "command": "workbench.action.moveEditorToRightGroup"
             },
             {
               "key": "t",
-              "name": "New untitled editor",
+              "icon": "new-file",
+              "name": "new untitled editor",
               "command": "workbench.action.files.newUntitledFile"
             },
             {
               "key": "x",
-              "name": "Close active editor",
+              "icon": "close",
+              "name": "close active editor",
               "command": "workbench.action.closeActiveEditor"
             },
             {
               "key": "X",
-              "name": "Reopen closed editor",
+              "icon": "debug-step-over",
+              "name": "reopen closed editor",
               "command": "workbench.action.reopenClosedEditor"
             }
           ]
         },
         {
           "key": "d",
-          "name": "+Debug",
+          "icon": "debug",
+          "name": "+debug",
           "bindings": [
             {
               "key": "b",
-              "name": "Toggle breakpoint",
+              "icon": "activate-breakpoints",
+              "name": "toggle breakpoint",
               "command": "editor.debug.action.toggleBreakpoint"
             },
             {
               "key": "B",
-              "name": "Toggle inline breakpoint",
+              "icon": "activate-breakpoints",
+              "name": "toggle inline breakpoint",
               "command": "editor.debug.action.toggleInlineBreakpoint"
             },
             {
               "key": "c",
-              "name": "Continue debug",
+              "icon": "debug-continue",
+              "name": "continue debug",
               "command": "workbench.action.debug.continue"
             },
             {
               "key": "i",
-              "name": "Step into",
+              "icon": "debug-step-into",
+              "name": "step into",
               "command": "workbench.action.debug.stepInto"
             },
             {
+              "key": "I",
+              "icon": "debug-step-out",
+              "name": "step out",
+              "command": "workbench.action.debug.stepOut"
+            },
+            {
               "key": "j",
-              "name": "Jump to cursor",
+              "icon": "debug-line-by-line",
+              "name": "jump to cursor",
               "command": "debug.jumpToCursor"
             },
             {
               "key": "o",
-              "name": "Step over",
+              "icon": "debug-step-over",
+              "name": "step over",
               "command": "workbench.action.debug.stepOver"
             },
             {
               "key": "O",
-              "name": "Step out",
-              "command": "workbench.action.debug.stepOut"
+              "icon": "debug-step-back",
+              "name": "step back",
+              "command": "workbench.action.debug.stepBack"
             },
             {
               "key": "p",
-              "name": "Pause debug",
+              "icon": "debug-pause",
+              "name": "pause debug",
               "command": "workbench.action.debug.pause"
             },
             {
               "key": "q",
-              "name": "Quokka start",
+              "icon": "layout-panel-left",
+              "name": "quokka start",
               "command": "quokka.makeQuokkaFromExistingFile"
             },
             {
               "key": "Q",
-              "name": "Quokka stop",
+              "icon": "layout-panel-left",
+              "name": "quokka stop",
               "commands": [
                 "quokka.stopAll",
                 "workbench.action.toggleAuxiliaryBar"
@@ -556,230 +585,275 @@
             },
             {
               "key": "r",
-              "name": "Restart debug",
+              "icon": "debug-restart",
+              "name": "restart debug",
               "command": "workbench.action.debug.restart"
             },
             {
               "key": "R",
-              "name": "Run without debugging",
+              "icon": "debug-start",
+              "name": "run without debugging",
               "command": "workbench.action.debug.run"
             },
             {
               "key": "s",
-              "name": "Start debug",
+              "icon": "debug-alt",
+              "name": "start debug",
               "command": "workbench.action.debug.start"
             },
             {
               "key": "S",
-              "name": "Stop debug",
+              "icon": "debug-stop",
+              "name": "stop debug",
               "command": "workbench.action.debug.stop"
             },
             {
               "key": "t",
-              "name": "Toggle REPL",
+              "icon": "debug-console",
+              "name": "toggle repl",
               "command": "workbench.debug.action.toggleRepl"
             },
             {
               "key": "T",
-              "name": "Toggle quokka",
+              "icon": "layout-panel-left",
+              "name": "toggle quokka",
               "command": "quokka.toggle"
             },
             {
-              "key": "v",
-              "name": "Focus on watch window",
+              "key": "w",
+              "icon": "window",
+              "name": "focus on watch window",
               "command": "workbench.debug.action.focusWatchView"
             },
             {
-              "key": "V",
-              "name": "Add to watch",
+              "key": "W",
+              "icon": "window",
+              "name": "add to watch",
               "command": "editor.debug.action.selectionToWatch"
             }
           ]
         },
         {
           "key": "e",
-          "name": "Toggle explorer",
+          "icon": "list-tree",
+          "name": "toggle explorer",
           "type": "conditional",
           "bindings": [
             {
               "key": "",
-              "name": "View explorer",
+              "icon": "",
+              "name": "view explorer",
               "command": "workbench.view.explorer"
             },
             {
               "key": "when:sideBarVisible && explorerViewletVisible",
-              "name": "Hide explorer",
+              "icon": "",
+              "name": "hide explorer",
               "command": "workbench.action.toggleSidebarVisibility"
             }
           ]
         },
         {
           "key": "E",
-          "name": "+Emmet (insert mode only)",
+          "icon": "tag",
+          "name": "+emmet",
           "bindings": [
             {
               "key": "a",
-              "name": "select outward item",
+              "icon": "triangle-up",
+              "name": "select outward tag",
               "command": "editor.emmet.action.balanceOut"
             },
             {
               "key": "i",
-              "name": "select inward item",
+              "icon": "triangle-down",
+              "name": "select inward tag",
               "command": "editor.emmet.action.balanceIn"
             },
             {
               "key": "n",
-              "name": "select next item",
+              "icon": "triangle-right",
+              "name": "select next attribute",
               "command": "editor.emmet.action.selectNextItem"
             },
             {
               "key": "p",
-              "name": "select prev item",
+              "icon": "triangle-left",
+              "name": "select prev attribute",
               "command": "editor.emmet.action.selectPrevItem"
             }
           ]
         },
         {
           "key": "f",
-          "name": "Find file",
+          "icon": "file",
+          "name": "find file",
           "command": "workbench.action.quickOpen"
         },
         {
           "key": "g",
-          "name": "+Git",
+          "icon": "git-branch",
+          "name": "+git",
           "bindings": [
             {
               "key": "a",
-              "name": "Commit All (Amend)",
+              "icon": "git-commit",
+              "name": "commit all (amend)",
               "command": "git.commitAllAmend"
             },
             {
               "key": "A",
-              "name": "Commit Staged (Amend)",
+              "icon": "git-commit",
+              "name": "commit staged (amend)",
               "command": "git.commitStagedAmend"
             },
             {
               "key": "b",
-              "name": "Checkout Branch",
+              "icon": "git-branch",
+              "name": "checkout branch",
               "command": "git.checkout"
             },
             {
               "key": "B",
-              "name": "Create Branch From",
+              "icon": "git-branch",
+              "name": "create branch from",
               "command": "git.branchFrom"
             },
             {
               "key": "c",
-              "name": "Commit All Changes",
+              "icon": "git-commit",
+              "name": "commit all changes",
               "command": "git.commitAll"
             },
             {
               "key": "C",
-              "name": "Commit Staged Changes",
+              "icon": "git-commit",
+              "name": "commit staged changes",
               "command": "git.commit"
             },
             {
-              "key": "d",
-              "name": "Discard Changes of current file",
-              "command": "git.clean"
-            },
-            {
               "key": "D",
-              "name": "Delete Branch",
+              "icon": "trash",
+              "name": "delete branch",
               "command": "git.deleteBranch"
             },
             {
               "key": "f",
-              "name": "Fetch",
+              "icon": "git-fetch",
+              "name": "fetch",
               "command": "git.fetch"
             },
             {
               "key": "F",
-              "name": "Pull From",
+              "icon": "repo-pull",
+              "name": "pull from",
               "command": "git.pullFrom"
             },
             {
               "key": "g",
-              "name": "Lazygit",
+              "icon": "request-changes",
+              "name": "lazygit",
               "command": "retronvim.lazygit"
             },
             {
+              "key": "G",
+              "icon": "git-pull-request-new-changes",
+              "name": "source control",
+              "command": "workbench.view.scm"
+            },
+            {
               "key": "j",
-              "name": "Next Change",
+              "icon": "arrow-down",
+              "name": "next change",
               "command": "workbench.action.editor.nextChange"
             },
             {
               "key": "k",
-              "name": "Previous Change",
+              "icon": "arrow-up",
+              "name": "previous change",
               "command": "workbench.action.editor.previousChange"
             },
             {
               "key": "J",
-              "name": "Preview Next Hunk",
+              "icon": "triangle-down",
+              "name": "preview next hunk",
               "command": "editor.action.dirtydiff.next"
             },
             {
               "key": "K",
-              "name": "Preview Previous Hunk",
+              "icon": "triangle-up",
+              "name": "preview previous hunk",
               "command": "editor.action.dirtydiff.previous"
             },
             {
               "key": "o",
-              "name": "Open Diff (file changes)",
+              "icon": "git-compare",
+              "name": "open diff window (current file)",
               "command": "git.openChange"
             },
             {
+              "key": "O",
+              "icon": "diff-multiple",
+              "name": "open diff window (all files)",
+              "command": "git.viewChanges"
+            },
+            {
+              "key": "|",
+              "icon": "diff",
+              "name": "toggle diff window layout",
+              "command": "toggle.diff.renderSideBySide"
+            },
+            {
               "key": "r",
-              "name": "Reset hunk",
+              "icon": "git-pull-request-go-to-changes",
+              "name": "reset hunk",
               "command": "git.revertSelectedRanges"
             },
             {
+              "key": "R",
+              "icon": "git-pull-request-go-to-changes",
+              "name": "reset file changes",
+              "command": "git.clean"
+            },
+            {
               "key": "s",
-              "name": "Stage current file",
+              "icon": "diff-added",
+              "name": "stage current file",
               "command": "git.stage"
             },
             {
               "key": "S",
-              "name": "Stage selected range",
+              "icon": "diff-added",
+              "name": "stage selected range",
               "command": "git.stageSelectedRanges"
             },
             {
               "key": "u",
-              "name": "Unstage current file",
+              "icon": "diff-removed",
+              "name": "unstage current file",
               "command": "git.unstage"
             },
             {
               "key": "U",
-              "name": "Unstage selected range",
+              "icon": "diff-removed",
+              "name": "unstage selected range",
               "command": "git.unstageSelectedRanges"
             },
             {
-              "key": "v",
-              "name": "View Source Control",
-              "command": "workbench.view.scm"
-            },
-            {
-              "key": "V",
-              "name": "View All Changes",
-              "command": "git.viewChanges"
-            },
-            {
-              "key": "w",
-              "name": "Toggle Diff view",
-              "command": "toggle.diff.renderSideBySide"
-            },
-            {
               "key": "<",
-              "name": "Pull",
+              "icon": "repo-pull",
+              "name": "pull",
               "command": "git.pull"
             },
             {
               "key": ">",
-              "name": "Push",
+              "icon": "repo-push",
+              "name": "push",
               "command": "git.push"
             },
             {
               "key": "?",
+              "icon": "keyboard",
               "name": "show lazygit keybindings (when inside lazygit)",
               "command": "workbench.action.terminal.sendSequence",
               "args": {
@@ -790,17 +864,15 @@
         },
         {
           "key": "i",
-          "name": "+Install extra dependencies",
+          "icon": "package",
+          "name": "+install extra dependencies",
           "bindings": [
             {
               "key": "b",
-              "name": "install brew karabiner ffmpeg poppler vlc wezterm (MacOS)",
+              "icon": "cloud-download",
+              "name": "install karabiner ffmpeg poppler vlc (macos)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -808,25 +880,14 @@
                   "profileName": "zsh"
                 },
                 {
-                  "text": "NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" \n"
-                },
-                {
-                  "text": "# how to uninstall: https://github.com/Homebrew/install \n"
-                },
-                {
-                  "text": "source ${ZDOTDIR:-~}/.zshrc \n"
-                },
-                {
-                  "text": "brew install --cask karabiner-elements vlc wezterm \n"
-                },
-                {
-                  "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
+                  "text": "zb install karabiner-elements ffmpeg poppler vlc \n"
                 }
               ]
             },
             {
               "key": "n",
-              "name": "install nix-env ffmpeg poppler vlc wezterm zathura (Linux)",
+              "icon": "cloud-download",
+              "name": "install nix-env ffmpeg poppler vlc zathura (linux)",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -845,45 +906,29 @@
                   "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
                 },
                 {
-                  "text": "bash -i -c \"nix-env -iA nixpkgs.zathura nixpkgs.vlc \"; \n"
-                },
-                {
-                  "text": "# curl -C- -o ~/.pixi/bin/vlc -L https://github.com/ivan-hc/VLC-appimage/releases/download/20251121-181227/VLC-media-player_3.0.21-31-archimage5.0-x86_64.AppImage && chmod +x ~/.pixi/bin/vlc \n"
-                },
-                {
-                  "text": "curl -C- -o ~/.pixi/bin/wezterm -L https://github.com/wezterm/wezterm/releases/download/nightly/WezTerm-nightly-Ubuntu20.04.AppImage && chmod +x ~/.pixi/bin/wezterm \n"
-                },
-                {
-                  "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
+                  "text": "bash -i -c \"nix-env -iA nixpkgs.ffmpeg nixpkgs.poppler nixpkgs.vlc nixpkgs.zathura \"; \n"
                 }
               ]
             },
             {
               "key": "s",
-              "name": "install scoop zsh ffmpeg poppler vlc wezterm (Windows)",
+              "icon": "cloud-download",
+              "name": "install scoop ffmpeg poppler vlc (windows)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "retronvim.show_message"
               ],
               "args": [
                 {
-                  "profileName": "powershell (retronvim)"
+                  "profileName": "PowerShell"
                 },
                 {
                   "text": "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser; iwr get.scoop.sh | iex \n"
                 },
                 {
-                  "text": "scoop bucket add extras; scoop install vlc msys2 wezterm \n"
-                },
-                {
-                  "text": "msys2 -c 'pacman -S --noconfirm zsh' \n"
-                },
-                {
-                  "text": "pixi global install ffmpeg poppler; # yazi's preview \n"
+                  "text": "scoop bucket add extras; scoop install vlc ffmpeg popper \n"
                 },
                 {
                   "text": "relaunch vscode"
@@ -891,16 +936,15 @@
               ]
             },
             {
-              "key": "R",
+              "key": "r",
+              "icon": "debug-restart",
               "name": "restart retronvim (required after installing brew nix-env scoop) (windows needs to relaunch vscode)",
-              "commands": [
-                "workbench.panel.output.focus",
-                "workbench.action.reloadWindow"
-              ]
+              "command": "workbench.action.reloadWindow"
             },
             {
               "key": "g",
-              "name": "GUI keyboard repeat rate (Windows) ",
+              "icon": "keyboard",
+              "name": "GUI keyboard repeat rate (windows) ",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence"
@@ -914,9 +958,10 @@
             },
             {
               "key": "i",
-              "name": "Increase keyboard repeat rate (Windows)",
+              "icon": "keyboard",
+              "name": "increase keyboard repeat rate (windows)",
               "commands": [
-                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -924,18 +969,20 @@
                 "retronvim.show_message"
               ],
               "args": [
-                null,
                 {
-                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 300     \" \n"
+                  "profileName": "PowerShell"
                 },
                 {
-                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 5        \" \n"
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 300 \n"
                 },
                 {
-                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \" \n"
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 5 \n"
                 },
                 {
-                  "text": "powershell -c \"set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27                \" \n"
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \n"
+                },
+                {
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27 \n"
                 },
                 {
                   "text": "relogin to Windows"
@@ -944,7 +991,8 @@
             },
             {
               "key": "I",
-              "name": "Increase keyboard repeat rate (MacOS) ",
+              "icon": "keyboard",
+              "name": "increase keyboard repeat rate (macos) ",
               "commands": [
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
@@ -962,23 +1010,29 @@
             },
             {
               "key": "k",
+              "icon": "keyboard",
               "name": "start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
                 {
-                  "profileName": "powershell (retronvim)"
+                  "profileName": "PowerShell"
                 },
                 {
-                  "text": "Set-WinUserLanguageList -force en-US,es-US; conhost --headless kanata --cfg %RETRONVIM_PATH%/kanata/simple.kbd; sleep 2; exit; \r"
+                  "text": "Set-WinUserLanguageList -force en-US,es-US \r"
+                },
+                {
+                  "text": "conhost --headless %USERPROFILE%/.pixi/envs/retronvim/bin/kanata.exe --cfg %USERPROFILE%/.pixi/envs/retronvim/opt/retronvim/kanata/touchcursor.kbd; sleep 2; exit; \r"
                 }
               ]
             },
             {
               "key": "K",
-              "name": "start touchcursor keyboard layout on Linux/MacOS (LeftCtrl + Space + Escape to stop)",
+              "icon": "keyboard",
+              "name": "start touchcursor keyboard layout on Linux/Macos (LeftCtrl + Space + Escape to stop)",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
                 "workbench.action.terminal.sendSequence"
@@ -988,54 +1042,16 @@
                   "profileName": "zsh (retronvim)"
                 },
                 {
-                  "text": "sudo --preserve-env bash --login -c '$RETRONVIM_PATH/bin/env/bin/kanata --cfg $RETRONVIM_PATH/kanata/simple.kbd &'; sleep 5; exit; \r"
-                }
-              ]
-            },
-            {
-              "key": "y",
-              "name": "Install RetroNvim's nvim/yazi/zsh/powershell on any terminal (Windows 10/11)",
-              "commands": [
-                "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                {
-                  "profileName": "powershell (retronvim)"
-                },
-                {
-                  "text": "set-executionpolicy bypass -scope currentuser                                                                                        \n"
-                },
-                {
-                  "text": "cp -r $env:RETRONVIM_PATH/powershell                $HOME/documents/windowspowershell                                                \n"
-                },
-                {
-                  "text": "cp    $env:RETRONVIM_PATH/zsh/.zshrc                $HOME/.zshrc                                                                     \n"
-                },
-                {
-                  "text": "cp    $env:RETRONVIM_PATH/powershell/settings.json  $HOME/appdata/local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/ \n"
-                },
-                {
-                  "text": "mkdir -p $HOME/.config/wezterm; cp $env:RETRONVIM_PATH/zsh/wezterm.lua $HOME/.config/wezterm                                         \n"
-                },
-                {
-                  "text": "cp    $env:RETRONVIM_PATH/assets/retronvim.jpg      $HOME/documents/windowspowershell/                                               \n"
+                  "text": "sudo --preserve-env bash --login -c '~/.pixi/envs/retronvim/bin/kanata --cfg ~/.pixi/envs/retronvim/opt/retronvim/kanata/touchcursor.kbd &'; sleep 5; exit; \r"
                 }
               ]
             },
             {
               "key": "Y",
-              "name": "Install RetroNvim's nvim/yazi/zsh on any terminal (Linux/MacOS)",
+              "icon": "symbol-property",
+              "name": "install retronvim/nvim + retronvim/yazi + retronvim/zsh on windows terminal",
               "commands": [
                 "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence"
               ],
               "args": [
@@ -1043,16 +1059,7 @@
                   "profileName": "zsh (retronvim)"
                 },
                 {
-                  "text": "cp --verbose $RETRONVIM_PATH/zsh/.zshrc ~/.zshrc  \n"
-                },
-                {
-                  "text": "mkdir -p ~/.config/wezterm && cp --verbose $RETRONVIM_PATH/zsh/wezterm.lua ~/.config/wezterm  \n"
-                },
-                {
-                  "text": "# sudo ln -s $RETRONVIM_PATH/bin/env/bin/zsh /bin/zsh \n"
-                },
-                {
-                  "text": "# chsh --shell /bin/zsh $USER \n"
+                  "text": "cp --interactive $HOME/.pixi/envs/retronvim/opt/retronvim/zsh/settings.json  $HOME/appdata/local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/ \n"
                 }
               ]
             }
@@ -1060,10 +1067,12 @@
         },
         {
           "key": "I",
-          "name": "+Install frameworks",
+          "icon": "cloud-download",
+          "name": "+install frameworks",
           "bindings": [
             {
               "key": "a",
+              "icon": "code",
               "name": "angular + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1116,6 +1125,7 @@
             },
             {
               "key": "A",
+              "icon": "code",
               "name": "AWS",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1156,6 +1166,7 @@
             },
             {
               "key": "c",
+              "icon": "code",
               "name": "c/c++",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1184,6 +1195,7 @@
             },
             {
               "key": "C",
+              "icon": "code",
               "name": "c# + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1220,6 +1232,7 @@
             },
             {
               "key": "d",
+              "icon": "code",
               "name": "docker",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1276,6 +1289,7 @@
             },
             {
               "key": "D",
+              "icon": "code",
               "name": "django + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1328,6 +1342,7 @@
             },
             {
               "key": "e",
+              "icon": "code",
               "name": "expo + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1368,6 +1383,7 @@
             },
             {
               "key": "f",
+              "icon": "code",
               "name": "fastapi + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1416,6 +1432,7 @@
             },
             {
               "key": "F",
+              "icon": "code",
               "name": "flask + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1468,6 +1485,7 @@
             },
             {
               "key": "g",
+              "icon": "code",
               "name": "github actions + nginx",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1512,6 +1530,7 @@
             },
             {
               "key": "G",
+              "icon": "code",
               "name": "go",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1560,6 +1579,7 @@
             },
             {
               "key": "h",
+              "icon": "code",
               "name": "graphql",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1588,6 +1608,7 @@
             },
             {
               "key": "H",
+              "icon": "symbol-color",
               "name": "FigmaToCode and AutoHTML (installer link) ",
               "commands": [
                 "vscode.open",
@@ -1600,6 +1621,7 @@
             },
             {
               "key": "j",
+              "icon": "code",
               "name": "javascript + css",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1641,6 +1663,7 @@
             },
             {
               "key": "J",
+              "icon": "code",
               "name": "java + springboot",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1693,6 +1716,7 @@
             },
             {
               "key": "k",
+              "icon": "code",
               "name": "kotlin + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1737,6 +1761,7 @@
             },
             {
               "key": "K",
+              "icon": "code",
               "name": "kubernetes + nginx",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1813,6 +1838,7 @@
             },
             {
               "key": "M",
+              "icon": "database",
               "name": "mysql postgresql (installer link) ",
               "commands": [
                 "vscode.open",
@@ -1877,6 +1903,7 @@
             },
             {
               "key": "n",
+              "icon": "code",
               "name": "nextjs + prisma",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1953,6 +1980,7 @@
             },
             {
               "key": "N",
+              "icon": "code",
               "name": "nextjs + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -1997,6 +2025,7 @@
             },
             {
               "key": "o",
+              "icon": "globe",
               "name": "devops roadmap",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2027,6 +2056,7 @@
             },
             {
               "key": "p",
+              "icon": "code",
               "name": "python + scikit-learn",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2099,6 +2129,7 @@
             },
             {
               "key": "P",
+              "icon": "code",
               "name": "php + laravel",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2143,6 +2174,7 @@
             },
             {
               "key": "r",
+              "icon": "code",
               "name": "rust",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2179,6 +2211,7 @@
             },
             {
               "key": "R",
+              "icon": "globe",
               "name": "dokploy and railway (installer link) ",
               "commands": [
                 "vscode.open",
@@ -2191,6 +2224,7 @@
             },
             {
               "key": "s",
+              "icon": "code",
               "name": "ansible + nginx",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2231,6 +2265,7 @@
             },
             {
               "key": "t",
+              "icon": "code",
               "name": "terraform",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2271,6 +2306,7 @@
             },
             {
               "key": "v",
+              "icon": "code",
               "name": "vue",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2319,6 +2355,7 @@
             },
             {
               "key": "y",
+              "icon": "code",
               "name": "toml and yaml",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2333,6 +2370,7 @@
             },
             {
               "key": "Y",
+              "icon": "notebook",
               "name": "jupyter and kaggle",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2359,6 +2397,7 @@
             },
             {
               "key": "+",
+              "icon": "vr",
               "name": "AI + extra extensions",
               "commands": [
                 "workbench.action.createTerminalEditor",
@@ -2399,61 +2438,73 @@
         },
         {
           "key": "l",
+          "icon": "code",
           "name": "+LSP",
           "bindings": [
             {
               "key": "a",
-              "name": "Code Action Auto Fix",
+              "icon": "lightbulb-autofix",
+              "name": "code action auto fix",
               "command": "editor.action.autoFix"
             },
             {
               "key": "A",
-              "name": "Code Action Refactor",
+              "icon": "lightbulb",
+              "name": "code action refactor",
               "command": "editor.action.refactor"
             },
             {
               "key": "c",
-              "name": "View Calls Hierarchy",
+              "icon": "call-incoming",
+              "name": "view calls",
               "command": "references-view.showCallHierarchy"
             },
             {
               "key": "d",
-              "name": "Go to Definition",
+              "icon": "book",
+              "name": "go to definition",
               "command": "editor.action.revealDefinition"
             },
             {
               "key": "D",
-              "name": "Go to Declaration",
+              "icon": "notebook",
+              "name": "go to declaration",
               "command": "editor.action.revealDeclaration"
             },
             {
               "key": "F",
-              "name": "Format",
+              "icon": "list-flat",
+              "name": "format",
               "command": "editor.action.format"
             },
             {
               "key": "h",
-              "name": "Hover",
+              "icon": "comment",
+              "name": "hover",
               "command": "editor.action.showHover"
             },
             {
               "key": "H",
-              "name": "Signature help",
+              "icon": "comment-unresolved",
+              "name": "signature help",
               "command": "editor.action.triggerParameterHints"
             },
             {
               "key": "I",
-              "name": "Go to Implementation",
+              "icon": "gear",
+              "name": "go to implementation",
               "command": "editor.action.goToImplementation"
             },
             {
               "key": "l",
-              "name": "Jump to last change",
+              "icon": "debug-step-back",
+              "name": "jump to last change",
               "command": "workbench.action.navigateToLastEditLocation"
             },
             {
               "key": "n",
-              "name": "Next Problem (vscodevim)",
+              "icon": "warning",
+              "name": "next problem (vscodevim)",
               "commands": [
                 "toggleVim",
                 "editor.action.marker.next",
@@ -2463,17 +2514,20 @@
             },
             {
               "key": "N",
-              "name": "Next Problem (vscode-neovim)",
+              "icon": "warning",
+              "name": "next problem (vscode-neovim)",
               "command": "editor.action.marker.next"
             },
             {
               "key": "o",
-              "name": "Open Diagnostics/Errors",
+              "icon": "warning",
+              "name": "open diagnostics/errors",
               "command": "editor.action.marker.next"
             },
             {
               "key": "p",
-              "name": "Prev Problem (vscodevim)",
+              "icon": "warning",
+              "name": "prev problem (vscodevim)",
               "commands": [
                 "toggleVim",
                 "editor.action.marker.prev",
@@ -2483,321 +2537,398 @@
             },
             {
               "key": "P",
-              "name": "Prev Problem (vscode-neovim)",
+              "icon": "warning",
+              "name": "prev problem (vscode-neovim)",
               "command": "editor.action.marker.prev"
             },
             {
               "key": "q",
-              "name": "Diagnostic List",
+              "icon": "warning",
+              "name": "diagnostic list",
               "command": "workbench.actions.view.problems"
             },
             {
               "key": "Q",
-              "name": "Quick Fix aka Code Action",
+              "icon": "github-action",
+              "name": "quick fix aka code action",
               "command": "editor.action.quickFix"
             },
             {
               "key": "r",
-              "name": "Go to References",
+              "icon": "references",
+              "name": "go to references",
               "command": "editor.action.goToReferences"
             },
             {
               "key": "R",
-              "name": "Rename",
+              "icon": "edit",
+              "name": "rename",
               "command": "editor.action.rename"
             },
             {
               "key": "s",
-              "name": "Go To Symbol",
+              "icon": "symbol-class",
+              "name": "go to symbol",
               "command": "workbench.action.gotoSymbol"
             },
             {
               "key": "S",
-              "name": "Show All Symbols",
+              "icon": "symbol-class",
+              "name": "show all symbols",
               "command": "workbench.action.showAllSymbols"
             },
             {
               "key": "t",
-              "name": "Go to typedefinition",
+              "icon": "type-hierarchy",
+              "name": "go to typedefinition",
               "command": "editor.action.goToTypeDefinition"
             },
             {
+              "key": "u",
+              "icon": "fold-up",
+              "name": "go to parent fold",
+              "commands": [
+                "editor.gotoParentFold",
+                "cursorHome"
+              ]
+            },
+            {
+              "key": "U",
+              "icon": "bracket",
+              "name": "go to bracket",
+              "command": "editor.action.jumpToBracket"
+            },
+            {
               "key": "v",
-              "name": "View All Diagnostics",
+              "icon": "warning",
+              "name": "view all diagnostics",
               "command": "workbench.actions.view.problems"
             },
             {
               "key": "V",
-              "name": "View All References",
+              "icon": "references",
+              "name": "view all references",
               "command": "references-view.find"
             },
             {
               "key": "w",
-              "name": "View All Implementations",
+              "icon": "gear",
+              "name": "view all implementations",
               "command": "references-view.findImplementations"
             },
             {
               "key": "W",
-              "name": "View All Definition",
+              "icon": "book",
+              "name": "view all definition",
               "command": "editor.action.revealDefinitionAside"
             },
             {
               "key": "z",
-              "name": "Symbols Outline",
+              "icon": "symbol-class",
+              "name": "symbols outline",
               "command": "outline.focus"
             },
             {
               "key": "=",
-              "name": "Format document",
+              "icon": "list-flat",
+              "name": "format document",
               "command": "editor.action.formatDocument"
             },
             {
               "key": "<",
-              "name": "Prev Reference",
+              "icon": "references",
+              "name": "prev reference",
               "command": "editor.action.wordHighlight.prev"
             },
             {
               "key": ">",
-              "name": "Next Reference",
+              "icon": "references",
+              "name": "next reference",
               "command": "editor.action.wordHighlight.next"
             }
           ]
         },
         {
           "key": "m",
-          "name": "+Bookmarks extension",
+          "icon": "bookmark",
+          "name": "+bookmarks extension",
           "bindings": [
             {
               "key": "c",
-              "name": "Clear Bookmarks",
+              "icon": "trash",
+              "name": "clear bookmarks",
               "command": "bookmarks.clear"
             },
             {
               "key": "j",
-              "name": "Next Bookmark",
+              "icon": "arrow-circle-down",
+              "name": "next bookmark",
               "command": "bookmarks.jumpToNext"
             },
             {
               "key": "k",
-              "name": "Previous Bookmark",
+              "icon": "arrow-circle-up",
+              "name": "previous bookmark",
               "command": "bookmarks.jumpToPrevious"
             },
             {
               "key": "l",
-              "name": "List Bookmarks",
+              "icon": "list-ordered",
+              "name": "list bookmarks",
               "command": "bookmarks.listFromAllFiles"
             },
             {
               "key": "r",
-              "name": "Refresh Bookmarks",
+              "icon": "sync",
+              "name": "refresh bookmarks",
               "command": "bookmarks.refresh"
             },
             {
               "key": "t",
-              "name": "Toggle Bookmark",
+              "icon": "color-mode",
+              "name": "toggle bookmark",
               "command": "bookmarks.toggle"
             },
             {
               "key": "s",
-              "name": "Show Bookmarks",
+              "icon": "info",
+              "name": "show bookmarks",
               "command": "workbench.view.extension.bookmarks"
             }
           ]
         },
         {
           "key": "o",
-          "name": "Focus explorer",
+          "icon": "list-tree",
+          "name": "focus explorer",
           "command": "workbench.view.explorer"
         },
         {
           "key": "O",
-          "name": "+Open",
+          "icon": "split-horizontal",
+          "name": "+open",
           "bindings": [
             {
               "key": "a",
-              "name": "Amp chat",
+              "icon": "comment-discussion",
+              "name": "amp chat",
               "command": "amp.agent.focusPromptEditor"
             },
             {
               "key": "A",
-              "name": "Amp chat (include selection)",
+              "icon": "comment-unresolved",
+              "name": "amp chat (include selection)",
               "command": "amp.agent.addSelectionToPromptEditor"
             },
             {
               "key": "c",
-              "name": "Cursor prompt (include selection)",
+              "icon": "comment",
+              "name": "cursor prompt (include selection)",
               "command": "aipopup.action.modal.generate"
             },
             {
               "key": "C",
-              "name": "Cursor chat (include selection)",
+              "icon": "comment-unresolved",
+              "name": "cursor chat (include selection)",
               "command": "composer.startComposerPrompt"
             },
             {
               "key": "d",
-              "name": "Directory",
+              "icon": "folder-opened",
+              "name": "directory",
               "command": "workbench.action.files.openFolder"
             },
             {
               "key": "e",
-              "name": "File explorer (abdulkadersafi extension)",
+              "icon": "file-media",
+              "name": "file explorer (abdulkadersafi extension)",
               "command": "file-explorer.helloWorld"
             },
             {
               "key": "f",
-              "name": "File",
+              "icon": "file",
+              "name": "file",
               "command": "workbench.action.files.openFile"
             },
             {
               "key": ">",
-              "name": "Gemini prompt",
+              "icon": "comment",
+              "name": "gemini prompt",
               "command": "geminicodeassist.showinEditor"
             },
             {
               "key": "g",
-              "name": "Gemini chat",
+              "icon": "comment-discussion",
+              "name": "gemini chat",
               "command": "workbench.view.extension.geminiChat"
             },
             {
               "key": "G",
-              "name": "Gemini chat (include selection)",
+              "icon": "comment-unresolved",
+              "name": "gemini chat (include selection)",
               "command": "geminicodeassist.terminal.addSelectionToChatContext"
             },
             {
               "key": "m",
-              "name": "Markdown previewer",
+              "icon": "markdown",
+              "name": "markdown previewer",
               "command": "markdown.showPreview"
             },
             {
               "key": "r",
-              "name": "Recent git projects",
+              "icon": "folder-library",
+              "name": "recent git projects",
               "command": "workbench.action.openRecent"
             },
             {
               "key": "t",
-              "name": "TRAE chat",
+              "icon": "comment-discussion",
+              "name": "trae chat",
               "command": "trae.chat"
             },
             {
               "key": "T",
-              "name": "TRAE chat (include selection)",
+              "icon": "comment-unresolved",
+              "name": "trae chat (include selection)",
               "command": "trae.add.context.menu"
             },
             {
               "key": "w",
-              "name": "Windsurf prompt (include selection)",
+              "icon": "comment",
+              "name": "windsurf prompt (include selection)",
               "command": "windsurf.prioritized.command.open"
             },
             {
               "key": "W",
-              "name": "Windsurf chat (include selection)",
+              "icon": "comment-unresolved",
+              "name": "windsurf chat (include selection)",
               "command": "windsurf.prioritized.chat.open"
             }
           ]
         },
         {
           "key": "p",
-          "name": "+Peek",
+          "icon": "open-preview",
+          "name": "+peek",
           "bindings": [
             {
               "key": "c",
-              "name": "Calls Hierarchy",
+              "icon": "call-incoming",
+              "name": "calls",
               "command": "editor.showCallHierarchy"
             },
             {
               "key": "d",
-              "name": "Definition",
+              "icon": "notebook",
+              "name": "definition",
               "command": "editor.action.peekDefinition"
             },
             {
               "key": "D",
-              "name": "Declaration",
+              "icon": "book",
+              "name": "declaration",
               "command": "editor.action.peekDeclaration"
             },
             {
               "key": "h",
-              "name": "Show Hover",
+              "icon": "comment",
+              "name": "show hover",
               "command": "editor.action.showHover"
             },
             {
               "key": "H",
-              "name": "Hover Definition",
+              "icon": "comment",
+              "name": "hover definition",
               "command": "editor.action.showDefinitionPreviewHover"
             },
             {
               "key": "I",
-              "name": "Implementation",
+              "icon": "gear",
+              "name": "implementation",
               "command": "editor.action.peekImplementation"
             },
             {
               "key": "p",
-              "name": "Toggle Peek Focus",
+              "icon": "eye",
+              "name": "toggle peek focus",
               "command": "togglePeekWidgetFocus"
             },
             {
               "key": "r",
-              "name": "References",
+              "icon": "references",
+              "name": "references",
               "command": "editor.action.referenceSearch.trigger"
             },
             {
               "key": "t",
-              "name": "Type Definition",
+              "icon": "type-hierarchy",
+              "name": "type definition",
               "command": "editor.action.peekTypeDefinition"
             }
           ]
         },
         {
           "key": "s",
-          "name": "+Search",
+          "icon": "search",
+          "name": "+search",
           "bindings": [
             {
               "key": "c",
+              "icon": "code",
               "name": "open cheat.sh",
               "command": "vscode.open",
               "args": "https://cheat.sh"
             },
             {
               "key": "C",
+              "icon": "code",
               "name": "open cheatsheets.zip",
               "command": "vscode.open",
               "args": "https://cheatsheets.zip"
             },
             {
               "key": "d",
+              "icon": "vr",
               "name": "open deepseek.com",
               "command": "vscode.open",
               "args": "https://chat.deepseek.com"
             },
             {
               "key": "d",
+              "icon": "code",
               "name": "open devhints cheatsheets",
               "command": "vscode.open",
               "args": "https://devhints.io"
             },
             {
               "key": "f",
-              "name": "Find and replace",
+              "icon": "replace",
+              "name": "find and replace",
               "command": "editor.action.startFindReplaceAction"
             },
             {
               "key": "k",
+              "icon": "vr",
               "name": "open kimi.com",
               "command": "vscode.open",
               "args": "https://www.kimi.com"
             },
             {
               "key": "q",
+              "icon": "vr",
               "name": "open qwen.ai",
               "command": "vscode.open",
               "args": "https://chat.qwen.ai"
             },
             {
               "key": "p",
-              "name": "Project",
+              "icon": "folder-library",
+              "name": "project",
               "command": "workbench.action.replaceInFiles"
             },
             {
               "key": "P",
+              "icon": "symbol-color",
               "name": "classless components (picocss.com)",
               "commands": [
                 "vscode.open",
@@ -2810,61 +2941,72 @@
             },
             {
               "key": "r",
-              "name": "Ripgrep",
+              "icon": "search-fuzzy",
+              "name": "ripgrep",
               "command": "search.action.openNewEditor"
             },
             {
               "key": "s",
-              "name": "Search and Insert snippet",
+              "icon": "symbol-snippet",
+              "name": "search and insert snippet",
               "command": "editor.action.insertSnippet"
             },
             {
               "key": "S",
-              "name": "Show search panel",
+              "icon": "search",
+              "name": "show search panel",
               "command": "workbench.view.search"
             },
             {
               "key": "t",
-              "name": "Text in Files",
+              "icon": "symbol-text",
+              "name": "text in file",
               "command": "workbench.action.findInFiles"
             },
             {
               "key": "T",
-              "name": "Text in Folder",
+              "icon": "whole-word",
+              "name": "text in folder",
               "command": "filesExplorer.findInFolder"
             },
             {
               "key": "u",
+              "icon": "symbol-color",
               "name": "50000+ tailwind templates (uipilot.dev)",
               "command": "vscode.open",
               "args": "https://uipilot.dev"
             },
             {
               "key": "U",
+              "icon": "symbol-color",
               "name": "tailwind templates (figma.com + FigmaToCode)",
               "command": "vscode.open",
               "args": "https://www.figma.com/community"
             },
             {
               "key": "v",
+              "icon": "symbol-color",
               "name": "6000+ tailwind elements (uiverse.io)",
               "command": "vscode.open",
               "args": "https://uiverse.io"
             },
             {
               "key": "w",
+              "icon": "symbol-color",
               "name": "2400+ tailwind components (tailwindflex.com)",
               "command": "vscode.open",
               "args": "https://tailwindflex.com"
             },
             {
               "key": "W",
+              "icon": "symbol-color",
               "name": "600+ tailwind components (creative-tim.com)",
               "command": "vscode.open",
               "args": "https://www.creative-tim.com/twcomponents"
             },
             {
               "key": "z",
+              "icon": "vr",
               "name": "open z.ai",
               "command": "vscode.open",
               "args": "https://chat.z.ai"
@@ -2873,155 +3015,31 @@
         },
         {
           "key": "t",
-          "name": "+Terminal",
+          "icon": "terminal",
+          "name": "+terminal",
           "bindings": [
             {
-              "key": " ",
-              "name": "terminal copy mode",
-              "command": "runCommands",
-              "args": {
-                "commands": [
-                  {
-                    "command": "workbench.action.terminal.selectAll"
-                  },
-                  {
-                    "command": "editor.action.clipboardCopyAction"
-                  },
-                  {
-                    "command": "workbench.action.files.newUntitledFile"
-                  },
-                  {
-                    "command": "editor.action.clipboardPasteAction"
-                  }
-                ]
-              }
-            },
-            {
-              "key": ":",
-              "name": "Scrollback Buffer",
-              "command": "workbench.action.terminal.focusAccessibleBuffer"
-            },
-            {
-              "key": ".",
-              "name": "Copy Scrollback",
-              "command": "runCommands",
-              "args": {
-                "commands": [
-                  {
-                    "command": "workbench.action.terminal.selectAll"
-                  },
-                  {
-                    "command": "editor.action.clipboardCopyAction"
-                  }
-                ]
-              }
-            },
-            {
-              "key": "0",
-              "name": "Focus tabs view",
-              "command": "workbench.action.terminal.focusTabs"
-            },
-            {
-              "key": "1",
-              "name": "Focus index 1",
-              "command": "workbench.action.terminal.focusAtIndex1"
-            },
-            {
-              "key": "2",
-              "name": "Focus index 2",
-              "command": "workbench.action.terminal.focusAtIndex2"
-            },
-            {
-              "key": "3",
-              "name": "Focus index 3",
-              "command": "workbench.action.terminal.focusAtIndex3"
-            },
-            {
-              "key": "4",
-              "name": "Focus index 4",
-              "command": "workbench.action.terminal.focusAtIndex4"
-            },
-            {
-              "key": "5",
-              "name": "Focus index 5",
-              "command": "workbench.action.terminal.focusAtIndex5"
-            },
-            {
-              "key": "6",
-              "name": "Focus index 6",
-              "command": "workbench.action.terminal.focusAtIndex6"
-            },
-            {
-              "key": "7",
-              "name": "Focus index 7",
-              "command": "workbench.action.terminal.focusAtIndex7"
-            },
-            {
-              "key": "8",
-              "name": "Focus index 8",
-              "command": "workbench.action.terminal.focusAtIndex8"
-            },
-            {
-              "key": "9",
-              "name": "Focus index 9",
-              "command": "workbench.action.terminal.focusAtIndex9"
-            },
-            {
-              "key": "=",
-              "name": "move terminal to window",
-              "command": "workbench.action.terminal.moveIntoNewWindow"
-            },
-            {
               "key": "b",
-              "name": "Move terminal to buffer",
+              "icon": "move",
+              "name": "move terminal to buffer",
               "command": "workbench.action.terminal.moveToEditor"
             },
             {
               "key": "B",
-              "name": "Move buffer to terminal",
+              "icon": "move",
+              "name": "move buffer to terminal",
               "command": "workbench.action.terminal.moveToTerminalPanel"
             },
             {
-              "key": "!",
-              "name": "Break panel",
-              "command": "workbench.action.terminal.unsplit"
-            },
-            {
-              "key": "-",
-              "name": "Join panel (instances)",
-              "command": "workbench.action.terminal.joinInstance"
-            },
-            {
-              "key": "+",
-              "name": "Join panel (select)",
-              "command": "workbench.action.terminal.join"
-            },
-            {
-              "key": "x",
-              "name": "Close panel",
-              "command": "workbench.action.terminal.kill"
-            },
-            {
-              "key": "s",
-              "name": "Focus previous terminal group",
-              "command": "workbench.action.terminal.focusPrevious"
-            },
-            {
               "key": "f",
-              "name": "Focus next terminal group",
+              "icon": "triangle-right",
+              "name": "focus next terminal group",
               "command": "workbench.action.terminal.focusNext"
             },
             {
-              "key": "S",
-              "name": "Move panel to Last position",
-              "commands": [
-                "workbench.action.terminal.moveToEditor",
-                "workbench.action.terminal.moveToTerminalPanel"
-              ]
-            },
-            {
               "key": "F",
-              "name": "Move panel to Last position",
+              "icon": "move",
+              "name": "move panel to last position",
               "commands": [
                 "workbench.action.terminal.moveToEditor",
                 "workbench.action.terminal.moveToTerminalPanel"
@@ -3029,62 +3047,89 @@
             },
             {
               "key": "h",
-              "name": "Focus previous panel",
+              "icon": "arrow-left",
+              "name": "focus previous panel",
               "command": "workbench.action.terminal.focusPreviousPane"
             },
             {
               "key": "j",
-              "name": "Focus next panel",
+              "icon": "arrow-down",
+              "name": "focus next panel",
               "command": "workbench.action.terminal.focusNextPane"
             },
             {
               "key": "k",
-              "name": "Focus previous panel",
+              "icon": "arrow-up",
+              "name": "focus previous panel",
               "command": "workbench.action.terminal.focusPreviousPane"
             },
             {
               "key": "l",
-              "name": "Focus next panel",
+              "icon": "arrow-right",
+              "name": "focus next panel",
               "command": "workbench.action.terminal.focusNextPane"
             },
             {
               "key": "H",
-              "name": "Resize Panel left",
+              "icon": "arrow-circle-left",
+              "name": "resize panel left",
               "command": "workbench.action.terminal.resizePaneLeft"
             },
             {
               "key": "J",
-              "name": "Resize Panel down",
+              "icon": "arrow-circle-down",
+              "name": "resize panel down",
               "command": "workbench.action.terminal.resizePaneDown"
             },
             {
               "key": "K",
-              "name": "Resize Panel up",
+              "icon": "arrow-circle-up",
+              "name": "resize panel up",
               "command": "workbench.action.terminal.resizePaneUp"
             },
             {
               "key": "L",
-              "name": "Resize Panel right",
+              "icon": "arrow-circle-right",
+              "name": "resize panel right",
               "command": "workbench.action.terminal.resizePaneRight"
             },
             {
-              "key": ",",
-              "name": "Rename terminal",
+              "key": "r",
+              "icon": "edit",
+              "name": "rename terminal",
               "command": "workbench.action.terminal.rename"
             },
             {
-              "key": "n",
-              "name": "Focus next terminal group",
-              "command": "workbench.action.terminal.focusNext"
-            },
-            {
-              "key": "p",
-              "name": "Focus previous terminal group",
+              "key": "s",
+              "icon": "triangle-left",
+              "name": "focus previous terminal group",
               "command": "workbench.action.terminal.focusPrevious"
             },
             {
+              "key": "S",
+              "icon": "move",
+              "name": "move panel to last position",
+              "commands": [
+                "workbench.action.terminal.moveToEditor",
+                "workbench.action.terminal.moveToTerminalPanel"
+              ]
+            },
+            {
+              "key": "t",
+              "icon": "add",
+              "name": "neovim panel terminal (<esc><esc> for tmux-copy-mode)",
+              "command": "retronvim.nvim_panel_terminal"
+            },
+            {
+              "key": "T",
+              "icon": "add",
+              "name": "neovim tab terminal (<esc><esc> for tmux-copy-mode)",
+              "command": "retronvim.nvim_tab_terminal"
+            },
+            {
               "key": "v",
-              "name": "Split panel terminal vertical",
+              "icon": "split-vertical",
+              "name": "split panel terminal vertical",
               "commands": [
                 "workbench.action.positionPanelBottom",
                 "workbench.action.terminal.focus",
@@ -3093,7 +3138,8 @@
             },
             {
               "key": "V",
-              "name": "Split panel terminal horizontal",
+              "icon": "split-horizontal",
+              "name": "split panel terminal horizontal",
               "commands": [
                 "workbench.action.positionPanelRight",
                 "workbench.action.terminal.focus",
@@ -3101,12 +3147,74 @@
               ]
             },
             {
+              "key": "w",
+              "icon": "add",
+              "name": "new tab terminal (same window group)",
+              "command": "workbench.action.createTerminalEditor"
+            },
+            {
+              "key": "W",
+              "icon": "add",
+              "name": "new tab terminal (separated window group)",
+              "command": "workbench.action.createTerminalEditorSide"
+            },
+            {
+              "key": "x",
+              "icon": "stop",
+              "name": "close panel",
+              "command": "workbench.action.terminal.kill"
+            },
+            {
+              "key": "y",
+              "icon": "add",
+              "name": "new panel terminal (default shell)",
+              "command": "workbench.action.terminal.newInActiveWorkspace"
+            },
+            {
+              "key": "Y",
+              "icon": "add",
+              "name": "new panel terminal (choose shell)",
+              "command": "workbench.action.terminal.newWithProfile"
+            },
+            {
+              "key": "z",
+              "icon": "screen-normal",
+              "name": "toggle maximized panel",
+              "command": "workbench.action.toggleMaximizedPanel"
+            },
+            {
+              "key": " ",
+              "icon": "copy",
+              "name": "scrollback buffer",
+              "command": "workbench.action.terminal.focusAccessibleBuffer"
+            },
+            {
+              "key": "/",
+              "icon": "search-fuzzy",
+              "name": "find text",
+              "command": "workbench.action.terminal.focusFind"
+            },
+            {
+              "key": "\\",
+              "icon": "color-mode",
+              "name": "toggle terminal",
+              "command": "workbench.action.togglePanel"
+            },
+            {
+              "key": "|",
+              "icon": "eye",
+              "name": "focus terminal",
+              "command": "workbench.action.terminal.toggleTerminal"
+            },
+            {
               "key": "]",
+              "icon": "split-vertical",
               "name": "split tab terminal vertical",
               "command": "workbench.action.terminal.splitInActiveWorkspace"
             },
             {
               "key": "[",
+              "icon": "split-horizontal",
               "name": "split tab terminal horizontal",
               "commands": [
                 "workbench.action.terminal.split",
@@ -3114,177 +3222,192 @@
               ]
             },
             {
-              "key": "t",
-              "name": "Neovim panel terminal (<esc><esc> for tmux-copy-mode)",
-              "commands": [
-                "workbench.action.terminal.new",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "nvim -cterm; exit\n"
-                }
-              ]
+              "key": "=",
+              "icon": "move",
+              "name": "move terminal to window",
+              "command": "workbench.action.terminal.moveIntoNewWindow"
             },
             {
-              "key": "T",
-              "name": "Neovim Tab terminal (<esc><esc> for tmux-copy-mode)",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "nvim -cterm; exit\n"
-                }
-              ]
+              "key": "+",
+              "icon": "combine",
+              "name": "join panel",
+              "command": "workbench.action.terminal.join"
             },
             {
-              "key": "w",
-              "name": "New Tab terminal (same window group)",
-              "command": "workbench.action.createTerminalEditor"
+              "key": "-",
+              "icon": "insert",
+              "name": "break panel",
+              "command": "workbench.action.terminal.unsplit"
             },
             {
-              "key": "W",
-              "name": "New Tab terminal (Separated window group)",
-              "command": "workbench.action.createTerminalEditorSide"
+              "key": "0",
+              "icon": "open-preview",
+              "name": "focus tabs view",
+              "command": "workbench.action.terminal.focusTabs"
             },
             {
-              "key": "y",
-              "name": "New panel terminal (dafault shell)",
-              "command": "workbench.action.terminal.newInActiveWorkspace"
+              "key": "1",
+              "icon": "layers",
+              "name": "focus index 1",
+              "command": "workbench.action.terminal.focusAtIndex1"
             },
             {
-              "key": "Y",
-              "name": "New panel terminal (choose shell)",
-              "command": "workbench.action.terminal.newWithProfile"
+              "key": "2",
+              "icon": "layers",
+              "name": "focus index 2",
+              "command": "workbench.action.terminal.focusAtIndex2"
             },
             {
-              "key": "z",
-              "name": "Toggle maximized panel",
-              "command": "workbench.action.toggleMaximizedPanel"
+              "key": "3",
+              "icon": "layers",
+              "name": "focus index 3",
+              "command": "workbench.action.terminal.focusAtIndex3"
             },
             {
-              "key": "'",
-              "name": "Find text",
-              "command": "workbench.action.terminal.focusFind"
+              "key": "4",
+              "icon": "layers",
+              "name": "focus index 4",
+              "command": "workbench.action.terminal.focusAtIndex4"
             },
             {
-              "key": "/",
-              "name": "Focus terminal",
-              "command": "workbench.action.terminal.toggleTerminal"
+              "key": "5",
+              "icon": "layers",
+              "name": "focus index 5",
+              "command": "workbench.action.terminal.focusAtIndex5"
             },
             {
-              "key": "\\",
-              "name": "Toggle terminal",
-              "command": "workbench.action.togglePanel"
+              "key": "6",
+              "icon": "layers",
+              "name": "focus index 6",
+              "command": "workbench.action.terminal.focusAtIndex6"
+            },
+            {
+              "key": "7",
+              "icon": "layers",
+              "name": "focus index 7",
+              "command": "workbench.action.terminal.focusAtIndex7"
+            },
+            {
+              "key": "8",
+              "icon": "layers",
+              "name": "focus index 8",
+              "command": "workbench.action.terminal.focusAtIndex8"
+            },
+            {
+              "key": "9",
+              "icon": "layers",
+              "name": "focus index 9",
+              "command": "workbench.action.terminal.focusAtIndex9"
             }
           ]
         },
         {
           "key": "u",
+          "icon": "tools",
           "name": "+UI toggles",
           "bindings": [
             {
               "key": "b",
-              "name": "Toggle activity bar",
+              "icon": "layout-activitybar-left",
+              "name": "toggle activity bar",
               "command": "workbench.action.toggleActivityBarVisibility"
             },
             {
               "key": "B",
-              "name": "Toggle menu bar",
+              "icon": "layout-menubar",
+              "name": "toggle menu bar",
               "command": "workbench.action.toggleMenuBar"
             },
             {
               "key": "f",
-              "name": "Toggle full screen",
+              "icon": "screen-full",
+              "name": "toggle full screen",
               "command": "workbench.action.toggleFullScreen"
             },
             {
               "key": "k",
-              "name": "Show keys on screen (Screencast Mode)",
+              "icon": "keyboard",
+              "name": "show keys on screen (screencast mode)",
               "command": "workbench.action.toggleScreencastMode"
             },
             {
               "key": "m",
-              "name": "Toggle maximized panel",
+              "icon": "unfold",
+              "name": "toggle maximized panel",
               "command": "workbench.action.toggleMaximizedPanel"
             },
             {
               "key": "M",
-              "name": "Toggle Minimap",
+              "icon": "symbol-keyword",
+              "name": "toggle minimap",
               "command": "editor.action.toggleMinimap"
             },
             {
               "key": "P",
-              "name": "Toggle panel visibility",
+              "icon": "layout-panel",
+              "name": "toggle panel visibility",
               "command": "workbench.action.togglePanel"
             },
             {
               "key": "r",
-              "name": "Show remote explorer",
+              "icon": "remote-explorer",
+              "name": "show remote explorer",
               "command": "workbench.view.remote"
             },
             {
               "key": "s",
-              "name": "Toggle sidebar visibility",
+              "icon": "layout-sidebar-left",
+              "name": "toggle sidebar visibility",
               "command": "workbench.action.toggleSidebarVisibility"
             },
             {
               "key": "S",
-              "name": "Toggle sec-sidebar visibility",
+              "icon": "layout-sidebar-right",
+              "name": "toggle sec-sidebar visibility",
               "command": "workbench.action.toggleAuxiliaryBar"
             },
             {
               "key": "t",
-              "name": "Select theme",
+              "icon": "symbol-color",
+              "name": "select theme",
               "command": "workbench.action.selectTheme"
             },
             {
               "key": "T",
+              "icon": "window",
               "name": "Toggle tab visibility",
               "command": "workbench.action.toggleTabsVisibility"
             },
             {
-              "key": "u",
-              "name": "Go to Parent Fold",
-              "commands": [
-                "editor.gotoParentFold",
-                "cursorHome"
-              ]
-            },
-            {
-              "key": "U",
-              "name": "Go to Bracket",
-              "command": "editor.action.jumpToBracket"
-            },
-            {
               "key": "w",
-              "name": "Toggle Wrap",
+              "icon": "word-wrap",
+              "name": "toggle wrap",
               "command": "editor.action.toggleWordWrap"
             },
             {
               "key": "x",
-              "name": "Extensions",
+              "icon": "extensions",
+              "name": "extensions",
               "command": "workbench.view.extensions"
             },
             {
               "key": "z",
-              "name": "Toggle zen mode",
+              "icon": "layout-centered",
+              "name": "toggle zen mode",
               "command": "workbench.action.toggleZenMode"
             },
             {
               "key": "Z",
-              "name": "Zoom reset",
+              "icon": "screen-normal",
+              "name": "zoom reset",
               "command": "editor.action.fontZoomReset"
             }
           ]
         },
         {
           "key": "v",
-          "name": "Open/Move terminal to vertical split",
+          "icon": "terminal",
+          "name": "open/move terminal to vertical split",
           "commands": [
             "workbench.action.positionPanelRight",
             "workbench.action.terminal.focus"
@@ -3292,7 +3415,8 @@
         },
         {
           "key": "V",
-          "name": "Open/Move terminal to horizontal split",
+          "icon": "terminal",
+          "name": "open/move terminal to horizontal split",
           "commands": [
             "workbench.action.positionPanelBottom",
             "workbench.action.terminal.focus"
@@ -3300,11 +3424,13 @@
         },
         {
           "key": "w",
-          "name": "+Window",
+          "icon": "editor-layout",
+          "name": "+window",
           "bindings": [
             {
               "key": ";",
-              "name": "Recent editor group",
+              "icon": "clock",
+              "name": "recent editor group",
               "commands": [
                 "workbench.action.quickOpenPreviousRecentlyUsedEditor",
                 "workbench.action.acceptSelectedQuickOpenItem"
@@ -3312,182 +3438,182 @@
             },
             {
               "key": "c",
-              "name": "Combine all editors",
+              "icon": "combine",
+              "name": "combine all editors",
               "command": "workbench.action.joinAllGroups"
             },
             {
               "key": "C",
-              "name": "Close all editor groups",
+              "icon": "close-all",
+              "name": "close all editor groups",
               "command": "workbench.action.closeAllGroups"
             },
             {
               "key": "f",
-              "name": "Focus editor group",
+              "icon": "eye",
+              "name": "focus editor group",
               "command": "workbench.action.focusActiveEditorGroup"
             },
             {
               "key": "h",
-              "name": "Move editor group left",
+              "icon": "arrow-circle-left",
+              "name": "move editor group left",
               "command": "workbench.action.moveActiveEditorGroupLeft"
             },
             {
               "key": "j",
-              "name": "Move editor group down",
+              "icon": "arrow-circle-down",
+              "name": "move editor group down",
               "command": "workbench.action.moveActiveEditorGroupDown"
             },
             {
               "key": "k",
-              "name": "Move editor group up",
+              "icon": "arrow-circle-up",
+              "name": "move editor group up",
               "command": "workbench.action.moveActiveEditorGroupUp"
             },
             {
               "key": "l",
-              "name": "Move editor group right",
+              "icon": "arrow-circle-right",
+              "name": "move editor group right",
               "command": "workbench.action.moveActiveEditorGroupRight"
             },
             {
               "key": "H",
-              "name": "Decrease editor group",
+              "icon": "arrow-left",
+              "name": "decrease editor group",
               "command": "workbench.action.decreaseViewSize"
             },
             {
               "key": "J",
-              "name": "Increase editor group",
+              "icon": "arrow-down",
+              "name": "increase editor group",
               "command": "workbench.action.increaseViewSize"
             },
             {
               "key": "K",
-              "name": "Decrease editor group",
+              "icon": "arrow-up",
+              "name": "decrease editor group",
               "command": "workbench.action.decreaseViewSize"
             },
             {
               "key": "L",
-              "name": "Increase editor group",
+              "icon": "arrow-right",
+              "name": "increase editor group",
               "command": "workbench.action.increaseViewSize"
             },
             {
               "key": "m",
-              "name": "Toggle Maximized editor group mode",
+              "icon": "zoom-in",
+              "name": "toggle maximized editor group mode",
               "command": "workbench.action.toggleMaximizeEditorGroup"
             },
             {
               "key": "M",
-              "name": "Minimize other editors group",
+              "icon": "triangle-down",
+              "name": "minimize other editors group",
               "command": "workbench.action.minimizeOtherEditors"
             },
             {
               "key": "n",
-              "name": "Focus next editor group",
+              "icon": "arrow-circle-right",
+              "name": "focus next editor group",
               "command": "workbench.action.focusNextGroup"
             },
             {
               "key": "p",
-              "name": "Focus previous editor group",
+              "icon": "arrow-circle-left",
+              "name": "focus previous editor group",
               "command": "workbench.action.focusPreviousGroup"
             },
             {
               "key": "t",
-              "name": "Toggle editor group sizes",
+              "icon": "screen-normal",
+              "name": "toggle editor group sizes",
               "command": "workbench.action.toggleEditorWidths"
             },
             {
               "key": "v",
-              "name": "Split Vertical",
+              "icon": "split-horizontal",
+              "name": "split vertical",
               "command": "workbench.action.splitEditor"
             },
             {
               "key": "V",
-              "name": "Split Horizontal",
+              "icon": "split-vertical",
+              "name": "split horizontal",
               "command": "workbench.action.splitEditorDown"
             },
             {
               "key": "x",
-              "name": "Close editor group",
+              "icon": "stop",
+              "name": "close editor group",
               "command": "workbench.action.closeEditorsInGroup"
             },
             {
               "key": "=",
-              "name": "Reset editor group sizes",
+              "icon": "discard",
+              "name": "reset editor group sizes",
               "command": "workbench.action.evenEditorWidths"
             }
           ]
         },
         {
           "key": "x",
-          "name": "Close tab",
+          "icon": "close-all",
+          "name": "close tab",
           "command": "workbench.action.closeActiveEditor"
         },
         {
           "key": "y",
-          "name": "+File manager",
-          "bindings": [
-            {
-              "key": "y",
-              "name": "yazi file manager (shortcut alt+o or alt+y)",
-              "command": "retronvim.yazi"
-            },
-            {
-              "key": "Y",
-              "name": "print sequence to export `y` command (on current terminal)",
-              "command": "workbench.action.terminal.sendSequence",
-              "args": {
-                "text": "function y { yazi --cwd-file=$HOME/.yazi \"$@\"; cd \"$(cat $HOME/.yazi)\"; } # on powershell [directory] requires fix_path"
-              }
-            },
-            {
-              "key": "V",
-              "name": "print sequence to export vi = mini.nvim + snacks.nvim",
-              "command": "workbench.action.terminal.sendSequence",
-              "args": {
-                "text": "function vi() { sh -c \"$EDITOR $@\"; } # ($EDITOR) # eval $EDITOR # iex $env:EDITOR \n"
-              }
-            },
-            {
-              "key": "?",
-              "name": "print sequence to show yazi keybindings menu (when inside yazi)",
-              "command": "workbench.action.terminal.sendSequence",
-              "args": {
-                "text": "~"
-              }
-            }
-          ]
+          "icon": "file-media",
+          "name": "yazi file manager (~ help)",
+          "command": "retronvim.yazi"
         },
         {
           "key": "Y",
-          "name": "+Sync",
+          "name": "+sync",
+          "icon": "sync",
           "bindings": [
             {
               "key": "c",
-              "name": "Sync Show Conflicts",
+              "icon": "bug",
+              "name": "sync show conflicts",
               "command": "workbench.userDataSync.actions.showConflicts"
             },
             {
               "key": "d",
-              "name": "Sync Show Data",
+              "icon": "database",
+              "name": "sync show data",
               "command": "workbench.userDataSync.actions.showSyncedData"
             },
             {
               "key": "k",
+              "icon": "keyboard",
               "name": "open keybindings.json",
               "command": "workbench.action.openGlobalKeybindingsFile"
             },
             {
               "key": "l",
-              "name": "Sync Logs",
+              "icon": "file-binary",
+              "name": "sync logs",
               "command": "workbench.userDataSync.actions.showLog"
             },
             {
               "key": "n",
-              "name": "Sync Now",
+              "icon": "sync",
+              "name": "sync now",
               "command": "workbench.userDataSync.actions.syncNow"
             },
             {
               "key": "p",
-              "name": "Switch profile",
+              "icon": "account",
+              "name": "switch profile",
               "command": "workbench.profiles.actions.switchProfile"
             },
             {
               "key": "s",
+              "icon": "gear",
               "name": "open settings.json",
               "command": "workbench.action.openSettingsJson"
             }
@@ -3495,51 +3621,61 @@
         },
         {
           "key": "z",
-          "name": "+Folding",
+          "name": "+folding",
+          "icon": "unfold",
           "bindings": [
             {
               "key": "a",
-              "name": "Toggle Fold",
+              "icon": "unfold",
+              "name": "toggle fold",
               "command": "editor.toggleFold"
             },
             {
               "key": "c",
-              "name": "Close Fold",
+              "icon": "chevron-up",
+              "name": "close fold",
               "command": "editor.fold"
             },
             {
               "key": "C",
-              "name": "Close Fold Recursively",
+              "icon": "triangle-up",
+              "name": "close fold recursively",
               "command": "editor.foldRecursively"
             },
             {
               "key": "M",
-              "name": "Close All Folds",
+              "icon": "fold-up",
+              "name": "close all folds",
               "command": "editor.foldAll"
             },
             {
               "key": "j",
-              "name": "Go to Next Fold",
+              "icon": "arrow-circle-down",
+              "name": "go to next fold",
               "command": "editor.gotoNextFold"
             },
             {
               "key": "k",
-              "name": "Go to Previous Fold",
+              "icon": "arrow-circle-up",
+              "name": "go to previous fold",
               "command": "editor.gotoPreviousFold"
             },
             {
               "key": "o",
-              "name": "Open Fold",
+              "icon": "chevron-down",
+              "name": "open fold",
               "command": "editor.unfold"
             },
             {
               "key": "O",
-              "name": "Open Fold Recursively",
+              "icon": "triangle-down",
+              "name": "open fold recursively",
               "command": "editor.unfoldRecursively"
             },
             {
               "key": "R",
-              "name": "Open All Folds",
+              "icon": "fold-down",
+              "name": "open all folds",
               "command": "editor.unfoldAll"
             }
           ]

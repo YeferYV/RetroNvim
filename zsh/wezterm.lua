@@ -1,10 +1,6 @@
-local wezterm = require 'wezterm'
-local act = wezterm.action
-local home = os.getenv("HOME") or os.getenv("USERPROFILE")
-local retronvim_path = wezterm.glob(home .. '/.*/extensions/yeferyv.retronvim*')[1] or os.getenv("APPDIR3")
-
-if wezterm.target_triple == 'x86_64-pc-windows-msvc' then default_prog = { "powershell", "-nologo", "-noexit", "-file", retronvim_path .. "/powershell/profile.ps1" } end
-if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then default_prog = { "zsh" } end
+local wezterm      = require 'wezterm'
+local act          = wezterm.action
+local conda_prefix = os.getenv("CONDA_PREFIX")
 
 return {
   -- https://github.com/wezterm/wezterm/pull/7420
@@ -26,25 +22,24 @@ return {
   -- animation_fps = 60,
   audible_bell = "Disabled",
   bold_brightens_ansi_colors = false, --> for i in {0..255}; do; printf "\033[${i};1m color${i}"; done
-  default_prog = default_prog,
-  front_end = (wezterm.target_triple ~= 'x86_64-pc-windows-msvc') and "WebGpu" or "OpenGL", --> webgpu's transparency doesn't work on Windows
-  font_dirs = { os.getenv("APPDIR3") and os.getenv("APPDIR3") .. '/assets' },
+  default_prog = { conda_prefix .. '/bin/zsh' },
+  front_end = os.getenv("APPDATA") and "OpenGL" or "WebGpu", --> webgpu's transparency doesn't work on Windows
+  font_dirs = { conda_prefix .. "/bin/patched-fonts/FiraCode/" },
   hide_tab_bar_if_only_one_tab = true,
   scrollback_lines = 10000,
   tab_bar_at_bottom = true,
   use_fancy_tab_bar = false,
   warn_about_missing_glyphs = false,
   window_close_confirmation = "NeverPrompt",
-  window_background_image = retronvim_path .. "/assets/retronvim.jpg", --> https://wezterm.org/config/lua/config/background.html
-  window_background_image_hsb = { brightness = 0.04 },                 --> https://github.com/wezterm/wezterm/discussions/5876
+  window_background_image =  conda_prefix .. "/opt/retronvim/assets/retronvim.jpg", --> https://wezterm.org/config/lua/config/background.html
+  window_background_image_hsb = { brightness = 0.04 },                                           --> https://github.com/wezterm/wezterm/discussions/5876
   -- text_background_opacity = 0.9,
   -- window_background_opacity = 0.9,
 
-  set_environment_variables = {
-    PATH = retronvim_path .. "/bin/env/bin:" .. os.getenv("PATH"),
-    PSMODULEPATH = retronvim_path .. "/powershell/modules",
-    ZDOTDIR = retronvim_path .. "/zsh"
-  },
+  -- set_environment_variables = {
+  --   PSMODULEPATH = ""
+  --   ZDOTDIR = ""
+  -- },
 
   font_rules = {
     {

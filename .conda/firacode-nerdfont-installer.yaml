@@ -1,0 +1,62 @@
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
+# rattler-build build --recipe firacode-nerdfont-installer.yaml --target-platform linux-64 --output-dir firacode-channel --build-num=+1
+# rattler-build build --recipe firacode-nerdfont-installer.yaml --target-platform osx-64   --output-dir firacode-channel --build-num=+1
+# rattler-build build --recipe firacode-nerdfont-installer.yaml --target-platform win-64   --output-dir firacode-channel --build-num=+1
+
+# rm -r ~/.cache/rattler
+# pixi g install      --path ./firacode-channel/linux-64/firacode*                     --force-reinstall
+# pixi g install      --path ./firacode-channel/osx-64/firacode*                       --force-reinstall
+# pixi g install      --path ./firacode-channel/win-64/firacode-3.4.0-h9490d1a_1.conda --force-reinstall
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
+# pixi upload anaconda --owner=retronvim firacode*/*/*conda
+
+context:
+  version: 3.4.0
+
+package:
+  name: firacode-nerdfont-installer
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/ryanoasis/nerd-fonts/releases/download/v${{ version }}/firacode.tar.xz
+    target_directory: bin/patched-fonts/FiraCode
+
+  - url: https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.sh
+
+  - url: https://raw.githubusercontent.com/ryanoasis/nerd-fonts/refs/heads/master/install.ps1
+
+
+build:
+  # number: 0 # build version
+
+  dynamic_linking:
+    # fixes macos builds from linux: failed to find `install_name_tool`
+    # https://rattler-build.prefix.dev/latest/build_options/#dynamic-linking-configuration
+    binary_relocation: false
+
+  script:
+    interpreter: bash
+    content:
+
+      - if: unix
+        then:
+          - cp -r bin      $PREFIX
+          - cp install.sh  $PREFIX/bin/firacode-nerdfont-installer
+          - chmod +x       $PREFIX/bin/firacode-nerdfont-installer
+
+      - if: win
+        then:
+          - cp -r bin      $PREFIX
+          - cp install.ps1 $PREFIX/bin/firacode-nerdfont-installer.ps1
+          - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< "powershell -executionpolicy bypass -c %CONDA_PREFIX%/bin/firacode-nerdfont-installer.ps1"
+
+
+about:
+  summary: Iconic font aggregator, collection, and patcher. 3,600+ icons, 50+ patched fonts
+  description: |
+    Nerd Fonts is a project that patches developer targeted fonts with a high number of glyphs (icons).
+    Specifically to add a high number of extra glyphs from popular 'iconic fonts'
+    such as Font Awesome, Devicons, Octicons, and others.
+  homepage: https://nerdfonts.com
+  repository: https://github.com/ryanoasis/nerd-fonts

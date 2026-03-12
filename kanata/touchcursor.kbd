@@ -116,7 +116,7 @@
   bsp (tap-hold 200 200 bspc  (macro-repeat bspc  20))
 
   ;; open yazi_cd on any shell
-  yaz (macro y a z i spc S-4 S-(p w d) spc - - c w d - f i l e spc S-4 S-(h o m e) / . y a z i ; spc c d spc S-' S-4 S-9 c a t spc S-4 S-( h o m e) / . y a z i S-0 S-' ret)
+  yaz (macro S-` / . p i x i / b i n / y a z i spc S-4 S-(p w d) spc - - c w d - f i l e spc S-4 S-(h o m e) / . y a z i ; spc c d spc S-' S-4 S-9 c a t spc S-4 S-( h o m e) / . y a z i S-0 S-' ret)
 
   ;; clear screen on any shell
   clr (macro c l e a r ret)

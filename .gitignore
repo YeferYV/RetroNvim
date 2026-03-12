@@ -1,4 +1,5 @@
+.conda/*channel
+.conda/output
+bin
 node_modules
 *.vsix
-bin
-powershell/modules/*

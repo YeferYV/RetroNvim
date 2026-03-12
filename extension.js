@@ -1,67 +1,26 @@
 const vscode        = require('vscode');
 const path          = require('path');
 const os            = require('os');
-const process       = require('process');
 const fs            = require('fs');
 const child_process = require('child_process');
 
 function setNeovimPath(homeExtension) {
-  // Construct the dynamic path
   const homeDirectory       = os.homedir();
-  const yaziBookmarkPath    = path.join(homeDirectory, 'appdata/roaming/yazi/state');
-  const nerdfontPath        = path.join(homeExtension, '/bin/nerd-fonts/patched-fonts/FiraCode');
-  const nerdfontPathLinux   = path.join(homeDirectory, '.local/share/fonts/FiraCode');
-  const nerdfontPathMacos   = path.join(homeDirectory, 'Library/Fonts/FiraCode');
-  const nerdfontPathWindows = path.join(homeDirectory, 'AppData/Local/Microsoft/Windows/Fonts/FiraCodeNerdFont-Bold.ttf');
-  const nvimPath            = path.join(homeDirectory, '/.vscode/extensions/yefery.retronvim');
-  const nvimPathUnix        = path.join(homeExtension, '/bin/env/bin/nvim');
-  const nvimPathWindows     = path.join(homeExtension, '/bin/windows/envs/windows/Library/bin/nvim.exe');
-  const gitPathUnix         = path.join(homeExtension, '/bin/env/bin/git');
-  const gitPathWindows      = path.join(homeExtension, '/bin/windows/envs/windows/Library/mingw64/bin/git.exe');
+  const dotexe              = os.platform() == "win32" ? '.exe' : ''
+  const dotcmd              = os.platform() == "win32" ? '.cmd' : ''
+  const initDotLuaPath      = path.join(homeDirectory, '/.pixi/envs/retronvim/opt/retronvim/nvim/init.lua');
+  const gitPath             = path.join(homeDirectory, '/.pixi/bin/git', dotexe);
+  const nvimPath            = path.join(homeDirectory, '/.pixi/bin/nvim', dotexe);
+  const pixiPath            = path.join(homeExtension, '/bin/pixi', dotexe);
+  const pythonPath          = path.join('./.pixi/envs/default/bin/python', dotexe);
   const javaPathUnix        = path.join(homeDirectory, '/.pixi/envs/openjdk/lib/jvm');
   const javaPathWindows     = path.join(homeDirectory, '/.pixi/envs/openjdk/Library/lib/jvm');
-  const initDotLuaPath      = path.join(homeExtension, '/nvim/init.lua');
+  const javaPath            = os.platform() == "win32" ? javaPathWindows : javaPathUnix;
 
-  if (os.platform() == "win32") {
-    fs.mkdir(yaziBookmarkPath, { recursive: true }, (err) => { if (err) { vscode.window.showErrorMessage(`${err.message}`) }} );
-    var gitPath = gitPathWindows
-    var pixiPath = ".\\.pixi\\envs\\default\\python.exe"
-    var javaPath = javaPathWindows
-  } else {
-    var gitPath = gitPathUnix
-    var pixiPath = "./.pixi/envs/default/bin/python"
-    var javaPath = javaPathUnix
-  }
-
-  // install locally nerd-fonts
-  if (os.platform() == "win32" && fs.existsSync(nerdfontPathWindows) === false) {
-    child_process.exec('powershell.exe -ExecutionPolicy Bypass -File ' + homeExtension + '/bin/nerd-fonts/install.ps1')
-    vscode.window.showInformationMessage('relaunch vscode to load nerd-font')
-  }
-  if (os.platform() == "linux" && fs.existsSync(nerdfontPathLinux) === false) {
-    fs.mkdirSync(path.dirname(nerdfontPathLinux), { recursive: true });
-    fs.cpSync(nerdfontPath, nerdfontPathLinux, { recursive: true })
-    child_process.exec('fc-cache -f')
-    vscode.window.showInformationMessage('relaunch vscode to load nerd-font')
-  }
-  if (os.platform() == "darwin" && fs.existsSync(nerdfontPathMacos) === false) {
-    fs.mkdirSync(path.dirname(nerdfontPathMacos), { recursive: true });
-    fs.cpSync(nerdfontPath, nerdfontPathMacos, { recursive: true })
-    vscode.window.showInformationMessage('relaunch vscode to load nerd-font')
-  }
-
-  // remove ~/.vscode/extensions/yefery.retronvim created by retronvim/nvim/init.lua when retronvim extensions was not installed previously
-  fs.existsSync(nvimPath) && fs.rmSync(nvimPath, { recursive: true })
-
-  // decompress terminal dependencies
-  if (os.platform() == "win32" && fs.existsSync(gitPathWindows) === false) {
-    child_process.exec('powershell -c "try { cd '+ homeExtension +'/bin; ./7zr.exe x windows.7z; }" catch {}')
-  }
-  if (os.platform() == "linux" && fs.existsSync(gitPathUnix) === false) {
-    child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
-  }
-  if (os.platform() == "darwin" && fs.existsSync(gitPathUnix) === false) {
-    child_process.exec('(cd ' + homeExtension + '/bin && ./environment.sh 2>/dev/null)')
+  // install retronvim.conda and firacode.conda
+  if (fs.existsSync(initDotLuaPath) === false) {
+    child_process.exec(pixiPath + 'global install retronvim -c retronvim -c conda-forge')
+    child_process.exec(pixiPath + 'exec -c retronvim --with firacode-nerdfont-installer firacode-nerdfont-installer' + dotcmd)
   }
 
   // Access the configuration for 'vscode-neovim'
@@ -77,12 +36,12 @@ function setNeovimPath(homeExtension) {
   config.update("git.path", gitPath, vscode.ConfigurationTarget.Global)
   config.update("java.configuration.runtimes", [{ "name": "JavaSE-25", "path": javaPath, "default": true }], vscode.ConfigurationTarget.Global);
   config.update("java.jdt.ls.java.home", javaPath, vscode.ConfigurationTarget.Global)
-  config.update("python.defaultInterpreterPath", pixiPath, vscode.ConfigurationTarget.Global)
+  config.update("python.defaultInterpreterPath", pythonPath, vscode.ConfigurationTarget.Global)
   config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global)
   config.update("terminal.integrated.windowsUseConptyDll", true, vscode.ConfigurationTarget.Global) // for yazi image preview on windows but sometimes yazi refuses to open
-  config.update("vscode-neovim.neovimExecutablePaths.darwin", nvimPathUnix, vscode.ConfigurationTarget.Global)
-  config.update("vscode-neovim.neovimExecutablePaths.linux", nvimPathUnix, vscode.ConfigurationTarget.Global)
-  config.update("vscode-neovim.neovimExecutablePaths.win32", nvimPathWindows, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimExecutablePaths.darwin", nvimPath, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimExecutablePaths.linux", nvimPath, vscode.ConfigurationTarget.Global)
+  config.update("vscode-neovim.neovimExecutablePaths.win32", nvimPath, vscode.ConfigurationTarget.Global)
   config.update("vscode-neovim.neovimInitVimPaths.darwin", initDotLuaPath, vscode.ConfigurationTarget.Global)
   config.update("vscode-neovim.neovimInitVimPaths.linux", initDotLuaPath, vscode.ConfigurationTarget.Global)
   config.update("vscode-neovim.neovimInitVimPaths.win32", initDotLuaPath, vscode.ConfigurationTarget.Global)
@@ -102,22 +61,16 @@ function activate(context) {
   // vscode.window.showInformationMessage(context.extensionPath);
   // vscode.window.showInformationMessage(context.extension);
 
-  const fzf_preview       = "--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi"
   const home              = os.homedir();
-  const dotexe            = os.platform() == "win32" ? '.exe' : ''
-  const bin_path          = os.platform() == "win32" ? '/bin/windows/envs/windows/Library/bin/' : '/bin/env/bin/'
-  const retronvim_bin     = path.join(context.extensionPath, bin_path)
-  const init_lua          = path.join(context.extensionPath, '/nvim/init.lua')
-  const yazi_config_home  = path.join(context.extensionPath, '/yazi')
-  const yazi_file_one     = path.join(context.extensionPath, '/bin/windows/envs/windows/Library/usr/bin/file.exe')
+  const colon             = os.platform() == "win32" ? ';' : ':'
   const yazi_choosen_file = path.join(home, '/.yazi')
-  const mingw_path        = path.join(context.extensionPath, '/bin/windows/envs/windows/Library/mingw64/bin;')
-  const win_path          = retronvim_bin + `;${home}\\.pixi\\bin;${home}\\.local\\bin;${home}appdata\\local\\pnpm;` + mingw_path + process.env.PATH
-  const unix_path         = retronvim_bin + `:${home}/pixi/bin:${home}/.local/bin:${home}/Library/pnpm:${home}/Library/pnpm:` + process.env.PATH
-  const get_path          = os.platform() == "win32" ? win_path : unix_path
-  const get_yazi_file_one = os.platform() == "win32" ? yazi_file_one : null
+  var binPath             = path.join(context.extensionPath, '/bin')
+  binPath                += colon + home + '/.pixi/bin'
+  binPath                += colon + home + '/.pixi/envs/retronvim/bin'
+  binPath                += colon + process.env.PATH
 
-  let open_yazi = vscode.commands.registerCommand("retronvim.yazi", () => {
+  let open_yazi = vscode.commands.registerCommand("retronvim.yazi", async () => {
+
     let curr_file = vscode.window.activeTextEditor?.document.uri.fsPath || ""
     let yazi_args = curr_file ? ["--chooser-file", yazi_choosen_file, curr_file] : ["--chooser-file", yazi_choosen_file]
 
@@ -125,22 +78,15 @@ function activate(context) {
 
     let yaziTerminal = vscode.window.createTerminal({
       name: "Yazi",
-      shellPath: "yazi",
+      shellPath: 'yazi',
       shellArgs: yazi_args,
       location: vscode.TerminalLocation.Editor,
       env: {
-        // EDITOR: "code",
-        // YAZI_CMD: 'ya emit quit',
-        BAT_THEME: "base16",
-        FZF_DEFAULT_OPTS: fzf_preview,
-        PATH: get_path,
-        VIMINIT: `lua vim.cmd.source([[${init_lua}]])`,
-        YAZI_CONFIG_HOME: yazi_config_home,
-        YAZI_FILE_ONE: get_yazi_file_one,
+        PATH: binPath,
       },
     })
 
-    // yaziTerminal.show(); // not required if vscode.TerminalLocation.Editor
+    await vscode.commands.executeCommand('workbench.action.terminal.focus');
 
     // https://github.com/dautroc/yazi-vscode/blob/main/src/extension.ts
     const closeSubscription = vscode.window.onDidCloseTerminal(async (terminal) => {
@@ -157,25 +103,79 @@ function activate(context) {
     })
   })
 
-  let open_lazygit = vscode.commands.registerCommand("retronvim.lazygit", () => {
+  let open_lazygit = vscode.commands.registerCommand("retronvim.lazygit", async () => {
 
     vscode.window.createTerminal({
       name: "Lazygit",
-      shellPath: retronvim_bin + 'lazygit' + dotexe,
+      shellPath: 'lazygit',
       location: vscode.TerminalLocation.Editor,
       env: {
-        PATH: get_path,
-        VIMINIT: `lua vim.cmd.source([[${init_lua}]])`,
+        PATH: binPath,
       },
     })
+
+    await vscode.commands.executeCommand('workbench.action.terminal.focus');
   })
+
+  let terminal_copymode = vscode.commands.registerCommand("retronvim.terminal_copymode", async () => {
+
+    await vscode.commands.executeCommand("workbench.action.terminal.selectAll");
+    await vscode.commands.executeCommand("editor.action.clipboardCopyAction");
+    await vscode.commands.executeCommand('workbench.action.terminal.clearSelection');
+
+    // read the clipboard from nvim
+    let copymode_args = ["-c", "put +", "-c", "set ft=sh", "-c", "map q :qa!<cr>"];
+
+    let terminal = vscode.window.createTerminal({
+      shellPath: "nvim",
+      shellArgs: copymode_args,
+      // location: vscode.TerminalLocation.Editor,
+      env: {
+        PATH: binPath,
+      },
+    });
+
+    terminal.show();
+
+    // workaround to show maximized panel terminal requires `vscode.TerminalLocation.Editor` but more commands makes it slow,
+    // alternative: the panel maximized is remembered
+    // await vscode.commands.executeCommand("workbench.action.terminal.moveToTerminalPanel")
+    // await vscode.commands.executeCommand("workbench.action.toggleMaximizedPanel");
+  });
+
+  let nvim_tab_terminal = vscode.commands.registerCommand("retronvim.nvim_tab_terminal", async () => {
+
+    vscode.window.createTerminal({
+      shellPath: "nvim",
+      shellArgs: ["-cterm"],
+      location: vscode.TerminalLocation.Editor,
+      env: {
+        PATH: binPath,
+      },
+    });
+
+    await vscode.commands.executeCommand('workbench.action.terminal.focus');
+  });
+
+  let nvim_panel_terminal = vscode.commands.registerCommand("retronvim.nvim_panel_terminal", async () => {
+
+    let terminal = vscode.window.createTerminal({
+      shellPath: "nvim",
+      shellArgs: ["-cterm"],
+      env: {
+        PATH: binPath,
+      },
+    });
+
+    terminal.show();
+  });
 
   const show_message = vscode.commands.registerCommand( "retronvim.show_message", (args) => {
       vscode.window.showInformationMessage(args.text);
     },
   );
 
-  context.subscriptions.push(open_yazi, open_lazygit, show_message);
+  context.subscriptions.push(open_yazi, open_lazygit, terminal_copymode, nvim_tab_terminal, nvim_panel_terminal, show_message);
 }
 
 exports.activate = activate;

@@ -2,7 +2,7 @@
 
 <div align="center"><p>
 
-Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/powershell setup
+Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/wezterm/windows-terminal setup
 
 <!-- <img src="https://github.com/yeferyv/retronvim/blob/main/assets/demo.gif?raw=true"> -->
 
@@ -34,7 +34,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
    - [Suggestion keymaps](#suggestion-keymaps)
 3. Terminal
    - [Terminal keymaps](#terminal-keymaps)
-   - [zsh/powershell keymaps](#zshpowershell-keymaps)
+   - [zsh keymaps](#zsh-keymaps)
 4. [If Touchcursor Keyboard Layout Started](#if-touchcursor-keyboard-layout-started)
 5. Installation
    - [Install](#installation)
@@ -91,69 +91,69 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 <details open><summary></summary>
 
-|      keymap       |   requires    |    mode     | repeat action key |    repeat jump key     | text-object description                                                   | `n`ormal mode = `n` = operator           | `o`perating-pending mode = `o` = text-object | `v`isual mode = `v` = `x` = motion | examples in normal mode                                                             |
-| :---------------: | :-----------: | :---------: | :---------------: | :--------------------: | :------------------------------------------------------------------------ | :--------------------------------------- | :------------------------------------------- | :--------------------------------- | :---------------------------------------------------------------------------------- |
-|    `[c` / `]c`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next comment                                                     | finds and jumps                          | jumps                                        | uses selection                     | `v]c` selects from cursor position until next comment                               |
-|    `[d` / `]d`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next diagnostic                                                  | finds and jumps                          | jumps                                        | uses selection                     | `v]d` selects from cursor position until next diagnostic                            |
-|    `[h` / `]h`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next git hunk                                                    | finds and jumps                          | jumps                                        | uses selection                     | `v]h` selects from cursor position until next git hunk                              |
-|    `[i` / `]i`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next indent                                                      | finds and jumps                          | jumps                                        | uses selection                     | `v]i` selects from cursor position until next indent                                |
-|     `g[`/`g]`     | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | +prev/+next textobj (only textobj with `_` prefix)                        | finds and jumps                          | followed by textobject                       | uses selection                     | `vg]q` selects from cursor position until next quotation                            |
-|     `g;`/`g,`     |               |     `n`     |                   |                        | go backward/forward in `:changes`                                         | jumps                                    |                                              |                                    | `g;` go to last change                                                              |
-|       `g.`        | vscode-neovim | `n`,`o`,`x` |                   |                        | jump to last change                                                       | jumps                                    | won't jump                                   | uses selection                     | `vg.` selects from cursor position until last change                                |
-|       `ga`        | vscode-neovim |   `n`,`x`   |                   |                        | +align                                                                    | followed by textobject/motion            |                                              | uses selected region               | `gaip=` or `vipga=` aligns a paragraph by `=`                                       |
-|       `gb`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +blackhole register                                                       | followed by textobject/motion            |                                              | deletes selection                  | `gbip` or `vipgb` deletes a paragraph without copying                               |
-|       `gB`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | blackhole linewise                                                        | text-object not required                 |                                              | deletes line                       | `gB.` deletes two lines without saving it in the register                           |
-|       `gc`        |               | `n`,`o`,`x` |        `.`        |                        | +comment (`vgc` in normal mode will select a block comment)               | followed by textobject/motion            | won't jump                                   | uses selection                     | `gcip` or `vipgc` comments a paragraph                                              |
-|       `gC`        | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | block comment (supports selection `vgC` or just `gC`)                     | select text-object under cursor          | won't jump                                   | reselects                          | `vgC` selects current block of comment                                              |
-|       `gd`        |               |     `n`     |                   |                        | go to definition                                                          | jumps                                    |                                              |                                    | `gd` go to definition of word under cursor                                          |
-|       `gD`        | vscode-neovim |     `x`     |                   |                        | git diff/hunk (vscode selects from cursor position to end of diff)        |                                          | won't jump                                   | reselects                          | `vgD` selects modified code                                                         |
-|     `ge`/`gE`     |               | `n`,`o`,`x` |                   |                        | previous end of word/WORD (`WORD` omits punctuation)                      | jumps                                    | uses cursor position                         | uses selection                     | `vge` selects from cursor position until previous end of word                       |
-|       `gf`        |               |   `n`,`x`   |                   |                        | go to file under cursor                                                   | jumps                                    |                                              | uses selection                     | `gf` open in a tab the path under cursor                                            |
-|     `gg`/`G`      |               | `n`,`o`,`x` |        `.`        |                        | first/last line                                                           | jumps                                    | uses cursor position                         | uses selection                     | `vgg` selects until first line                                                      |
-|       `gi`        |               |   `n`,`x`   |                   |                        | last position of cursor in insert mode                                    | finds and jumps                          |                                              | uses selection                     | `vgi` selects until last insertion                                                  |
-|     `gj`/`gk`     |               | `n`,`o`,`x` |        `.`        |                        | go down/up when wrapped                                                   | jumps                                    | uses cursor position                         | uses selection                     | `vgj` selects one line down                                                         |
-|       `gJ`        |               |   `n`,`x`   |        `.`        |                        | join below lines                                                          | joins                                    |                                              | uses selection                     | `vgJ` joins selected lines into one line                                            |
-|       `gm`        | vscode-neovim |   `n`,`x`   |                   |                        | +multiply (duplicate text) operator                                       |                                          | won't jump                                   | uses selection                     | `gmap` or `vapgm` duplicates paragraph without replacing clipboard                  |
-|       `gM`        |               |   `n`,`x`   |                   |                        | go to middle line                                                         | jumps                                    |                                              | uses selection                     | `vgM` selects until middle of the line                                              |
-|     `gp`/`gn`     | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | prev/next find                                                            | text-object not required                 | finds and jumps                              | uses selection                     | `cgn???` replaces last search with `???` forwardly                                  |
-|       `go`        |    neovim     |     `x`     |                   |                        | jsx/tsx comment (only inside neovim)                                      |                                          |                                              | uses selection                     | `vipgo` comments out a paragraph with `{/* */}`                                     |
-|       `gq`        |               |   `n`,`x`   |        `.`        |                        | +format selection/comments 80chars (LSP overrides it)                     | requires a textobject                    |                                              | applies to selection               | `gqip` or `vipgq` formats a paragraph                                               |
-|       `gr`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +replace (with register) operator                                         | followed by text-object/motion           |                                              | applies to selection               | `griw` or `viwgr` replaces word with register (yanked text)                         |
-|       `gs`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +sort Operator                                                            | followed by text-object/motion           |                                              | uses selection                     | `gsip` or `vipgs` sorts a paragraph                                                 |
-|       `gS`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | split/join arguments                                                      | toggles inside `{}`,`[]`,`()`            |                                              | followed by operator               | `vipgS` joins selected lines in one line                                            |
-|    `gt` / `gT`    | vscode-neovim |   `n`,`x`   |        `.`        |       `\` / `\|`       | +go to end/start of textobj                                               | followed by text-object                  |                                              | selects form cursor position       | `vgtiq` selects until end of quotation (`\` to repeat)                              |
-|    `qq ... q`     | vscode-neovim |   `n`,`x`   |        `.`        |   `\` or `@q` + `@@`   | repeats ... macro                                                         | followed by text-object                  |                                              | selects form cursor position       | `qqviqq` selects quotation (`\` to repeat)                                          |
-|    `qw ... q`     | vscode-neovim |   `n`,`x`   |        `.`        |  `\|` or `@w` + `@@`   | repeats ... macro                                                         | followed by text-object                  |                                              | selects form cursor position       | `qwdiqq` delete inner quotation (`\| ` to repeat)                                   |
-|     `gu`/`gU`     |               |   `n`,`x`   |        `.`        |                        | +to lowercase/uppercase                                                   | requires a text-object                   |                                              | applies to selection               | `gUiw` (neovim and cvim only) or `viwgU` uppercase a word                           |
-|       `gv`        |               |   `n`,`x`   |                   |                        | last selected                                                             | finds and jumps                          |                                              | reselects                          | `vgv` selects last selection                                                        |
-|       `gw`        |               |   `n`,`x`   |        `.`        |                        | split/join comments/lines 80chars (keeps cursor position)                 | requires a text-object                   |                                              | applies to selection               | `gwip` or `vipgw` split/join a paragraph limited by 80 characters                   |
-|       `gx`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +exchange (text) Operator                                                 | followed by text-object/motion           |                                              | uses selection                     | `gxiw` or `viwgx` exchanges word with another `gxiw` or `viwgx` or `.`              |
-|     `gy`/`gY`     | vscode-neovim |     `n`     |        `.`        |                        | redo register (dot to paste forward/bacward)                              | paste                                    |                                              |                                    | `gy.....` paste deleted lines by history                                            |
-|     `g-`/`g+`     | vscode-neovim |   `n`,`x`   |        `.`        |                        | decrement/increment number                                                | selects number under cursor              |                                              | uses selected number               | `g+..` or `3g+` increments by 3                                                     |
-| `g<Up>`/`g<Down>` | vscode-neovim |   `n`,`x`   |                   |                        | numbers ascending/descending                                              | selects number under cursor              |                                              | uses selected number               | `g<Up>` increases selected numbers ascendingly                                      |
-|        `=`        |               |   `n`,`x`   |        `.`        |                        | +autoindent                                                               | followed by text-object                  |                                              | uses selection                     | `==` autoindents line                                                               |
-|      `<`/`>`      |               |   `n`,`x`   |        `.`        |                        | +indent left/right                                                        | followed by text-object                  |                                              | uses selection                     | `<<` indents to left a line                                                         |
-|      `0`/`$`      |               | `n`,`o`,`x` |        `.`        |                        | start/end of line                                                         | jumps                                    |                                              | uses selection                     | `d$j.` deletes two end-of-lines                                                     |
-|        `^`        |               | `n`,`o`,`x` |        `.`        |                        | start of line (non-blankline)                                             | jumps                                    |                                              | uses selection                     | `d^` deletes until start of line (after whitespace)                                 |
-|        `%`        |               | `n`,`o`,`x` |                   |                        | matching character: '()', '{}', '[]'                                      | finds and jumps                          |                                              | finds and jumps                    | `d%` deletes until bracket                                                          |
-|      `(`/`)`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next sentence                                                        | jumps                                    |                                              | uses selection                     | `d(.` deletes until start of sentence (two times)                                   |
-|      `{`/`}`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next empty line (before a paragraph)                                 | jumps                                    |                                              | uses selection                     | `d{.` deletes until next empty line (two times)                                     |
-|     `[[`/`]]`     |               | `n`,`o`,`x` |        `.`        |                        | prev/next section                                                         | jumps                                    |                                              | uses selection                     | `d[[` deletes until start of section                                                |
-|      `b`/`w`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next word                                                            | jumps                                    |                                              | uses selection                     | `db` deletes until start of word                                                    |
-|      `B`/`W`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next WORD                                                            | jumps                                    |                                              | uses selection                     | `dW.` deletes 2 WORDS                                                               |
-|      `e`/`E`      |               | `n`,`o`,`x` |        `.`        |                        | end of word/WORD                                                          | jumps                                    |                                              | uses selection                     | `de` deletes until end of word                                                      |
-|        `/`        | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | search with labels like [flash.nvim](https://github.com/folke/flash.nvim) | jumps                                    | finds and jumps                              | uses selection                     | `d/` then `search` then `label` to delete `c/` to change `v/` to select `/` to jump |
-|        `f`        |     cvim      | `n`,`o`,`x` |        `.`        |                        | search with labels like [flash.nvim](https://github.com/folke/flash.nvim) | jumps                                    | finds and jumps                              | uses selection                     | `f` then `search` then `label` or `operator` + `f` + `search` + `label`             |
-|      `f`/`F`      |               | `n`,`o`,`x` |        `.`        | `;`forward `,`backward | move to next/prev char (`f` forward, `F` backward for vscode-neovim)      | jumps                                    |                                              | uses selection                     | `df,` deletes until a next `,`                                                      |
-|      `t`/`T`      |               | `n`,`o`,`x` |        `.`        | `;`forward `,`backward | move before next/prev char (`t` forward, `T` backward for vscode-neovim)  | jumps                                    |                                              | uses selection                     | `dt,` deletes before next `,`                                                       |
-|        `s`        |               |     `o`     |        `.`        |                        | surround (only on vscodevim)                                              |                                          | uses cursor position                         |                                    | `ysiw"` or `viwS"` adds `"` to word, `ds"` deletes `"`, `cs"'` replaces `"`         |
-|        `s`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +surround (followed by a=add, d=delete, r=replace)                        | followed by textobject/motion (only add) |                                              | uses selection (only add)          | `saiw"` or `viwsa"` adds `"` to word, `sd"` deletes `"`, `sr"'` replaces `"`        |
-|        `U`        |    neovim     |   `n`,`x`   |                   |          `U`           | whichkey repeater (inside neovim repeats `:<command>` like macros)        |                                          |                                              |                                    | `<s-space>gjUUU` repeats next-git-change (`:normal A,jkj` end of line comma)        |
-|        `Y`        |               |   `n`,`x`   |                   |                        | yank until end of line                                                    |                                          |                                              | uses selection                     | `v^Y` yanks line                                                                    |
-| `<space><space>p` | vscode-neovim |   `n`,`x`   |        `.`        |                        | Paste after (secondary clipboard)                                         |                                          |                                              | uses selection                     | `viw<space><space>p` replaces word with a second clipboard                          |
-| `<space><space>P` | vscode-neovim |   `n`,`x`   |        `.`        |                        | Paste before (secondary clipboard)                                        |                                          |                                              | uses selection                     | `viw<space><space>P` replaces word with a second clipboard                          |
-| `<space><space>y` | vscode-neovim |   `n`,`x`   |                   |                        | yank (secondary clipboard)                                                |                                          |                                              | uses selection                     | `viw<space><space>y` yanks word using the second clipboard                          |
-| `<space><space>Y` | vscode-neovim |   `n`,`x`   |                   |                        | yank until end of line (secondary clipboard)                              |                                          |                                              | uses selection                     | `v<space><space>Y` yanks until end of line using the second clipboard               |
+|      keymap       |   requires    |    mode     | repeat action key |    repeat jump key     | text-object description                                                   | `n`ormal mode = `n` = operator           | `o`perating-pending mode = `o` = text-object | `v`isual mode = `v` = `x` = motion      | examples in normal mode                                                             |
+| :---------------: | :-----------: | :---------: | :---------------: | :--------------------: | :------------------------------------------------------------------------ | :--------------------------------------- | :------------------------------------------- | :-------------------------------------- | :---------------------------------------------------------------------------------- |
+|    `[c` / `]c`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next comment                                                     | finds and jumps                          | jumps                                        | uses selection                          | `v]c` selects from cursor position until next comment                               |
+|    `[d` / `]d`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next diagnostic                                                  | finds and jumps                          | jumps                                        | uses selection                          | `v]d` selects from cursor position until next diagnostic                            |
+|    `[h` / `]h`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next git hunk                                                    | finds and jumps                          | jumps                                        | uses selection                          | `v]h` selects from cursor position until next git hunk                              |
+|    `[i` / `]i`    | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | previous/next indent                                                      | finds and jumps                          | jumps                                        | uses selection                          | `v]i` selects from cursor position until next indent                                |
+|     `g[`/`g]`     | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | +prev/+next textobj (only textobj with `_` prefix)                        | followed by text-object                  | finds and jumps                              | uses selection                          | `g]q` next end of quotation                                                         |
+|   `g\` / `g\|`    | vscode-neovim | `n`,`o`,`x` |        `.`        |       `\` / `\|`       | +end/+start of textobj (any inner/outer textobj)                          | followed by text-object                  | finds and jumps                              | uses selection (`\` / `\|` to reselect) | `dg\iq` delete until inner end of quotation (`.` to repeat)                         |
+|    `qq ... q`     | vscode-neovim |   `n`,`x`   |        `.`        |   `\` or `@q` + `@@`   | repeats ... macro                                                         | followed by text-object                  |                                              | selects from cursor position            | `qqviqq` selects quotation (`\` to repeat)                                          |
+|    `qw ... q`     | vscode-neovim |   `n`,`x`   |        `.`        |  `\|` or `@w` + `@@`   | repeats ... macro                                                         | followed by text-object                  |                                              | selects from cursor position            | `qwdiqq` delete inner quotation (`\| ` to repeat)                                   |
+|     `g;`/`g,`     |               |     `n`     |                   |                        | go backward/forward in `:changes`                                         | jumps                                    |                                              |                                         | `g;` go to last change                                                              |
+|       `g.`        | vscode-neovim | `n`,`o`,`x` |                   |                        | jump to last change                                                       | jumps                                    | won't jump                                   | uses selection                          | `vg.` selects from cursor position until last change                                |
+|       `ga`        | vscode-neovim |   `n`,`x`   |                   |                        | +align                                                                    | followed by textobject/motion            |                                              | uses selected region                    | `gaip=` or `vipga=` aligns a paragraph by `=`                                       |
+|       `gb`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +blackhole register                                                       | followed by textobject/motion            |                                              | deletes selection                       | `gbip` or `vipgb` deletes a paragraph without copying                               |
+|       `gB`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | blackhole linewise                                                        | text-object not required                 |                                              | deletes line                            | `gB.` deletes two lines without saving it in the register                           |
+|       `gc`        |               | `n`,`o`,`x` |        `.`        |                        | +comment (`vgc` in normal mode will select a block comment)               | followed by textobject/motion            | won't jump                                   | uses selection                          | `gcip` or `vipgc` comments a paragraph                                              |
+|       `gC`        | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | block comment (supports selection `vgC` or just `gC`)                     | select text-object under cursor          | won't jump                                   | reselects                               | `vgC` selects current block of comment                                              |
+|       `gd`        |               |     `n`     |                   |                        | go to definition                                                          | jumps                                    |                                              |                                         | `gd` go to definition of word under cursor                                          |
+|       `gD`        | vscode-neovim |     `x`     |                   |                        | git diff/hunk (vscode selects from cursor position to end of diff)        |                                          | won't jump                                   | reselects                               | `vgD` selects modified code                                                         |
+|     `ge`/`gE`     |               | `n`,`o`,`x` |                   |                        | previous end of word/WORD (`WORD` omits punctuation)                      | jumps                                    | uses cursor position                         | uses selection                          | `vge` selects from cursor position until previous end of word                       |
+|       `gf`        |               |   `n`,`x`   |                   |                        | go to file under cursor                                                   | jumps                                    |                                              | uses selection                          | `gf` open in a tab the path under cursor                                            |
+|     `gg`/`G`      |               | `n`,`o`,`x` |        `.`        |                        | first/last line                                                           | jumps                                    | uses cursor position                         | uses selection                          | `vgg` selects until first line                                                      |
+|       `gi`        |               |   `n`,`x`   |                   |                        | last position of cursor in insert mode                                    | finds and jumps                          |                                              | uses selection                          | `vgi` selects until last insertion                                                  |
+|     `gj`/`gk`     |               | `n`,`o`,`x` |        `.`        |                        | go down/up when wrapped                                                   | jumps                                    | uses cursor position                         | uses selection                          | `vgj` selects one line down                                                         |
+|       `gJ`        |               |   `n`,`x`   |        `.`        |                        | join below lines                                                          | joins                                    |                                              | uses selection                          | `vgJ` joins selected lines into one line                                            |
+|       `gm`        | vscode-neovim |   `n`,`x`   |                   |                        | +multiply (duplicate text) operator                                       |                                          | won't jump                                   | uses selection                          | `gmap` or `vapgm` duplicates paragraph without replacing clipboard                  |
+|       `gM`        |               |   `n`,`x`   |                   |                        | go to middle line                                                         | jumps                                    |                                              | uses selection                          | `vgM` selects until middle of the line                                              |
+|     `gp`/`gn`     | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | prev/next find                                                            | text-object not required                 | finds and jumps                              | uses selection                          | `cgn???` replaces last search with `???` forwardly                                  |
+|       `go`        |    neovim     |     `x`     |                   |                        | jsx/tsx comment (only inside neovim)                                      |                                          |                                              | uses selection                          | `vipgt` comments out a paragraph with `{/* */}`                                     |
+|       `gq`        |               |   `n`,`x`   |        `.`        |                        | +format selection/comments 80chars (LSP overrides it)                     | requires a textobject                    |                                              | applies to selection                    | `gqip` or `vipgq` formats a paragraph                                               |
+|       `gr`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +replace (with register) operator                                         | followed by text-object/motion           |                                              | applies to selection                    | `griw` or `viwgr` replaces word with register (yanked text)                         |
+|       `gs`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +sort Operator                                                            | followed by text-object/motion           |                                              | uses selection                          | `gsip` or `vipgs` sorts a paragraph                                                 |
+|       `gS`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | split/join arguments                                                      | toggles inside `{}`,`[]`,`()`            |                                              | followed by operator                    | `vipgS` joins selected lines in one line                                            |
+|     `gu`/`gU`     |               |   `n`,`x`   |        `.`        |                        | +to lowercase/uppercase                                                   | requires a text-object                   |                                              | applies to selection                    | `gUiw` (neovim and cvim only) or `viwgU` uppercase a word                           |
+|       `gv`        |               |   `n`,`x`   |                   |                        | last selected                                                             | finds and jumps                          |                                              | reselects                               | `vgv` selects last selection                                                        |
+|       `gw`        |               |   `n`,`x`   |        `.`        |                        | split/join comments/lines 80chars (keeps cursor position)                 | requires a text-object                   |                                              | applies to selection                    | `gwip` or `vipgw` split/join a paragraph limited by 80 characters                   |
+|       `gx`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +exchange (text) Operator                                                 | followed by text-object/motion           |                                              | uses selection                          | `gxiw` or `viwgx` exchanges word with another `gxiw` or `viwgx` or `.`              |
+|     `gy`/`gY`     | vscode-neovim |     `n`     |        `.`        |                        | redo register (dot to paste forward/bacward)                              | paste                                    |                                              |                                         | `gy.....` paste deleted lines by history                                            |
+|     `g-`/`g+`     | vscode-neovim |   `n`,`x`   |        `.`        |                        | decrement/increment number                                                | selects number under cursor              |                                              | uses selected number                    | `g+..` or `3g+` increments by 3                                                     |
+| `g<Up>`/`g<Down>` | vscode-neovim |   `n`,`x`   |                   |                        | numbers ascending/descending                                              | selects number under cursor              |                                              | uses selected number                    | `g<Up>` increases selected numbers ascendingly                                      |
+|        `=`        |               |   `n`,`x`   |        `.`        |                        | +autoindent                                                               | followed by text-object                  |                                              | uses selection                          | `==` autoindents line                                                               |
+|      `<`/`>`      |               |   `n`,`x`   |        `.`        |                        | +indent left/right                                                        | followed by text-object                  |                                              | uses selection                          | `<<` indents to left a line                                                         |
+|      `0`/`$`      |               | `n`,`o`,`x` |        `.`        |                        | start/end of line                                                         | jumps                                    |                                              | uses selection                          | `d$j.` deletes two end-of-lines                                                     |
+|        `^`        |               | `n`,`o`,`x` |        `.`        |                        | start of line (non-blankline)                                             | jumps                                    |                                              | uses selection                          | `d^` deletes until start of line (after whitespace)                                 |
+|        `%`        |               | `n`,`o`,`x` |                   |                        | matching character: '()', '{}', '[]'                                      | finds and jumps                          |                                              | finds and jumps                         | `d%` deletes until bracket                                                          |
+|      `(`/`)`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next sentence                                                        | jumps                                    |                                              | uses selection                          | `d(.` deletes until start of sentence (two times)                                   |
+|      `{`/`}`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next empty line (before a paragraph)                                 | jumps                                    |                                              | uses selection                          | `d{.` deletes until next empty line (two times)                                     |
+|     `[[`/`]]`     |               | `n`,`o`,`x` |        `.`        |                        | prev/next section                                                         | jumps                                    |                                              | uses selection                          | `d[[` deletes until start of section                                                |
+|      `b`/`w`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next word                                                            | jumps                                    |                                              | uses selection                          | `db` deletes until start of word                                                    |
+|      `B`/`W`      |               | `n`,`o`,`x` |        `.`        |                        | prev/next WORD                                                            | jumps                                    |                                              | uses selection                          | `dW.` deletes 2 WORDS                                                               |
+|      `e`/`E`      |               | `n`,`o`,`x` |        `.`        |                        | end of word/WORD                                                          | jumps                                    |                                              | uses selection                          | `de` deletes until end of word                                                      |
+|        `/`        | vscode-neovim | `n`,`o`,`x` |        `.`        |                        | search with labels like [flash.nvim](https://github.com/folke/flash.nvim) | jumps                                    | finds and jumps                              | uses selection                          | `d/` then `search` then `label` to delete `c/` to change `v/` to select `/` to jump |
+|        `f`        |     cvim      | `n`,`o`,`x` |        `.`        |                        | search with labels like [flash.nvim](https://github.com/folke/flash.nvim) | jumps                                    | finds and jumps                              | uses selection                          | `f` then `search` then `label` or `operator` + `f` + `search` + `label`             |
+|      `f`/`F`      |               | `n`,`o`,`x` |        `.`        | `;`forward `,`backward | move to next/prev char (`f` forward, `F` backward for vscode-neovim)      | jumps                                    |                                              | uses selection                          | `df,` deletes until a next `,`                                                      |
+|      `t`/`T`      |               | `n`,`o`,`x` |        `.`        | `;`forward `,`backward | move before next/prev char (`t` forward, `T` backward for vscode-neovim)  | jumps                                    |                                              | uses selection                          | `dt,` deletes before next `,`                                                       |
+|        `s`        |               |     `o`     |        `.`        |                        | surround (only on vscodevim)                                              |                                          | uses cursor position                         |                                         | `ysiw"` or `viwS"` adds `"` to word, `ds"` deletes `"`, `cs"'` replaces `"`         |
+|        `s`        | vscode-neovim |   `n`,`x`   |        `.`        |                        | +surround (followed by a=add, d=delete, r=replace)                        | followed by textobject/motion (only add) |                                              | uses selection (only add)               | `saiw"` or `viwsa"` adds `"` to word, `sd"` deletes `"`, `sr"'` replaces `"`        |
+|        `U`        |    neovim     |   `n`,`x`   |                   |          `U`           | whichkey repeater (inside neovim repeats `:<command>` like macros)        |                                          |                                              |                                         | `<s-space>gjUUU` repeats next-git-change (`:normal A,jkj` end of line comma)        |
+|        `Y`        |               |   `n`,`x`   |                   |                        | yank until end of line                                                    |                                          |                                              | uses selection                          | `v^Y` yanks line                                                                    |
+| `<space><space>p` | vscode-neovim |   `n`,`x`   |        `.`        |                        | Paste after (secondary clipboard)                                         |                                          |                                              | uses selection                          | `viw<space><space>p` replaces word with a second clipboard                          |
+| `<space><space>P` | vscode-neovim |   `n`,`x`   |        `.`        |                        | Paste before (secondary clipboard)                                        |                                          |                                              | uses selection                          | `viw<space><space>P` replaces word with a second clipboard                          |
+| `<space><space>y` | vscode-neovim |   `n`,`x`   |                   |                        | yank (secondary clipboard)                                                |                                          |                                              | uses selection                          | `viw<space><space>y` yanks word using the second clipboard                          |
+| `<space><space>Y` | vscode-neovim |   `n`,`x`   |                   |                        | yank until end of line (secondary clipboard)                              |                                          |                                              | uses selection                          | `v<space><space>Y` yanks until end of line using the second clipboard               |
 
 </details>
 
@@ -295,7 +295,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 |      `alt+l`       | `i`  | accept AI/NES suggestion (TRAE/AMP/gemini/windsurf/cursor/copilot) | vscode/neovim |
 |      `alt+;`       | `i`  | trigger Next-Edit-Suggestion from AI (`alt+l` to accept)           |    vscode     |
 |      `alt+;`       | `i`  | accept Next-Edit-Suggestion from AI                                |    neovim     |
-|      `escape`      | `i`  | cancel Next-Edit-Suggestion from AI                                | vscode/neovim |
+| `escape` / `alt+'` | `i`  | cancel Next-Edit-Suggestion from AI                                | vscode/neovim |
 |       `tab`        | `i`  | go to next snippet stop or next suggestion                         |    vscode     |
 |    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion                         |    vscode     |
 |      `alt+n`       | `i`  | go to next snippet stop                                            | vscode/neovim |
@@ -346,7 +346,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 | `ctrl+shift+w`     | move panel to new window                    | vscode/wezterm/windows-terminal |
 | `ctrl+shift+n`     | new window                                  | vscode/wezterm/windows-terminal |
 | `ctrl+;`           | recent tab                                  |             wezterm             |
-| `shift+space`      | tmux-copy-mode-like                         |    wezterm/windows-terminal     |
+| `shift+space`      | tmux-copy-mode-like                         | vscode/wezterm/windows-terminal |
 | `ctrl+shift+f`     | find text                                   | vscode/wezterm/windows-terminal |
 | `ctrl+plus`        | zoom in                                     | vscode/wezterm/windows-terminal |
 | `ctrl+minus`       | zoom out                                    | vscode/wezterm/windows-terminal |
@@ -355,7 +355,7 @@ Neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/y
 
 ---
 
-## zsh/powershell keymaps
+## zsh keymaps
 
 <details open><summary></summary>
 
@@ -450,26 +450,35 @@ _    _    _              _              _    _    _
 
   <img src="https://github.com/user-attachments/assets/eeccfa84-32c1-4b81-bf89-804e08e97afa" alt="https://neacsu.net/posts/win_symlinks" width="700">
 
-- RetroNvim installs [`cvim` a vscodevim fork with flash.nvim support](https://github.com/VSCodeVim/Vim/issues/8567) and [`whichkey` a menu for keymaps](https://github.com/vspacecode/vscode-which-key) vscode extensions as optional dependencies
+- RetroNvim installs [`cvim` a vscodevim fork with flash.nvim support](https://github.com/VSCodeVim/Vim/issues/8567)
+  and [`whichkey` a menu for keymaps](https://github.com/vspacecode/vscode-which-key) vscode extensions as optional
+  dependencies
 
 - some text-objects requires install [`vscode-neovim`](https://github.com/vscode-neovim/vscode-neovim)
-  (tested on vscode-neovim version v1.18.24, neovim version v0.11.0 and retronvim version v0.4.2, future versions may be incompatible with retronvim's [init.lua](https://github.com/YeferYV/RetroNvim/blob/main/nvim/init.lua) file)
+  (tested on vscode-neovim version v1.18.24, neovim version v0.11.0 and retronvim version v0.4.2, future versions
+  may be incompatible with retronvim's [init.lua](https://github.com/YeferYV/RetroNvim/blob/main/nvim/init.lua) file)
   and uninstall/disable [`cvim`](https://github.com/VSCodeVim/Vim/issues/8567) extension, you may need to relaunch vscode,
-  alternatively use `nvim` or `yazi` when opening a terminal with the profile `zsh (retronvim)` or `powershell(retronvim)` which are the default profile when opening a terminal
+  alternatively use `nvim` or `yazi` when opening a terminal with the profile `zsh (retronvim)`
+  which is the default profile when opening a terminal
 
-- nvim/yazi/zsh/powershell will search for retronvim installation path alphabetically (~/.cursor then ~/.vscode then ~/.windsurf ...) and will use the first one found
+- the terminal profile `zsh (retronvim)` will use the configs files from
+  [`retronvim.conda`](https://prefix.dev/channels/retronvim/packages/retronvim) which is updated every release
+  [`using github-actions`](https://github.com/YeferYV/retronvim/tree/main/.github/workflows/release.yml)
+  you can replace `~/.pixi/envs/retronvim/opt/retronvim` with `https://github.com/yeferyv/retronvim` for latest updates
 
-- `Touchcursor Keyboard Layout` on `MacOs` requires `brew install karabiner` or open `whichkey` > `+Install Dependencies` > `install brew karabiner`
+- `Touchcursor Keyboard Layout` on `MacOs` requires `zb install karabiner` or
+  open `whichkey` > `+Install Dependencies` > `install brew karabiner`
 
 **Manual Install**
 
 - Linux/MacOS:
 
   ```bash
-  curl -L pixi.sh/install.sh | bash
+  curl -L pixi.sh/install.sh | zsh
   source ~/.zshrc
-  pixi global install git nodejs nvim yazi
-  git clone --recursive https://github.com/yeferyv/retronvim
+  pixi global install nodejs
+  pixi global install retronvim -c https://prefix.dev/retronvim
+  git clone https://github.com/yeferyv/retronvim
   cd retronvim
   npx vsce package --out   retronvim.vsix
   code --install-extension retronvim.vsix
@@ -478,38 +487,47 @@ _    _    _              _              _    _    _
 - Windows 10/11:
 
   ```powershell
-  winget install gnuwin32.file git.git neovim.neovim openjs.nodejs prefix-dev.pixi sxyazi.yazi microsoft.vcredist.2015+.x64 # microsoft.visualstudiocode # then relaunch terminal
-  git clone --recursive https://github.com/yeferyv/retronvim
+  winget install openjs.nodejs prefix-dev.pixi microsoft.visualstudiocode # then relaunch terminal
+  pixi global install retronvim -c https://prefix.dev/retronvim
+  git clone https://github.com/yeferyv/retronvim
   cd retronvim
   npx vsce package --out   retronvim.vsix
   code --install-extension retronvim.vsix
   ```
 
-**Install Retronvim on any terminal or ssh**
+**Install Retronvim on any terminal or shell**
 
 - Linux/Macos/Msys2:
 
   ```bash
   code  --install-extension  yeferyv.retronvim
-  cp    ~/.vscode/extensions/yeferyv.retronvim*/zsh/.zshrc  ~/.zshrc
+  cp    ~/.vscode/*/*/*/.zshrc  ~/.zshrc ####### if linux run `chsh --shell /bin/zsh`
   ```
 
-- SSH:
+- SSH/Powershell/Zsh:
 
   ```bash
-  curl  -s https://api.github.com/repos/yeferyv/retronvim/releases/latest | grep --only-matching --extended-regexp "https.*linux.*vsix" | curl -o retronvim.vsix -L @-
-  unzip retronvim.vsix -d /tmp
-  mkdir -p                             ~/.vscode/extensions/yeferyv.retronvim
-  cp    -r  /tmp/extension/*           ~/.vscode/extensions/yeferyv.retronvim
-  cp    -r  /tmp/extension/zsh/.zshrc  ~/.zshrc
+  pixi g install retronvim -c retronvim -c conda-forge
+  # or
+  sh <(curl https://pkgx.sh) pixi g install retronvim -c retronvim -c conda-forge --with pixi
+  # or
+  sh <(curl https://pkgx.sh) pixi exec --channel retronvim --channel conda-forge --with pixi --with retronvim -- zsh
   ```
 
-- Windows 10/11:
+- Wezterm preconfigured:
+
+  ```bash
+  pixi g install wezterm -c retronvim -c conda-forge
+  # or
+  sh <(curl https://pkgx.sh) pixi g install wezterm -c retronvim -c conda-forge --with pixi
+  # or
+  sh <(curl https://pkgx.sh) pixi exec --channel retronvim --channel conda-forge --with pixi -- wezterm
+  ```
+
+- Windows Terminal with zsh.exe preconfigured:
   ```powershell
-  set-executionpolicy bypass currentuser ################################################ allow to load profile.ps1
-  winget  install vscode ################################################################ then relaunch terminal
-  code  --install-extension  yeferyv.retronvim
-  cp -r ~/.vscode/extensions/yeferyv.retronvim*/powershell  ~/documents/windowspowershell
+  code  --install-extension  yeferyv.retronvim ################################################## then   launch vscode
+  cp    ~/.vscode/*/*retronvim*/*/settings.json ~/appdata/*/*/*windowsterminal*/*/settings.json # or ~/.pixi/bin/windows-terminal-setup.exe
   ```
 
 **Install from github releases (offline)(portable)**
@@ -518,69 +536,95 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 **VSCode Marketplace**
 
 - RetroNvim extension is shipped with
-  [`neovim`](https://neovim.io),
-  [`kanata`](https://github.com/jtroo/kanata),
-  [`pixi`](https://github.com/prefix-dev/pixi),
-  [`bat`](https://github.com/sharkdp/bat),
-  [`eza`](https://github.com/eza-community/eza),
-  [`fzf`](https://github.com/junegunn/fzf),
-  [`git`](https://github.com/git-for-windows/git),
-  [`lazygit`](https://github.com/jesseduffield/lazygit),
-  [`ripgrep`](https://github.com/BurntSushi/ripgrep),
-  [`starship`](https://github.com/starship/starship),
-  [`yazi`](https://github.com/sxyazi/yazi),
-  [`7zip`](https://github.com/ip7z/7zip) binaries
-  [using github-actions](https://github.com/YeferYV/retronvim/tree/main/.github/workflows/release.yml); and
-  [`mini.nvim`](https://github.com/echasnovski/mini.nvim),
-  [`snacks.nvim`](https://github.com/folke/snacks.nvim),
-  [`zsh-autosuggestions`](https://github.com/zsh-users/zsh-autosuggestions),
-  [`zsh-fast-syntax-highlighting`](https://github.com/zdharma-continuum/fast-syntax-highlighting) as git-submodules; and
-  [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts) for terminal icons
+  - [`bat`](https://github.com/sharkdp/bat)
+  - [`eza`](https://github.com/eza-community/eza)
+  - [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts)
+  - [`fd`](https://github.com/sharkdp/fd)
+  - [`fzf`](https://github.com/junegunn/fzf)
+  - [`git`](https://github.com/git-for-windows/git)
+  - [`kanata`](https://github.com/jtroo/kanata)
+  - [`lazygit`](https://github.com/jesseduffield/lazygit)
+  - [`neovim`](https://neovim.io)
+  - [`pixi`](https://github.com/prefix-dev/pixi)
+  - [`ripgrep`](https://github.com/BurntSushi/ripgrep)
+  - [`starship`](https://github.com/starship/starship)
+  - [`yazi`](https://github.com/sxyazi/yazi)
+  - [`zerobrew`](https://github.com/lucasgelfond/zerobrew)
+  - [`zsh`](https://github.com/zsh-users/zsh)
+  - [`zsh-patina`](https://github.com/michel-kraemer/zsh-patina)
+  - [`7zip`](https://github.com/ip7z/7zip)
 
 - Retronvim comes with an installer for frameworks (LSP + formatters + snippets + binaries + cheatsheets) for:
-  `angular`, `ansible`, `AWS`,
-  `c`, `c++`, `c#`,
-  `docker`, `django`
-  `expo`,
-  `fastapi`, `flask`,
-  `go`, `graphql`,
-  `kotlin`, `kubernetes`,
-  `laravel`,
-  `nextjs`,
-  `prisma`,
-  `scikit-learn`, `springboot`, `supabase`,
-  `rust`,
-  `terraform`,
-  `vue`
+  - `angular`
+  - `ansible`
+  - `AWS`
+  - `c/c++`
+  - `c#`
+  - `docker`
+  - `django`
+  - `expo`
+  - `fastapi`
+  - `flask`
+  - `go`
+  - `graphql`
+  - `kotlin`
+  - `kubernetes`
+  - `laravel`
+  - `nextjs`
+  - `prisma`
+  - `scikit-learn`
+  - `springboot`
+  - `supabase`
+  - `rust`
+  - `terraform`
+  - `vue`
 
 - Retronvim/nvim comes with an installer for
-  [treesitter](https://github.com/usagi-flow/evil-helix) (treesitter support from evil-helix),
-  [supermaven](https://github.com/supermaven-inc/supermaven-nvim) (free copilot/windsurf),
-  [windsurf.nvim](https://github.com/Exafunction/windsurf.nvim) (free copilot),
-  [sidekick.nvim](https://github.com/folke/sidekick.nvim) (AI agents integration to neovim like gemini),
-  [copilot-lsp](https://github.com/copilotlsp-nvim/copilot-lsp) (copilot-nes which is free and unlimited),
-  LSP + formatters for:
-  `angular`,
-  `bash`, `biome`, `black`,
-  `c`, `c++`, `c#`, `cmake`, `css`,
-  `docker`,
-  `emmet`,
-  `go`,
-  `html`,
-  `java`, `javascript`, `json`,
-  `lua`,
-  `markdown`,
-  `php`, `prisma`, `python`, `prettier`,
-  `rust`,
-  `sql`,
-  `tailwind`, `toml`, `terraform`, `typescript`,
-  `react`,
-  `vue`,
-  `yaml`
+  - [`mini.nvim`](https://github.com/echasnovski/mini.nvim) (shipped as git-submodule)
+  - [`snacks.nvim`](https://github.com/folke/snacks.nvim) (shipped as git-submodule)
+  - [`flash.nvim`](https://github.com/folke/flash.nvim) (builtin)
+  - [`copilot`](https://github.com/github/copilot-language-server-release) (shipped with sidekick.nvim)
+  - [`supermaven`](https://github.com/supermaven-inc/supermaven-nvim) (free copilot)
+  - [`windsurf.nvim`](https://github.com/Exafunction/windsurf.nvim) (free copilot)
+  - [`sidekick.nvim`](https://github.com/folke/sidekick.nvim) (free copilot nes + agents integration like gemini-cli)
+  - LSP + formatters for:
+    - `angular`
+    - `bash`
+    - `biome formatter`
+    - `c/c++`
+    - `c#`
+    - `cmake`
+    - `css`
+    - `docker`
+    - `emmet`
+    - `go`
+    - `html`
+    - `java`
+    - `javascript`
+    - `json`
+    - `lua`
+    - `markdown`
+    - `php`
+    - `prisma`
+    - `python`
+    - `prettier formatter`
+    - `rust`
+    - `sql`
+    - `tailwind`
+    - `toml`
+    - `terraform`
+    - `typescript`
+    - `react`
+    - `vue`
+    - `yaml`
 
-- Retronvim/nvim searches for `~/.*/extensions/*/snippets/*code-snippets` (alphabetically first `~/.antigravity` otherwise `~/.cursor` otherwise `~/.vscode` otherwise `~/.windsurf`) and adds them to `mini.completion`
+- Retronvim/nvim searches for `~/.*/extensions/*/snippets/*code-snippets`
+  (alphabetically first `~/.antigravity` otherwise `~/.cursor` otherwise `~/.vscode` otherwise `~/.windsurf`)
+  and adds them to `mini.completion`
 
-- Retronvim comes with [bat's base16](https://github.com/sharkdp/bat/blob/master/assets/themes/base16.tmTheme) syntax highlighting generated by `npx yo code --extensionType colortheme` and a editor theme generated using https://themes.vscode.one
+- Retronvim comes with [bat's base16](https://github.com/sharkdp/bat/blob/master/assets/themes/base16.tmTheme)
+  syntax highlighting generated by `npx yo code --extensionType colortheme` and
+  a editor theme generated using https://themes.vscode.one
 
 - https://marketplace.visualstudio.com/items?itemName=YeferYV.retronvim
 
@@ -590,9 +634,12 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 <details open><summary></summary>
 
-- remove the `~/.vscode/extensions/yeferyv.retronvim` symlink and relaunch vscode
-- remove `vscode-neovim.neovimExecutablePaths.linux` `vscode-neovim.neovimExecutablePaths.win32` `vscode-neovim.neovimExecutablePaths.darwin` from `settings.json` and relaunch vscode
-- remove `terminal.integrated.env.linux` `terminal.integrated.env.osx` `terminal.integrated.env.windows` from `settings.json` and relaunch vscode
+- remove
+  `vscode-neovim.neovimExecutablePaths.linux`
+  `vscode-neovim.neovimExecutablePaths.win32`
+  `vscode-neovim.neovimExecutablePaths.darwin` from
+  `settings.json` and relaunch vscode
+
 - open vscode command palette and type: `Output: Show Output Channels` > `vscode-neovim logs`
 
 </details>
@@ -601,10 +648,10 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 <details open><summary></summary>
 
-- open `whichkey > +Install Dependencies > install brew` for macos or
-  `whichkey > +Install Dependencies > install nix-env` for linux or
-  `whichkey > +Install Dependencies > install scoop` for windows or
-  just use `pixi` if you don't need GUI programs
+- `zerobrew` (preinstalled) for macos
+- `whichkey > +Install Dependencies > install nix-env` for linux
+- `whichkey > +Install Dependencies > install scoop` for windows
+- `pixi` (preinstalled) for macos, linux, windows
 
 </details>
 
@@ -612,13 +659,26 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 <details open><summary></summary>
 
-- [devhints.io/vim](https://devhints.io/vim) most used vim keys
-- [viemu.com](http://www.viemu.com/a_vi_vim_graphical_cheat_sheet_tutorial.html) vim keys from A-Z
-- [vscode with embedded neovim](https://www.youtube.com/watch?v=g4dXZ0RQWdw) youtube tutorial most of the keybindings are similar to RetroNvim
-- [treesitter text-objects demo](https://www.youtube.com/watch?v=FuYQ7M73bC0) youtube tutorial the keybindings are similar to RetroNvim
-- [treesitter text-objects extended](https://www.youtube.com/watch?v=CEMPq_r8UYQ) youtube tutorial the keybindings are similar to RetroNvim
-- [text-objects from A-Z](https://www.youtube.com/watch?v=JnD9Uro_oqc) youtube tutorial the keybindings are similar to RetroNvim
-- [motion-operators from A-Z](https://www.youtube.com/watch?v=HhZJ1kbzkj0) youtube tutorial the keybindings are the same as to RetroNvim
+- [devhints.io/vim](https://devhints.io/vim)
+  most used vim keys
+
+- [viemu.com](http://www.viemu.com/a_vi_vim_graphical_cheat_sheet_tutorial.html)
+  vim keys from A-Z
+
+- [vscode with embedded neovim](https://www.youtube.com/watch?v=g4dXZ0RQWdw)
+  youtube tutorial most of the keybindings are similar to RetroNvim
+
+- [treesitter text-objects demo](https://www.youtube.com/watch?v=FuYQ7M73bC0)
+  youtube tutorial most of the keybindings are similar to RetroNvim
+
+- [treesitter text-objects extended](https://www.youtube.com/watch?v=CEMPq_r8UYQ)
+  youtube tutorial most of the keybindings are similar to RetroNvim
+
+- [text-objects from A-Z](https://www.youtube.com/watch?v=JnD9Uro_oqc)
+  youtube tutorial most of the keybindings are similar to RetroNvim
+
+- [motion-operators from A-Z](https://www.youtube.com/watch?v=HhZJ1kbzkj0)
+  youtube tutorial most of the keybindings are similar to RetroNvim
 
 </details>
 
@@ -626,11 +686,26 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 <details open><summary></summary>
 
-- [yeferyv/dotfiles](https://github.com/yeferyv/dotfiles) retronvim + [hyprland](https://hypr.land) setup
-- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice) appimages containing retronvim's kanata, nvim, yazi and zsh configs
-- [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
-- [vspacecode](https://github.com/vspacecode/vspacecode) comes with [vscodevim](https://github.com/vscodevim/vim) extension which has some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
-- [leaderKey](https://github.com/JimmyZJX/leaderkey) (a faster whichkey with ripgrep/fzf integration) whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
-- [evil-helix](https://github.com/usagi-flow/evil-helix) helix fork with vim keybindings + buitin tressitter textobjects + lspconfig + mini.completion + gitsigns + whichkey + file explorer + telescope + colorschemes + bufferline
+- [yeferyv/dotfiles](https://github.com/yeferyv/dotfiles)
+  retronvim + [hyprland](https://hypr.land) setup
+
+- [yeferyv/sixelrice](https://github.com/yeferyv/sixelrice)
+  appimages containing retronvim's kanata, nvim, yazi and zsh configs
+
+- [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap)
+  comes with [vscodevim](https://github.com/vscodevim/vim) extension
+  which has some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
+
+- [vspacecode](https://github.com/vspacecode/vspacecode)
+  comes with [vscodevim](https://github.com/vscodevim/vim) extension
+  which has some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
+
+- [leaderKey](https://github.com/JimmyZJX/leaderkey)
+  (a faster whichkey with ripgrep/fzf integration) whichkey
+  with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
+
+- [evil-helix](https://github.com/usagi-flow/evil-helix)
+  helix fork with vim keybindings + buitin tressitter textobjects + lspconfig +
+  mini.completion + gitsigns + whichkey + file explorer + telescope + colorschemes + bufferline
 
 </details>

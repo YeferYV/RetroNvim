@@ -1,0 +1,70 @@
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
+# rattler-build build --recipe kanata.yaml --target-platform linux-64 --output-dir kanata-channel --build-num=+1
+# rattler-build build --recipe kanata.yaml --target-platform osx-64   --output-dir kanata-channel --build-num=+1
+# rattler-build build --recipe kanata.yaml --target-platform win-64   --output-dir kanata-channel --build-num=+1
+
+# rm -r ~/.cache/rattler
+# pixi g install      --path ./kanata-channel/linux-64/kanata*                      --force-reinstall
+# pixi g install      --path ./kanata-channel/osx-64/kanata*                        --force-reinstall
+# pixi g install      --path ./kanata-channel/win-64/kanata-1.11.0-h9490d1a_1.conda --force-reinstall
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
+# pixi upload anaconda --owner=retronvim kanata*/*/*conda
+
+context:
+  version: 1.11.0
+
+package:
+  name: kanata
+  version: ${{ version }}
+
+source:
+  - if: linux
+    then:
+      url: https://github.com/jtroo/kanata/releases/download/v${{ version }}/linux-binaries-x64.zip
+      target_directory: "."
+
+  - if: osx
+    then:
+      url: https://github.com/jtroo/kanata/releases/download/v${{ version }}/macos-binaries-x64.zip
+      target_directory: "."
+
+  - if: win
+    then:
+      url: https://github.com/jtroo/kanata/releases/download/v${{ version }}/windows-binaries-x64.zip
+      target_directory: "."
+
+
+build:
+  # number: 0 # build version
+
+  dynamic_linking:
+    # fixes macos builds from linux: failed to find `install_name_tool`
+    # https://rattler-build.prefix.dev/latest/build_options/#dynamic-linking-configuration
+    binary_relocation: false
+
+  script:
+    interpreter: bash
+    content:
+
+      - if: unix
+        then:
+          - mkdir                  $PREFIX/bin
+          - cp kanata*allowed_x64  $PREFIX/bin/kanata
+
+      - if: win
+        then:
+          - mkdir                                             $PREFIX/bin
+          - cp kanata_windows_tty_winIOv2_cmd_allowed_x64.exe $PREFIX/bin/kanata.exe
+
+tests:
+  - package_contents:
+      bin:
+        - kanata*
+
+about:
+  summary: Improve keyboard comfort and usability with advanced customization
+  description: |
+    This is a cross-platform software keyboard remapper for Linux, macOS and Windows.
+  homepage: https://github.com/jtroo/kanata
+  repository: https://github.com/jtroo/kanata

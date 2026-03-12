@@ -1,34 +1,31 @@
--- ╭─────────╮
--- │ Plugins │
--- ╰─────────╯
+--- ╭─────────╮
+--- │ Plugins │
+--- ╰─────────╯
 
-local nvim_path = vim.env.APPDIR2 and
-    vim.env.APPDIR2 .. "/usr/home/user/.config/nvim" or
-    vim.env.HOME .. "/.vscode/extensions/yeferyv.retronvim/nvim"
+vim.env.CONDA_PREFIX = vim.env.CONDA_PREFIX or (vim.env.HOME .. '/.pixi/envs/retronvim')
+vim.env.PNPM_HOME    = vim.env.PNPM_HOME or (vim.env.HOME .. '/.local/share/pnpm')
+vim.env.PATH         = vim.env.PATH .. (vim.env.APPDATA and ';' or ':') .. vim.env.PNPM_HOME
+vim.env.PATH         = vim.env.PATH .. (vim.env.APPDATA and ';' or ':') .. vim.env.HOME .. '/.pixi/bin'
 
--- vim.fn.expand("~/.*/extensions/yeferyv.retronvim*/nvim", 0, 1)[1] -- ...,0,1 shows in a list and [1] grabs the first match
--- vim.fn.expand outputs the same string if not founded
--- vim.fn.glob outputs nil if not found
-local retronvim_path = vim.fn.glob("~/.*/extensions/yeferyv.retronvim*/nvim", 0, 1)[1] or nvim_path
-
-local package_path = vim.fn.stdpath('data') .. '/site/pack/core/opt/'
-local mini_path = retronvim_path .. '/plugins/site/pack/deps/opt/mini.nvim'
+local vim            = vim --- lsp warnings
+local mini_path      = vim.env.CONDA_PREFIX .. '/opt/retronvim/nvim/plugins/site/pack/deps/opt/mini.nvim'
 
 if not vim.loop.fs_stat(mini_path) then
   vim.pack.add({
-    { src = 'https://github.com/nvim-mini/mini.nvim', version = 'b409fd1d8b9ea7ec7c0923eb2562b52ed5d1ab0a', },
-    { src = 'https://github.com/folke/snacks.nvim',   version = 'v2.22.0', },
+    { src = 'https://github.com/nvim-mini/mini.nvim', version = 'af5f75c9ce572a4d1f0c77d6fb4ea764d16c1b3c', },
+    { src = 'https://github.com/folke/snacks.nvim',   version = 'v2.31.0', },
   })
 end
 
 vim.opt.rtp:prepend(mini_path)
-vim.opt.rtp:append(retronvim_path .. '/plugins/site/pack/deps/opt/snacks.nvim')
+vim.opt.rtp:append(vim.env.CONDA_PREFIX .. '/opt/retronvim/nvim/plugins/site/pack/deps/opt/snacks.nvim')
+vim.opt.rtp:append(vim.fn.expand(vim.fn.stdpath('data') .. '/site/pack/core/opt/*', 0, 1))
 
 local M = {}
 local map = vim.keymap.set
 local autocmd = vim.api.nvim_create_autocmd
 local _, vscode = pcall(require, "vscode-neovim")
-vim.g.mapleader = " " -- <leader> key
+vim.g.mapleader = " " --- <leader> key
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -42,7 +39,7 @@ if not vim.g.vscode then
       input = {},
       picker = {
         layouts = {
-          -- https://www.reddit.com/r/neovim/comments/1jv6u2y/replicating_nvchads_telescope_look_for_snacks/
+          --> https://www.reddit.com/r/neovim/comments/1jv6u2y/replicating_nvchads_telescope_look_for_snacks/
           big_preview = {
             layout = {
               box = "horizontal",
@@ -66,7 +63,7 @@ if not vim.g.vscode then
           }
         },
         sort = {
-          -- default sort is by score, text length and index
+          --- default sort is by score, text length and index
           fields = { "idx", "score:desc", "#text" },
         },
         sources = {
@@ -85,7 +82,7 @@ if not vim.g.vscode then
               ["J"] = { "preview_scroll_down" },
               ["M"] = { "toggle_maximize" },
               ["<space>"] = { "cycle_win" },
-              -- ["<S-CR>"] = { "close", mode = { "n", "i" } }, -- <S-CR> already closes the picker if a folder is hovered
+              -- ["<S-CR>"] = { "close", mode = { "n", "i" } }, --- <S-CR> already closes the picker if a folder is hovered
             },
           },
         },
@@ -114,337 +111,240 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  map(
-    { "n", "i" },
-    "<A-;>",
-    function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local state = vim.b[bufnr].nes_state
+  vim.lsp.inline_completion.enable()
 
-      if state then
-        -- Try to jump to the start of the suggestion edit.
-        -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-        local _ = require("copilot-lsp.nes").walk_cursor_start_edit() or
-            (
-              require("copilot-lsp.nes").apply_pending_nes() and
-              require("copilot-lsp.nes").walk_cursor_end_edit()
-            )
-      end
-    end,
-    { desc = "Accept Copilot NES suggestion" }
-  )
+  map({ 'i' }, '<a-l>', function() vim.lsp.inline_completion.get() end, { desc = ' accept suggestion' })
+  map({ 'i' }, '<a-[>', function() vim.lsp.inline_completion.select({ count = -1 }) end, { desc = ' prev suggestion' })
+  map({ 'i' }, '<a-]>', function() vim.lsp.inline_completion.select({ count = 1 }) end, { desc = ' next suggestion' })
+  map({ 'i', 'n', 'x' }, '<a-;>', function() require("sidekick").nes_jump_or_apply() end, { desc = ' nes apply' }) --- <m-;> doesn't work with pum
+  map({ 'i', 'n', 'x' }, '<a-,>', function() require("sidekick.nes").update() end, { desc = ' nes update' })
+  map({ 'i', 'n', 'x' }, "<a-'>", function() require("sidekick.nes").clear() end, { desc = ' nes clear' })
+  map({ 'i', 'n', 'x' }, '<leader>lg', "<cmd>Sidekick cli toggle name=gemini<cr>", { desc = '󰫣 Gemini cli' })
+  map({ 'i', 'n', 'x' }, '<leader>lG', "<cmd>Sidekick cli prompt<cr>", { desc = '󰫣 Gemini prompt' })
 
-  vim.opt.rtp:append(package_path .. "copilot-lsp")
-  local ok, copilot_lsp = pcall(require, "copilot-lsp")
+  pcall(function() require("sidekick").setup({}) end)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+
+if not vim.g.vscode then
+  local ok, neocodeium = pcall(require, "neocodeium")
+
   if ok then
-    copilot_lsp.setup({
-      nes = {
-        move_count_threshold = 1, -- Clear after 1 cursor movements
-      }
-    })
-    vim.g.copilot_nes_debounce = 75
-    vim.lsp.enable("copilot_ls")
-  else
-    vim.opt.rtp:remove(package_path .. "copilot-lsp")
+    vim.lsp.inline_completion.enable(false) -- disable copilot inline suggestion
+    neocodeium.setup()
+    map("i", "<A-l>", function() neocodeium.accept() end)
+    map("i", "<A-k>", function() neocodeium.clear() end)
+    map("i", "<A-j>", function() neocodeium.accept_word() end)
+    map("i", "<A-[>", function() neocodeium.cycle_or_complete(-1) end)
+    map("i", "<A-]>", function() neocodeium.cycle_or_complete(1) end)
   end
 end
 
 ------------------------------------------------------------------------------------------------------------------------
 
 if not vim.g.vscode then
-  vim.opt.rtp:append(package_path .. "supermaven-nvim")
   local ok, supermaven = pcall(require, "supermaven-nvim")
 
   if ok then
-    supermaven.setup {
-      keymaps = {
-        accept_suggestion = "<A-l>",
-        clear_suggestion = "<A-k>",
-        accept_word = "<A-j>",
-      }
-    }
+    vim.lsp.inline_completion.enable(false) -- disable copilot inline suggestion
+    supermaven.setup({ disable_keymaps = true })
+    map("i", "<A-l>", function() require("supermaven-nvim.completion_preview").on_accept_suggestion() end)
+    map("i", "<A-k>", function() require("supermaven-nvim.completion_preview").on_dispose_inlay() end) -- clear suggestion
+    map("i", "<A-j>", function() require("supermaven-nvim.completion_preview").on_accept_suggestion_word() end)
   end
 end
 
-------------------------------------------------------------------------------------------------------------------------
-
-if not vim.g.vscode then
-  map({ 'x', 'n', 'i' }, '<leader>lg', "<cmd>Sidekick cli toggle name=gemini<cr>", { desc = 'Gemini cli' })
-  map({ 'x', 'n', 'i' }, '<leader>lG', "<cmd>Sidekick cli prompt<cr>", { desc = 'Gemini prompt' })
-
-  vim.opt.rtp:append(package_path .. "sidekick.nvim")
-  local ok, sidekick = pcall(require, "sidekick")
-  if ok then
-    sidekick.setup({ nes = { enabled = false } })
-  end
-end
-
-------------------------------------------------------------------------------------------------------------------------
-
-if not vim.g.vscode then
-  vim.opt.rtp:append(package_path .. "windsurf.nvim")
-  vim.opt.rtp:append(package_path .. "plenary.nvim")
-  local ok, codeium = pcall(require, "codeium")
-
-  if ok then
-    codeium.setup({
-      idle_delay = 50,
-      enable_cmp_source = false,
-      virtual_text = {
-        enabled = true,
-        key_bindings = {
-          accept = "<A-l>",
-          accept_word = "<A-j>",
-          accept_line = "<A-k>",
-          next = "<A-]>",
-          prev = "<A-[>",
-        }
-      },
-      tools = {
-        uuidgen = vim.env.APPDATA and vim.env.HOME .. "\\scoop\\apps\\msys2\\current\\usr\\bin\\uuidgen.exe" or 'uuidgen',
-        curl = vim.env.APPDATA and vim.env.HOME .. "\\scoop\\apps\\msys2\\current\\usr\\bin\\curl.exe" or 'curl',
-        gzip = vim.env.APPDATA and vim.env.HOME .. "\\scoop\\apps\\msys2\\current\\usr\\bin\\gzip.exe" or 'gzip'
-      },
-    })
-
-    -- https://github.com/Exafunction/windsurf.nvim/issues/168
-    require('codeium.util').get_newline = function() return "\n" end
-  end
-end
-
--- ╭──────╮
--- │ Opts │
--- ╰──────╯
+--- ╭──────╮
+--- │ Opts │
+--- ╰──────╯
 
 vim.opt.backupcopy =
-"yes"                             -- fixes `next dev --turbopack` file change detection, see `:h file-watcher` and https://github.com/neovim/neovim/issues/1380
-vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
-vim.opt.expandtab = true          -- convert tabs to spaces
-vim.opt.hlsearch = true           -- highlight all matches on previous search pattern
-vim.opt.ignorecase = true         -- ignore case in search patterns
-vim.opt.shellcmdflag = '-c'       -- https://github.com/folke/snacks.nvim/issues/1750
-vim.opt.shellxquote = ''          -- https://github.com/folke/snacks.nvim/issues/1750
-vim.opt.shiftwidth = 2            -- the number of spaces inserted for each indentation
-vim.opt.smartcase = true          -- smart case
-vim.opt.splitbelow = true         -- force all horizontal splits to go below current window
-vim.opt.splitright = true         -- force all vertical splits to go to the right of current window
-vim.opt.tabstop = 2               -- insert 2 spaces for a tab
-vim.opt.timeoutlen = 500          -- time to wait for a mapped sequence to complete (in milliseconds)
-vim.opt.winborder = 'rounded'     -- MiniCompletion's info and signature border
-vim.opt.wrap = false              -- display lines as one long line
-vim.opt.shortmess:append "c"      -- don't give |ins-completion-menu| messages
-
+"yes"                             --- fixes `next dev --turbopack` file change detection, see `:h file-watcher` and https://github.com/neovim/neovim/issues/1380
+vim.opt.clipboard = "unnamedplus" --- allows neovim to access the system clipboard
+vim.opt.expandtab = true          --- convert tabs to spaces
+vim.opt.hlsearch = true           --- highlight all matches on previous search pattern
+vim.opt.ignorecase = true         --- ignore case in search patterns
+vim.opt.shiftwidth = 2            --- the number of spaces inserted for each indentation
+vim.opt.smartcase = true          --- smart case
+vim.opt.splitbelow = true         --- force all horizontal splits to go below current window
+vim.opt.splitright = true         --- force all vertical splits to go to the right of current window
+vim.opt.tabstop = 2               --- insert 2 spaces for a tab
+vim.opt.termguicolors = true      --- fixes colorscheme after :restart https://github.com/neovim/neovim/issues/38545
+vim.opt.timeoutlen = 500          --- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.winborder = 'rounded'     --- MiniCompletion's info and signature border
+vim.opt.wrap = false              --- display lines as one long line
 
 if not vim.g.vscode then
-  vim.opt.cmdheight = 0                       -- more space in the neovim command line for displaying messages
-  vim.opt.laststatus = 3                      -- laststatus=3 global status line (line between splits)
-  vim.opt.number = true                       -- set numbered lines
-  vim.opt.scrolloff = 3                       -- vertical scrolloff
-  vim.opt.sidescrolloff = 3                   -- horizontal scrolloff
-  vim.opt.virtualedit = "all"                 -- allow cursor bypass end of line
-  vim.o.foldcolumn = '1'                      -- if '1' will show clickable fold signs
-  vim.o.foldlevel = 99                        -- Disable folding at startup
-  vim.o.foldmethod = "expr"                   -- expr = specify an expression to define folds
-  vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()' -- if folding using treesitter then 'v:lua.vim.treesitter.foldexpr()'
-  vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-  vim.o.statuscolumn =
-  '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l '
+  vim.opt.pumborder = 'rounded'               --- enable mini.completion border
+  vim.opt.cmdheight = 0                       --- more space in the neovim command line for displaying messages
+  vim.opt.laststatus = 3                      --- laststatus=3 global status line (line between splits)
+  vim.opt.number = true                       --- set numbered lines
+  vim.opt.scrolloff = 3                       --- vertical scrolloff
+  vim.opt.sidescrolloff = 3                   --- horizontal scrolloff
+  vim.opt.virtualedit = "all"                 --- allow cursor bypass end of line
+  vim.o.foldcolumn = '1'                      --- if '1' will show clickable fold signs
+  vim.o.foldlevel = 99                        --- Disable folding at startup
+  vim.o.foldmethod = "expr"                   --- expr = specify an expression to define folds
+  vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()' --- if folding using treesitter then 'v:lua.vim.treesitter.foldexpr()'
+  vim.o.fillchars = [[eob: ,fold: ,foldinner: ,foldopen:,foldsep: ,foldclose:]]
 end
 
--- ╭──────────────╮
--- │ Autocommands │
--- ╰──────────────╯
+--- ╭──────────────╮
+--- │ Autocommands │
+--- ╰──────────────╯
 
--- stop comment prefix on new lines
+--- stop comment prefix on new lines
 autocmd({ "BufEnter" }, { command = "set formatoptions-=cro" })
 
--- briefly highlight yanked text
-autocmd("TextYankPost", { callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = 200 }) end })
+if not vim.g.vscode then
+  --- briefly highlight yanked text
+  autocmd("TextYankPost", { callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = 200 }) end })
 
--- Disable mini.completion for a certain filetype (extracted from `:help mini.nvim`)
-local f = function(args) vim.b[args.buf].minicompletion_disable = true end
-autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
-autocmd('Filetype', { pattern = 'snacks_input', callback = f })
+  --- Disable mini.completion for a certain filetype (extracted from `:help mini.nvim`)
+  local f = function(args) vim.b[args.buf].minicompletion_disable = true end
+  autocmd('Filetype', { pattern = 'snacks_picker_input', callback = f })
+  autocmd('Filetype', { pattern = 'snacks_input', callback = f })
 
--- loads ~/.local/share/nvim/site/parser/* (it should be before LSP for semantic syntax highlighting overrides)
-autocmd("FileType", { callback = function() pcall(vim.treesitter.start) end })
+  autocmd({ "BufWinEnter" }, { pattern = "*.code-snippets", command = "set ft=json" })
 
-autocmd({ "BufWinEnter" }, { pattern = "*.code-snippets", command = "set ft=json" })
+  --- right click menu
+  vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
+  vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
 
--- right click menu
-vim.cmd [[ anoremenu PopUp.Explorer <cmd>lua Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true, layout = { width = vim.o.columns, height = vim.o.lines } }})<cr> ]]
-vim.cmd [[ anoremenu PopUp.Quit <cmd>quit!<cr> ]]
+  autocmd({ "TermEnter", "TermOpen" }, { command = "startinsert" })
 
-autocmd({ "TermEnter", "TermOpen" }, { callback = function() vim.cmd.startinsert() end })
+  --- hide bufferline if `nvim -cterm` or `nvim +term`
+  autocmd("TermLeave",
+    { command = [[lua vim.schedule(function() return vim.fn.bufname() == "" and vim.cmd.quit() end)]] })
 
--- https://github.com/neovim/neovim/issues/14986
-autocmd({ "TermLeave", --[[ "TermClose", "BufWipeout" ]] }, {
-  callback = function()
-    vim.schedule(function()
-      -- if vim.bo.buftype == 'terminal'  then vim.cmd [[ bp | bd! # ]] end
-      -- if vim.bo.filetype == 'terminal' then vim.cmd [[ bp | bd! # ]] end
+  --> https://neovim.io/doc/user/cmdline.html#cmdline-autocompletion
+  autocmd({ "CmdlineChanged" }, { pattern = "[:/?]", command = "call wildtrigger()" })
+  autocmd({ "CmdlineEnter" }, { pattern = "[/?]", command = "set pumheight=5" })
+  autocmd({ "CmdlineLeave" }, { pattern = "[/?]", command = "set pumheight&" })
+  vim.opt.wildmode = "noselect:lastused,full" -- enables cmdline tab cycle
 
-      -- required when exiting `nvim -cterm`
-      if vim.fn.bufname() == "" then
-        vim.cmd.quit()
-      end
-    end)
-  end,
-})
+  --> https://github.com/neovim/neovim/issues/9953
+  map('c', '<Up>', 'pumvisible() ? "<c-p>" : "<Up>"', { expr = true, desc = "navigate wildmenu" })
+  map('c', '<Down>', 'pumvisible() ? "<c-n>" : "<Down>"', { expr = true, desc = "navigate wildmenu" })
 
-------------------------------------------------------------------------------------------------------------------------
+  map('c', '<c-p>', 'pumvisible() ? "<c-e><c-p>" : "<c-p>"', { expr = true, desc = "navigate history" })
+  map('c', '<c-n>', 'pumvisible() ? "<c-e><c-n>" : "<c-n>"', { expr = true, desc = "navigate history" })
 
-local ns = vim.api.nvim_create_namespace("flash")
+  --> https://github.com/nvim-mini/mini.nvim/blob/main/lua/mini/cmdline.lua
+  map('c', '<left>', function() return vim.fn.wildmenumode() and "<space><bs><left>" or "<left>" end, { expr = true })
+  map('c', '<right>', function() return vim.fn.wildmenumode() and "<space><bs><right>" or "<right>" end, { expr = true })
+
+  --- pager (by pressing enter) for cmdline output
+  pcall(function() require("vim._core.ui2").enable({}) end)
+end
+
+--- ╭────────────╮
+--- │ Flash.nvim │
+--- ╰────────────╯
 
 vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#c0caf5", bg = "#FF007C" })
 
-M.labels = vim.split('abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ', '')
+local ns  = vim.api.nvim_create_namespace("flash")
+M.labels  = vim.split('abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ', '')
 M.results = {}
 M.cmdline = ""
+M.press   = function(key) vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), "nt", true) end
 
--- For replacing certain <C-x>... keymaps.
-function M.press(key)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), "nt", true)
-end
-
--- get search results in a table
-function M.search(search)
-  local view = vim.fn.winsaveview()
-  vim.api.nvim_win_set_cursor(0, { 1, 0 })
-
-  local pos = vim.api.nvim_win_get_cursor(0)
-
-  local matches = {}
-  while true do
-    if vim.fn.search(search, "W") == 0 then break end
-
-    local start = vim.api.nvim_win_get_cursor(0)
-
-    vim.fn.search(search, "ceW")
-
-    -- skip label for the first char of search
-    local new_pos = vim.api.nvim_win_get_cursor(0)
-    if new_pos[1] == pos[1] and new_pos[2] == pos[2] then
-      break
-    end
-    pos = new_pos
-
-    table.insert(matches, {
-      row = pos[1],
-      col = pos[2],
-      pos = start,
-      next = vim.api.nvim_buf_get_text(0, pos[1] - 1, pos[2] + 1, pos[1] - 1, pos[2] + 2, {})[1]
-    })
-  end
-
-  vim.fn.winrestview(view)
-  return matches
-end
-
--- https://github.com/folke/flash.nvim/blob/22913c65a1c960e3449c813824351abbdb327c7b/lua/flash/init.lua
+--> https://github.com/folke/flash.nvim/blob/22913c65a1c960e3449c813824351abbdb327c7b/lua/flash/init.lua
 function M.flash()
   local info = vim.fn.getcmdline()
   vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 
-  -- press label and jump
+  --- press label and jump
   for char, match in pairs(M.results) do
     if info == M.cmdline .. char then
-      local pos = match.pos
-
-      -- For operator pending mode, set the search pattern to the first character on the match position
-      -- \%5l\%11c.  match in line 5 at column 11 `.` matches any character
-      if vim.v.operator ~= "" then
-        local s = ("\\%%%dl\\%%%dc."):format(pos[1], pos[2] + 1)
-        vim.fn.setcmdline(s)
-        M.press("<CR>")
-      else
-        M.press("<esc>")
-        vim.schedule(function()
-          vim.api.nvim_win_set_cursor(0, pos)
-        end)
-      end
+      -- vim.fn.setcmdline(M.cmdline)
+      M.press("<bs><cr>") --- next searches without label for dot repeatable for text-objects
+      vim.schedule(function()
+        vim.api.nvim_win_set_cursor(0, { match.lnum, match.byteidx })
+        vim.cmd.nohlsearch()
+      end)
 
       return
     end
   end
 
   M.cmdline = info
-  local matches = M.search(info)
-  -- vim.notify(vim.inspect(matches))
+
+  local matches = vim.fn.matchbufline('', info, 1, '$')
 
   ---@type table<string, boolean>
   local next_chars = {}
   for _, match in ipairs(matches) do
-    next_chars[match.next] = true
-    next_chars[match.next:lower()] = true -- lower() to skip lowercase label of the char if next char is Uppercase
+    local next = vim.api.nvim_buf_get_text(
+      0,
+      match.lnum - 1,
+      match.byteidx + #match.text,
+      match.lnum - 1,
+      match.byteidx + #match.text + 1,
+      {}
+    )[1]
+
+    next_chars[next] = true
+    next_chars[next:lower()] = true
   end
 
   M.results = {}
 
-  -- create virtual text with labels
+  --- create virtual text with labels
   local l = 0
   for _, match in ipairs(matches) do
     l = l + 1
 
-    -- Skip labels that match next characters
-    while M.labels[l] and next_chars[M.labels[l]] do
-      l = l + 1
-    end
-
     if not M.labels[l] then break end
 
-    M.results[M.labels[l]] = match
+    while next_chars[M.labels[l]] do l = l + 1 end --- Skip labels that match next characters
 
-    vim.api.nvim_buf_set_extmark(0, ns, match.row - 1, 0, {
+    M.results[M.labels[l]] = match
+    -- vim.notify(vim.inspect(M.results))
+
+    vim.api.nvim_buf_set_extmark(0, ns, match.lnum - 1, 0, {
       virt_text = { { M.labels[l], "FlashLabel" } },
       virt_text_pos = "overlay",
-      virt_text_win_col = match.col + 1,
+      virt_text_win_col = match.byteidx + #match.text,
     })
   end
 end
 
 autocmd("CmdlineChanged", {
   callback = function()
-    if vim.fn.getcmdtype() == "/" or vim.fn.getcmdtype() == "?" then -- if stuck press `/` many times
+    if vim.fn.getcmdtype() == "/" or vim.fn.getcmdtype() == "?" then --- if stuck press `/` many times
       M.flash()
-      vim.schedule(function()
-        vim.cmd("redraw") -- forces to redraw the extmarks for neovim v0.12
-      end)
+      vim.schedule(function() vim.cmd.redraw() end)                  --- force redraw extmarks for vscode-neovim
     end
-    -- vim.notify("") -- forces to redraw the extmarks for neovim v0.12
   end,
 })
 
-autocmd("CmdlineLeave", {
-  callback = function()
-    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1) -- clear extmarks
-  end,
-})
+autocmd("CmdlineLeave", { callback = function() vim.api.nvim_buf_clear_namespace(0, ns, 0, -1) end }) --- clear extmarks
 
-------------------------------------------------------------------------------------------------------------------------
-
--- ╭──────╮
--- │ Mini │
--- ╰──────╯
+--- ╭──────╮
+--- │ Mini │
+--- ╰──────╯
 
 local gen_ai_spec = require('mini.extra').gen_ai_spec
 local mini_clue = require("mini.clue")
 
 require("mini.ai").setup({
   custom_textobjects = {
-    d = gen_ai_spec.diagnostic(),                                                                                           -- diagnostic textobj
-    e = gen_ai_spec.line(),                                                                                                 -- line textobj
-    I = gen_ai_spec.indent(),                                                                                               -- indent textobj including blank-lines
-    h = { { "<(%w-)%f[^<%w][^<>]->.-</%1>" }, { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" } },       -- html attribute textobj
-    k = { { "\n.-[=:]", "^.-[=:]" }, "^%s*()().-()%s-()=?[!=<>\\+-\\*]?[=:]" },                                             -- key textobj
-    v = { { "[=:]()%s*().-%s*()[;,]()", "[=:]=?()%s*().*()().$" } },                                                        -- value textobj
-    m = gen_ai_spec.number(),                                                                                               -- number(inside string) textobj { '[-+]?()%f[%d]%d+()%.?%d*' }
-    x = { '#()%x%x%x%x%x%x()' },                                                                                            -- hexadecimal textobj
-    o = { "%S()%s+()%S" },                                                                                                  -- whitespace textobj
-    u = { { '%u[%l%d]+%f[^%l%d]', '%f[%S][%l%d]+%f[^%l%d]', '%f[%P][%l%d]+%f[^%l%d]', '^[%l%d]+%f[^%l%d]', }, '^().*()$' }, -- sub word textobj https://github.com/echasnovski/mini.nvim/blob/main/doc/mini-ai.txt
+    d = gen_ai_spec.diagnostic(),                                                                                           --- diagnostic textobj
+    e = gen_ai_spec.line(),                                                                                                 --- line textobj
+    I = gen_ai_spec.indent(),                                                                                               --- indent textobj including blank-lines
+    h = { { "<(%w-)%f[^<%w][^<>]->.-</%1>" }, { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" } },       --- html attribute textobj
+    k = { { "\n.-[=:]", "^.-[=:]" }, "^%s*()().-()%s-()=?[!=<>\\+-\\*]?[=:]" },                                             --- key textobj
+    v = { { "[=:]()%s*().-%s*()[;,]()", "[=:]=?()%s*().*()().$" } },                                                        --- value textobj
+    m = gen_ai_spec.number(),                                                                                               --- number(inside string) textobj { '[-+]?()%f[%d]%d+()%.?%d*' }
+    x = { '#()%x%x%x%x%x%x()' },                                                                                            --- hexadecimal textobj
+    o = { "%S()%s+()%S" },                                                                                                  --- whitespace textobj
+    u = { { '%u[%l%d]+%f[^%l%d]', '%f[%S][%l%d]+%f[^%l%d]', '%f[%P][%l%d]+%f[^%l%d]', '^[%l%d]+%f[^%l%d]', }, '^().*()$' }, --- sub word textobj https://github.com/echasnovski/mini.nvim/blob/main/doc/mini-ai.txt
 
-    -- https://thevaluable.dev/vim-create-text-objects
-    -- select indent by the same or mayor level delimited by blank-lines
+    --> https://thevaluable.dev/vim-create-text-objects
+    --- select indent by the same or mayor level delimited by blank-lines
     i = function()
       local start_indent = vim.fn.indent(vim.fn.line('.'))
 
@@ -461,7 +361,7 @@ require("mini.ai").setup({
       return { from = { line = prev_line + 1, col = 1 }, to = { line = next_line - 1, col = 100 }, vis_mode = 'V' }
     end,
 
-    -- select indent by the same level delimited by comment-lines (outer: includes blank-lines)
+    --- select indent by the same level delimited by comment-lines (outer: includes blank-lines)
     y = function()
       local start_indent      = vim.fn.indent(vim.fn.line('.'))
       local get_comment_regex = "^%s*" .. string.gsub(vim.bo.commentstring, "%%s", ".*") .. "%s*$"
@@ -488,12 +388,12 @@ require("mini.ai").setup({
       return { from = { line = prev_line + 1, col = 1 }, to = { line = next_line - 1, col = 100 }, vis_mode = 'V' }
     end
   },
-  n_lines = 500, -- search range and required by functions less than 500 LOC
+  n_lines = 500, --- search range and required by functions less than 500 LOC
 })
 
 require('mini.align').setup()
 require('mini.bracketed').setup({ undo = { suffix = '' } })
-require('mini.jump').setup( --[[{ repeat_jump = ';' }]]) -- ; by default
+require('mini.jump').setup( --[[{ repeat_jump = ';' }]]) --- ; by default
 require('mini.operators').setup()
 require('mini.splitjoin').setup()
 require('mini.surround').setup()
@@ -502,31 +402,19 @@ require('mini.trailspace').setup()
 if not vim.g.vscode then
   require('mini.clue').setup({
     triggers = {
-      { mode = 'o', keys = 'a' },
-      { mode = 'x', keys = 'a' },
-      { mode = 'o', keys = 'i' },
-      { mode = 'x', keys = 'i' },
-      { mode = 'o', keys = 'g' },
-      { mode = 'n', keys = 'g' },
-      { mode = 'x', keys = 'g' },
-      { mode = 'n', keys = 'z' },
-      { mode = 'x', keys = 'z' },
-      { mode = 'n', keys = "'" },
-      { mode = 'x', keys = "'" },
-      { mode = 'n', keys = '"' },
-      { mode = 'x', keys = '"' },
-      { mode = 'n', keys = '`' },
-      { mode = 'x', keys = '`' },
-      { mode = 'n', keys = '[' },
-      { mode = 'x', keys = '[' },
-      { mode = 'n', keys = ']' },
-      { mode = 'x', keys = ']' },
-      { mode = 'i', keys = '<C-r>' },
-      { mode = 'c', keys = '<C-r>' },
-      { mode = 'n', keys = '<C-w>' },
-      { mode = 'i', keys = '<C-x>' },
-      { mode = 'n', keys = '<Leader>' },
-      { mode = 'x', keys = '<Leader>' },
+      { keys = 'a',        mode = { 'o', 'x' } },
+      { keys = 'i',        mode = { 'o', 'x' } },
+      { keys = 'g',        mode = { 'o', 'x', 'n' } },
+      { keys = 'z',        mode = { 'x', 'n' } },
+      { keys = "'",        mode = { 'x', 'n' } },
+      { keys = '"',        mode = { 'x', 'n' } },
+      { keys = '`',        mode = { 'x', 'n' } },
+      { keys = '[',        mode = { 'x', 'n' } },
+      { keys = ']',        mode = { 'x', 'n' } },
+      { keys = '<c-r>',    mode = { 'i', 'c' } },
+      { keys = '<C-w>',    mode = { 'n' } },
+      { keys = '<C-x>',    mode = { 'i' } },
+      { keys = '<Leader>', mode = { 'x', 'n' } },
     },
     clues = {
       mini_clue.gen_clues.builtin_completion(),
@@ -535,118 +423,78 @@ if not vim.g.vscode then
       mini_clue.gen_clues.registers(),
       mini_clue.gen_clues.windows(),
       mini_clue.gen_clues.z(),
-      { desc = "argument",    keys = "aa", mode = "o" },
-      { desc = "argument",    keys = "aa", mode = "x" },
-      { desc = "argument",    keys = "ia", mode = "o" },
-      { desc = "argument",    keys = "ia", mode = "x" },
-      { desc = "braces",      keys = "ab", mode = "o" },
-      { desc = "braces",      keys = "ab", mode = "x" },
-      { desc = "braces",      keys = "ib", mode = "o" },
-      { desc = "braces",      keys = "ib", mode = "x" },
-      { desc = "diagnostic",  keys = "ad", mode = "o" },
-      { desc = "dignostic",   keys = "ad", mode = "x" },
-      { desc = "dignostic",   keys = "id", mode = "o" },
-      { desc = "dignostic",   keys = "id", mode = "x" },
-      { desc = "line",        keys = "ae", mode = "o" },
-      { desc = "line",        keys = "ae", mode = "x" },
-      { desc = "line",        keys = "ie", mode = "o" },
-      { desc = "line",        keys = "ie", mode = "x" },
-      { desc = "func_call",   keys = "af", mode = "o" },
-      { desc = "func_call",   keys = "af", mode = "x" },
-      { desc = "func_call",   keys = "if", mode = "o" },
-      { desc = "func_call",   keys = "if", mode = "x" },
-      { desc = "html_atrib",  keys = "ah", mode = "o" },
-      { desc = "html_atrib",  keys = "ah", mode = "x" },
-      { desc = "html_atrib",  keys = "ih", mode = "o" },
-      { desc = "html_atrib",  keys = "ih", mode = "x" },
-      { desc = "indent",      keys = "aI", mode = "o" },
-      { desc = "indent",      keys = "aI", mode = "x" },
-      { desc = "indent",      keys = "iI", mode = "o" },
-      { desc = "indent",      keys = "iI", mode = "x" },
-      { desc = "key",         keys = "ak", mode = "o" },
-      { desc = "key",         keys = "ak", mode = "x" },
-      { desc = "key",         keys = "ik", mode = "o" },
-      { desc = "key",         keys = "ik", mode = "x" },
-      { desc = "number",      keys = "am", mode = "o" },
-      { desc = "number",      keys = "am", mode = "x" },
-      { desc = "number",      keys = "im", mode = "o" },
-      { desc = "number",      keys = "im", mode = "x" },
-      { desc = "whitespace",  keys = "ao", mode = "o" },
-      { desc = "whitespace",  keys = "ao", mode = "x" },
-      { desc = "whitespace",  keys = "io", mode = "o" },
-      { desc = "whitespace",  keys = "io", mode = "x" },
-      { desc = "paragraph",   keys = "ao", mode = "o" },
-      { desc = "paragraph",   keys = "ap", mode = "x" },
-      { desc = "paragraph",   keys = "ip", mode = "o" },
-      { desc = "paragraph",   keys = "ip", mode = "x" },
-      { desc = "quote",       keys = "aq", mode = "o" },
-      { desc = "quote",       keys = "aq", mode = "x" },
-      { desc = "quote",       keys = "iq", mode = "o" },
-      { desc = "quote",       keys = "iq", mode = "x" },
-      { desc = "sentence",    keys = "as", mode = "o" },
-      { desc = "sentence",    keys = "as", mode = "x" },
-      { desc = "sentence",    keys = "is", mode = "o" },
-      { desc = "sentence",    keys = "is", mode = "x" },
-      { desc = "tag",         keys = "at", mode = "o" },
-      { desc = "tag",         keys = "at", mode = "x" },
-      { desc = "tag",         keys = "it", mode = "o" },
-      { desc = "tag",         keys = "it", mode = "x" },
-      { desc = "subword",     keys = "au", mode = "o" },
-      { desc = "subword",     keys = "au", mode = "x" },
-      { desc = "subword",     keys = "iu", mode = "o" },
-      { desc = "subword",     keys = "iu", mode = "x" },
-      { desc = "value",       keys = "av", mode = "o" },
-      { desc = "value",       keys = "av", mode = "x" },
-      { desc = "value",       keys = "iv", mode = "o" },
-      { desc = "value",       keys = "iv", mode = "x" },
-      { desc = "word",        keys = "aw", mode = "o" },
-      { desc = "word",        keys = "aw", mode = "x" },
-      { desc = "word",        keys = "iw", mode = "o" },
-      { desc = "word",        keys = "iw", mode = "x" },
-      { desc = "WORD",        keys = "aW", mode = "o" },
-      { desc = "WORD",        keys = "aW", mode = "x" },
-      { desc = "WORD",        keys = "iW", mode = "o" },
-      { desc = "WORD",        keys = "iW", mode = "x" },
-      { desc = "hexadecimal", keys = "ax", mode = "o" },
-      { desc = "hexadecimal", keys = "ax", mode = "x" },
-      { desc = "hexadecimal", keys = "ix", mode = "o" },
-      { desc = "hexadecimal", keys = "ix", mode = "x" },
-      { desc = "user_prompt", keys = "a?", mode = "o" },
-      { desc = "user_prompt", keys = "a?", mode = "x" },
-      { desc = "user_prompt", keys = "i?", mode = "o" },
-      { desc = "user_prompt", keys = "i?", mode = "x" },
+      { desc = "argument",    keys = "aa", mode = { "o", "x" } },
+      { desc = "argument",    keys = "ia", mode = { "o", "x" } },
+      { desc = "braces",      keys = "ab", mode = { "o", "x" } },
+      { desc = "braces",      keys = "ib", mode = { "o", "x" } },
+      { desc = "diagnostic",  keys = "ad", mode = { "o", "x" } },
+      { desc = "dignostic",   keys = "id", mode = { "o", "x" } },
+      { desc = "line",        keys = "ae", mode = { "o", "x" } },
+      { desc = "line",        keys = "ie", mode = { "o", "x" } },
+      { desc = "func_call",   keys = "af", mode = { "o", "x" } },
+      { desc = "func_call",   keys = "if", mode = { "o", "x" } },
+      { desc = "html_attrib", keys = "ah", mode = { "o", "x" } },
+      { desc = "html_attrib", keys = "ih", mode = { "o", "x" } },
+      { desc = "indent",      keys = "aI", mode = { "o", "x" } },
+      { desc = "indent",      keys = "iI", mode = { "o", "x" } },
+      { desc = "key",         keys = "ak", mode = { "o", "x" } },
+      { desc = "key",         keys = "ik", mode = { "o", "x" } },
+      { desc = "number",      keys = "am", mode = { "o", "x" } },
+      { desc = "number",      keys = "im", mode = { "o", "x" } },
+      { desc = "whitespace",  keys = "ao", mode = { "o", "x" } },
+      { desc = "whitespace",  keys = "io", mode = { "o", "x" } },
+      { desc = "paragraph",   keys = "ap", mode = { "o", "x" } },
+      { desc = "paragraph",   keys = "ip", mode = { "o", "x" } },
+      { desc = "quote",       keys = "aq", mode = { "o", "x" } },
+      { desc = "quote",       keys = "iq", mode = { "o", "x" } },
+      { desc = "sentence",    keys = "as", mode = { "o", "x" } },
+      { desc = "sentence",    keys = "is", mode = { "o", "x" } },
+      { desc = "tag",         keys = "at", mode = { "o", "x" } },
+      { desc = "tag",         keys = "it", mode = { "o", "x" } },
+      { desc = "subword",     keys = "au", mode = { "o", "x" } },
+      { desc = "subword",     keys = "iu", mode = { "o", "x" } },
+      { desc = "value",       keys = "av", mode = { "o", "x" } },
+      { desc = "value",       keys = "iv", mode = { "o", "x" } },
+      { desc = "word",        keys = "aw", mode = { "o", "x" } },
+      { desc = "word",        keys = "iw", mode = { "o", "x" } },
+      { desc = "WORD",        keys = "aW", mode = { "o", "x" } },
+      { desc = "WORD",        keys = "iW", mode = { "o", "x" } },
+      { desc = "hexadecimal", keys = "ax", mode = { "o", "x" } },
+      { desc = "hexadecimal", keys = "ix", mode = { "o", "x" } },
+      { desc = "user_prompt", keys = "a?", mode = { "o", "x" } },
+      { desc = "user_prompt", keys = "i?", mode = { "o", "x" } },
     },
   })
 
   require('mini.base16').setup({
-    -- `:Inspect` to reverse engineering a colorscheme
-    -- `:hi <@treesitter>` to view colors of `:Inspect` output
-    -- `:lua require("snacks").picker.highlights()` to view generated colorscheme
-    -- https://github.com/NvChad/base46/tree/v2.5/lua/base46/themes for popular colorscheme palettes
-    -- https://github.com/echasnovski/mini.nvim/discussions/36 community palettes
+    --- `:Inspect` to reverse engineering a colorscheme
+    --- `:hi <@treesitter>` to view colors of `:Inspect` output
+    --- `:lua require("snacks").picker.highlights()` to view generated colorscheme
+    --> https://github.com/NvChad/base46/tree/v2.5/lua/base46/themes for popular colorscheme palettes
+    --> https://github.com/echasnovski/mini.nvim/discussions/36 community palettes
     palette = {
-      -- BAT_THEME=base16 -- tokyonight -- description
-      base00 = "#000000", -- "#1a1b26", -- default bg
-      base01 = "#111111", -- "#16161e", -- line number bg
-      base02 = "#2c2c2c", -- "#2f3549", -- statusline bg, selection bg
-      base03 = "#444b6a", -- "#444b6a", -- line number fg, comments
-      base04 = "#787c99", -- "#787c99", -- statusline fg
-      base05 = "#a9b1d6", -- "#a9b1d6", -- default fg, delimiters
-      base06 = "#cbccd1", -- "#cbccd1", -- light fg (not often used)
-      base07 = "#d5d6db", -- "#d5d6db", -- light bg (not often used)
-      base08 = "#5555cc", -- "#7aa2f7", -- variables, tags, Diff delete
-      base09 = "#999900", -- "#ff9e64", -- integers, booleans, constants, search fg
-      base0A = "#ff0000", -- "#0db9d7", -- classes, search bg
-      base0B = "#009900", -- "#73daca", -- strings, Diff insert
-      base0C = "#3c3cff", -- "#2ac3de", -- builtins, regex
-      base0D = "#5FB3A1", -- "#7aa2f7", -- functions
-      base0E = "#8855ff", -- "#bb9af7", -- keywords, Diff changed
-      base0F = "#a0a0a0", -- "#7aa2f7", -- punctuation, indentscope
+      --- BAT_THEME=base16 --- tokyonight --- description
+      base00 = "#000000", -- "#1a1b26", --- default bg
+      base01 = "#111111", -- "#16161e", --- line number bg
+      base02 = "#2c2c2c", -- "#2f3549", --- statusline bg, selection bg
+      base03 = "#444b6a", -- "#444b6a", --- line number fg, comments
+      base04 = "#787c99", -- "#787c99", --- statusline fg
+      base05 = "#a9b1d6", -- "#a9b1d6", --- default fg, delimiters
+      base06 = "#cbccd1", -- "#cbccd1", --- light fg (not often used)
+      base07 = "#d5d6db", -- "#d5d6db", --- light bg (not often used)
+      base08 = "#5555cc", -- "#7aa2f7", --- variables, tags, Diff delete
+      base09 = "#999900", -- "#ff9e64", --- integers, booleans, constants, search fg
+      base0A = "#ff0000", -- "#0db9d7", --- classes, search bg
+      base0B = "#009900", -- "#73daca", --- strings, Diff insert
+      base0C = "#3c3cff", -- "#2ac3de", --- builtins, regex
+      base0D = "#5FB3A1", -- "#7aa2f7", --- functions
+      base0E = "#8855ff", -- "#bb9af7", --- keywords, Diff changed
+      base0F = "#a0a0a0", -- "#7aa2f7", --- punctuation, indentscope
     },
-    use_cterm = true,     -- required if `vi -c 'Pick files'`
+    use_cterm = true,     --- required if `vi -c 'Pick files'`
   })
 
-  -- neovim terminal colors
+  --- neovim terminal colors
   vim.g.terminal_color_0 = "#3c3c3c"
   vim.g.terminal_color_1 = "#990000"
   vim.g.terminal_color_2 = "#009900"
@@ -664,12 +512,12 @@ if not vim.g.vscode then
   vim.g.terminal_color_14 = "#5DE4C7"
   vim.g.terminal_color_15 = "#ffffff"
 
-  -- adding tokyonight transparency
+  --- adding tokyonight transparency
   vim.api.nvim_set_hl(0, "Normal", { fg = "#787c99", bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalNC", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
   vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE" })
-  vim.api.nvim_set_hl(0, "CodeiumSuggestion", { fg = "#444b6a" })
+  vim.api.nvim_set_hl(0, "NeoCodeiumSuggestion", { fg = "#444b6a" })
   vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#787c99" })
   vim.api.nvim_set_hl(0, "SnacksPickerDir", { fg = "#a9b1d6" })
   vim.api.nvim_set_hl(0, "SnacksPickerDirectory", { fg = "#5555cc" })
@@ -696,9 +544,9 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "DiffChange", { fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#990000" })
   vim.api.nvim_set_hl(0, "DiffText", { bg = "#3C3CFf", fg = "#ffffff" })
-  vim.api.nvim_set_hl(0, "CopilotLspNesApply", { bg = "#00003c", blend = 50 })  -- blend for virtual line not suported
-  vim.api.nvim_set_hl(0, "CopilotLspNesAdd", { bg = "#003c00", blend = 50 })    -- blend for virtual line not suported
-  vim.api.nvim_set_hl(0, "CopilotLspNesDelete", { bg = "#3c0000", blend = 50 }) -- blend for virtual line not suported
+  vim.api.nvim_set_hl(0, "SidekickDiffContext", { bg = "#00003c", blend = 50 }) --- blend for virtual line not suported, SidekickDiffContext = SidekickDiffAdd + SidekickDiffDelete rest of background
+  vim.api.nvim_set_hl(0, "SidekickDiffAdd", { bg = "#003c00", blend = 50 })     --- blend for virtual line not suported, uses `Normal` background + foreground if treesitter not available
+  vim.api.nvim_set_hl(0, "SidekickDiffDelete", { bg = "#3c0000", blend = 50 })  --- blend for virtual line not suported, doesn't diff well without treesitter
   vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#db4b4b" })
   vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = "#1abc9c" })
   vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#0db9d7" })
@@ -711,24 +559,17 @@ if not vim.g.vscode then
   vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#1abc9c" })
   vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#0db9d7" })
   vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#e0af68" })
+  vim.api.nvim_set_hl(0, "Pmenu", { bg = "NONE" }) --- transparent mini.completion
   vim.api.nvim_set_hl(0, "PmenuSel", { fg = "NONE", bg = "#2c2c2c" })
   vim.api.nvim_set_hl(0, "PmenuMatch", { bold = true, fg = "#3C3CFf" })
   vim.api.nvim_set_hl(0, "Search", { fg = "#c0caf5", bg = "#3d59a1" })
 
-  local function add_vscode_snippets_to_rtp()
-    -- local snippet_dirs = vim.fn.glob("~/.vscode/extensions/*/snippets", 0, 1)
-    -- local snippet_dirs = vim.fn.expand("~/.vscode/extensions/*/snippets", 0, 1)
-    local vscode_extensions = vim.fs.dirname(vim.fs.dirname(retronvim_path))
-    local snippet_dirs = vim.fn.expand(vscode_extensions .. "/*/snippets", 0, 1)
-
-    for _, dir in ipairs(snippet_dirs) do
-      -- ~/.vscode/extensions/emranweb.daisyui-snippet-1.0.3/snippets/snippetshtml.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change snippetshtml.code-snippets filetype to json `:set ft=json`
-      -- ~/.vscode/extensions/imgildev.vscode-nextjs-generator-2.6.0/snippets/trpc.code-snippets  No contains a valid JSON object so delete the file to make mini.snippet work or to fix it (usually extras commas) install biome and change trpc.code-snippets         filetype to json `:set ft=json`
-      vim.opt.rtp:append(vim.fs.dirname(dir))
-    end
-  end
-
-  add_vscode_snippets_to_rtp()
+  --- vim.fn.glob()   outputs nil if not found
+  --- vim.fn.expand() outputs the same string if not founded
+  local vscode_extensions = vim.fn.glob("~/.*/extensions", 0, 1)[1]
+  local snippet_path      = vim.fn.expand(vscode_extensions .. "/*/snippets", 0, 1)
+  local snippet_dirname   = vim.tbl_map(vim.fs.dirname, snippet_path)
+  vim.opt.rtp:append(snippet_dirname)
 
   require('mini.snippets').setup({
     snippets = { require('mini.snippets').gen_loader.from_runtime("*code-snippets") },
@@ -739,8 +580,8 @@ if not vim.g.vscode then
     }
   })
 
-  -- vscode snippets inside mini.completion (uninstall the vscode snippet extensions that you don't want to be sourced into mini.completion)
-  -- race condition with lsp completion when pressing `.` causing showing only mini.snippets entries, example in python: `import os; os.`
+  --- vscode snippets inside mini.completion (uninstall the vscode snippet extensions that you don't want to be sourced into mini.completion)
+  --- race condition with lsp completion when pressing `.` causing showing only mini.snippets entries, example in python: `import os; os.`
   require('mini.snippets').start_lsp_server()
 
   require('mini.diff').setup({
@@ -757,14 +598,14 @@ if not vim.g.vscode then
     }
   })
 
-  -- install tailwindcss-language-server to highlight tailwind classes
+  --- install tailwindcss-language-server to highlight tailwind classes
   require("mini.hipatterns").setup({
     highlighters = {
       hex_color = require("mini.hipatterns").gen_highlighter.hex_color()
     }
   })
 
-  -- require('mini.cmdline').setup() -- FIXME: not closing popup when using with M.flash
+  -- require('mini.cmdline').setup() --- FIXME: not closing popup when using with M.flash
   require('mini.completion').setup()
   require('mini.cursorword').setup()
   require('mini.icons').setup()
@@ -777,52 +618,30 @@ if not vim.g.vscode then
   require('mini.statusline').setup()
   require('mini.starter').setup()
   require('mini.tabline').setup()
-  vim.notify = require('mini.notify').make_notify() -- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
-  vim.opt.completeopt:append('fuzzy')               -- it should be after require("mini.completion").setup())
-
-  if vim.fn.has('nvim-0.12') == 1 then
-    vim.opt.pumborder = 'rounded'                    -- enable mini.completion border
-    vim.api.nvim_set_hl(0, "Pmenu", { bg = "NONE" }) -- transparent mini.completion
-
-    ---> https://neovim.io/doc/user/cmdline.html#cmdline-autocompletion
-    ---> not working wit M.flash()
-    -- autocmd({ "CmdlineChanged" }, { pattern = "[:/?]", command = "call wildtrigger()" })
-    -- autocmd({ "CmdlineEnter" }, { pattern = "[/?]", command = "set pumheight=5" })
-    -- autocmd({ "CmdlineLeave" }, { pattern = "[/?]", command = "set pumheight&" })
-    -- vim.opt.wildmode="noselect:lastused,full"        -- enable cmdline tab cycle
-  end
+  vim.notify = require('mini.notify').make_notify() --- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
+  vim.opt.completeopt:append('fuzzy')               --- it should be after require("mini.completion").setup() otherwise auto trigger first suggestion
 end
 
--- ╭────────────╮
--- │ Navigation │
--- ╰────────────╯
+--- ╭────────────╮
+--- │ Navigation │
+--- ╰────────────╯
 
-map({ "i" }, "jk", "<ESC>") -- disabled on visual mode since is slow
-map({ "i" }, "kj", "<ESC>") -- disabled on visual mode since is slow
+map({ "i" }, "jk", "<ESC>") --- disabled on visual mode since is slow
+map({ "i" }, "kj", "<ESC>") --- disabled on visual mode since is slow
 map({ "n" }, "J", "10gj")
 map({ "n" }, "K", "10gk")
 map({ "n" }, "H", "10h")
 map({ "n" }, "L", "10l")
-map({ "n" }, "Y", "yg_", { desc = "Yank forward" })          -- "Y" yank forward by default
+map({ "n" }, "Y", "yg_", { desc = "Yank forward" })          --- "Y" yank forward by default
 map({ "x" }, "Y", "g_y", { desc = "Yank forward" })
-map({ "x" }, "P", "g_P", { desc = "Paste forward" })         -- "P" doesn't change register
+map({ "x" }, "P", "g_P", { desc = "Paste forward" })         --- "P" doesn't change register
 map({ "x" }, "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchanged)" })
 map({ "n", "x" }, "U", "@:", { desc = "repeat `:command`" }) --> :normal A,jkj --> :normal A,j --->  escape char by pression ctrl+v then escape
-map({ "n", "x" }, "\\", "@q", { desc = "repeat q register/macro" })
-map({ "n", "x" }, "|", "@w", { desc = "repeat w register/macro" })
+map({ "n", "x", "o" }, "\\", "@q", { desc = "repeat q register/macro" })
+map({ "n", "x", "o" }, "|", "@w", { desc = "repeat w register/macro" })
 map({ "x" }, "<", "<gv", { desc = "continious indent" })
 map({ "x" }, ">", ">gv", { desc = "continious indent" })
-map(
-  "n",
-  "<esc>",
-  function()
-    local ok, copilot_lsp = pcall(require, "copilot-lsp.nes")
-    if ok then copilot_lsp.clear() end
-    vim.cmd.nohlsearch()
-    M.press("<esc>")
-  end,
-  { desc = "Clear Copilot-suggestion / search-highlight" }
-)
+map({ "n" }, "<esc>", "<esc>:nohlsearch<cr>", { desc = "Clear Copilot-suggestion / search-highlight" })
 
 if not vim.g.vscode then
   map("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, desc = "next completion when no lsp" })
@@ -832,7 +651,7 @@ if not vim.g.vscode then
   map({ "n" }, "<C-s>", ":%s//g<Left><Left>", { desc = "Replace in Buffer" })
   map({ "x" }, "<C-s>", ":s//g<Left><Left>", { desc = "Replace in Visual_selected" })
   map({ "n" }, "<C-;>", "<C-6>", { desc = "go to last buffer" })
-  map({ "n", "t" }, "<C-\\>", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
+  map({ "n", "t" }, "<C-\\>", function() Snacks.terminal() end, { desc = "󰨙  " }) --- vim.o.shell doesn't work on zsh.exe
   map({ "n", "t" }, "<C-h>", "<C-\\><C-n><C-w>h", { desc = "left window or [w" })
   map({ "n", "t" }, "<C-j>", "<C-\\><C-n><C-w>j", { desc = "down window or ]w" })
   map({ "n", "t" }, "<C-k>", "<C-\\><C-n><C-w>k", { desc = "up window or [w" })
@@ -847,10 +666,9 @@ if not vim.g.vscode then
   map({ "n", "x", "t" }, "<S-up>", "<cmd>resize +2<cr>", { desc = "horizontal shrink" })
   map({ "n" }, "<right>", "<cmd>bnext<CR>", { desc = "next buffer" })
   map({ "n" }, "<left>", "<cmd>bprevious<CR>", { desc = "prev buffer" })
-  map({ "n" }, "<leader>x", "<cmd>bp | bd! #<CR>", { desc = "Close Buffer" }) -- `bd!` forces closing terminal buffer
+  map({ "n" }, "<leader>x", "<cmd>bp | bd! #<CR>", { desc = " buffer close" }) --- `bd!` forces closing terminal buffer
 end
 
--- Quick quit/write
 if not vim.g.vscode then
   map({ "n" }, "Q", "<cmd>lua vim.cmd.quit()<cr>")
   map({ "n" }, "R", "<cmd>lua vim.lsp.buf.format{ timeout_ms = 5000 } MiniTrailspace.trim() vim.cmd.write()<cr>")
@@ -862,9 +680,9 @@ else
   end)
 end
 
--- ╭────────────────╮
--- │ leader keymaps │
--- ╰────────────────╯
+--- ╭────────────────╮
+--- │ leader keymaps │
+--- ╰────────────────╯
 
 if not vim.g.vscode then
   ---------------------------------------------------------------------------------------------------------------------
@@ -881,128 +699,59 @@ if not vim.g.vscode then
     },
   })
 
-  -- https://neovim.io/doc/user/lsp.html#_quickstart
-  vim.lsp.config('*', {
-    ---- https://www.reddit.com/r/neovim/comments/1ao6c5a/how_to_make_the_lsp_aware_of_changes_made_to_background_buffers
-    ---- `:=vim.lsp.protocol.make_client_capabilities()`
-    -- capabilities = {
-    --   workspace = {
-    --     didChangeWatchedFiles = {
-    --       dynamicRegistration = true, -- on linux if `next dev --turbopack` not working install `pixi global install fswatch` or `pixi global install inotify-tools`, see: https://github.com/neovim/neovim/issues/1380
-    --     }
-    --   }
-    -- },
-    root_markers = { '.git' },
-  })
+  --> https://neovim.io/doc/user/lsp.html#_quickstart
+  --- `:=vim.lsp.protocol.make_client_capabilities()`
+  vim.lsp.config('*', { root_markers = { '.git' } })
 
-  -- pnpm packages on Windows 11 requires `.cmd`
-  local dotcmd                            = vim.env.APPDATA and '.cmd' or ''
-
-  -- https://github.com/LunarVim/Neovim-from-scratch/blob/master/lua/user/lsp/settings/jsonls.lua
-  -- to have intellisense for your-file.json add `"$schema": "https://json.schemastore.org/<your-file>.json"`
-  -- tutorial: https://www.youtube.com/watch?v=m30JiCuW42U
-  vim.lsp.config['jsonls']                = {
-    cmd = { 'vscode-json-language-server' .. dotcmd, '--stdio' },
-    filetypes = { 'json', 'jsonc' },
-    settings = {
-      json = {
-        schemas = {
-          {
-            description = "NPM configuration file",
-            fileMatch = {
-              "package.json",
-            },
-            url = "https://json.schemastore.org/package.json",
-          },
-        },
-        validate = {
-          enable = true, -- to show errors since we are rewritting json settings
-        },
-        format = {
-          enable = true
-        }
-      },
-    }
-  }
-
-  vim.lsp.config['luals']                 = {
-    cmd = { 'lua-language-server' },
-    filetypes = { 'lua' },
-    settings = {
-      Lua = {
-        diagnostics = {
-          globals = {
-            "vim"
-          }
-        }
-      }
-    }
-  }
-
-  -- https://github.com/zed-industries/zed/issues/30767
-  vim.lsp.config['prismals']              = {
-    cmd = { 'prisma-language-server' .. dotcmd, '--stdio' },
-    filetypes = { 'prisma' },
-    settings = {
-      prisma = {
-        diagnostics = true, -- fixes `settings.enableDiagnostics === false` in prisma version 6.8.2
-      },
-    },
-  }
-
-  -- https://www.reddit.com/r/neovim/comments/1jn3rjw/help_me_understand/
-  vim.lsp.config['pyright']               = {
-    cmd = { 'pyright-langserver', '--stdio' },
-    filetypes = { 'python' },
-    settings = { python = {} } -- provides default settings
-  }
-
-  vim.lsp.config['volar']                 = {
-    cmd = { 'vue-language-server' .. dotcmd, '--stdio' },
-    filetypes = { 'vue' },
+  --> https://github.com/neovim/nvim-lspconfig/blob/master/lsp/copilot.lua
+  vim.lsp.config['copilot']               = {
+    cmd = { 'copilot-language-server', '--stdio' },
     init_options = {
-      typescript = {
-        tsdk = vim.env.HOME .. '/.pixi/envs/neovim-lsp/lib/node_modules/typescript/lib'
+      editorInfo = {
+        name = 'Neovim',
       },
-      vue = {
-        hybridMode = false, -- allows typescript inside .vue files
+      editorPluginInfo = {
+        name = 'Neovim',
+      },
+    },
+    on_attach = function(client, bufnr)
+      vim.api.nvim_buf_create_user_command(bufnr, 'LspCopilotSignIn', function()
+        client:request('signIn', vim.empty_dict(), function(_, result)
+          if result.status == 'AlreadySignedIn' then
+            return vim.notify('Already signed in as ' .. result.user)
+          end
+
+          vim.ui.open("https://github.com/login/device")
+          print("Enter your one-time code " .. result.userCode .. " in https://github.com/login/device")
+        end)
+      end, { desc = 'Sign in Copilot with GitHub' })
+    end,
+  }
+
+  --> https://github.com/mason-org/mason-lspconfig.nvim/issues/371
+  vim.lsp.config['ts_ls']                 = {
+    cmd = { 'typescript-language-server', '--stdio' },
+    filetypes = { 'vue', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+    init_options = {
+      plugins = {
+        {
+          name = '@vue/typescript-plugin',
+          location = vim.env.HOME .. "/.pixi/envs/neovim-lsp/lib/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin",
+          languages = { 'vue' },
+        },
       },
     },
   }
 
-  -- to have intellisense for your-file.yaml add `# yaml-language-server: $schema=https://json.schemastore.org/<your-file>.json`
-  -- example: https://gist.github.com/doitian/4c849956f5c97bd1115351142d446853
-  -- yaml-language-server downloads https://schemastore.org's schemas and detects files like .gitlab-ci.yaml, .github/worksflows/*, docker-compose.yaml ... by default
-  -- `:lua vim.lsp.buf.hover()` to see which schema is using
-  vim.lsp.config['yamlls']                = {
-    cmd = { 'yaml-language-server' .. dotcmd, '--stdio' },
-    filetypes = { 'yaml' },
-    settings = {
-      yaml = {
-        schemas = {
-          -- ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-          -- ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = "/.gitlab-ci*",
-          -- ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/docker-compose.yaml",
-          ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.1-standalone-strict/all.json"] =
-          "/*.k8s.yaml",
-        },
-        format = {
-          enable = true
-        }
-      }
-    }
-  }
-
-  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
-  -- https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
+  --> https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/formatters
+  --> https://github.com/creativenull/efmls-configs-nvim/tree/v1.9.0/lua/efmls-configs/linters
   vim.lsp.config['efm']                   = {
     cmd = { 'efm-langserver' },
-    filetypes = { 'python', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'html', 'json', 'jsonc', 'markdown', 'yaml' },
+    filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'html', 'json', 'jsonc', 'markdown', 'yaml' },
     init_options = { documentFormatting = true },
     settings = {
       rootMarkers = { ".git/" },
       languages = {
-        python          = { { formatCommand = "black -", formatStdin = true } },
         javascript      = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
         javascriptreact = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
         typescript      = { { formatCommand = "prettier --stdin-filepath '${INPUT}'", formatStdin = true } },
@@ -1017,52 +766,37 @@ if not vim.g.vscode then
     }
   }
 
-  -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
-  vim.lsp.config['bashls']                = { cmd = { 'bash-language-server' .. dotcmd, 'start' }, filetypes = { 'bash', 'sh' } }
-  vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'typescript', 'typescript.tsx', 'typescriptreact', 'vue' } }
+  --> https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
+  vim.lsp.config['bashls']                = { cmd = { 'bash-language-server', 'start' }, filetypes = { 'bash', 'sh' } }
+  vim.lsp.config['biome']                 = { cmd = { 'biome', 'lsp-proxy' }, filetypes = { 'css', 'graphql', 'javascript', 'javascriptreact', 'json', 'jsonc', 'typescript', 'typescriptreact', 'vue' } }
   vim.lsp.config['clangd']                = { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' } }
-  vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server' .. dotcmd, '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
-  vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver' .. dotcmd, '--stdio' }, filetypes = { 'dockerfile' } }
-  vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server' .. dotcmd, '--stdio' }, filetypes = { 'css', 'html', 'htmldjango', 'javascriptreact', 'typescriptreact', 'vue', 'htmlangular' } }
+  vim.lsp.config['cssls']                 = { cmd = { 'vscode-css-language-server', '--stdio' }, filetypes = { 'css', 'scss', 'less' } }
+  vim.lsp.config['dockerls']              = { cmd = { 'docker-langserver', '--stdio' }, filetypes = { 'dockerfile' } }
+  vim.lsp.config['emmet_language_server'] = { cmd = { 'emmet-language-server', '--stdio' }, filetypes = { 'css', 'html', 'htmldjango', 'javascriptreact', 'typescriptreact', 'vue', 'htmlangular' } }
   vim.lsp.config['gopls']                 = { cmd = { 'gopls' }, filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' } }
-  vim.lsp.config['html']                  = { cmd = { 'node', 'vscode-html-language-server' .. dotcmd, '--stdio' }, filetypes = { 'html', 'templ' } }
-  vim.lsp.config['intelephense']          = { cmd = { 'intelephense' .. dotcmd, '--stdio' }, filetypes = { 'php' } }
+  vim.lsp.config['html']                  = { cmd = { 'vscode-html-language-server', '--stdio' }, filetypes = { 'html', 'templ' } }
+  vim.lsp.config['intelephense']          = { cmd = { 'intelephense', '--stdio' }, filetypes = { 'php' } }
   vim.lsp.config['jdtls']                 = { cmd = { 'jdtls', }, filetypes = { 'java' }, }
+  vim.lsp.config['jsonls']                = { cmd = { 'vscode-json-language-server', '--stdio' }, filetypes = { 'json', 'jsonc' } }
+  vim.lsp.config['luals']                 = { cmd = { 'lua-language-server' }, filetypes = { 'lua' } }
   vim.lsp.config['marksman']              = { cmd = { 'marksman' }, filetypes = { 'markdown', 'markdown.mdx' } }
   vim.lsp.config['neocmake']              = { cmd = { 'neocmakelsp', '--stdio' }, filetypes = { 'cmake' } }
   vim.lsp.config['omnisharp']             = { cmd = { "OmniSharp", "-lsp" }, filetypes = { 'cs' } }
-  vim.lsp.config['pylsp']                 = { cmd = { 'pylsp' }, filetypes = { 'python' } }
+  vim.lsp.config['prismals']              = { cmd = { 'prisma-language-server', '--stdio' }, filetypes = { 'prisma' }, settings = { prisma = {} } }
   vim.lsp.config['ruff']                  = { cmd = { 'ruff', 'server' }, filetypes = { 'python' } }
   vim.lsp.config['rust_analyzer']         = { cmd = { 'rust-analyzer' }, filetypes = { 'rust' } }
-  vim.lsp.config['sqlls']                 = { cmd = { 'sql-language-server' .. dotcmd, 'up', '--method', 'stdio' }, filetypes = { 'sql', 'mysql' } }
+  vim.lsp.config['sqlls']                 = { cmd = { 'sql-language-server', 'up', '--method', 'stdio' }, filetypes = { 'sql', 'mysql' } }
   vim.lsp.config['sqls']                  = { cmd = { 'sqls' }, filetypes = { 'sql', 'mysql' } }
-  vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server' .. dotcmd, '--stdio' }, filetypes = { 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'templ' } }
+  vim.lsp.config['tailwindcss']           = { cmd = { 'tailwindcss-language-server', '--stdio' }, filetypes = { 'django-html', 'htmldjango', 'gohtml', 'gohtmltmpl', 'html', 'htmlangular', 'markdown', 'mdx', 'php', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'templ' } }
   vim.lsp.config['taplo']                 = { cmd = { 'taplo', 'lsp', 'stdio' }, filetypes = { 'toml' } }
   vim.lsp.config['terraformls']           = { cmd = { 'terraform-ls', 'serve' }, filetypes = { 'terraform', 'terraform-vars' } }
-  vim.lsp.config['ts_ls']                 = { cmd = { 'typescript-language-server' .. dotcmd, '--stdio' }, filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' } }
+  vim.lsp.config['ty']                    = { cmd = { 'ty', 'server' }, filetypes = { 'python' } }
+  vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml' }, }
 
-  vim.lsp.enable({
-    'bashls', 'biome',
-    'clangd', 'cssls', 'copilot',
-    'dockerls',
-    'efm', 'emmet_language_server',
-    'gopls',
-    'html',
-    'intelephense',
-    'jdtls', 'jsonls',
-    'luals',
-    'marksman',
-    'neocmake',
-    'omnisharp',
-    'prismals', 'pylsp', 'pyright',
-    'ruff', 'rust_analyzer',
-    'sqlls', 'sqls',
-    'tailwindcss', 'taplo', 'terraformls', 'ts_ls',
-    'volar',
-    'yamlls'
-  })
+  -- vim.tbl_map( function(config) vim.lsp.enable(config.name) end, vim.lsp.get_configs())
+  vim.lsp.enable(vim.tbl_map(function(config) return config.name end, vim.lsp.get_configs()))
 
-  -- https://www.youtube.com/watch?v=ooTcnx066Do
+  --> https://www.youtube.com/watch?v=ooTcnx066Do
   local sendSequence = function(sequence, continue_sequence)
     if not continue_sequence then
       vim.cmd.term()
@@ -1070,169 +804,133 @@ if not vim.g.vscode then
     vim.fn.chansend(vim.bo.channel, { sequence .. '\r' })
   end
 
-  -- zsh.exe and bash.exe doesn't support `:!pixi global install lua-language-server` on Windows use powershell.exe or cmd.exe though `:lua os.execute('pixi global install lua-language-server')` works
-  -- `pixi global remove nodejs --environment neovim-lsp` to remove only nodejs (e.g. if you want `pixi global install nodejs=20`)
+  local fix_node_path = function()
+    return vim.env.APPDATA
+        and autocmd({ "TermLeave" }, {
+          once = true,
+          callback = function()
+            vim.fn.filecopy(vim.env.HOME .. "/.pixi/envs/neovim-lsp/node.exe", vim.env.HOME .. "/.pixi/envs/neovim-lsp/bin/node.exe")
+          end
+        })
+  end
+
   ---@format disable
-  --vipga, --> to format manually
-  map("n", "<leader>L", "", { desc = "+LSP installer" }) -- relaunch nvim to autostart the new installed lsp
-  map("n", "<leader>Lb",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g bash-language-server@5.6.0') end,                             { desc = "bashls" })                      -- (no formatter press `=` to format selection)
-  map("n", "<leader>LB",  function() sendSequence('pixi g install biome=2.4.6 --environment neovim-lsp') end,                                                { desc = "biome (formatter+eslint)" })    -- https://biomejs.dev/internals/language-support/
-  map("n", "<leader>Lc",  function() sendSequence('pixi g install clang-tools=22.1.0 --expose clangd') end,                                                  { desc = "clangd" })                      -- (+formatter)
-  map("n", "<leader>Ld",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g dockerfile-language-server-nodejs@0.15.0') end,               { desc = "dockerls" })                    -- (+formatter)
-  map("n", "<leader>Le",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @olrtg/emmet-language-server@2.8.0') end,                     { desc = "emmet (autoclose tag)" })       -- suggests <autoclose-this-tag> but not </close-some-open-tag> like vscode-html-language-server
-  map("n", "<leader>Lg",  function() sendSequence('pixi g install gopls=0.20.0 --environment neovim-lsp') end,                                               { desc = "gopls (golang)" })              -- (+formatter)
-  map("n", "<leader>Li",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g intelephense@1.16.5') end,                                    { desc = "intelephense (php)" })          -- (+formatter)
-  map("n", "<leader>Lj",  function() sendSequence('pixi g install jdtls=1.57.0 --environment neovim-lsp') end,                                               { desc = "jdtls (java)" })                -- (+formatter)
-  map("n", "<leader>LJ",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g vscode-langservers-extracted@4.10.0') end,                    { desc = "cssls/html/jsonls" })           -- (+formatter)
-  map("n", "<leader>Lk",  function() sendSequence('pixi g install black=26.3.0 efm-langserver=0.0.56 --environment neovim-lsp') end,                         { desc = "black (python formatter)" })
-  map("n", "<leader>Ll",  function() sendSequence('pixi g install lua-language-server=3.17.1 --environment neovim-lsp') end,                                 { desc = "luals (for unix)" })            -- (+formatter)
-  map("n", "<leader>LL",  function() sendSequence('winget install luals.lua-language-server; # scoop install lua-language-server') end,                      { desc = "luals (for windows)" })         -- (+formatter)
-  map("n", "<leader>Lm",  function() sendSequence('pixi g install marksman=2025_11_30 --environment neovim-lsp') end,                                        { desc = "marksman (markdown)" })         -- (no formatter use prettier)
-  map("n", "<leader>Ln",  function() sendSequence('pixi g install neocmakelsp=0.10.1 --environment neovim-lsp') end,                                         { desc = "neocmake" })                    -- (+formatter +linter) https://github.com/regen100/cmake-language-server doesn't have formatter nor linter
-  map("n", "<leader>Lo",  function() sendSequence('pixi g install omnisharp-roslyn=1.39.12 --environment neovim-lsp') end,                                   { desc = "omnisharp (c#)" })              -- (+formatter)
-  map("n", "<leader>Lpr", function() sendSequence('pixi g install prettier=3.8.1 efm-langserver=0.0.56 --environment neovim-lsp') end,                       { desc = "prettier (formatter)" })
-  map("n", "<leader>LpR", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @prisma/language-server@31.6.0') end,                         { desc = "prismals" })                    -- (+formatter)
-  map("n", "<leader>Lpy", function() sendSequence('pixi g install pyright=1.1.408 --environment neovim-lsp') end,                                            { desc = "pyright (python)" })            -- (-formatter) means no formatter
-  map("n", "<leader>LpY", function() sendSequence('pixi g install python-lsp-server=1.14.0 -e neovim-lsp; pixi global expose add pylsp -e neovim-lsp' ) end, { desc = "pylsp (+formatter)" })          -- TODO: replace with https://github.com/astral-sh/ty since doens't show completions on external libraries like pynput
-  map("n", "<leader>Lr",  function() sendSequence('pixi g install ruff=0.15.5 --environment neovim-lsp') end,                                                { desc = "ruff (python formatter)" })
-  map("n", "<leader>LR",  function() sendSequence('pixi g install rust=1.94.0 --with rust-src') end,                                                         { desc = "rust_analyzer" })               -- (+formatter)
-  map("n", "<leader>Lsq", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g sql-language-server@1.7.1 vscode-jsonrpc@8.2.1') end,         { desc = "sqlls(-formatter +linter)" })   -- (no formatter use sqls)
-  map("n", "<leader>LsQ", function() sendSequence('pixi g install sqls=0.2.46 --environment neovim-lsp') end,                                                { desc = "sqls (+formatter -linter)" })
-  map("n", "<leader>Lta", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @tailwindcss/language-server@0.14.29') end,                   { desc = "tailwindcss" })
-  map("n", "<leader>LtA", function() sendSequence('pixi g install taplo=0.10.0 --environment neovim-lsp') end,                                               { desc = "taplo (toml)" })                -- (+formatter)
-  map("n", "<leader>Lte", function() sendSequence('pixi g install terraform-ls=0.38.5 --environment neovim-lsp') end,                                        { desc = "terraformls" })                 -- (no formatter press `=` to format selection)
-  map("n", "<leader>Lty", function() sendSequence('pixi g install pnpm nodejs; pnpm install -g typescript@5.9.3 typescript-language-server@5.1.3') end,      { desc = "typescript/angular/react/js" }) -- (+formatter)
-  map("n", "<leader>Lv",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g @vue/language-server@3.2.5 typescript@5.9.3') end,            { desc = "volar (vue)" })                 -- (no formatter use biome)
-  map("n", "<leader>Ly",  function() sendSequence('pixi g install pnpm nodejs; pnpm install -g yaml-language-server@1.21.0') end,                            { desc = "yamlls" })                      -- (+formatter)
+  --- `pixi global remove nodejs --environment neovim-lsp` to remove only nodejs (e.g. if you want `pixi global install nodejs=20`)
+  --- vipga, --> to format manually
+  map("n", "<leader>L", "", { desc = " LSP installer" }) --- relaunch nvim to autostart the new installed lsp
+  map("n", "<leader>Lb", function() sendSequence('pixi g install --environment neovim-lsp bash-language-server=5.6.0') fix_node_path() end,                                                  { desc = " bash" })                      --- (no formatter press `=` to format selection)
+  map("n", "<leader>Lc", function() sendSequence('pixi g install --environment neovim-lsp clang-tools=22.1.0 --expose clangd') end,                                                          { desc = " c/c++" })                     --- (+formatter)
+  map("n", "<leader>LC", function() sendSequence('pixi g install --environment neovim-lsp omnisharp-roslyn=1.39.12') end,                                                                    { desc = " c#" })                        --- (+formatter)
+  map("n", "<leader>Ld", function() sendSequence('pixi g install --environment neovim-lsp dockerfile-language-server-nodejs=0.15.0 ') fix_node_path() end,                                   { desc = " docker" })                    --- (+formatter)
+  map("n", "<leader>Le", function() sendSequence('pixi g install --environment neovim-lsp emmet-language-server=2.8.0 ') fix_node_path() end,                                                { desc = " emmet (autoclose tag)" })     --- suggests <autoclose-this-tag> but not </close-some-open-tag> like vscode-html-language-server
+  map("n", "<leader>Lf", function() sendSequence('pixi g install --environment neovim-lsp prettier=3.8.1 efm-langserver=0.0.56 ') end,                                                       { desc = " prettier formatter" })
+  map("n", "<leader>LF", function() sendSequence('pixi g install --environment neovim-lsp biome=2.4.6') end,                                                                                 { desc = " biome formatter/eslint" })    --- https://biomejs.dev/internals/language-support/
+  map("n", "<leader>Lg", function() sendSequence('pixi g install --environment neovim-lsp gopls=0.20.0') end,                                                                                { desc = " go" })                        --- (+formatter)
+  map("n", "<leader>Lh", function() sendSequence('pixi g install pnpm nodejs && pnpm install -g intelephense@1.16.5') end,                                                                   { desc = " php" })                       --- (+formatter)
+  map("n", "<leader>Lj", function() sendSequence('pixi g install --environment neovim-lsp jdtls=1.57.0') end,                                                                                { desc = " java" })                      --- (+formatter)
+  map("n", "<leader>Ll", function() sendSequence('pixi g install --environment neovim-lsp lua-language-server=3.17.1') end,                                                                  { desc = " lua for  " })               --- (+formatter)
+  map("n", "<leader>LL", function() sendSequence('winget install luals.lua-language-server || scoop install lua-language-server') end,                                                       { desc = " lua for " })                 --- (+formatter)
+  map("n", "<leader>Lm", function() sendSequence('pixi g install --environment neovim-lsp marksman=2025_11_30') end,                                                                         { desc = "  markdown" })                 --- (no formatter use prettier)
+  map("n", "<leader>LM", function() sendSequence('pixi g install --environment neovim-lsp neocmakelsp=0.10.1') end,                                                                          { desc = " cmake" })                     --- (+formatter +linter) https://github.com/regen100/cmake-language-server doesn't have formatter nor linter
+  map("n", "<leader>Lp", function() sendSequence('pixi g install --environment neovim-lsp prisma-language-server=31.6.0') fix_node_path() end,                                               { desc = " prisma" })                    --- (+formatter)
+  map("n", "<leader>LP", function() sendSequence('pixi g install --environment neovim-lsp ty=0.0.26 ruff=0.15.8 -c https://prefix.dev/github-releases') end,                                 { desc = " python" })                    --- (-formatter) means no formatter
+  map("n", "<leader>Lr", function() sendSequence('pixi g install --environment neovim-lsp rust=1.94.0 --with rust-src') end,                                                                 { desc = " rust" })                      --- (+formatter)
+  map("n", "<leader>LR", function() sendSequence('pixi g install --environment neovim-lsp terraform-ls=0.38.5') fix_node_path() end,                                                         { desc = " terraform" })                 --- (no formatter press `=` to format selection)
+  map("n", "<leader>Ls", function() sendSequence('pixi g install --environment neovim-lsp sql-language-server=1.7.1 vscode-jsonrpc=8.2.1') fix_node_path() end,                              { desc = " sqlls(-formatter +linter)" }) --- (no formatter use sqls)
+  map("n", "<leader>LS", function() sendSequence('pixi g install --environment neovim-lsp sqls=0.2.46') end,                                                                                 { desc = " sqls (+formatter -linter)" })
+  map("n", "<leader>Lt", function() sendSequence('pixi g install --environment neovim-lsp tailwindcss-language-server=0.14.29') fix_node_path() end,                                         { desc = "󱏿 tailwindcss" })
+  map("n", "<leader>LT", function() sendSequence('pixi g install --environment neovim-lsp taplo=0.10.0') end,                                                                                { desc = " toml" })                      --- (+formatter)
+  map("n", "<leader>Lx", function() sendSequence('pixi g install --environment neovim-lsp vscode-langservers-extracted=4.10.0') fix_node_path() end,                                         { desc = "   css html json" })         --- (+formatter)
+  map("n", "<leader>LX", function() sendSequence('pixi g install --environment neovim-lsp typescript=5.9.3 typescript-language-server=5.1.3 vue-language-server=3.2.8') fix_node_path() end, { desc = "   󰡄 " })                   --- (+formatter)
+  map("n", "<leader>Ly", function() sendSequence('pixi g install --environment neovim-lsp yaml-language-server=1.21.0') fix_node_path() end,                                                 { desc = " yaml" })                      --- (+formatter)
   ---@format enable
 
   ------------------------------------------------------------------------------------------------------------------------
 
-  map("n", "<leader>l", "", { desc = "+LSP" })
-  map("n", "<leader>la", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
-  map("n", "<leader>lb", function() require("snacks").picker.diagnostics_buffer() end, { desc = "Buffer Diagnostics" })
-  map("n", "<leader>lc", function() require("snacks").picker.lsp_incoming_calls() end, { desc = "Incoming Calls" })
-  map("n", "<leader>lC", function() require("snacks").picker.lsp_outgoing_calls() end, { desc = "Outcoming Calls" })
-  map("n", "<leader>ld", function() require("snacks").picker.lsp_definitions() end, { desc = "Pick Definition" })
-  map("n", "<leader>lD", function() require("snacks").picker.lsp_declarations() end, { desc = "Pick Declaration" })
-  map("n", "<leader>lF", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "Format" })
-  map("n", "<leader>lh", function() vim.lsp.buf.hover() end, { desc = "Hover" })
-  map("n", "<leader>lH", function() vim.lsp.buf.signature_help() end, { desc = "Signature" })
-  map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = "Pick Implementation" })
-  map("n", "<leader>lm", function() vim.cmd("checkhealth vim.treesitter") end, { desc = "checkhealth Treesitter" })
-  map("n", "<leader>lM", function() vim.cmd("checkhealth vim.lsp") end, { desc = "checkhealth LSP" })
-  map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
-  map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = "Open Diagnostic" })
-  map("n", "<leader>lO", function() require("snacks").picker.diagnostics() end, { desc = "Pick Diagnostics" })
-  map("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
-  map("n", "<leader>lq", function() require("snacks").picker.loclist() end, { desc = "Pick Location List" })
-  map("n", "<leader>lr", function() require("snacks").picker.lsp_references() end, { desc = "Pick References" })
-  map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "Rename" })
-  map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = "Pick symbols" })
-  map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end,
-    { desc = "Pick workspace symbols" })
-  map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Pick TypeDefinition" })
+  map("n", "<leader>l", "", { desc = "󰗊 LSP" })
+  map("n", "<leader>la", function() vim.lsp.buf.code_action() end, { desc = " code action" })
+  map("n", "<leader>lb", function() require("snacks").picker.diagnostics_buffer() end, { desc = " diagnostic curr buffer" })
+  map("n", "<leader>lB", function() require("snacks").picker.diagnostics() end, { desc = " diagnostic all buffers" })
+  map("n", "<leader>lc", function() require("snacks").picker.lsp_incoming_calls() end, { desc = " incoming calls" })
+  map("n", "<leader>lC", function() require("snacks").picker.lsp_outgoing_calls() end, { desc = " outgoing calls" })
+  map("n", "<leader>ld", function() require("snacks").picker.lsp_definitions() end, { desc = " pick definition" })
+  map("n", "<leader>lD", function() require("snacks").picker.lsp_declarations() end, { desc = " pick declaration" })
+  map("n", "<leader>lF", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "󰉢 format" })
+  map("n", "<leader>lh", function() vim.lsp.buf.hover() end, { desc = "󰆽 hover" })
+  map("n", "<leader>lH", function() vim.lsp.buf.signature_help() end, { desc = "󰽉 signature" })
+  map("n", "<leader>lI", function() require("snacks").picker.lsp_implementations() end, { desc = " pick implementation" })
+  map("n", "<leader>lM", function() vim.cmd("checkhealth vim.lsp") end, { desc = " checkhealth lsp" })
+  map("n", "<leader>ln", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = " diagnostic next" })
+  map("n", "<leader>lo", function() vim.diagnostic.open_float() end, { desc = " diagnostic open" })
+  map("n", "<leader>lp", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = " diagnostic previous" })
+  map("n", "<leader>lq", function() require("snacks").picker.loclist() end, { desc = " pick location list" })
+  map("n", "<leader>lr", function() require("snacks").picker.lsp_references() end, { desc = " pick references" })
+  map("n", "<leader>lR", function() vim.lsp.buf.rename() end, { desc = "󰘎 rename" })
+  map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = " pick symbols" })
+  map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end, { desc = " pick workspace symbols" })
+  map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = " pick typedefinition" })
+  map("n", "<leader>l>", "<cmd>LspCopilotSignIn<cr>", { desc = " copilot signin" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
-  map("n", "<leader>E", "", { desc = "+Extension" })
-  map("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", { desc = "Toggle Explorer" })
+  map("n", "<leader>E", "", { desc = " extensions" })
+  map("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", { desc = "󰙅 explorer toggle" })
   map(
     "n",
-    "<leader>El",
+    "<leader>Ek",
     function()
-      sendSequence('pixi g install copilot-language-server-release --channel https://prefix.dev/retronvim ')
-      vim.pack.add({{ src = 'https://github.com/copilotlsp-nvim/copilot-lsp', version = '884034b23c3716d55b417984ad092dc2b011115b' }})
-      vim.notify("relaunch neovim after installation to login to copilot")
+      sendSequence("pixi g install copilot-language-server-release -c https://prefix.dev/retronvim")
+      sendSequence("pixi g install nodejs pnpm && pnpm install -g @google/gemini-cli && exit", true)
+      -- sendSequence([[nvim --server "$NVIM" --remote-send "<cmd>lsp enable copilot<cr>"]], true)
+      vim.pack.add({{ src = 'https://github.com/folke/sidekick.nvim', version = 'v2.3.0' }})
+      autocmd({ "TermLeave" }, { once = true, command = "lsp enable copilot" })
+      autocmd({ "BufEnter", "LspAttach" }, { once = true, command = "lua vim.schedule(function() pcall(vim.cmd, 'LspCopilotSignIn') end)" })
+      require("sidekick").setup({})
     end,
-    { desc = "copilot-lsp install" } -- Copilot-NES is free and unlimited
+    { desc = " sidekick 󰫣  " }
   )
   map(
     "n",
-    "<leader>Em",
+    "<leader>En",
     function()
-
-      local sm_agent_path = vim.env.HOME .. "\\.supermaven\\binary\\v20\\windows-x86_64\\sm-agent.exe"
-      local download_url = "https://supermaven-public.s3.amazonaws.com/sm-agent/v2/8/windows-msvc/x86_64/sm-agent.exe"
-
-      -- download supermaven executable manually since powershell v5 can't download it
-      if (vim.fn.has('win32') == 1 and vim.fn.executable(sm_agent_path) == 0) then
-        sendSequence('pixi exec curl --create-dirs --output "' .. sm_agent_path .. '" "' .. download_url .. '" ')
-      end
-
-      vim.pack.add({{ src = "https://github.com/supermaven-inc/supermaven-nvim", checkout = "07d20fce48a5629686aefb0a7cd4b25e33947d50" }})
-
-      vim.notify("requires a ramdom ID ---> :SupermavenUseFree")
-      vim.notify("relaunch neovim")
+      vim.pack.add({{ src = 'https://github.com/monkoose/neocodeium', commit = "bfe790d78e66adaa95cb50a8c75c64a752336e9c"}})
+      vim.ui.open("https://windsurf.com/vim-show-auth-token")
+      vim.cmd.restart("NeoCodeium auth")
     end,
-    { desc = "supermaven-nvim install" }
+    { desc = " neocodeium  " }
   )
   map(
     "n",
     "<leader>Es",
     function()
-      if vim.fn.executable('gemini') == 0 then
-        sendSequence('pixi g install pnpm; pnpm install -g @google/gemini-cli')
-      end
-
-      vim.pack.add({{ src = 'https://github.com/folke/sidekick.nvim', version = 'v2.1.0' }})
-
-      vim.notify("relaunch neovim")
+      vim.pack.add({{ src = "https://github.com/supermaven-inc/supermaven-nvim", commit = "07d20fce48a5629686aefb0a7cd4b25e33947d50"}})
+      vim.cmd.restart("SupermavenUseFree")
     end,
-    { desc = "sidekick.nvim install" }  -- Gemini is free and unlimited
+    { desc = " supermaven  " }
   )
-  map(
-    "n",
-    "<leader>Et",
-    function()
-      sendSequence('pixi g install evil-helix --channel https://prefix.dev/retronvim')
-      sendSequence('cp -r ~/.pixi/envs/evil-helix/bin/runtime/queries '  .. vim.fn.stdpath('data') .. '/site/queries', true) -- helix queries doesn't support vim.bo.commentstring (alternative: replace it with nvim-treesitter queries)
-      sendSequence('cp -r ~/.pixi/envs/evil-helix/bin/runtime/grammars ' .. vim.fn.stdpath('data') .. '/site/parser', true)
-      sendSequence('rm ' .. vim.fn.stdpath('data') .. '/site/parser/*-* ', true)    -- `:checkhealth vim.treesitter` errors names with dashes
-      sendSequence('rm ' .. vim.fn.stdpath('data') .. '/site/parser/query* ', true) -- conflicts with builtin neovim parser
-      vim.notify("relaunch neovim")
-    end,
-    { desc = "treesitter install" }
-  )
-  map(
-    "n",
-    "<leader>Ew",
-    function()
-      if vim.env.APPDATA and vim.fn.executable('msys2') == 0 then
-        sendSequence("scoop install msys2; msys2")
-      end
-
-      vim.pack.add({{ src = 'https://github.com/Exafunction/windsurf.nvim', checkout = "821b570b526dbb05b57aa4ded578b709a704a38a" }})
-      vim.pack.add({{ src = 'https://github.com/nvim-lua/plenary.nvim', checkout = "b9fd5226c2f76c951fc8ed5923d85e4de065e509" }})
-
-      vim.notify("relaunch neovim")
-      vim.notify("to login to windsurf run ---> :Codeium auth")
-    end,
-    { desc = "windsurf.nvim install" }
-  )
-  map("n", "<leader>EL", function() vim.pack.del({"copilot-lsp"}) vim.notify("relaunch nvim") end, { desc = "copilot-lsp uninstall" })
-  map("n", "<leader>EM", function() vim.pack.del({"supermaven-nvim"}) vim.notify("relaunch nvim") end, { desc = "supermaven-nvim uninstall" })
-  map("n", "<leader>ES", function() vim.pack.del({"sidekick.nvim"}) vim.notify("relaunch nvim") end, { desc = "sidekick.nvim uninstall" })
-  map("n", "<leader>EW", function() vim.pack.del({"windsurf.nvim", "plenary.nvim"}) vim.notify("relaunch nvim") end, { desc = "windsurf.nvim uninstall" })
-  map("n", "<leader>EI", function() vim.print(vim.inspect(vim.pack.get())) end, { desc = "installed extensions" })
+  map("n", "<leader>EK", function() vim.pack.del({"sidekick.nvim"}) vim.cmd.restart() end, { desc = " sidekick 󰫣  " })
+  map("n", "<leader>EN", function() vim.pack.del({"neocodeium"}) vim.cmd.restart() end, { desc = " neocodeium  " })
+  map("n", "<leader>ES", function() vim.pack.del({"supermaven-nvim"}) vim.cmd.restart() end, { desc = " supermaven  " })
+  map("n", "<leader>E?", function() vim.print(vim.pack.get()) end, { desc = "󱃔 installed extensions" })
+  map("n", "<leader>E!", function() vim.cmd.checkhealth() end, { desc = " checkhealth extensions" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
-  map("n", "<leader>f", "", { desc = "+Find" })
-  map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "buffers" })
-  map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "ripgrep on buffers" })
-  map("n", "<leader>fc", function() require("snacks").picker.colorschemes() end, { desc = "colorscheme" })
-  map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "keymaps" })
-  map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = "files" })
-  map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "ripgrep" })
-  map("n", "<leader>fn", function() require("mini.notify").show_history() end, { desc = "Notify history" })
-  map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "projects" })
-  map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = "quick list" })
-  map("n", "<leader>fr", function() require("snacks").picker.recent() end, { desc = "recent files" })
-  map("n", '<leader>f"', function() require("snacks").picker.registers() end, { desc = "register (:help quote)" })
+  map("n", "<leader>f", "", { desc = " find" })
+  map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "󱙈 buffers" })
+  map("n", "<leader>fB", function() require("snacks").picker.grep_buffers() end, { desc = "󰺮 ripgrep in buffers" })
+  map("n", "<leader>fc", function() require("snacks").picker.colorschemes() end, { desc = " colorscheme" })
+  map("n", "<leader>fk", function() require("snacks").picker.keymaps() end, { desc = "󰌌 keymaps" })
+  map("n", "<leader>ff", function() require("snacks").picker.files() end, { desc = " files" })
+  map("n", "<leader>fg", function() require("snacks").picker.grep() end, { desc = "󱩾 ripgrep in files" })
+  map("n", "<leader>fn", function() require("mini.notify").show_history() end, { desc = "󰍩 notify history" })
+  map("n", "<leader>fp", function() require("snacks").picker.projects() end, { desc = "󰪺 recent projects" })
+  map("n", "<leader>fq", function() require("snacks").picker.qflist() end, { desc = " quick list" })
+  map("n", "<leader>fr", function() require("snacks").picker.recent() end, { desc = "󱋡 recent files" })
+  map("n", '<leader>f"', function() require("snacks").picker.registers() end, { desc = "󱛢 register (:help quote)" })
   map(
     "n",
-    "<leader>f;",
+    "<leader>f/",
     function()
       Snacks.picker.files({
         focus = "list",
@@ -1242,22 +940,22 @@ if not vim.g.vscode then
         }
       })
     end,
-    { desc = "files (normal mode)" }
+    { desc = "󰱽 explore files" }
   )
-  map("n", "<leader>f.", function() require("snacks").picker.jumps() end, { desc = "jumps" })
-  map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = "marks" })
-  map("n", "<leader>f,", "<cmd>buffer #<cr>", { desc = "Recent buffer" })
-  map("n", "<leader>;", function() require("snacks").picker.resume() end, { desc = "resume search" })
+  map("n", "<leader>f.", function() require("snacks").picker.jumps() end, { desc = " jumps" })
+  map("n", "<leader>f'", function() require("snacks").picker.marks() end, { desc = " bookmarks" })
+  map("n", "<leader>f,", "<cmd>buffer #<cr>", { desc = "󰻡 Recent buffer" })
+  map("n", "<leader>;", function() require("snacks").picker.resume() end, { desc = " search resume" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
-  map("n", "<leader>g", "", { desc = "+Git" })
-  map("n", "<leader>gg", function() Snacks.terminal("lazygit")  end, { desc = "lazygit" }) -- `:term lazygit` doesn't work on zsh.exe
+  map("n", "<leader>g", "", { desc = "󰊢 git" })
+  map("n", "<leader>gg", function() Snacks.terminal("lazygit")  end, { desc = " lazygit" }) --- `:term lazygit` doesn't work on zsh.exe
   map(
     "n",
     "<leader>gd",
-    "<cmd>diffthis | vertical new | diffthis | read !git show HEAD^:#<cr>",
-    { desc = "git difftool -t nvimdiff" }
+    "<cmd>diffthis | vertical new | diffthis | lua vim.cmd('read !git show HEAD^:' .. vim.fs.normalize(vim.fn.expand('#')))<cr>",
+    { desc = " diff last commit" }
   )
   map(
     "n",
@@ -1265,179 +963,105 @@ if not vim.g.vscode then
     function()
 
       local curr_file = vim.fn.expand('%')
-      local curr_line = vim.fn.line('.') - 2 -- Snacks.picker.git_diff() adds 3 lines and deleted hunks takes out 1 line
+      local curr_line = vim.fn.line('.') - 2 --- Snacks.picker.git_diff() adds 3 lines and deleted hunks takes out 1 line
 
       require("snacks").picker.git_diff({
         focus = "list",
         layout = { preset = 'big_preview' },
         on_show = function(picker)
 
-          local pos_index = {} -- { { 6, 3 }, { 19, 4 }, { 45, 5 }, { 55, 6 }, { 63, 7 } }
           local jump = 1
 
-          -- fill pos_index
           for index, item in ipairs(picker:items()) do
-            if (item.text == curr_file .. ":" .. item.pos[1]) then -- /[directory]/ also works
-              table.insert(pos_index, {item.pos[1], index})
+            if (item.text == curr_file .. ":" .. item.pos[1]) then --- search /directory/file
+              if (curr_line >= item.pos[1]) then                   --- search line
+                jump = index
+              end
             end
           end
 
-          if not pos_index[1] then return end
-
-          -- find index to jump
-          for index, item in ipairs(pos_index) do
-            if (curr_line >= item[1]) then
-              jump = index
-            end
-          end
-
-          picker.list:view(pos_index[jump][2])
-          -- vim.notify(vim.inspect(pos_index))
+          picker.list:view(jump)
         end,
       })
     end,
-    { desc = "Preview GitHunk" }
+    { desc = " git-hunk preview" }
   )
-  map("n", "<leader>gr", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gH')<cr>", { desc = "Reset GitHunk" })
-  map("n", "<leader>gs", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gh')<cr>", { desc = "Stage GitHunk" })
+  map("n", "<leader>gr", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gH')<cr>", { desc = " git-hunk reset" })
+  map("n", "<leader>gs", "<cmd>lua MiniDiff.textobject() vim.cmd.normal('gh')<cr>", { desc = " git-hunk stage" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
-  map("n", "<leader>u", "", { desc = "+UI toggle" })
-  map("n", "<leader>u0", "<cmd>set showtabline=0<cr>", { desc = "buffer hide" })
-  map("n", "<leader>u2", "<cmd>set showtabline=2<cr>", { desc = "buffer show" })
+  map("n", "<leader>u", "", { desc = "󰨙 UI" })
+  map("n", "<leader>ub", function() vim.o.showtabline = vim.o.showtabline == 0  and 2 or 0 end, { desc = "󰔡 bufferline" })
   map(
     "n",
     "<leader>uc",
     function()
-      vim.o.number       = not vim.o.number
-      vim.o.foldcolumn   = vim.o.number and '1' or '0'
-      vim.o.signcolumn   = vim.o.number and 'auto' or 'no'
-      vim.o.statuscolumn = vim.o.number and '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "" : "") : " " }%s%l ' or ''
-      vim.o.foldenable   = not vim.o.foldenable
+      vim.o.number = not vim.o.number
+      vim.o.foldcolumn = vim.o.number and '1' or '0'
+      vim.o.signcolumn = vim.o.number and 'auto' or 'no'
     end,
-    { desc = "statuscolumn toggle" }
+    { desc = "󰔡 statuscolumn" }
   )
-  map("n", "<leader>ud", "<cmd>lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())<cr>",
-    { desc = "diagnostic toggle" })
-  map("n", "<leader>uf", "<cmd>lua vim.o.foldmethod='indent'<cr>", { desc = "fold by indent (press z)" })
-  map("n", "<leader>uF", "<cmd>lua vim.o.foldmethod='expr'<cr>", { desc = "fold by lsp (press z)" })
-  map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "cursorline toggle" })
-  map("n", "<leader>up", "<cmd>popup PopUp<cr>", { desc = "mouse-popup toggle" })
-  map("n", "<leader>us", "<cmd>set laststatus=0<cr>", { desc = "statusbar hide" })
-  map("n", "<leader>uS", "<cmd>set laststatus=3<cr>", { desc = "statusbar show" })
-  map(
-    "n",
-    "<leader>uu",
-    function()
-      if not Hidden then
-        Bufnr = vim.fn.bufnr()
-        vim.cmd.hide()
-        Hidden = true
-      else
-        vim.cmd('split | buffer' .. Bufnr)
-        Hidden = false
-      end
-    end,
-    { desc = "hide/unhide window/terminal" }
-  )
-
-  ------------------------------------------------------------------------------------------------------------------------
-
-  map("n", "<leader>w", "", { desc = "+Window" })
-  map("n", "<leader>wv", "<cmd>vsplit<cr>", { desc = "vertical window" })
-  map("n", "<leader>wV", "<cmd>split<cr>", { desc = "horizontal window" })
-  map("n", "<leader>t", function() Snacks.terminal() end, { desc = "toggle float terminal" }) -- vim.o.shell doesn't work on zsh.exe
-  map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = "vertical terminal" })
-  map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = "horizontal terminal" })
+  map("n", "<leader>ud", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = "󰔡 diagnostic" })
+  map("n", "<leader>uf", function() vim.o.foldmethod = vim.o.foldmethod == 'expr'  and 'indent' or 'expr' end, { desc = "󰔢 fold by indent or lsp" })
+  map("n", "<leader>ul", "<cmd>set cursorline!<cr>", { desc = "󰔢 cursorline" })
+  map("n", "<leader>up", "<cmd>popup PopUp<cr>", { desc = "󰔢 mouse-popup" })
+  map("n", "<leader>us", function() vim.o.laststatus = vim.o.laststatus == 0  and 3 or 0 end, { desc = "󰔡 statusline" })
+  map("n", "<leader>t", function() Snacks.terminal() end, { desc = " term toggle" }) --- vim.o.shell doesn't work on zsh.exe
+  map("n", "<leader>T", "<cmd>term<cr>", { desc = " term tab" })
+  map("n", "<leader>v", "<cmd>vsplit | terminal<cr>", { desc = " term horizontal" })
+  map("n", "<leader>V", "<cmd>split  | terminal<cr>", { desc = " term vertical" })
+  map("n", "<leader>w", "", { desc = " window" })
+  map("n", "<leader>wv", "<cmd>vsplit<cr>", { desc = " vertical window" })
+  map("n", "<leader>wV", "<cmd>split<cr>", { desc = " horizontal window" })
 end
 
-if vim.g.vscode then
-  map(
-    "n",
-    "<leader>o",
-    function()
-      vscode.action("workbench.files.action.focusFilesExplorer")
-    end,
-    { desc = "focus explorer" }
-  )
-else
-  map(
-    "n",
-    "<leader>o",
-    function()
-      Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true } })
-    end,
-    { desc = "Explorer/previewer" }
-  )
-end
+map(
+  "n",
+  "<leader>o",
+  function()
+    return vim.g.vscode
+        and vscode.action("workbench.files.action.focusFilesExplorer")
+        or Snacks.explorer.open({ auto_close = true, layout = { preset = 'big_preview', preview = true } })
+  end,
+  { desc = "󰙅 explorer/previewer" }
+)
 
 ------------------------------------------------------------------------------------------------------------------------
 
-map({ "n", "x" }, "<leader><leader>", "", { desc = "+Second Clipboard" })
-map("n", "<leader><leader>p", '"*p', { desc = "Paste after" })
-map("n", "<leader><leader>P", '"*P', { desc = "Paste before" })
-map("x", "<leader><leader>p", '"*p', { desc = "Paste" })           -- "Paste after (second_clip)"
-map("x", "<leader><leader>P", 'g_"*P', { desc = "Paste forward" }) -- only works in visual mode
-map("n", "<leader><leader>y", '"*y', { desc = "Yank" })
-map("n", "<leader><leader>Y", '"*yg_', { desc = "Yank forward" })
-map("x", "<leader><leader>y", '"*y', { desc = "Yank" })
-map("x", "<leader><leader>Y", 'g_"*y', { desc = "Yank forward" })
+map({ "n", "x" }, "<leader><leader>", "", { desc = "󰅌 second clipboard" })
+map("n", "<leader><leader>p", '"*p', { desc = "󰨸 paste after" })
+map("n", "<leader><leader>P", '"*P', { desc = "󰨸 paste before" })
+map("x", "<leader><leader>p", '"*p', { desc = "󰨸 paste" }) --- "Paste after (second_clip)"
+map("x", "<leader><leader>P", 'g_"*P', { desc = "󰨸 paste forward" }) --- only works in visual mode
+map("n", "<leader><leader>y", '"*y', { desc = "󰅍 yank" })
+map("n", "<leader><leader>Y", '"*yg_', { desc = "󰅍 yank forward" })
+map("x", "<leader><leader>y", '"*y', { desc = "󰅍 yank" })
+map("x", "<leader><leader>Y", 'g_"*y', { desc = "󰅍 yank forward" })
 
--- ╭────────────────────╮
--- │ Operator / Motions │
--- ╰────────────────────╯
+--- ╭───────────────────────────────────╮
+--- │ Operator / Motions / text objects │
+--- ╰───────────────────────────────────╯
 
--- https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
-map(
-  { "n", "x" },
-  "gT",
-  function()
-    local _, inner_outer_key = pcall(vim.fn.getcharstr)
-    local _, motion_key = pcall(vim.fn.getcharstr)
-    local cmd
+---@format disable
+---> https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
+-- map({ "o" }, "g\\", [[<cmd>exec                 'normal mSv' ..        getcharstr() ..        getcharstr() .. 'o`So'                                                     <cr> ]],     { remap  = true })             -- repeat not working
+-- map({ "o" }, "g\\", [[                setreg('q', '<esc>mSv' ..        getcharstr() ..        getcharstr() .. 'o`So'   ) ? "" : getreg('q') . v:operator                      ]],     { expr = true, remap = true }) -- repeat not working
+-- map({ "o" }, "g\\", [[                setreg('q',        'v' ..        getcharstr() ..        getcharstr() .. '<esc>l' ) ? "" : ":lua vim.cmd.normal(vim.fn.getreg('q')) <cr>"]],     { expr = true, remap = true }) -- repeat working
+-- map({ "o" }, "g\\", [[<cmd>lua vim.fn.setreg('q',        'v' .. vim.fn.getcharstr() .. vim.fn.getcharstr() .. '\27l'   )              vim.cmd.normal(vim.fn.getreg('q')) <cr> ]],     { remap  = true })             -- repeat not working
+-- map({ "o" }, "g\\", function() vim.fn.setreg('q',        'v' .. vim.fn.getcharstr() .. vim.fn.getcharstr() .. '\27l'   ) return  [[<cmd>exec 'normal '    . getreg('q')  <cr> ]] end, { expr = true, remap = true }) -- repeat working
 
-    if vim.fn.mode() == "n" then
-      -- empty spaces or repeat sequence `<`< escapes special char since `< waits for a especial char
-      cmd = "v" .. inner_outer_key .. motion_key .. "`<    "
-    else
-      -- mT = Temp mark
-      -- mS = Start mark
-      cmd = "mT`>mS`Tv" .. inner_outer_key .. motion_key .. "`<v`So"
-    end
-
-    vim.cmd.exec([["normal ]] .. cmd .. [["]])
-    vim.fn.setreg('w', cmd)
-  end,
-  { desc = "Start of TextObj (| to repeat)" }
-)
-map(
-  { "n", "x" },
-  "gt",
-  function()
-    local _, inner_outer_key = pcall(vim.fn.getcharstr)
-    local _, motion_key = pcall(vim.fn.getcharstr)
-    local cmd
-
-    if vim.fn.mode() == "n" then
-      cmd = "v" .. inner_outer_key .. motion_key .. "`>"
-    else
-      -- mT = Temp mark
-      -- mS = Start mark
-      cmd = "mT`<mS`Tv" .. inner_outer_key .. motion_key .. "`>v`So"
-    end
-
-    vim.cmd.exec([["normal ]] .. cmd .. [["]])
-    vim.fn.setreg('q', cmd)
-  end,
-  { desc = "End of TextObj (\\ to repeat)" }
-)
-
+map({ "o" }, "g\\", [[setreg('q',             'v' . getcharstr() . getcharstr() . '<esc>`>l') ? "" : ":exec 'normal ' . getreg('q')<cr>" ]], { expr = true, remap = true, desc = "textobj end (dot to repeat)" })   --- paragraph textobj needs `>l
+map({ "o" }, "g|",  [[setreg('q',             'v' . getcharstr() . getcharstr() . 'o<esc>'  ) ? "" : ":exec 'normal ' . getreg('q')<cr>" ]], { expr = true, remap = true, desc = "textobj start (dot to repeat)" }) --- remap=true to detect mini.ai
+map({ "n" }, "g\\", [[setreg('q',             'v' . getcharstr() . getcharstr() . '<esc>`>' ) ? "" : "@q"                                ]], { expr = true, remap = true, desc = "textobj end (\\ repeats)" })      --- remap=true to detect mini.ai
+map({ "n" }, "g|",  [[setreg('w',             'v' . getcharstr() . getcharstr() . '<esc>`<' ) ? "" : "@w"                                ]], { expr = true, remap = true, desc = "textobj start (| repeats)" })     --- remap=true to detect mini.ai
+map({ "x" }, "g\\", [[setreg('q','<esc>mT`<mS`Tv' . getcharstr() . getcharstr() . 'o`So'    ) ? "" : "@q"                                ]], { expr = true, remap = true, desc = "textobj end (\\ repeats)" })      --- remap=true to detect mini.ai
+map({ "x" }, "g|",  [[setreg('w','<esc>mT`>mS`Tv' . getcharstr() . getcharstr() . '`So'     ) ? "" : "@w"                                ]], { expr = true, remap = true, desc = "textobj start (| repeats)" })     --- remap=true to detect mini.ai
+map({ "n" }, "go",  [[<cmd>let _=&commentstring | let commentstring={/*\ %s\ */} | normal gc | let &commentstring=_ <cr>]], { desc = "jsx comment" })
 map({ "n", "x" }, "gb", '"_d', { desc = "Blackhole Motion/Selected (dot to repeat)" })
 map({ "n", "x" }, "gB", '"_D', { desc = "Blackhole Linewise (dot to repeat)" })
 map({ "n", "o", "x" }, "g.", "`.", { desc = "go to last change" })
-map({ "n" }, "g,", "g,", { desc = "go forward in :changes" })  -- Formatting will lose track of changes
-map({ "n" }, "g;", "g;", { desc = "go backward in :changes" }) -- Formatting will lose track of changes
 map({ "n" }, "gy", '"1p', { desc = "Redo register (dot to Paste forward the rest of register)" })
 map({ "n" }, "gY", '"1P', { desc = "Redo register (dot to Paste backward the rest of register)" })
 map({ "n" }, "g<Up>", "<c-a>", { desc = "numbers ascending" })
@@ -1446,34 +1070,11 @@ map({ "x" }, "g<Up>", "g<c-a>", { desc = "numbers ascending" })
 map({ "x" }, "g<Down>", "g<c-x>", { desc = "numbers descending" })
 map({ "n", "x" }, "g+", "<C-a>", { desc = "Increment number (dot to repeat)" })
 map({ "n", "x" }, "g-", "<C-x>", { desc = "Decrement number (dot to repeat)" })
-
--- ╭─────────────────────────────────────────────────╮
--- │ Text Objects with "g", "a", "i" (dot to repeat) │
--- ╰─────────────────────────────────────────────────╯
-
-map(
-  { "x" },
-  "go",
-  function()
-    local commentstring = vim.bo.commentstring
-    vim.bo.commentstring = [[{/* %s */}]]
-    vim.cmd [[ normal gc ]]
-    vim.bo.commentstring = commentstring
-  end,
-  { desc = "jsx comment" }
-)
-
 map({ "n" }, "vgh", "<cmd>lua require('mini.diff').textobject()<cr>", { desc = "select diff/hunk" })
 map({ "n" }, "vgc", "<cmd>lua require('mini.comment').textobject()<cr>", { desc = "select BlockComment" })
 map({ "n", "o", "x" }, "gC", function() require('mini.comment').textobject() end, { desc = "select BlockComment" })
 map({ "n", "o", "x" }, "gD", function() require('mini.diff').textobject() end, { desc = "select diff/hunk" })
 map({ "o", "x" }, "ii", function() require("mini.ai").select_textobject("i", "i") end, { desc = "indent_noblanks" })
-map({ "o", "x" }, "ai", "<cmd>normal Viiok<cr>", { desc = "indent_noblanks" })
-map({ "o", "x" }, "iy", "<cmd>lua _G.skip_blank_line=true  MiniAi.select_textobject('i','y')<cr>",
-  { desc = "same_indent" }) -- `:lua` asks for `Press ENTER or type command to continue` if window is small
-map({ "o", "x" }, "ay", "<cmd>lua _G.skip_blank_line=false MiniAi.select_textobject('i','y')<cr>",
-  { desc = "same_indent" }) -- `:lua` asks for `Press ENTER or type command to continue` if window is small
-map({ "x" }, "iz", "<cmd><c-u>normal! [zjV]z<cr>", { silent = true, desc = "inner fold" })
-map({ "x" }, "az", "<cmd><c-u>normal! [zV]z<cr>", { silent = true, desc = "outer fold" })
-map({ "o" }, "iz", "<cmd>normal Viz<cr>", { silent = true, desc = "inner fold" })
-map({ "o" }, "az", "<cmd>normal Vaz<cr>", { silent = true, desc = "outer fold" })
+map({ "o", "x" }, "ai", "<cmd>normal Viioko<cr>", { desc = "indent_noblanks" })
+map({ "o", "x" }, "iy", "<cmd>lua _G.skip_blank_line=true  MiniAi.select_textobject('i','y')<cr>", { desc = "same_indent" }) --- `:lua` asks for `Press ENTER or type command to continue` if window is small
+map({ "o", "x" }, "ay", "<cmd>lua _G.skip_blank_line=false MiniAi.select_textobject('i','y')<cr>", { desc = "same_indent" }) --- `:lua` asks for `Press ENTER or type command to continue` if window is small
