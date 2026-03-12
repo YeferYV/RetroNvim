@@ -56,12 +56,12 @@ $env:BAT_THEME="base16"
 $env:EDITOR="nvim"
 $env:FZF_DEFAULT_OPTS="--color 'hl:-1:reverse,hl+:-1:reverse' --preview 'bat --color=always {}' --preview-window 'hidden' --bind '?:toggle-preview' --multi --bind 'ctrl-s:select-all+reload:sort --reverse --ignore-case {+f}'"
 $env:FONT_PATH="$HOME\AppData\Local\Microsoft\Windows\Fonts\FiraCodeNerdFont-Bold.ttf"
-$env:HOME=$env:USERPROFILE # fot ~/.gitconfig
+$env:HOME=$env:USERPROFILE # for ~/.gitconfig
 $env:LESS="--ignore-case"                         # bat search case insensitive
 $env:LESSKEYIN="$env:RETRONVIM_PATH/yazi/lesskey" # bat keymaps
 $env:LESSHISTFILE="-"                             # bat no history
-$env:MSYS2_BIN="$env:HOME\scoop\apps\msys2\current\usr\bin"
-$env:PATH="$env:RETRONVIM_BIN\bin;$env:RETRONVIM_BIN\usr\bin;$env:RETRONVIM_BIN\mingw64\bin;$env:MSYS2_BIN;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\.local\bin;${env:PATH};"
+$env:PATH="$env:RETRONVIM_BIN\bin;$env:RETRONVIM_BIN\usr\bin;$env:RETRONVIM_BIN\mingw64\bin;$HOME\.pixi\bin;$HOME\appdata\local\pnpm;$HOME\.local\bin;${env:PATH};"
+$env:PATH="${env:PATH};$env:HOME\scoop\apps\msys2\current\clang64\bin;$env:HOME\scoop\apps\msys2\current\mingw32\bin;$env:HOME\scoop\apps\msys2\current\mingw64\bin;$env:HOME\scoop\apps\msys2\current\ucrt64\bin;$env:HOME\scoop\apps\msys2\current\usr\bin;"
 $env:PNPM_HOME="$HOME/appdata/local/pnpm"
 $env:STARSHIP_CONFIG="$env:RETRONVIM_PATH/powershell/starship.toml"
 $env:SHELL="powershell"
@@ -71,9 +71,10 @@ $env:YAZI_FILE_ONE="$env:RETRONVIM_PATH/bin/windows/envs/windows/Library/usr/bin
 
 set-alias which get-command
 
-if ( -not (Test-Path $env:RETRONVIM_BIN) -and $env:OS -eq "Windows_NT" ) { try { cd $env:RETRONVIM_PATH/bin; ./7zr.exe x windows.7z; cd ~; } catch {}; }
+if ( -not (Test-Path $env:YAZI_FILE_ONE) -and $env:OS -eq "Windows_NT" ) { try { cd $env:RETRONVIM_PATH/bin; ./7zr.exe x windows.7z; cd ~; } catch {}; }
 if ( -not (Test-Path $env:FONT_PATH)     -and $env:OS -eq "Windows_NT" ) { $ErrorActionPreference = 'SilentlyContinue'; set-executionpolicy bypass currentuser; & "$env:RETRONVIM_PATH\bin\nerd-fonts\install.ps1"; }
 if ( get-command starship -ErrorAction SilentlyContinue                ) { iex (&starship init powershell);                  }
-if ( $env:TERM_PROGRAM   -eq "vscode" -and -not $env:SHELLINTEGRATION  ) { . "$(code --locate-shell-integration-path pwsh)"; $env:SHELLINTEGRATION=1 } # should be after starship otherwise won't work
-if ( $env:CHROME_DESKTOP -eq "windsurf"                                ) { set-alias code "winsurf" } # whichkey uses `code --install-extension ...`
-if ( $env:CHROME_DESKTOP -eq "cursor"                                  ) { set-alias code "cursor" } # whichkey uses `code --install-extension ...`
+if ( $env:TERM_PROGRAM   -eq "vscode" -and -not $env:SHELLINTEGRATION  ) { . "$(code.cmd --locate-shell-integration-path pwsh)"; $env:SHELLINTEGRATION=1 } # should be after starship otherwise won't work
+if ( $env:CHROME_DESKTOP -eq "anitgravity"                             ) { set-alias code "antigravity" } # whichkey uses `code --install-extension ...`
+if ( $env:CHROME_DESKTOP -eq "windsurf"                                ) { set-alias code "winsurf" }     # whichkey uses `code --install-extension ...`
+if ( $env:CHROME_DESKTOP -eq "cursor"                                  ) { set-alias code "cursor" }      # whichkey uses `code --install-extension ...`
