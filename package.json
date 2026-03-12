@@ -187,6 +187,7 @@
       "terminal.integrated.defaultProfile.osx": "zsh (retronvim)",
       "terminal.integrated.defaultProfile.linux": "zsh (retronvim)",
       "terminal.integrated.defaultProfile.windows": "powershell (retronvim)",
+      "terminal.integrated.enableKittyKeyboardProtocol": false,
       "trae.chatLanguage": "en",
       "vim.camelCaseMotion.enable": true,
       "vim.flash.enable": true,
