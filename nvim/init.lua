@@ -2,7 +2,7 @@
 --- │ Plugins │
 --- ╰─────────╯
 
-vim.env.CONDA_PREFIX = vim.env.CONDA_PREFIX or (vim.env.HOME .. '/.pixi/envs/retronvim')
+vim.env.CONDA_PREFIX = vim.env.CONDA_PREFIX or (vim.env.HOME .. '/.pixi/envs/wezterm')
 vim.env.PNPM_HOME    = vim.env.PNPM_HOME or (vim.env.HOME .. '/.local/share/pnpm')
 vim.env.PATH         = vim.env.PATH .. (vim.env.APPDATA and ';' or ':') .. vim.env.PNPM_HOME
 vim.env.PATH         = vim.env.PATH .. (vim.env.APPDATA and ';' or ':') .. vim.env.HOME .. '/.pixi/bin'
@@ -236,7 +236,9 @@ if not vim.g.vscode then
   map('c', '<right>', function() return vim.fn.wildmenumode() and "<space><bs><right>" or "<right>" end, { expr = true })
 
   --- pager (by pressing enter) for cmdline output
-  pcall(function() require("vim._core.ui2").enable({}) end)
+  if not vim.env.APPDATA then
+    pcall(function() require("vim._core.ui2").enable({}) end) --- ui2 stops flash highlighting on windows
+  end
 end
 
 --- ╭────────────╮
@@ -566,7 +568,7 @@ if not vim.g.vscode then
 
   --- vim.fn.glob()   outputs nil if not found
   --- vim.fn.expand() outputs the same string if not founded
-  local vscode_extensions = vim.fn.glob("~/.*/extensions", 0, 1)[1]
+  local vscode_extensions = vim.fn.glob("~/.*/extensions", 0, 1)[1] or ''
   local snippet_path      = vim.fn.expand(vscode_extensions .. "/*/snippets", 0, 1)
   local snippet_dirname   = vim.tbl_map(vim.fs.dirname, snippet_path)
   vim.opt.rtp:append(snippet_dirname)
@@ -714,17 +716,16 @@ if not vim.g.vscode then
         name = 'Neovim',
       },
     },
-    on_attach = function(client, bufnr)
-      vim.api.nvim_buf_create_user_command(bufnr, 'LspCopilotSignIn', function()
-        client:request('signIn', vim.empty_dict(), function(_, result)
-          if result.status == 'AlreadySignedIn' then
-            return vim.notify('Already signed in as ' .. result.user)
-          end
+    on_attach = function(client)
+      client:request('signIn', vim.empty_dict(), function(_, result)
+        if not result then return end
 
-          vim.ui.open("https://github.com/login/device")
-          print("Enter your one-time code " .. result.userCode .. " in https://github.com/login/device")
-        end)
-      end, { desc = 'Sign in Copilot with GitHub' })
+        if result.status == 'AlreadySignedIn' then
+          return vim.notify('  Signed in as ' .. result.user)
+        end
+
+        print(":LspCopilotSignIn 󰍂 Enter your one-time code " .. result.userCode .. " in https://github.com/login/device")
+      end)
     end,
   }
 
@@ -793,7 +794,6 @@ if not vim.g.vscode then
   vim.lsp.config['ty']                    = { cmd = { 'ty', 'server' }, filetypes = { 'python' } }
   vim.lsp.config['yamlls']                = { cmd = { 'yaml-language-server', '--stdio' }, filetypes = { 'yaml' }, }
 
-  -- vim.tbl_map( function(config) vim.lsp.enable(config.name) end, vim.lsp.get_configs())
   vim.lsp.enable(vim.tbl_map(function(config) return config.name end, vim.lsp.get_configs()))
 
   --> https://www.youtube.com/watch?v=ooTcnx066Do
@@ -869,7 +869,7 @@ if not vim.g.vscode then
   map("n", "<leader>ls", function() require("snacks").picker.lsp_symbols() end, { desc = " pick symbols" })
   map("n", "<leader>lS", function() require("snacks").picker.lsp_workspace_symbols() end, { desc = " pick workspace symbols" })
   map("n", "<leader>lt", function() require("snacks").picker.lsp_type_definitions() end, { desc = " pick typedefinition" })
-  map("n", "<leader>l>", "<cmd>LspCopilotSignIn<cr>", { desc = " copilot signin" })
+  map("n", "<leader>l>", '<cmd>lsp restart copilot<cr>', { desc = " copilot login" })
 
   ------------------------------------------------------------------------------------------------------------------------
 
@@ -884,7 +884,6 @@ if not vim.g.vscode then
       -- sendSequence([[nvim --server "$NVIM" --remote-send "<cmd>lsp enable copilot<cr>"]], true)
       vim.pack.add({{ src = 'https://github.com/folke/sidekick.nvim', version = 'v2.3.0' }})
       autocmd({ "TermLeave" }, { once = true, command = "lsp enable copilot" })
-      autocmd({ "BufEnter", "LspAttach" }, { once = true, command = "lua vim.schedule(function() pcall(vim.cmd, 'LspCopilotSignIn') end)" })
       require("sidekick").setup({})
     end,
     { desc = " sidekick 󰫣  " }
@@ -1045,13 +1044,6 @@ map("x", "<leader><leader>Y", 'g_"*y', { desc = "󰅍 yank forward" })
 --- ╰───────────────────────────────────╯
 
 ---@format disable
----> https://vi.stackexchange.com/questions/22570/is-there-a-way-to-move-to-the-beginning-of-the-next-text-object
--- map({ "o" }, "g\\", [[<cmd>exec                 'normal mSv' ..        getcharstr() ..        getcharstr() .. 'o`So'                                                     <cr> ]],     { remap  = true })             -- repeat not working
--- map({ "o" }, "g\\", [[                setreg('q', '<esc>mSv' ..        getcharstr() ..        getcharstr() .. 'o`So'   ) ? "" : getreg('q') . v:operator                      ]],     { expr = true, remap = true }) -- repeat not working
--- map({ "o" }, "g\\", [[                setreg('q',        'v' ..        getcharstr() ..        getcharstr() .. '<esc>l' ) ? "" : ":lua vim.cmd.normal(vim.fn.getreg('q')) <cr>"]],     { expr = true, remap = true }) -- repeat working
--- map({ "o" }, "g\\", [[<cmd>lua vim.fn.setreg('q',        'v' .. vim.fn.getcharstr() .. vim.fn.getcharstr() .. '\27l'   )              vim.cmd.normal(vim.fn.getreg('q')) <cr> ]],     { remap  = true })             -- repeat not working
--- map({ "o" }, "g\\", function() vim.fn.setreg('q',        'v' .. vim.fn.getcharstr() .. vim.fn.getcharstr() .. '\27l'   ) return  [[<cmd>exec 'normal '    . getreg('q')  <cr> ]] end, { expr = true, remap = true }) -- repeat working
-
 map({ "o" }, "g\\", [[setreg('q',             'v' . getcharstr() . getcharstr() . '<esc>`>l') ? "" : ":exec 'normal ' . getreg('q')<cr>" ]], { expr = true, remap = true, desc = "textobj end (dot to repeat)" })   --- paragraph textobj needs `>l
 map({ "o" }, "g|",  [[setreg('q',             'v' . getcharstr() . getcharstr() . 'o<esc>'  ) ? "" : ":exec 'normal ' . getreg('q')<cr>" ]], { expr = true, remap = true, desc = "textobj start (dot to repeat)" }) --- remap=true to detect mini.ai
 map({ "n" }, "g\\", [[setreg('q',             'v' . getcharstr() . getcharstr() . '<esc>`>' ) ? "" : "@q"                                ]], { expr = true, remap = true, desc = "textobj end (\\ repeats)" })      --- remap=true to detect mini.ai
