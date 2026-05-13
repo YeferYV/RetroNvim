@@ -33,9 +33,9 @@ jobs:
 
     steps:
       # https://www.youtube.com/watch?v=P0wAXh5UOnM
-      #              ╭───────────────────────────────────────────────────────────────────╮
-      # retrigger -> │ git pull && git commit --allow-empty --amend && git push --force  │
-      #              ╰───────────────────────────────────────────────────────────────────╯
+      #                                                        ╭───────────────────────────────────────────────────────────────────╮
+      # to retrigger remove the github release and tag then -> │ git pull && git commit --allow-empty --amend && git push --force  │
+      #                                                        ╰───────────────────────────────────────────────────────────────────╯
       - uses: googleapis/release-please-action@v4
         id: release
         with:
