@@ -21,7 +21,6 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # setting GH_TOKEN for the entire workflow
   VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
   OVSX_PAT: ${{ secrets.OVSX_TOKEN }}
-  ANACONDA_API_KEY: ${{ secrets.ANACONDA_TOKEN }}
 
 # https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions
 permissions:
@@ -46,8 +45,10 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
 
-      - name: Publish to vscode marketplace 🚀
+      - name: Publish to vscode marketplace and anaconda.org 🚀
         if: ${{ steps.release.outputs.release_created }}
+        env:
+          ANACONDA_API_KEY: ${{ secrets.ANACONDA_TOKEN }}
         run: |
 
           ############################################################################################################################################################
@@ -68,7 +69,7 @@ jobs:
           mkdir bin
           curl  -L https://github.com/prefix-dev/pixi/releases/latest/download/pixi-x86_64-apple-darwin.tar.gz       | tar -xzf- --directory bin
 
-          yes | npx vsce pubish
+          yes | npx vsce publish
           yes | npx ovsx publish
           rm -r bin
 
