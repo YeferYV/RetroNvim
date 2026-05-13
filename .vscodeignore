@@ -1,6 +1,8 @@
 .conda/*channel/
+.conda/*output/
 .github/workflows/output/**
 .gitignore
+output
 *.vsix
 
 # contains symbols in their filenames, which isn't supported by the VSIX format:

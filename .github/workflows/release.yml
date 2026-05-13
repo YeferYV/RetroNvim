@@ -52,6 +52,10 @@ jobs:
 
           ############################################################################################################################################################
 
+          git submodule update --init --depth 1
+          rm -rf ./nvim/plugins/site/pack/deps/opt/snacks.nvim/tests
+          rm -rf ./nvim/plugins/site/pack/deps/opt/mini.nvim/tests
+
           curl -L pixi.sh/install.sh | bash
           export PATH="$HOME/.pixi/bin:$PATH"
           pixi global install rattler-build
@@ -66,29 +70,9 @@ jobs:
 
           ############################################################################################################################################################
 
-          mkdir bin
-          curl  -L https://github.com/prefix-dev/pixi/releases/latest/download/pixi-x86_64-apple-darwin.tar.gz       | tar -xzf- --directory bin
-
+          yes | npx vsce package # for github releases
           yes | npx vsce publish
           yes | npx ovsx publish
-          rm -r bin
-
-          ############################################################################################################################################################
-
-          mkdir bin
-          curl  -L https://github.com/prefix-dev/pixi/releases/latest/download/pixi-x86_64-unknown-linux-musl.tar.gz | tar -xzf- --directory bin
-
-          yes | npx vsce publish --target linux-x64
-          yes | npx ovsx publish --target linux-x64
-          rm -r bin
-
-          ############################################################################################################################################################
-
-          mkdir bin
-          curl  -L https://github.com/prefix-dev/pixi/releases/latest/download/pixi-x86_64-pc-windows-msvc.zip --output /tmp/pixi.zip && unzip /tmp/pixi.zip -d bin
-
-          yes | npx vsce publish --target win32-x64
-          yes | npx ovsx publish --target win32-x64
           rm -r bin
 
           ############################################################################################################################################################

@@ -1,5 +1,4 @@
 .conda/*channel
-.conda/output
-bin
-node_modules
+.conda/*output
+output
 *.vsix
