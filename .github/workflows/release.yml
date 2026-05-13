@@ -21,6 +21,7 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # setting GH_TOKEN for the entire workflow
   VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
   OVSX_PAT: ${{ secrets.OVSX_TOKEN }}
+  ANACONDA_API_KEY: ${{ secrets.ANACONDA_TOKEN }}
 
 # https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions
 permissions:
@@ -47,8 +48,6 @@ jobs:
 
       - name: Publish to vscode marketplace and anaconda.org 🚀
         if: ${{ steps.release.outputs.release_created }}
-        env:
-          ANACONDA_API_KEY: ${{ secrets.ANACONDA_TOKEN }}
         run: |
 
           ############################################################################################################################################################
@@ -60,6 +59,7 @@ jobs:
           # https://rattler-build.prefix.dev/latest/getting_started/#authentication
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
+          rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
           rattler-build publish .conda/retronvim.yaml --target-platform linux-64 --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
           rattler-build publish .conda/retronvim.yaml --target-platform osx-64   --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
           rattler-build publish .conda/retronvim.yaml --target-platform win-64   --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22

@@ -1,3 +1,20 @@
+## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
+
+
+### Bug Fixes
+
+* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
+* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
+* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
+* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
+
+## [0.4.4](https://github.com/YeferYV/RetroNvim/compare/v0.4.3...v0.4.4) (2026-03-07)
+
+
+### Bug Fixes
+
+* **release.yml:** lowercase typo + skip `rm nvim.pdb` exit-code ([75662ef](https://github.com/YeferYV/RetroNvim/commit/75662ef9ddb6a05bc15fcc0b6d3103cc6a657ed3))
+
 ## [0.4.3](https://github.com/YeferYV/RetroNvim/compare/v0.4.2...v0.4.3) (2026-03-07)
 
 
@@ -24,63 +41,6 @@
 * **yazi:** now powershell can be open inside bracket directory e.g. [directory] ([066713f](https://github.com/YeferYV/RetroNvim/commit/066713f3d0680c07b68c12dd25503a11c5290d24))
 * **yazi:** powershell splits `%*` by white-spaces not by end-of-line ([6fa640d](https://github.com/YeferYV/RetroNvim/commit/6fa640d7c98189f052bbe946fefbcdf8e054d573))
 * **yazi:** removing devour which is not supported on wayland ([d8fd227](https://github.com/YeferYV/RetroNvim/commit/d8fd22767700e4ab0cf7b85cf4cb89673b855587))
-
-## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
-
-
-### Bug Fixes
-
-* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
-* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
-* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
-* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
-
-## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
-
-
-### Bug Fixes
-
-* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
-* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
-* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
-* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
-
-## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
-
-
-### Bug Fixes
-
-* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
-* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
-* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
-* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
-
-## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
-
-
-### Bug Fixes
-
-* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
-* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
-* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
-* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
-
-## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
-
-
-### Bug Fixes
-
-* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
-* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
-* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
-* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
-
-## [0.4.4](https://github.com/YeferYV/RetroNvim/compare/v0.4.3...v0.4.4) (2026-03-07)
-
-
-### Bug Fixes
-
-* **release.yml:** lowercase typo + skip `rm nvim.pdb` exit-code ([75662ef](https://github.com/YeferYV/RetroNvim/commit/75662ef9ddb6a05bc15fcc0b6d3103cc6a657ed3))
 
 ## [0.4.2](https://github.com/YeferYV/RetroNvim/compare/v0.4.1...v0.4.2) (2025-11-08)
 
