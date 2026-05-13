@@ -2,26 +2,23 @@ const vscode        = require('vscode');
 const path          = require('path');
 const os            = require('os');
 const fs            = require('fs');
-const child_process = require('child_process');
 
-function setNeovimPath(homeExtension) {
-  const homeDirectory       = os.homedir();
-  const dotexe              = os.platform() == "win32" ? '.exe' : ''
-  const dotcmd              = os.platform() == "win32" ? '.cmd' : ''
-  const initDotLuaPath      = path.join(homeDirectory, '/.pixi/envs/retronvim/opt/retronvim/nvim/init.lua');
-  const gitPath             = path.join(homeDirectory, '/.pixi/bin/git', dotexe);
-  const nvimPath            = path.join(homeDirectory, '/.pixi/bin/nvim', dotexe);
-  const pixiPath            = path.join(homeExtension, '/bin/pixi', dotexe);
-  const pythonPath          = path.join('./.pixi/envs/default/bin/python', dotexe);
-  const javaPathUnix        = path.join(homeDirectory, '/.pixi/envs/openjdk/lib/jvm');
-  const javaPathWindows     = path.join(homeDirectory, '/.pixi/envs/openjdk/Library/lib/jvm');
-  const javaPath            = os.platform() == "win32" ? javaPathWindows : javaPathUnix;
+function setPaths(context) {
+  const home            = os.homedir();
+  const dotexe          = os.platform() == "win32" ? '.exe' : ''
+  const initDotLuaPath  = path.join(home, '/.pixi/envs/retronvim/opt/retronvim/nvim/init.lua');
+  const gitPath         = path.join(home, '/.pixi/bin/git' + dotexe);
+  const nvimPath        = path.join(home, '/.pixi/bin/nvim' + dotexe);
+  const pythonPath      = path.join('./.pixi/envs/default/bin/python' + dotexe);
+  const retrovimPath    = path.join(home, '/.pixi/envs/retrovim');
+  const retronvimPath   = path.join(home, '/.pixi/envs/retronvim/opt/retronvim/package.json');
+  const javaPathUnix    = path.join(home, '/.pixi/envs/openjdk/lib/jvm');
+  const javaPathWindows = path.join(home, '/.pixi/envs/openjdk/Library/lib/jvm');
+  const javaPath        = os.platform() == "win32" ? javaPathWindows : javaPathUnix;
+  const packageJSON     = fs.existsSync(retronvimPath) && JSON.parse(fs.readFileSync(retronvimPath, 'utf8'))
 
-  // install retronvim.conda and firacode.conda
-  if (fs.existsSync(initDotLuaPath) === false) {
-    child_process.exec(pixiPath + 'global install retronvim -c retronvim -c conda-forge')
-    child_process.exec(pixiPath + 'exec -c retronvim --with firacode-nerdfont-installer firacode-nerdfont-installer' + dotcmd)
-  }
+  // install retronvim.conda and nerdfont
+  context.extension.packageJSON.version == packageJSON?.version || fs.existsSync(retrovimPath) || vscode.commands.executeCommand('retronvim.install_retronvim_conda')
 
   // Access the configuration for 'vscode-neovim'
   const config = vscode.workspace.getConfiguration();
@@ -29,10 +26,10 @@ function setNeovimPath(homeExtension) {
   // config.update("telemetry.telemetryLevel", "off", vscode.ConfigurationTarget.Global)
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
   config.update("antigravity.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
-  config.update("antigravity.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace fo rcursor
+  config.update("antigravity.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
   config.update("extensions.experimental.affinity", { "asvetliakov.vscode-neovim": 1, "vscodevim.vim": 2 }, vscode.ConfigurationTarget.Global);
   config.update("extensions.gallery.itemUrl", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
-  config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace fo rcursor
+  config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
   config.update("git.path", gitPath, vscode.ConfigurationTarget.Global)
   config.update("java.configuration.runtimes", [{ "name": "JavaSE-25", "path": javaPath, "default": true }], vscode.ConfigurationTarget.Global);
   config.update("java.jdt.ls.java.home", javaPath, vscode.ConfigurationTarget.Global)
@@ -54,20 +51,36 @@ function setNeovimPath(homeExtension) {
 function activate(context) {
   // https://stackoverflow.com/questions/44113025/how-to-dynamically-query-my-vscode-extension-version-from-the-extension-code
   // vscode.window.showInformationMessage(context.extension.packageJSON.version);
+  setPaths(context);
 
   // https://stackoverflow.com/questions/39569993/vs-code-extension-get-full-path
-  setNeovimPath(context.extensionPath);
   // vscode.window.showInformationMessage(context.extensionUri);
   // vscode.window.showInformationMessage(context.extensionPath);
   // vscode.window.showInformationMessage(context.extension);
 
-  const home              = os.homedir();
   const colon             = os.platform() == "win32" ? ';' : ':'
+  const curl              = os.platform() == "win32" ? 'curl' : 'irm'
+  const dotcmd            = os.platform() == "win32" ? '.cmd' : ''
+  const dotsh             = os.platform() == "win32" ? '.ps1' : '.sh'
+  const sh                = os.platform() == "win32" ? 'iex' : 'sh'
+  const home              = os.homedir();
   const yazi_choosen_file = path.join(home, '/.yazi')
-  var binPath             = path.join(context.extensionPath, '/bin')
-  binPath                += colon + home + '/.pixi/bin'
+  var binPath             = home + '/.pixi/bin'
   binPath                += colon + home + '/.pixi/envs/retronvim/bin'
   binPath                += colon + process.env.PATH
+
+  let install_retronvim_conda = vscode.commands.registerCommand("retronvim.install_retronvim_conda", async () => {
+
+    const terminal = vscode.window.createTerminal({
+      name: "Retronvim",
+      location: vscode.TerminalLocation.Editor,
+    })
+
+    terminal.sendText(curl + " -L pixi.sh/install" + dotsh + " | " + sh)
+    terminal.sendText("~/.pixi/bin/pixi global install retronvim=" + context.extension.packageJSON.version + " -c retronvim -c conda-forge" )
+    terminal.sendText("~/.pixi/envs/retronvim/bin/firacode-nerdfont-installer" + dotcmd);
+    await vscode.commands.executeCommand('workbench.action.terminal.focus');
+  })
 
   let open_yazi = vscode.commands.registerCommand("retronvim.yazi", async () => {
 
@@ -175,7 +188,16 @@ function activate(context) {
     },
   );
 
-  context.subscriptions.push(open_yazi, open_lazygit, terminal_copymode, nvim_tab_terminal, nvim_panel_terminal, show_message);
+  context.subscriptions.push(
+    install_retronvim_conda,
+    open_yazi,
+    open_lazygit,
+    terminal_copymode,
+    nvim_tab_terminal,
+    nvim_panel_terminal,
+    show_message
+  );
+
 }
 
 exports.activate = activate;

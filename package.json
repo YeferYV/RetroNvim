@@ -1,7 +1,7 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "neovim text objects + LSP whichkey + touchcursor keyboard layout + minimal zsh/yazi/nvim/wezterm/windows-terminal setup",
+  "description": "minimal whichkey, lazyvim, warp, yazi, zsh and kanata setup ",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -55,6 +55,10 @@
   },
   "contributes": {
     "commands": [
+			{
+				"command": "retronvim.install_retronvim_conda",
+				"title": "RetroNvim: install retronvim.conda"
+			},
       {
         "command": "retronvim.yazi",
         "title": "RetroNvim: Yazi"
