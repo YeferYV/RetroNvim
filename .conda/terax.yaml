@@ -1,0 +1,151 @@
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
+# rattler-build build --recipe terax.yaml --target-platform linux-64 --output-dir terax-channel --build-num=+1 --package-format conda:22
+# rattler-build build --recipe terax.yaml --target-platform osx-64   --output-dir terax-channel --build-num=+1 --package-format conda:22
+# rattler-build build --recipe terax.yaml --target-platform win-64   --output-dir terax-channel --build-num=+1 --package-format conda:22
+
+# rm -r ~/.cache/rattler
+# pixi g install      --path ./terax-channel/linux-64/terax*                          --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel
+# pixi g install      --path ./terax-channel/osx-64/terax*                            --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel
+# pixi g install      --path ./terax-channel/win-64/terax-0.7.3-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel -c $PWD/msys2-channel
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
+# pixi upload anaconda --owner=retronvim terax*/*/*conda
+
+context:
+  version: 0.7.3
+
+package:
+  name: terax
+  version: ${{ version }}
+
+source:
+  - if: linux
+    then:
+      - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_amd64.deb
+        file_name: "terax.deb"
+
+      # - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_amd64.AppImage
+      #   file_name: "terax.appimage"
+
+  - if: osx
+    then:
+      - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_x64.dmg
+        file_name: "terax.dmg"
+
+      # - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_aarch64.app.tar.gz
+      #   target_location: "."
+
+  - if: win
+    then:
+      - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_x64_en-US.msi
+        file_name: "terax.msi"
+
+      # - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_x64-setup.exe
+      #   file_name: "terax-setup.exe"
+
+build:
+  # number: 0 # build version
+
+  dynamic_linking:
+    # fixes macos builds from linux: failed to find `install_name_tool`
+    # https://rattler-build.prefix.dev/latest/build_options/#dynamic-linking-configuration
+    binary_relocation: false
+
+  script:
+    interpreter: bash
+    content:
+      - mkdir -p      $PREFIX/bin
+
+      - if: linux
+        then: |
+
+          ############################################################################################################################
+
+          # ./terax.appimage
+          # Could not create default EGL display: EGL_BAD_PARAMETER. Aborting...
+          # https://github.com/jely2002/youtube-dl-gui/issues/603
+
+          7zz x terax.deb
+          7zz x data.tar
+          cp usr/bin/terax $PREFIX/bin
+
+          ############################################################################################################################
+
+      - if: osx
+        then: |
+
+          ############################################################################################################################
+
+          7zz x terax.dmg
+          cp Terax/Terax.app/Contents/MacOS/terax $PREFIX/bin/terax
+
+          ############################################################################################################################
+
+      - if: win
+        then: |
+
+          ############################################################################################################################
+
+          # 7zz x terax-setup.exe
+          7zz x terax.msi
+          cp Path $PREFIX/bin/terax.exe
+
+          ############################################################################################################################
+
+      # https://rattler-build.prefix.dev/latest/system_integration
+      # https://prefix.dev/blog/using-pixi-as-a-system-package-manager-with-shortcuts-and-completions
+      # https://github.com/conda-forge/alacritty-feedstock/blob/main/recipe/menu.json
+
+      - |
+        mkdir                               $PREFIX/Menu
+        cp $RECIPE_DIR/terax.{png,ico,icns} $PREFIX/Menu
+        cat                              >> $PREFIX/Menu/menu.json <<'EOF'
+        {
+          "$schema": "https://schemas.conda.org/menuinst/menuinst-1-1-3.schema.json",
+          "menu_name": "terax",
+          "menu_items": [
+            {
+              "name": "terax",
+              "description": "Lightweight (7MB) Terminal-first AI-native dev workspace",
+              "icon": "{{ MENU_DIR }}/terax.{{ ICON_EXT }}",
+              "command": [ "{{ HOME }}/.pixi/bin/terax" ],
+              "platforms": {
+                "osx": {},
+                "linux": {},
+                "win": {
+                  "command": [ "{{ HOME }}/.pixi/bin/terax.exe" ],
+                  "desktop": true
+                }
+              }
+            }
+          ]
+        }
+        EOF
+
+      ############################################################################################################################
+
+tests:
+  - package_contents:
+      bin:
+        - terax*
+
+
+requirements:
+  build:
+    - 7zip=26.00
+
+  # https://v2.tauri.app/start/prerequisites/#linux
+  # run:
+  #   - if: linux
+  #     then:
+  #       - webkit2gtk4.1=2.48.5
+
+about:
+  summary: Lightweight (7MB) Terminal-first AI-native dev workspace
+  description: |
+    Terax is a lightweight open-source terminal (ADE) built on Tauri 2 + Rust and React 19.
+    A native PTY backend with a WebGL renderer, an agentic AI side-panel that runs against your own keys
+    or fully local models, plus a code editor, file explorer, source control with a git graph,
+    and a web preview pane built in. About 7-8 MB on disk. No telemetry. No account.
+  homepage: https://terax.app
+  repository: https://github.com/crynta/terax-ai
