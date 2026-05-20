@@ -69,7 +69,7 @@ prepend_keymap = [
 	{ on = [ "s", "n" ], run = """ shell --block  -- nvim %s                                     """,                  desc = " neovim" },    # opens all selections
   { on = [ "s", "p" ], run = """ shell          -- zathura --config-dir="$ZATHURARC" %s &      """, for = "linux",   desc = " zathura" },
 	{ on = [ "s", "s" ], run = """ shell          -- code  %s                                    """,                  desc = " vscode" },
-	{ on = [ "s", "t" ], run = """ search_do --via=rg                                                  """,                  desc = "󰙅 tree view" },
+	{ on = [ "s", "t" ], run = """ search_do --via=rg                                            """,                  desc = "󰙅 tree view" },
 	{ on = [ "s", "v" ], run = """ shell --orphan -- vlc --avcodec-hw=none %s                    """,                  desc = "󰕼 vlc (no gpu)" }, # disables hardware decoding which fixes no video output due to gpu drivers (--avcodec-hw=vdpau also works on archlinux or configure it in the GUI) see: https://wiki.archlinux.org/title/VLC_media_player
 	{ on = [ "s", "w" ], run = """ shell --block  -- zsh                                         """,                  desc = " zsh" },
 	{ on = [ "s", "x" ], run = """ shell --orphan -- xdg-open %s                                 """, for = "linux",   desc = " xdg-open" },
@@ -82,7 +82,7 @@ on = [ "s", "/" ]
 run = '''
   shell
   --block
-  -- rg --files --sortr=path | fzf --no-sort --bind "enter:become(ya emit reveal {1})" --preview-window=nohidden
+  -- ya emit reveal "$(rg --files --sortr=path | fzf --no-sort --preview-window=nohidden)"
 '''
 desc = " fzf sorted (? previews)" # shift + down/up scrolls preview # resizable preview with mouse
 

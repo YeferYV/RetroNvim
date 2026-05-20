@@ -1,6 +1,43 @@
-[submodule "nvim/plugins/site/pack/deps/opt/mini.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/mini.nvim
+[submodule "nvim/plugins/conform.nvim"]
+	path = nvim/plugins/conform.nvim
+	url = https://github.com/stevearc/conform.nvim
+
+[submodule "nvim/plugins/flash.nvim"]
+	path = nvim/plugins/flash.nvim
+	url = https://github.com/folke/flash.nvim
+
+[submodule "nvim/plugins/lazy.nvim"]
+	path = nvim/plugins/lazy.nvim
+	url = https://github.com/folke/lazy.nvim
+
+[submodule "nvim/plugins/LazyVim"]
+	path = nvim/plugins/LazyVim
+	url = https://github.com/LazyVim/LazyVim
+
+[submodule "nvim/plugins/mason-lspconfig.nvim"]
+	path = nvim/plugins/mason-lspconfig.nvim
+	url = https://github.com/mason-org/mason-lspconfig.nvim
+
+[submodule "nvim/plugins/mason.nvim"]
+	path = nvim/plugins/mason.nvim
+	url = https://github.com/mason-org/mason.nvim
+
+[submodule "nvim/plugins/mini.ai"]
+	path = nvim/plugins/mini.ai
+	url = https://github.com/nvim-mini/mini.ai
+
+[submodule "nvim/plugins/mini.nvim"]
+	path = nvim/plugins/mini.nvim
 	url = https://github.com/nvim-mini/mini.nvim
-[submodule "nvim/plugins/site/pack/deps/opt/snacks.nvim"]
-	path = nvim/plugins/site/pack/deps/opt/snacks.nvim
+
+[submodule "nvim/plugins/nvim-lspconfig"]
+	path = nvim/plugins/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig
+
+[submodule "nvim/plugins/snacks.nvim"]
+	path = nvim/plugins/snacks.nvim
 	url = https://github.com/folke/snacks.nvim
+
+[submodule "nvim/plugins/which-key.nvim"]
+	path = nvim/plugins/which-key.nvim
+	url = https://github.com/folke/which-key.nvim
