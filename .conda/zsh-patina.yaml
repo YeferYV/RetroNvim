@@ -1,0 +1,60 @@
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
+# rattler-build build --recipe zsh-patina.yaml --target-platform linux-64 --output-dir zsh-patina-channel --build-num=+1
+# rattler-build build --recipe zsh-patina.yaml --target-platform osx-64   --output-dir zsh-patina-channel --build-num=+1
+# rattler-build build --recipe zsh-patina.yaml --target-platform win-64   --output-dir zsh-patina-channel --build-num=+1
+
+# rm -r ~/.cache/rattler
+# pixi g install      --path ./zsh-patina-channel/linux-64/zsh-patina*
+# pixi g install      --path ./zsh-patina-channel/osx-64/zsh-patina*
+# pixi g install      --path ./zsh-patina-channel/win-64/zsh-patina-0.4.5-h9490d1a_1.conda
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
+# pixi upload anaconda --owner=retronvim zsh-patina*/*/*conda
+
+context:
+  version: 1.7.0
+
+package:
+  name: zsh-patina
+  version: ${{ version }}
+
+source:
+  - if: linux
+    then:
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-unknown-linux-gnu.tar.gz
+        target_directory: "bin"
+
+      # - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-unknown-linux-musl.tar.gz
+      #   target_directory: "bin"
+
+  - if: osx
+    then:
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-apple-darwin.tar.gz
+        target_directory: "bin"
+
+  - if: win
+    then:
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-pc-cygwin.zip
+        target_directory: "bin"
+
+build:
+  # number: 0 # build version
+
+  script:
+    interpreter: bash
+    content:
+      - cp -r bin $PREFIX
+
+tests:
+  - package_contents:
+      bin:
+        - zsh-patina*
+
+about:
+  summary: A blazingly fast Zsh syntax highlighter
+  description: |
+    Besides normal static highlighting, zsh-patina is able to dynamically detect whether a command you entered
+    is valid and can be executed and if the arguments refer to existing files or directories.
+    By default, invalid commands are shown in red and existing files/directories are underlined
+  homepage: https://github.com/michel-kraemer/zsh-patina
+  repository: https://github.com/michel-kraemer/zsh-patina
