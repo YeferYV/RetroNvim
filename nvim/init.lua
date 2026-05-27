@@ -613,6 +613,45 @@ if not vim.g.vscode then
   require('mini.icons').setup()
   require('mini.icons').mock_nvim_web_devicons()
   require('mini.icons').tweak_lsp_kind( --[[ "replace" ]])
+
+  --- netrw icons (using mini.icons)
+  autocmd("FileType", {
+    pattern = "netrw",
+    callback = function(ev)
+      local ns = vim.api.nvim_create_namespace("netrw_icons")
+      local icons_ok, mini_icons = pcall(require, 'mini.icons')
+      if not icons_ok then return end
+
+      local function add_icons()
+        vim.api.nvim_buf_clear_namespace(ev.buf, ns, 0, -1)
+        local lines = vim.api.nvim_buf_get_lines(ev.buf, 0, -1, false)
+        for i, line in ipairs(lines) do
+          if not line:match('^"') and line ~= "" then
+            local name = line:gsub("^[│├└─| ]+", ""):match("^(%S+)")
+            if name then
+              name = name:gsub("[*@]$", "")
+              local icon, hl
+              if name:match("/$") then
+                icon, hl = mini_icons.get('directory', name:gsub("/$", ""))
+              else
+                icon, hl = mini_icons.get('file', name)
+              end
+              if icon then
+                vim.api.nvim_buf_set_extmark(ev.buf, ns, i - 1, 0, {
+                  virt_text = {{ icon .. " ", hl }},
+                  virt_text_pos = "inline",
+                })
+              end
+            end
+          end
+        end
+      end
+
+      add_icons()
+      autocmd("TextChanged", { buffer = ev.buf, callback = add_icons })
+    end,
+  })
+
   require('mini.misc').setup_auto_root()
   require('mini.misc').setup_restore_cursor()
   require('mini.notify').setup({ window = { winblend = 0 } --[[ ,lsp_progress = { enable = false } ]] })
