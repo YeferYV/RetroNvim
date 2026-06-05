@@ -456,6 +456,10 @@ _    _    _              _              _    _    _
 - `Touchcursor Keyboard Layout` on `MacOs` requires `zb install karabiner` or
   open `whichkey` > `+Install Dependencies` > `install brew karabiner`
 
+- `terax` on `archlinux` requires `pacman -S webkit2gtk-4.1`
+
+- `terax` on `debian` requires `apt install webkit2gtk-4.1-dev`
+
 **Manual Install**
 
 - Linux/MacOS:

@@ -59,7 +59,7 @@ export PATH="/bin:/usr/bin:$PATH"
 export PATH="$HOME/.pixi/bin:$PATH"
 export PATH="$HOME/.console-ninja/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/share/pnpm:$PATH"
+export PATH="$HOME/.local/share/pnpm/bin:$PATH"
 export PATH="$HOME/.local/share/npm/bin:$PATH"
 export PATH="$PATH:/clang64/bin"
 export PATH="$PATH:/mingw32/bin"
@@ -85,8 +85,17 @@ export PATH="$PATH:$ZEROBREW_PREFIX/bin"
 # │ yazi cd on exit │
 # ╰─────────────────╯
 
-y() { yazi --cwd-file=$HOME/.yazi $@ < /dev/tty; cd "$(cat $HOME/.yazi)"; zle reset-prompt 2>/dev/null; echo -ne "\e[6 q"; }
-zle -N y          # creating `yy` keymap
+# https://github.com/crynta/terax-ai/issues/261
+# OSC 11 and DECRQM sequences leaks on yazi inside terax on linux/macos workaround
+y() {
+  [[ "$OSTYPE" == "cygwin" ]] && yazi --cwd-file=$HOME/.yazi $@ < /dev/tty
+  [[ "$OSTYPE" != "cygwin" ]] && nvim -c 'set showtabline=0 laststatus=0' -c 'autocmd TermClose * qa!' -c "term yazi --cwd-file=$HOME/.yazi $@"
+  cd "$(cat $HOME/.yazi)"
+  zle reset-prompt 2>/dev/null || printf "\x1b[A\x1b[K";
+  echo -ne "\e[6 q" # beam cursor
+}
+
+zle -N y
 bindkey '\eo' 'y' # \eo = alt + o
 
 # ╭────────────╮
