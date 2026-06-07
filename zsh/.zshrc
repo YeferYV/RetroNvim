@@ -89,7 +89,7 @@ export PATH="$PATH:$ZEROBREW_PREFIX/bin"
 # OSC 11 and DECRQM sequences leaks on yazi inside terax on linux/macos workaround
 y() {
   [[ "$OSTYPE" == "cygwin" ]] && yazi --cwd-file=$HOME/.yazi $@ < /dev/tty
-  [[ "$OSTYPE" != "cygwin" ]] && nvim -c 'set showtabline=0 laststatus=0' -c 'autocmd TermClose * qa!' -c "term yazi --cwd-file=$HOME/.yazi $@"
+  [[ "$OSTYPE" != "cygwin" && -v TERAX_TERMINAL ]] && nvim -c 'set showtabline=0 laststatus=0' -c 'autocmd TermClose * qa!' -c "term yazi --cwd-file=$HOME/.yazi $@"
   cd "$(cat $HOME/.yazi)"
   zle reset-prompt 2>/dev/null || printf "\x1b[A\x1b[K";
   echo -ne "\e[6 q" # beam cursor

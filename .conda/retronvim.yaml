@@ -6,7 +6,7 @@
 # rm -r ~/.cache/rattler
 # pixi g install      --path ./retronvim-channel/linux-64/retronvim*                     --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel -c $PWD/appman-channel
 # pixi g install      --path ./retronvim-channel/osx-64/retronvim*                       --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel
-# pixi g install      --path ./retronvim-channel/win-64/retronvim-0.4.5-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel -c $PWD/msys2-channel
+# pixi g install      --path ./retronvim-channel/win-64/retronvim-0.4.6-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel -c $PWD/msys2-channel
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
 # pixi upload anaconda --owner=retronvim retronvim*/*/*conda
@@ -140,11 +140,6 @@ build:
           cat >> $PREFIX/bin/kanata_touchcursor.cmd <<< 'powershell -c "Set-WinUserLanguageList -force en-US,es-US"'
           cat >> $PREFIX/bin/kanata_touchcursor.cmd <<< 'start conhost --headless %CONDA_PREFIX%/bin/kanata.exe --cfg %CONDA_PREFIX%/opt/retronvim/kanata/touchcursor.kbd'
 
-          cat >> $PREFIX/bin/kanata_touchcursor     <<< '#!/bin/bash'
-          cat >> $PREFIX/bin/kanata_touchcursor     <<< 'export CONDA_PREFIX=${CONDA_PREFIX:-$HOME/.pixi/envs/retronvim}'
-          cat >> $PREFIX/bin/kanata_touchcursor     <<< 'powershell -c "Set-WinUserLanguageList -force en-US,es-US"'
-          cat >> $PREFIX/bin/kanata_touchcursor     <<< 'start conhost --headless %CONDA_PREFIX%/bin/kanata.exe --cfg %CONDA_PREFIX%/opt/retronvim/kanata/touchcursor.kbd'
-
           ############################################################################################################################
 
           cat >> $PREFIX/bin/nvim.cmd <<< '@echo off'
@@ -185,6 +180,38 @@ build:
           cat >> $PREFIX/bin/pwsh.cmd <<< '%CONDA_PREFIX%/opt/msys2/usr/bin/zsh.exe'
 
           ############################################################################################################################
+
+      # https://rattler-build.prefix.dev/latest/system_integration
+      # https://prefix.dev/blog/using-pixi-as-a-system-package-manager-with-shortcuts-and-completions
+      # https://github.com/conda-forge/alacritty-feedstock/blob/main/recipe/menu.json
+
+      - |
+        mkdir                               $PREFIX/Menu
+        cp $RECIPE_DIR/terax.{png,ico,icns} $PREFIX/Menu
+        cat                              >> $PREFIX/Menu/menu.json <<'EOF'
+        {
+          "$schema": "https://schemas.conda.org/menuinst/menuinst-1-1-3.schema.json",
+          "menu_name": "terax",
+          "menu_items": [
+            {
+              "name": "terax",
+              "description": "Lightweight (7MB) Terminal-first AI-native dev workspace",
+              "icon": "{{ MENU_DIR }}/terax.{{ ICON_EXT }}",
+              "command": [ "{{ HOME }}/.pixi/bin/terax" ],
+              "platforms": {
+                "osx": {},
+                "linux": {},
+                "win": {
+                  "command": [ "{{ HOME }}/.pixi/bin/terax.exe" ],
+                  "desktop": true
+                }
+              }
+            }
+          ]
+        }
+        EOF
+
+      ############################################################################################################################
 
 requirements:
 

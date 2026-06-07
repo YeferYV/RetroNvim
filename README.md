@@ -460,6 +460,8 @@ _    _    _              _              _    _    _
 
 - `terax` on `debian` requires `apt install webkit2gtk-4.1-dev`
 
+- `terax` on `linux` requires `chsh --shell /bin/zsh` (sets zsh as default shell)
+
 **Manual Install**
 
 - Linux/MacOS:
