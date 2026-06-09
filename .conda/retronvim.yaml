@@ -6,7 +6,7 @@
 # rm -r ~/.cache/rattler
 # pixi g install      --path ./retronvim-channel/linux-64/retronvim*                     --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel -c $PWD/appman-channel
 # pixi g install      --path ./retronvim-channel/osx-64/retronvim*                       --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel
-# pixi g install      --path ./retronvim-channel/win-64/retronvim-0.4.6-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel -c $PWD/msys2-channel
+# pixi g install      --path ./retronvim-channel/win-64/retronvim-0.4.6-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/terax-channel -c $PWD/zsh-patina-channel -c $PWD/msys2-channel -c $PWD/mingit-channel
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
 # pixi upload anaconda --owner=retronvim retronvim*/*/*conda
@@ -130,9 +130,7 @@ build:
 
           cat >> $PREFIX/bin/git.cmd <<< '@echo off'
           cat >> $PREFIX/bin/git.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
-          cat >> $PREFIX/bin/git.cmd <<< 'set MSYSTEM=MSYS'
-          cat >> $PREFIX/bin/git.cmd <<< 'set PATH=%CONDA_PREFIX%\opt\msys2\usr\bin;%PATH%'
-          cat >> $PREFIX/bin/git.cmd <<< '%CONDA_PREFIX%/opt/msys2/usr/bin/git.exe %*'
+          cat >> $PREFIX/bin/git.cmd <<< '%CONDA_PREFIX%/opt/mingit/mingw64/bin/git.exe %*'
 
           ############################################################################################################################
 
@@ -144,7 +142,7 @@ build:
 
           cat >> $PREFIX/bin/nvim.cmd <<< '@echo off'
           cat >> $PREFIX/bin/nvim.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
-          cat >> $PREFIX/bin/nvim.cmd <<< 'set SHELL=%CONDA_PREFIX%/bin/zsh'
+          cat >> $PREFIX/bin/nvim.cmd <<< 'set SHELL=%CONDA_PREFIX%\opt\msys2\usr\bin\zsh.exe'
           cat >> $PREFIX/bin/nvim.cmd <<< 'set "VIMINIT=lua vim.cmd.source(vim.env.CONDA_PREFIX .. [[/opt/retronvim/nvim/init.lua]])"'
           cat >> $PREFIX/bin/nvim.cmd <<< '%CONDA_PREFIX%/opt/neovim/bin/nvim %*'
 
@@ -227,7 +225,7 @@ requirements:
     - firacode-nerdfont-installer=3.4.0
     - fzf=0.70.0
     - kanata=1.11.0
-    - lazygit=0.60.0
+    - lazygit=0.61.0
     - less=692
     - ripgrep=15.1.0
     - starship=1.24.2
@@ -250,7 +248,8 @@ requirements:
     - if: win
       then:
         - m2-unzip=6.0.3 # required by mason.nvim
-        - msys2=2025.12.13
+        - msys2=2026.03.22
+        - mingit-busybox=2.54.0
 
 tests:
   - package_contents:

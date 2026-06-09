@@ -73,7 +73,7 @@ prepend_keymap = [
 	{ on = [ "s", "v" ], run = """ shell --orphan -- vlc --avcodec-hw=none %s                    """,                  desc = "󰕼 vlc (no gpu)" }, # disables hardware decoding which fixes no video output due to gpu drivers (--avcodec-hw=vdpau also works on archlinux or configure it in the GUI) see: https://wiki.archlinux.org/title/VLC_media_player
 	{ on = [ "s", "w" ], run = """ shell --block  -- zsh                                         """,                  desc = " zsh" },
 	{ on = [ "s", "x" ], run = """ shell --orphan -- xdg-open %s                                 """, for = "linux",   desc = " xdg-open" },
-	{ on = [ "s", "z" ], run = """ shell          -- 7z a -tzip $1.zip %s                        """,                  desc = "󰛫 7zip selection" }, # on windows: m2-p7zip cannot extractand 7zip cannot zip
+	{ on = [ "s", "z" ], run = """ shell          -- 7zz a -tzip $1.zip %s                       """,                  desc = "󰛫 7zip selection" }, # on windows: m2-p7zip cannot extractand 7zip cannot zip
 
 ]
 

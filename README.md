@@ -462,6 +462,8 @@ _    _    _              _              _    _    _
 
 - `terax` on `linux` requires `chsh --shell /bin/zsh` (sets zsh as default shell)
 
+- `terax` requires the setting `Font family: FiraCode Nerd Font` for icons support
+
 **Manual Install**
 
 - Linux/MacOS:

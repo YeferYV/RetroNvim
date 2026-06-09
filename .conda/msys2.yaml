@@ -2,13 +2,13 @@
 # rattler-build build --recipe msys2.yaml --target-platform win-64 --output-dir msys2-channel --build-num=+1 --package-format conda:22
 
 # rm -recurse ~/appdata/local/rattler
-# pixi g install      --path ./msys2-channel/win-64/msys2-2025.12.13-h9490d1a_1.conda         --force-reinstall
+# pixi g install      --path ./msys2-channel/win-64/msys2-2026.03.22-h9490d1a_1.conda         --force-reinstall
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
 # pixi upload anaconda --owner=retronvim msys2*/*/*conda
 
 context:
-  version: 2025.12.13
+  version: 2026.03.22
 
 package:
   name: msys2
@@ -17,157 +17,13 @@ package:
 source:
   - if: win
     then:
-      # msys64/usr/bin has some git and zsh dependencies
-      - url: https://github.com/msys2/msys2-installer/releases/download/2025-12-13/msys2-base-x86_64-20251213.tar.zst
+      # msys64/usr/bin has zsh dependencies
+      - url: https://github.com/msys2/msys2-installer/releases/download/2026-03-22/msys2-base-x86_64-20260322.tar.zst
         file_name: "msys2.tar.zst"
 
       # https://packages.msys2.org/packages/zsh?variant=x86_64
       - url: https://mirror.msys2.org/msys/x86_64/zsh-5.9-5-x86_64.pkg.tar.zst
         file_name: "zsh.tar.zst"
-
-      # https://packages.msys2.org/packages/git?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/git-2.53.0-1-x86_64.pkg.tar.zst
-        file_name: "git.tar.zst"
-
-      # https://packages.msys2.org/packages/openssh?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/openssh-10.2p1-2-x86_64.pkg.tar.zst
-        file_name: "openssh.tar.zst"
-
-      # https://packages.msys2.org/packages/heimdal?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/heimdal-7.8.0-5-x86_64.pkg.tar.zst
-        file_name: "heimdal.tar.zst"
-
-      # https://packages.msys2.org/packages/heimdal-libs?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/heimdal-libs-7.8.0-5-x86_64.pkg.tar.zst
-        file_name: "heimdal-libs.tar.zst"
-
-      # https://packages.msys2.org/packages/libedit?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/libedit-20240808_3.1-1-x86_64.pkg.tar.zst
-        file_name: "libedit.tar.zst"
-
-      # https://packages.msys2.org/packages/libfido2?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/libfido2-1.16.0-1-x86_64.pkg.tar.zst
-        file_name: "libfido.tar.zst"
-
-      # https://packages.msys2.org/packages/libcbor?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/libcbor-0.12.0-1-x86_64.pkg.tar.zst
-        file_name: "libcbor.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Authen-SASL?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Authen-SASL-2.2000-1-any.pkg.tar.zst
-        file_name: "perl-auth.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Error?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Error-0.17030-1-any.pkg.tar.zst
-        file_name: "perl-error.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-libwww?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-libwww-6.81-1-any.pkg.tar.zst
-        file_name: "perl-libwww.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Encode-Locale?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Encode-Locale-1.05-2-any.pkg.tar.zst
-        file_name: "perl-encode.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-File-Listing?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-File-Listing-6.16-1-any.pkg.tar.zst
-        file_name: "perl-listing.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-http-cookiejar?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-http-cookiejar-0.014-1-any.pkg.tar.zst
-        file_name: "perl-cookiejar.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-HTTP-Cookies?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-HTTP-Cookies-6.11-1-any.pkg.tar.zst
-        file_name: "perl-cookies.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-HTTP-Daemon?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-HTTP-Daemon-6.16-1-any.pkg.tar.zst
-        file_name: "perl-daemon.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-HTTP-Date?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-HTTP-Date-6.06-1-any.pkg.tar.zst
-        file_name: "perl-date.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-HTTP-Message?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-HTTP-Message-7.01-1-any.pkg.tar.zst
-        file_name: "perl-message.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Clone?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Clone-0.48-1-x86_64.pkg.tar.zst
-        file_name: "perl-clone.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-IO-HTML?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-IO-HTML-1.004-2-any.pkg.tar.zst
-        file_name: "perl-html.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-HTTP-Negotiate?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-HTTP-Negotiate-6.01-3-any.pkg.tar.zst
-        file_name: "perl-negotiate.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-HTML-Parser?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-HTML-Parser-3.83-2-x86_64.pkg.tar.zst
-        file_name: "perl-parser.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-HTML-Tagset?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-HTML-Tagset-3.24-1-any.pkg.tar.zst
-        file_name: "perl-tagset.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-LWP-MediaTypes?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-LWP-MediaTypes-6.04-2-any.pkg.tar.zst
-        file_name: "perl-mediatypes.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Net-HTTP?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Net-HTTP-6.24-1-any.pkg.tar.zst
-        file_name: "perl-net.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Try-Tiny?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Try-Tiny-0.32-1-any.pkg.tar.zst
-        file_name: "perl-try.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-WWW-RobotRules?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-WWW-RobotRules-6.02-3-any.pkg.tar.zst
-        file_name: "perl-robotrules.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-MIME-tools?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-MIME-tools-5.517-1-any.pkg.tar.zst
-        file_name: "perl-mime.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Convert-BinHex?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Convert-BinHex-1.125-2-any.pkg.tar.zst
-        file_name: "perl-convert.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-IO-Stringy?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-IO-Stringy-2.113-3-any.pkg.tar.zst
-        file_name: "perl-io.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-MailTools?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-MailTools-2.22-1-any.pkg.tar.zst
-        file_name: "perl-mail.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-TimeDate?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-TimeDate-2.35-1-any.pkg.tar.zst
-        file_name: "perl-timedate.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Net-SMTP-SSL?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Net-SMTP-SSL-1.04-2-any.pkg.tar.zst
-        file_name: "perl-ssl.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-IO-Socket-SSL?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-IO-Socket-SSL-2.098-1-any.pkg.tar.zst
-        file_name: "perl-socket.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-Net-SSLeay?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-Net-SSLeay-1.94-3-x86_64.pkg.tar.zst
-        file_name: "perl-ssleay.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-URI?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-URI-5.34-1-any.pkg.tar.zst
-        file_name: "perl-uri.tar.zst"
-
-      # https://packages.msys2.org/packages/perl-TermReadKey?variant=x86_64
-      - url: https://mirror.msys2.org/msys/x86_64/perl-TermReadKey-2.38-7-x86_64.pkg.tar.zst
-        file_name: "perl-termreadkey.tar.zst"
 
 build:
   # number: 0 # build version
@@ -177,53 +33,9 @@ build:
     content:
       - mkdir -p                         $PREFIX/bin $PREFIX/opt/msys2
       - tar xvf msys2.tar.zst            --directory $PREFIX/opt/msys2 --strip-components=1
-      - tar xvf git.tar.zst              --directory $PREFIX/opt/msys2
       - tar xvf zsh.tar.zst              --directory $PREFIX/opt/msys2
-      - tar xvf openssh.tar.zst          --directory $PREFIX/opt/msys2 # git          dep
-      - tar xvf heimdal.tar.zst          --directory $PREFIX/opt/msys2 # openssh      dep
-      - tar xvf heimdal-libs.tar.zst     --directory $PREFIX/opt/msys2 # heimdal      dep
-      - tar xvf libedit.tar.zst          --directory $PREFIX/opt/msys2 # openssh      dep
-      - tar xvf libfido.tar.zst          --directory $PREFIX/opt/msys2 # openssh      dep
-      - tar xvf libcbor.tar.zst          --directory $PREFIX/opt/msys2 # libfido      dep
-      - tar xvf perl-auth.tar.zst        --directory $PREFIX/opt/msys2 # git          dep
-      - tar xvf perl-error.tar.zst       --directory $PREFIX/opt/msys2 # git          dep
-      - tar xvf perl-libwww.tar.zst      --directory $PREFIX/opt/msys2 # git          dep
-      - tar xvf perl-encode.tar.zst      --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-listing.tar.zst     --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-cookiejar.tar.zst   --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-cookies.tar.zst     --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-daemon.tar.zst      --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-date.tar.zst        --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-message.tar.zst     --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-clone.tar.zst       --directory $PREFIX/opt/msys2 # perl-message dep
-      - tar xvf perl-html.tar.zst        --directory $PREFIX/opt/msys2 # perl-message dep
-      - tar xvf perl-negotiate.tar.zst   --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-parser.tar.zst      --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-tagset.tar.zst      --directory $PREFIX/opt/msys2 # perl-parser  dep
-      - tar xvf perl-mediatypes.tar.zst  --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-net.tar.zst         --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-try.tar.zst         --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-robotrules.tar.zst  --directory $PREFIX/opt/msys2 # perl-libwww  dep
-      - tar xvf perl-mime.tar.zst        --directory $PREFIX/opt/msys2 # git          dep
-      - tar xvf perl-convert.tar.zst     --directory $PREFIX/opt/msys2 # perl-mime    dep
-      - tar xvf perl-io.tar.zst          --directory $PREFIX/opt/msys2 # perl-mime    dep
-      - tar xvf perl-mail.tar.zst        --directory $PREFIX/opt/msys2 # perl-mime    dep
-      - tar xvf perl-timedate.tar.zst    --directory $PREFIX/opt/msys2 # perl-mail    dep
-      - tar xvf perl-ssl.tar.zst         --directory $PREFIX/opt/msys2 # git          dep
-      - tar xvf perl-socket.tar.zst      --directory $PREFIX/opt/msys2 # perl-ssl     dep
-      - tar xvf perl-ssleay.tar.zst      --directory $PREFIX/opt/msys2 # perl-socket  dep
-      - tar xvf perl-uri.tar.zst         --directory $PREFIX/opt/msys2 # perl-socket  dep
-      - tar xvf perl-termreadkey.tar.zst --directory $PREFIX/opt/msys2 # git          dep
 
       - |
-        ############################################################################################################################
-
-        cat >> $PREFIX/bin/git.cmd <<< '@echo off'
-        cat >> $PREFIX/bin/git.cmd <<< 'set MSYSTEM=MSYS'
-        cat >> $PREFIX/bin/git.cmd <<< 'set PATH=%CONDA_PREFIX%\opt\msys2\usr\bin;%PATH%'
-        cat >> $PREFIX/bin/git.cmd <<< 'REM %CONDA_PREFIX%/opt/msys2/usr/bin/bash.exe -c "git %*"'
-        cat >> $PREFIX/bin/git.cmd <<< '%CONDA_PREFIX%/opt/msys2/usr/bin/git.exe %*'
-
         ############################################################################################################################
 
         cat >> $PREFIX/bin/zsh.cmd <<< '@echo off'
@@ -239,12 +51,11 @@ build:
 tests:
   - package_contents:
       bin:
-        - git.cmd
         - zsh.cmd
         - pacman.cmd
 
 about:
-  summary: MSYS2 repackaged with git.exe and zsh.exe exposing pacman.exe
+  summary: MSYS2 repackaged with zsh.exe
   description: |
     MSYS2 is a collection of tools and libraries providing you with an easy-to-use environment for building,
     installing and running native Windows software.
