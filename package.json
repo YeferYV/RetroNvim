@@ -8,7 +8,7 @@
     "name": "YeferYV",
     "url": "https://github.com/YeferYV"
   },
-  "version": "0.4.5",
+  "version": "0.4.6",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -55,10 +55,10 @@
   },
   "contributes": {
     "commands": [
-			{
-				"command": "retronvim.install_retronvim_conda",
-				"title": "RetroNvim: install retronvim.conda"
-			},
+      {
+        "command": "retronvim.install_retronvim_conda",
+        "title": "RetroNvim: install retronvim.conda"
+      },
       {
         "command": "retronvim.yazi",
         "title": "RetroNvim: Yazi"

@@ -8,6 +8,22 @@
 * **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
 * **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
 
+## [0.4.6](https://github.com/YeferYV/RetroNvim/compare/v0.4.5...v0.4.6) (2026-06-11)
+
+
+### Bug Fixes
+
+* **appman.yaml:** linux appimage installer ([e5a1a37](https://github.com/YeferYV/RetroNvim/commit/e5a1a37d515dacb2a34a4be2e0f7823286ef31d3))
+* **extension.js:** autoinstall conditionally retronvim.conda and firacode.conda ([aed8b09](https://github.com/YeferYV/RetroNvim/commit/aed8b0935042cfbc2a2912d6dad932fe3d48233f))
+* **mingit.yaml:** using mingit since lazygit doesn't support msys2's git which uses unix paths ([98a98e2](https://github.com/YeferYV/RetroNvim/commit/98a98e2657fef42b48718233040ab8fcbddedfb5))
+* **nvim:** migrating to lazyvim ([455ade2](https://github.com/YeferYV/RetroNvim/commit/455ade2663651e05846e70ab836f75bfd0adb422))
+* **release.yaml:** adding conda releases ([62cc12c](https://github.com/YeferYV/RetroNvim/commit/62cc12caf7b45b69a2409530f2328180b8112913))
+* **release.yaml:** missing git-submodules ([ddb7487](https://github.com/YeferYV/RetroNvim/commit/ddb74872e917047c6e5ae12fb201628d564f33b5))
+* **retronvim.yaml:** missing terax desktop icon ([c6ee096](https://github.com/YeferYV/RetroNvim/commit/c6ee096f5e74cb3f189a518d19a931b6f40b4409))
+* **terax.yaml:** migrating to terax removing wezterm ([abe4c5f](https://github.com/YeferYV/RetroNvim/commit/abe4c5f1a838c975a625f27c5b8d3ba667cc0a26))
+* **zsh:** getting multiples ~/.cache/zcompdump.some-id + hide suggestion after pressing tab ([8cad67f](https://github.com/YeferYV/RetroNvim/commit/8cad67f2d5f59a17fa5d87cec381cf2074e89c3a))
+* **zsh:** OSC 11 and DECRQM sequences leaks on yazi inside terax workaround ([b87df6d](https://github.com/YeferYV/RetroNvim/commit/b87df6d2f0042d5c7c2c5009e9002803582d8d2a))
+
 ## [0.4.4](https://github.com/YeferYV/RetroNvim/compare/v0.4.3...v0.4.4) (2026-03-07)
 
 
