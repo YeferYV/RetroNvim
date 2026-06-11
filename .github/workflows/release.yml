@@ -64,9 +64,9 @@ jobs:
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
           rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-64 --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-64   --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
-          rattler-build publish .conda/retronvim.yaml --target-platform win-64   --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
+          rattler-build publish .conda/retronvim.yaml --target-platform linux-64 --to https://anaconda.org/retronvim --skip-existing --package-format conda:22
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-64   --to https://anaconda.org/retronvim --skip-existing --package-format conda:22
+          rattler-build publish .conda/retronvim.yaml --target-platform win-64   --to https://anaconda.org/retronvim --skip-existing --package-format conda:22
 
           ############################################################################################################################################################
 
