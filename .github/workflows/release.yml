@@ -79,5 +79,10 @@ jobs:
 
       - name: Github release 📦
         if: ${{ steps.release.outputs.release_created }}
-        run: gh release upload ${{ steps.release.outputs.tag_name }} *.vsix
+        run: |
+          cp output/linux-64/*.conda ./retronvim-linux-64.conda
+          cp output/osx-64/*.conda   ./retronvim-osx-64.conda
+          cp output/win-64/*.conda   ./retronvim-win-64.conda
+          gh release upload ${{ steps.release.outputs.tag_name }} *.conda
+          gh release upload ${{ steps.release.outputs.tag_name }} *.vsix
 

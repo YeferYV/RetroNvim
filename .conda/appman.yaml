@@ -5,7 +5,7 @@
 # pixi g install      --path ./appman-channel/linux-64/appman*                      --force-reinstall
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
-# pixi upload anaconda --owner=retronvim firacode*/*/*conda
+# pixi upload anaconda --owner=retronvim appman*/*/*conda
 
 context:
   version: 10.2.1

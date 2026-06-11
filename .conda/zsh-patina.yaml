@@ -40,6 +40,11 @@ source:
 build:
   # number: 0 # build version
 
+  dynamic_linking:
+    # fixes macos builds from linux: failed to find `install_name_tool`
+    # https://rattler-build.prefix.dev/latest/build_options/#dynamic-linking-configuration
+    binary_relocation: false
+
   script:
     interpreter: bash
     content:
