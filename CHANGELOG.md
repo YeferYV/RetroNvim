@@ -1,13 +1,3 @@
-## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
-
-
-### Bug Fixes
-
-* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
-* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
-* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
-* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
-
 ## [0.4.6](https://github.com/YeferYV/RetroNvim/compare/v0.4.5...v0.4.6) (2026-06-11)
 
 
@@ -23,6 +13,16 @@
 * **terax.yaml:** migrating to terax removing wezterm ([abe4c5f](https://github.com/YeferYV/RetroNvim/commit/abe4c5f1a838c975a625f27c5b8d3ba667cc0a26))
 * **zsh:** getting multiples ~/.cache/zcompdump.some-id + hide suggestion after pressing tab ([8cad67f](https://github.com/YeferYV/RetroNvim/commit/8cad67f2d5f59a17fa5d87cec381cf2074e89c3a))
 * **zsh:** OSC 11 and DECRQM sequences leaks on yazi inside terax workaround ([b87df6d](https://github.com/YeferYV/RetroNvim/commit/b87df6d2f0042d5c7c2c5009e9002803582d8d2a))
+
+## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
+
+
+### Bug Fixes
+
+* **nvim:** nightly neovim CSI-U doesn't detect `shift+number` from kitty keyboard protocol on Windows ([b839964](https://github.com/YeferYV/RetroNvim/commit/b8399643102a7c374620531c5fda44f7745c07b4))
+* **nvim:** treesitter support from helix ([72acbef](https://github.com/YeferYV/RetroNvim/commit/72acbef51b6223fd465f71f420d2f368b9f7bc75))
+* **powershell:** code.exe doesn't support `--locate-shell-integration-path` ([9664008](https://github.com/YeferYV/RetroNvim/commit/96640080bb2714fe373fc18ef0230cf9658086c1))
+* **zsh:** zsh.exe slow startup time on windows due to calling msys2.cmd and deleting powershell which is horribly slow ([9853de1](https://github.com/YeferYV/RetroNvim/commit/9853de145ff2d21c3a9a32be8165f28da7134214))
 
 ## [0.4.4](https://github.com/YeferYV/RetroNvim/compare/v0.4.3...v0.4.4) (2026-03-07)
 
