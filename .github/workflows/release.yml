@@ -34,9 +34,9 @@ jobs:
 
     steps:
       # https://www.youtube.com/watch?v=P0wAXh5UOnM
-      #                                                        ╭───────────────────────────────────────────────────────────────────╮
-      # to retrigger remove the github release and tag then -> │ git pull && git commit --allow-empty --amend && git push --force  │
-      #                                                        ╰───────────────────────────────────────────────────────────────────╯
+      #                                                        ╭───────────────────────────────────────────────────────────────────────────╮
+      # to retrigger remove the github release and tag then -> │ git pull --rebase && git commit --allow-empty --amend && git push --force │
+      #                                                        ╰───────────────────────────────────────────────────────────────────────────╯
       - uses: googleapis/release-please-action@v4
         id: release
         with:
@@ -64,15 +64,15 @@ jobs:
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
           rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-64 --to https://anaconda.org/retronvim --skip-existing --package-format conda:22
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-64   --to https://anaconda.org/retronvim --skip-existing --package-format conda:22
-          rattler-build publish .conda/retronvim.yaml --target-platform win-64   --to https://anaconda.org/retronvim --skip-existing --package-format conda:22
+          rattler-build publish .conda/retronvim.yaml --target-platform linux-64 --to https://anaconda.org/retronvim --build-number=+1 --skip-existing --package-format conda:22
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-64   --to https://anaconda.org/retronvim --build-number=+1 --skip-existing --package-format conda:22
+          rattler-build publish .conda/retronvim.yaml --target-platform win-64   --to https://anaconda.org/retronvim --build-number=+1 --skip-existing --package-format conda:22
 
           ############################################################################################################################################################
 
-          npx --yes vsce package # for github releases
-          npx --yes vsce publish
-          npx --yes ovsx publish
+          yes | npx vsce package
+          yes | npx vsce publish
+          yes | npx ovsx publish
 
           ############################################################################################################################################################
 
