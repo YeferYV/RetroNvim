@@ -2,6 +2,7 @@
 .conda/*output/
 .github/workflows/output/**
 .gitignore
+nvim/plugins/**
 output
 *.vsix
 

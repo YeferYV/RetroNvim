@@ -1,6 +1,6 @@
 format = "($sudo)($username)($directory)($git_branch)($git_status)($cmd_duration)($status)($character)"
 add_newline = false
-command_timeout = 100
+# command_timeout = 100
 
 [directory]
 style = "bold fg:#5555cc"

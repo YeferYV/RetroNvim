@@ -59,7 +59,7 @@ function activate(context) {
   // vscode.window.showInformationMessage(context.extension);
 
   const colon             = os.platform() == "win32" ? ';' : ':'
-  const curl              = os.platform() == "win32" ? 'curl' : 'irm'
+  const curl              = os.platform() == "win32" ? 'irm' : 'curl -L'
   const dotcmd            = os.platform() == "win32" ? '.cmd' : ''
   const dotsh             = os.platform() == "win32" ? '.ps1' : '.sh'
   const sh                = os.platform() == "win32" ? 'iex' : 'sh'
@@ -76,7 +76,7 @@ function activate(context) {
       location: vscode.TerminalLocation.Editor,
     })
 
-    terminal.sendText(curl + " -L pixi.sh/install" + dotsh + " | " + sh)
+    terminal.sendText(curl + " pixi.sh/install" + dotsh + " | " + sh)
     terminal.sendText("~/.pixi/bin/pixi global install retronvim=" + context.extension.packageJSON.version + " -c retronvim -c conda-forge" )
     terminal.sendText("~/.pixi/envs/retronvim/bin/firacode-nerdfont-installer" + dotcmd);
     await vscode.commands.executeCommand('workbench.action.terminal.focus');
