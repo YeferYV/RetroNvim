@@ -14,6 +14,14 @@
 * **zsh:** getting multiples ~/.cache/zcompdump.some-id + hide suggestion after pressing tab ([8cad67f](https://github.com/YeferYV/RetroNvim/commit/8cad67f2d5f59a17fa5d87cec381cf2074e89c3a))
 * **zsh:** OSC 11 and DECRQM sequences leaks on yazi inside terax workaround ([b87df6d](https://github.com/YeferYV/RetroNvim/commit/b87df6d2f0042d5c7c2c5009e9002803582d8d2a))
 
+## [0.4.7](https://github.com/YeferYV/RetroNvim/compare/v0.4.6...v0.4.7) (2026-06-12)
+
+
+### Bug Fixes
+
+* **.conda:** dynamic CONDA_PREFIX for windows ([a9e113b](https://github.com/YeferYV/RetroNvim/commit/a9e113bd5840e361cd6362366318053e14b8a674))
+* **extension.js:** sendText irm for powershell ([29b1707](https://github.com/YeferYV/RetroNvim/commit/29b170704d1bcb17dfac2ce80bc9ff1bfba994e6))
+
 ## [0.4.5](https://github.com/YeferYV/RetroNvim/compare/v0.4.4...v0.4.5) (2026-05-13)
 
 
