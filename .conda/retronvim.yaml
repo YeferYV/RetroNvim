@@ -12,7 +12,7 @@
 # pixi upload anaconda --owner=retronvim retronvim*/*/*conda
 
 context:
-  version: 0.4.6
+  version: 0.4.7
 
 package:
   name: retronvim
@@ -34,7 +34,7 @@ source:
 
   - if: linux
     then:
-      - url: https://github.com/neovim/neovim/releases/download/v0.12.2/nvim-linux-x86_64.tar.gz
+      - url: https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-linux-x86_64.tar.gz
         target_directory: "opt/neovim"
 
       - url: https://github.com/equalsraf/win32yank/releases/download/v0.1.1/win32yank-x64.zip
@@ -42,12 +42,12 @@ source:
 
   - if: osx
     then:
-      - url: https://github.com/neovim/neovim/releases/download/v0.12.2/nvim-macos-x86_64.tar.gz
+      - url: https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-macos-x86_64.tar.gz
         target_directory: "opt/neovim"
 
   - if: win
     then:
-      - url: https://github.com/neovim/neovim/releases/download/v0.12.2/nvim-win64.zip
+      - url: https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-win64.zip
         target_directory: "opt/neovim"
 
 build:
@@ -129,19 +129,19 @@ build:
           ############################################################################################################################
 
           cat >> $PREFIX/bin/git.cmd <<< '@echo off'
-          cat >> $PREFIX/bin/git.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
+          cat >> $PREFIX/bin/git.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
           cat >> $PREFIX/bin/git.cmd <<< '%CONDA_PREFIX%/opt/mingit/mingw64/bin/git.exe %*'
 
           ############################################################################################################################
 
-          cat >> $PREFIX/bin/kanata_touchcursor.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
+          cat >> $PREFIX/bin/kanata_touchcursor.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
           cat >> $PREFIX/bin/kanata_touchcursor.cmd <<< 'powershell -c "Set-WinUserLanguageList -force en-US,es-US"'
           cat >> $PREFIX/bin/kanata_touchcursor.cmd <<< 'start conhost --headless %CONDA_PREFIX%/bin/kanata.exe --cfg %CONDA_PREFIX%/opt/retronvim/kanata/touchcursor.kbd'
 
           ############################################################################################################################
 
           cat >> $PREFIX/bin/nvim.cmd <<< '@echo off'
-          cat >> $PREFIX/bin/nvim.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
+          cat >> $PREFIX/bin/nvim.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
           cat >> $PREFIX/bin/nvim.cmd <<< 'set SHELL=%CONDA_PREFIX%\opt\msys2\usr\bin\zsh.exe'
           cat >> $PREFIX/bin/nvim.cmd <<< 'set "VIMINIT=lua vim.cmd.source(vim.env.CONDA_PREFIX .. [[/opt/retronvim/nvim/init.lua]])"'
           cat >> $PREFIX/bin/nvim.cmd <<< '%CONDA_PREFIX%/opt/neovim/bin/nvim %*'
@@ -149,13 +149,14 @@ build:
           ############################################################################################################################
 
           cat >> $PREFIX/bin/terax.cmd <<< '@echo off'
+          cat >> $PREFIX/bin/terax.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
           cat >> $PREFIX/bin/terax.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/bin/terax.cmd <<< 'start terax.exe %*'
 
           ############################################################################################################################
 
           cat >> $PREFIX/bin/yazi.cmd <<< '@echo off'
-          cat >> $PREFIX/bin/yazi.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set BAT_THEME=base16'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set FZF_DEFAULT_OPTS=--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window=hidden --bind "?:toggle-preview" --multi'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set LESS=--ignore-case'
@@ -168,12 +169,12 @@ build:
           ############################################################################################################################
 
           cat >> $PREFIX/bin/zsh.cmd <<< '@echo off'
-          cat >> $PREFIX/bin/zsh.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
+          cat >> $PREFIX/bin/zsh.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
           cat >> $PREFIX/bin/zsh.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/bin/zsh.cmd <<< '%CONDA_PREFIX%/opt/msys2/usr/bin/zsh.exe %*'
 
           cat >> $PREFIX/bin/pwsh.cmd <<< '@echo off'
-          cat >> $PREFIX/bin/pwsh.cmd <<< 'if %CONDA_PREFIX%=="" set CONDA_PREFIX=%USERPROFILE%\.pixi\envs\retronvim'
+          cat >> $PREFIX/bin/pwsh.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
           cat >> $PREFIX/bin/pwsh.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/bin/pwsh.cmd <<< '%CONDA_PREFIX%/opt/msys2/usr/bin/zsh.exe'
 
@@ -229,7 +230,7 @@ requirements:
     - less=692
     - ripgrep=15.1.0
     - starship=1.24.2
-    - terax=0.7.3
+    - terax
     - yazi=26.5.6
     - zsh-patina=1.7.0
 

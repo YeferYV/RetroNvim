@@ -39,11 +39,13 @@ build:
         ############################################################################################################################
 
         cat >> $PREFIX/bin/zsh.cmd <<< '@echo off'
+        cat >> $PREFIX/bin/zsh.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
         cat >> $PREFIX/bin/zsh.cmd <<< '%CONDA_PREFIX%/opt/msys2/usr/bin/zsh.exe %*'
 
         ############################################################################################################################
 
         cat >> $PREFIX/bin/pacman.cmd <<< '@echo off'
+        cat >> $PREFIX/bin/pacman.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
         cat >> $PREFIX/bin/pacman.cmd <<< '%CONDA_PREFIX%/opt/msys2/usr/bin/pacman.exe %*'
 
         ############################################################################################################################

@@ -49,6 +49,7 @@ build:
         then:
           - cp -r bin      $PREFIX
           - cp install.ps1 $PREFIX/bin/firacode-nerdfont-installer.ps1
+          - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< "set CONDA_PREFIX=%~0\..\.."
           - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< "powershell -executionpolicy bypass -c %CONDA_PREFIX%/bin/firacode-nerdfont-installer.ps1"
 
 
