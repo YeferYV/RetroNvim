@@ -6,13 +6,13 @@
 # rm -r ~/.cache/rattler
 # pixi g install      --path ./zsh-patina-channel/linux-64/zsh-patina*
 # pixi g install      --path ./zsh-patina-channel/osx-64/zsh-patina*
-# pixi g install      --path ./zsh-patina-channel/win-64/zsh-patina-0.4.5-h9490d1a_1.conda
+# pixi g install      --path ./zsh-patina-channel/win-64/zsh-patina-1.8.0-h9490d1a_1.conda
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
 # pixi upload anaconda --owner=retronvim zsh-patina*/*/*conda
 
 context:
-  version: 1.7.0
+  version: 1.8.0
 
 package:
   name: zsh-patina
@@ -21,20 +21,20 @@ package:
 source:
   - if: linux
     then:
-      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-unknown-linux-gnu.tar.gz
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-unknown-linux-musl.tar.gz
         target_directory: "bin"
 
-      # - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-unknown-linux-musl.tar.gz
+      # - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-unknown-linux-gnu.tar.gz
       #   target_directory: "bin"
 
   - if: osx
     then:
-      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-apple-darwin.tar.gz
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-apple-darwin.tar.gz
         target_directory: "bin"
 
   - if: win
     then:
-      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/1.7.0/zsh-patina-v1.7.0-x86_64-pc-cygwin.zip
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-pc-cygwin.zip
         target_directory: "bin"
 
 build:

@@ -456,10 +456,6 @@ _    _    _              _              _    _    _
 - `Touchcursor Keyboard Layout` on `MacOs` requires `zb install karabiner` or
   open `whichkey` > `+Install Dependencies` > `install brew karabiner`
 
-- `terax` on `archlinux` requires `pacman -S webkit2gtk-4.1`
-
-- `terax` on `debian` requires `apt install webkit2gtk-4.1-dev`
-
 - `terax` on `linux` requires `chsh --shell /bin/zsh` (sets zsh as default shell)
 
 - `terax` requires the setting `Font family: FiraCode Nerd Font` for icons support

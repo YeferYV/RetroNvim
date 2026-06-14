@@ -6,13 +6,13 @@
 # rm -r ~/.cache/rattler
 # pixi g install      --path ./terax-channel/linux-64/terax*                          --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel
 # pixi g install      --path ./terax-channel/osx-64/terax*                            --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel
-# pixi g install      --path ./terax-channel/win-64/terax-0.7.3-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel -c $PWD/msys2-channel
+# pixi g install      --path ./terax-channel/win-64/terax-0.8.0-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel -c $PWD/msys2-channel
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
 # pixi upload anaconda --owner=retronvim terax*/*/*conda
 
 context:
-  version: 0.7.3
+  version: 0.8.0
 
 package:
   name: terax
@@ -21,26 +21,26 @@ package:
 source:
   - if: linux
     then:
-      - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_amd64.deb
-        file_name: "terax.deb"
+      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_amd64.AppImage
+        file_name: "terax"
 
-      # - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_amd64.AppImage
-      #   file_name: "terax.appimage"
+      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_amd64.deb
+      #   file_name: "terax.deb"
 
   - if: osx
     then:
-      - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_x64.dmg
+      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_x64.dmg
         file_name: "terax.dmg"
 
-      # - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_aarch64.app.tar.gz
+      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_x64.app.tar.gz
       #   target_location: "."
 
   - if: win
     then:
-      - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_x64_en-US.msi
+      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_x64_en-US.msi
         file_name: "terax.msi"
 
-      # - url: https://github.com/crynta/terax-ai/releases/download/v0.7.3/Terax_0.7.3_x64-setup.exe
+      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_x64-setup.exe
       #   file_name: "terax-setup.exe"
 
 build:
@@ -61,13 +61,9 @@ build:
 
           ############################################################################################################################
 
-          # ./terax.appimage
-          # Could not create default EGL display: EGL_BAD_PARAMETER. Aborting...
-          # https://github.com/jely2002/youtube-dl-gui/issues/603
-
-          7zz x terax.deb
-          7zz x data.tar
-          cp usr/bin/terax $PREFIX/bin
+          # 7zz x terax.deb
+          chmod +x terax
+          cp terax $PREFIX/bin
 
           ############################################################################################################################
 
@@ -111,7 +107,9 @@ build:
               "command": [ "{{ HOME }}/.pixi/bin/terax" ],
               "platforms": {
                 "osx": {},
-                "linux": {},
+                "linux": {
+                  "Categories": [ "Development", "TerminalEmulator", "System" ]
+                },
                 "win": {
                   "command": [ "{{ HOME }}/.pixi/bin/terax.exe" ],
                   "desktop": true
