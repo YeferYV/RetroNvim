@@ -19,11 +19,6 @@ package:
   version: ${{ version }}
 
 source:
-  - if: linux
-    then:
-      url: https://github.com/jtroo/kanata/releases/download/v${{ version }}/linux-binaries-x64.zip
-      target_directory: "."
-
   - if: osx
     then:
       url: https://github.com/jtroo/kanata/releases/download/v${{ version }}/macos-binaries-x64.zip
@@ -47,7 +42,13 @@ build:
     interpreter: bash
     content:
 
-      - if: unix
+      # kanata requires glibc_2.39 but debian has glibc_2.28
+      - if: linux
+        then:
+          - pixi exec cargo-zigbuild install --target x86_64-unknown-linux-gnu.2.20 --version 1.11.0 kanata
+          - cp -r $SRC_DIR/.cargo/bin $PREFIX
+
+      - if: osx
         then:
           - mkdir                  $PREFIX/bin
           - cp kanata*allowed_x64  $PREFIX/bin/kanata
