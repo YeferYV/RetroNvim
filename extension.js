@@ -63,6 +63,7 @@ function activate(context) {
   const dotcmd            = os.platform() == "win32" ? '.cmd' : ''
   const dotsh             = os.platform() == "win32" ? '.ps1' : '.sh'
   const sh                = os.platform() == "win32" ? 'iex' : 'sh'
+  const shell             = os.platform() == "win32" ? 'powershell' : 'sh'
   const home              = os.homedir();
   const yazi_choosen_file = path.join(home, '/.yazi')
   var binPath             = home + '/.pixi/bin'
@@ -73,6 +74,7 @@ function activate(context) {
 
     const terminal = vscode.window.createTerminal({
       name: "Retronvim",
+      shellPath: shell,
       location: vscode.TerminalLocation.Editor,
     })
 

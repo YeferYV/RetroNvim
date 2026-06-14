@@ -1,7 +1,7 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "minimal whichkey, lazyvim, warp, yazi, zsh and kanata setup ",
+  "description": "minimal whichkey, lazyvim, terax, yazi, zsh and kanata setup ",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -161,12 +161,12 @@
       "terminal.integrated.suggest.enabled": true,
       "terminal.integrated.profiles.osx": {
         "zsh (retronvim)": {
-          "path": "${HOME}/.pixi/bin/zsh"
+          "path": "${env:HOME}/.pixi/bin/zsh"
         }
       },
       "terminal.integrated.profiles.linux": {
         "zsh (retronvim)": {
-          "path": "${HOME}/.pixi/bin/zsh"
+          "path": "${env:HOME}/.pixi/bin/zsh"
         }
       },
       "terminal.integrated.profiles.windows": {
@@ -942,7 +942,7 @@
             {
               "key": "r",
               "icon": "debug-restart",
-              "name": "restart retronvim (required after installing brew nix-env scoop) (windows needs to relaunch vscode)",
+              "name": "restart retronvim (required after installing nix-env) (windows needs to relaunch vscode)",
               "command": "workbench.action.reloadWindow"
             },
             {
@@ -1047,23 +1047,6 @@
                 },
                 {
                   "text": "sudo --preserve-env bash --login -c '~/.pixi/envs/retronvim/bin/kanata --cfg ~/.pixi/envs/retronvim/opt/retronvim/kanata/touchcursor.kbd &'; sleep 5; exit; \r"
-                }
-              ]
-            },
-            {
-              "key": "Y",
-              "icon": "symbol-property",
-              "name": "install retronvim/nvim + retronvim/yazi + retronvim/zsh on windows terminal",
-              "commands": [
-                "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                {
-                  "profileName": "zsh (retronvim)"
-                },
-                {
-                  "text": "cp --interactive $HOME/.pixi/envs/retronvim/opt/retronvim/zsh/settings.json  $HOME/appdata/local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/ \n"
                 }
               ]
             }
@@ -1278,7 +1261,7 @@
                 },
                 null,
                 {
-                  "text": "pixi exec shell -c 'brew install --cask docker-desktop  2>/dev/null' \n"
+                  "text": "pixi exec shell -c 'zb install docker-desktop  2>/dev/null' \n"
                 },
                 {
                   "text": "pixi exec shell -c 'yay -S docker                        2>/dev/null' \n"
@@ -1827,7 +1810,7 @@
                   "text": "pixi global install kubernetes \n"
                 },
                 {
-                  "text": "pixi exec shell -c 'brew install --cask docker-desktop   2>/dev/null' \n"
+                  "text": "pixi exec shell -c 'zb install docker-desktop   2>/dev/null' \n"
                 },
                 {
                   "text": "pixi exec shell -c 'yay -S docker-desktop                2>/dev/null' \n"

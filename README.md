@@ -313,7 +313,6 @@ vscode extension with minimal whichkey, lazyvim, terax, yazi, zsh and kanata set
 | :----------------- | :------------------------------------------ |
 | `ctrl+\`           | toggle panel (terminal) visibility          |
 | `alt+y`            | send sequence to open yazi                  |
-| `alt+ctrl+r`       | select from shell history                   |
 | `alt+0`            | switch to last tab                          |
 | `alt+1...9`        | switch to tab 1...9                         |
 | `alt+a`            | Scroll terminal down by page                |
