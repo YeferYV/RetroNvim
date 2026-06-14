@@ -9,7 +9,7 @@ play = [
 	{ run = """ vlc %s """, orphan = true },
 ]
 edit = [
-	{ run = """  %EDITOR%  %s  2>nul  ||  nvim  %s  &  exit  0  """, block  = true, desc = "$EDITOR", for = "windows" },
-	{ run = """ ${EDITOR:-nvim} %s                              """, block  = true, desc = "$EDITOR", for = "unix" },
-	{ run = """ code  %s                                        """, orphan = true, desc = "vscode" },
+	{ run = """  %EDITOR%  %s  2>nul  ||  nvim.exe  %s  &  exit  0  """, block  = true, desc = "$EDITOR", for = "windows" },
+	{ run = """ ${EDITOR:-nvim} %s                                  """, block  = true, desc = "$EDITOR", for = "unix" },
+	{ run = """ code  %s                                            """, orphan = true, desc = "vscode" },
 ]

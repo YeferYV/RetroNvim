@@ -33,13 +33,13 @@ build:
         ############################################################################################################################
 
         cat >> $PREFIX/bin/git.cmd <<< '@echo off'
-        cat >> $PREFIX/bin/git.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
+        cat >> $PREFIX/bin/git.cmd <<< 'set CONDA_PREFIX=%~f0\..\..'
         cat >> $PREFIX/bin/git.cmd <<< '%CONDA_PREFIX%/opt/mingit/mingw64/bin/git.exe %*'
 
         ############################################################################################################################
 
         cat >> $PREFIX/bin/busybox.cmd <<< '@echo off'
-        cat >> $PREFIX/bin/busybox.cmd <<< 'set CONDA_PREFIX=%~0\..\..'
+        cat >> $PREFIX/bin/busybox.cmd <<< 'set CONDA_PREFIX=%~f0\..\..'
         cat >> $PREFIX/bin/busybox.cmd <<< '%CONDA_PREFIX%/opt/mingit/mingw64/bin/busybox.exe %*'
 
         ############################################################################################################################

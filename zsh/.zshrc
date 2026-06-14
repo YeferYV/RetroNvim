@@ -89,7 +89,7 @@ export PATH="$PATH:$ZEROBREW_PREFIX/bin"
 # OSC 11 and DECRQM sequences leaks on yazi inside terax on linux/macos workaround
 y() {
 
-  if [[ -v TERAX_TERMINAL && ! -v APPDATA ]]; then
+  if [[ ! -v APPDATA && -v TERAX_TERMINAL || -e /run/WSL ]]; then
     nvim -c 'set showtabline=0 laststatus=0' -c 'autocmd TermClose * qa!' -c "term yazi --cwd-file=$HOME/.yazi $@"
   else
     yazi --cwd-file=$HOME/.yazi $@ < /dev/tty

@@ -67,6 +67,7 @@ require("lazy").setup({
               { "L", "10l" },
             },
           },
+          ['lua_ls'] = { mason = false }, --- mason unable to install it on windows
         },
       },
     },
