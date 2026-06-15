@@ -14,6 +14,15 @@
 * **zsh:** getting multiples ~/.cache/zcompdump.some-id + hide suggestion after pressing tab ([8cad67f](https://github.com/YeferYV/RetroNvim/commit/8cad67f2d5f59a17fa5d87cec381cf2074e89c3a))
 * **zsh:** OSC 11 and DECRQM sequences leaks on yazi inside terax workaround ([b87df6d](https://github.com/YeferYV/RetroNvim/commit/b87df6d2f0042d5c7c2c5009e9002803582d8d2a))
 
+## [0.4.8](https://github.com/YeferYV/RetroNvim/compare/v0.4.7...v0.4.8) (2026-06-15)
+
+
+### Bug Fixes
+
+* **.conda:** realpath equivalent for batch is `~f` ([ab3c763](https://github.com/YeferYV/RetroNvim/commit/ab3c76390589591c9ad4c081e19ce4a5f42c0468))
+* **kanata.yaml:** kanata requires glibc_2.39 but debian has glibc_2.28 ([3dd98da](https://github.com/YeferYV/RetroNvim/commit/3dd98da76195bbb2180b36bd504a4463c2eb00ca))
+* **package.json:** `zsh (retronvim)` path expansion is with `env:` ([495a848](https://github.com/YeferYV/RetroNvim/commit/495a848bcb859bc7ca24623d9b70705e8ef80f44))
+
 ## [0.4.7](https://github.com/YeferYV/RetroNvim/compare/v0.4.6...v0.4.7) (2026-06-12)
 
 
