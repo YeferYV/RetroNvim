@@ -1,0 +1,42 @@
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
+# rattler-build build --recipe neovim.yaml --target-platform win-64   --output-dir neovim-channel --build-num=+1
+
+# rm -r ~/.cache/rattler
+# pixi g install      --path ./neovim-channel/win-64/neovim-0.12.4-h9490d1a_1.conda
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
+# pixi upload anaconda --owner=retronvim neovim*/*/*conda
+
+context:
+  version: 0.12.4
+
+package:
+  name: neovim
+  version: ${{ version }}
+
+source:
+  - if: win
+    then:
+      # pixi g install nvim -c conda-forge ---> ~/.pixi/bin/nvim init.lua ---> treesitter error from conda-forge build
+      - url: https://github.com/neovim/neovim/releases/download/v${{ version }}/nvim-win64.zip
+        target_directory: "neovim"
+
+build:
+  # number: 0 # build version
+
+  script:
+    interpreter: bash
+    content:
+      - cp -r neovim/* $PREFIX
+
+tests:
+  - package_contents:
+      bin:
+        - nvim*
+
+about:
+  summary: Vim-fork focused on extensibility and usability
+  description: |
+    repackaging neovim since conda-forge's neovim has treesitter errors with init.lua files
+  homepage: https://github.com/neovim/neovim
+  repository: https://github.com/neovim/neovim
