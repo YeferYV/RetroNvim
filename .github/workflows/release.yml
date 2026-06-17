@@ -63,9 +63,10 @@ jobs:
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
           rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-64 --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-64   --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
-          rattler-build publish .conda/retronvim.yaml --target-platform win-64   --to https://anaconda.org/retronvim --build-number=+1 --package-format conda:22
+          rattler-build publish .conda/retronvim.yaml --target-platform linux-64  --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-64    --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-arm64 --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform win-64    --to https://anaconda.org/retronvim --build-number=+1
 
           ############################################################################################################################################################
 
@@ -78,9 +79,6 @@ jobs:
       - name: Github release 📦
         if: ${{ steps.release.outputs.release_created }}
         run: |
-          cp output/linux-64/*.conda ./retronvim-linux-64.conda
-          cp output/osx-64/*.conda   ./retronvim-osx-64.conda
-          cp output/win-64/*.conda   ./retronvim-win-64.conda
-          gh release upload ${{ steps.release.outputs.tag_name }} *.conda
+          gh release upload ${{ steps.release.outputs.tag_name }} output/noarch/*.conda
           gh release upload ${{ steps.release.outputs.tag_name }} *.vsix
 

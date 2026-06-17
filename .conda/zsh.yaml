@@ -1,0 +1,116 @@
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging
+# rattler-build build --recipe zsh.yaml --target-platform win-64 --output-dir zsh-channel
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/clean/cache
+# pixi clean cache --build --yes
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/global/install
+# pixi g install  --path ./zsh-channel/win-64/zsh-5.9-h9490d1a_0.conda
+
+# https://rattler-build.prefix.dev/latest/getting_started/#authentication
+# rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
+
+# https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
+# rattler-build publish --recipe zsh.yaml --target-platform win-64 --to https://anaconda.org/retronvim
+
+context:
+  version: 5.9
+
+package:
+  name: zsh
+  version: ${{ version }}
+
+source:
+
+  - if: win
+    then:
+      # # https://packages.msys2.org/packages/filesystem?variant=x86_64
+      # - url: https://mirror.msys2.org/msys/x86_64/filesystem-2026.03.06-1-x86_64.pkg.tar.zst
+      #   file_name: "filesystem.tar.zst"
+
+      # https://packages.msys2.org/packages/msys2-runtime?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/msys2-runtime-3.6.9-2-x86_64.pkg.tar.zst
+        file_name: "msys2-runtime.tar.zst"
+
+      # https://packages.msys2.org/packages/zsh?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/zsh-5.9-5-x86_64.pkg.tar.zst
+        file_name: "zsh.tar.zst"
+
+      # https://packages.msys2.org/packages/gdbm?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/gdbm-1.26-1-x86_64.pkg.tar.zst
+        file_name: "gdbm.tar.zst"
+
+      # https://packages.msys2.org/packages/libiconv?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/libiconv-1.19-1-x86_64.pkg.tar.zst
+        file_name: "libiconv.tar.zst"
+
+      # https://packages.msys2.org/packages/libpcre2_8?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/libpcre2_8-10.47-1-x86_64.pkg.tar.zst
+        file_name: "libpcre.tar.zst"
+
+      # https://packages.msys2.org/packages/ncurses?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/ncurses-6.6-2-x86_64.pkg.tar.zst
+        file_name: "ncurses.tar.zst"
+
+      # https://packages.msys2.org/packages/libgdbm?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/libgdbm-1.26-1-x86_64.pkg.tar.zst
+        file_name: "libgdbm.tar.zst"
+
+      # https://packages.msys2.org/packages/gcc-libs?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/gcc-libs-15.3.0-1-x86_64.pkg.tar.zst
+        file_name: "gcc-libs.tar.zst"
+
+      # https://packages.msys2.org/packages/libintl?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/libintl-0.22.5-1-x86_64.pkg.tar.zst
+        file_name: "libintl.tar.zst"
+
+      # https://packages.msys2.org/packages/libreadline?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/libreadline-8.3.003-1-x86_64.pkg.tar.zst
+        file_name: "libreadline.tar.zst"
+
+
+build:
+  # number: 0 # build version
+
+  script:
+    interpreter: bash
+    content:
+
+      - if: win
+        then: |
+
+          ############################################################################################################################
+
+          mkdir -p $PREFIX/Library
+
+          # tar xvf filesystem.tar.zst       --directory $PREFIX/Library
+          tar xvf msys2-runtime.tar.zst    --directory $PREFIX/Library
+          tar xvf zsh.tar.zst              --directory $PREFIX/Library
+          tar xvf gdbm.tar.zst             --directory $PREFIX/Library
+          tar xvf libiconv.tar.zst         --directory $PREFIX/Library
+          tar xvf libpcre.tar.zst          --directory $PREFIX/Library
+          tar xvf ncurses.tar.zst          --directory $PREFIX/Library
+          tar xvf libgdbm.tar.zst          --directory $PREFIX/Library
+          tar xvf gcc-libs.tar.zst         --directory $PREFIX/Library
+          tar xvf libintl.tar.zst          --directory $PREFIX/Library
+          tar xvf libreadline.tar.zst      --directory $PREFIX/Library
+
+          ls $PREFIX/Library/usr/bin/*exe | grep -v zsh.exe | xargs rm
+          cp $PREFIX/Library/usr/bin/zsh.exe $PREFIX/Library/usr/bin/zsh-5.9.exe
+
+          ############################################################################################################################
+
+tests:
+  - package_contents:
+      bin:
+        - zsh*
+
+about:
+  summary: Posix Compliant Shell extracted from msys2
+  description: |
+    repackaged from https://packages.msys2.org/packages/zsh,
+    compatible with mise `mise use --global 'conda:zsh[channel=retronvim]' conda:git`,
+    use https://github.com/git-for-windows/git for unix commands which are also based on msys2
+
+  homepage: https://www.zsh.org/
+  repository: https://sourceforge.net/projects/zsh

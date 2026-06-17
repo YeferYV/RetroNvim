@@ -867,192 +867,6 @@
           ]
         },
         {
-          "key": "i",
-          "icon": "package",
-          "name": "+install extra dependencies",
-          "bindings": [
-            {
-              "key": "b",
-              "icon": "cloud-download",
-              "name": "install karabiner ffmpeg poppler vlc (macos)",
-              "commands": [
-                "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                {
-                  "profileName": "zsh"
-                },
-                {
-                  "text": "zb install karabiner-elements ffmpeg poppler vlc \n"
-                }
-              ]
-            },
-            {
-              "key": "n",
-              "icon": "cloud-download",
-              "name": "install nix-env ffmpeg poppler vlc zathura (linux)",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "yes | sh <(curl -L https://nixos.org/nix/install) --daemon \n"
-                },
-                {
-                  "text": "# https://nix.dev/manual/nix/2.28/installation/uninstall \n"
-                },
-                {
-                  "text": "bash -i -c \"nix-env -iA nixpkgs.ffmpeg nixpkgs.poppler nixpkgs.vlc nixpkgs.zathura \"; \n"
-                }
-              ]
-            },
-            {
-              "key": "s",
-              "icon": "cloud-download",
-              "name": "install scoop ffmpeg poppler vlc (windows)",
-              "commands": [
-                "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "retronvim.show_message"
-              ],
-              "args": [
-                {
-                  "profileName": "PowerShell"
-                },
-                {
-                  "text": "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser; iwr get.scoop.sh | iex \n"
-                },
-                {
-                  "text": "scoop bucket add extras; scoop install vlc ffmpeg popper \n"
-                },
-                {
-                  "text": "relaunch vscode"
-                }
-              ]
-            },
-            {
-              "key": "r",
-              "icon": "debug-restart",
-              "name": "restart retronvim (required after installing nix-env) (windows needs to relaunch vscode)",
-              "command": "workbench.action.reloadWindow"
-            },
-            {
-              "key": "g",
-              "icon": "keyboard",
-              "name": "GUI keyboard repeat rate (windows) ",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "control keyboard \n"
-                }
-              ]
-            },
-            {
-              "key": "i",
-              "icon": "keyboard",
-              "name": "increase keyboard repeat rate (windows)",
-              "commands": [
-                "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence",
-                "retronvim.show_message"
-              ],
-              "args": [
-                {
-                  "profileName": "PowerShell"
-                },
-                {
-                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 300 \n"
-                },
-                {
-                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 5 \n"
-                },
-                {
-                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \n"
-                },
-                {
-                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27 \n"
-                },
-                {
-                  "text": "relogin to Windows"
-                }
-              ]
-            },
-            {
-              "key": "I",
-              "icon": "keyboard",
-              "name": "increase keyboard repeat rate (macos) ",
-              "commands": [
-                "workbench.action.createTerminalEditor",
-                "workbench.action.terminal.sendSequence",
-                "retronvim.show_message"
-              ],
-              "args": [
-                null,
-                {
-                  "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n"
-                },
-                {
-                  "text": "relogin to MacOS"
-                }
-              ]
-            },
-            {
-              "key": "k",
-              "icon": "keyboard",
-              "name": "start touchcursor keyboard layout on Windows 10/11 (LeftCtrl + Space + Escape to stop)",
-              "commands": [
-                "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                {
-                  "profileName": "PowerShell"
-                },
-                {
-                  "text": "Set-WinUserLanguageList -force en-US,es-US \r"
-                },
-                {
-                  "text": "conhost --headless %USERPROFILE%/.pixi/envs/retronvim/bin/kanata.exe --cfg %USERPROFILE%/.pixi/envs/retronvim/opt/retronvim/kanata/touchcursor.kbd; sleep 2; exit; \r"
-                }
-              ]
-            },
-            {
-              "key": "K",
-              "icon": "keyboard",
-              "name": "start touchcursor keyboard layout on Linux/Macos (LeftCtrl + Space + Escape to stop)",
-              "commands": [
-                "workbench.action.terminal.newWithProfile",
-                "workbench.action.terminal.sendSequence"
-              ],
-              "args": [
-                {
-                  "profileName": "zsh (retronvim)"
-                },
-                {
-                  "text": "sudo --preserve-env bash --login -c '~/.pixi/envs/retronvim/bin/kanata --cfg ~/.pixi/envs/retronvim/opt/retronvim/kanata/touchcursor.kbd &'; sleep 5; exit; \r"
-                }
-              ]
-            }
-          ]
-        },
-        {
           "key": "I",
           "icon": "cloud-download",
           "name": "+install frameworks",
@@ -2251,6 +2065,31 @@
               ]
             },
             {
+              "key": "S",
+              "icon": "cloud-download",
+              "name": "scoop (windows package manager)",
+              "commands": [
+                "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "retronvim.show_message"
+              ],
+              "args": [
+                {
+                  "profileName": "PowerShell"
+                },
+                {
+                  "text": "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser; iwr get.scoop.sh | iex \n"
+                },
+                {
+                  "text": "scoop bucket add extras \n"
+                },
+                {
+                  "text": "relaunch vscode"
+                }
+              ]
+            },
+            {
               "key": "t",
               "icon": "code",
               "name": "terraform",
@@ -2418,6 +2257,97 @@
                 },
                 {
                   "text": "code --install-extension usernamehw.errorlens \n"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "k",
+          "icon": "keyboard",
+          "name": "+keyboard layout",
+          "bindings": [
+            {
+              "key": "g",
+              "icon": "keyboard",
+              "name": "GUI keyboard repeat rate (windows) ",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "control keyboard \n"
+                }
+              ]
+            },
+            {
+              "key": "i",
+              "icon": "keyboard",
+              "name": "increase keyboard repeat rate (windows)",
+              "commands": [
+                "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
+                "retronvim.show_message"
+              ],
+              "args": [
+                {
+                  "profileName": "PowerShell"
+                },
+                {
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatDelay 300 \n"
+                },
+                {
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' AutoRepeatRate 5 \n"
+                },
+                {
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' DelayBeforeAcceptance 0 \n"
+                },
+                {
+                  "text": "set-itemproperty 'HKCU:/Control Panel/Accessibility/Keyboard Response' Flags 27 \n"
+                },
+                {
+                  "text": "relogin to Windows"
+                }
+              ]
+            },
+            {
+              "key": "I",
+              "icon": "keyboard",
+              "name": "increase keyboard repeat rate (macos) ",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
+                "retronvim.show_message"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1 \n"
+                },
+                {
+                  "text": "relogin to MacOS"
+                }
+              ]
+            },
+            {
+              "key": "k",
+              "icon": "keyboard",
+              "name": "start touchcursor keyboard layout (LeftCtrl + Space + Escape to stop)",
+              "commands": [
+                "workbench.action.terminal.newWithProfile",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                {
+                  "profileName": "zsh (retronvim)"
+                },
+                {
+                  "text": "kanata_touchcursor \r"
                 }
               ]
             }
@@ -3597,6 +3527,12 @@
               "icon": "account",
               "name": "switch profile",
               "command": "workbench.profiles.actions.switchProfile"
+            },
+            {
+              "key": "r",
+              "icon": "debug-restart",
+              "name": "reload vscode",
+              "command": "workbench.action.reloadWindow"
             },
             {
               "key": "s",

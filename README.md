@@ -452,12 +452,15 @@ _    _    _              _              _    _    _
   and [`whichkey` a menu for keymaps](https://github.com/vspacecode/vscode-which-key) vscode extensions as optional
   dependencies
 
-- `Touchcursor Keyboard Layout` on `MacOs` requires `zb install karabiner` or
-  open `whichkey` > `+Install Dependencies` > `install brew karabiner`
+- `Touchcursor Keyboard Layout` on `macos` requires `zb install karabiner`
+
+- `terax` on `archlinux` requires `pacman -S webkit2gtk-4.1`
+
+- `terax` on `debian` requires `apt install webkit2gtk-4.1-dev`
 
 - `terax` on `linux` requires `chsh --shell /bin/zsh` (sets zsh as default shell)
 
-- `terax` requires the setting `Font family: FiraCode Nerd Font` for icons support
+- `terax` requires the setting `Font family: FiraCode Nerd Font` for icons support (`pixi exec --channel retronvim -- firacode-nerdfont-installer` to install firacode font)
 
 **Manual Install**
 
@@ -517,7 +520,6 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 **VSCode Marketplace**
 
 - RetroNvim.conda is shipped with
-  - [`appman`](https://github.com/ivan-hc/Am)
   - [`bat`](https://github.com/sharkdp/bat)
   - [`eza`](https://github.com/eza-community/eza)
   - [`firacode_nerd_font`](https://github.com/ryanoasis/nerd-fonts)
@@ -527,6 +529,7 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   - [`kanata`](https://github.com/jtroo/kanata)
   - [`lazygit`](https://github.com/jesseduffield/lazygit)
   - [`lazyvim`](https://github.com/lazyvim/lazyvim)
+  - [`mise`](https://github.com/jdx/mise)
   - [`neovim`](https://neovim.io)
   - [`pixi`](https://github.com/prefix-dev/pixi)
   - [`ripgrep`](https://github.com/BurntSushi/ripgrep)
@@ -595,11 +598,10 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 <details open><summary></summary>
 
-- `zerobrew` (preinstalled) for macos and linux (linux gui programs not supported)
-- `whichkey > +Install Dependencies > install nix-env` for linux (gpu programs requires nixGL)
-- `whichkey > +Install Dependencies > install scoop` for windows
-- `appman` (preinstalled) for linux
+- `zerobrew` (preinstalled) for macos and linux
+- `whichkey > +Install Frameworks > install scoop` for windows
 - `pixi` (preinstalled) for macos, linux, windows
+- `mise` (preinstalled) to install binaries from github releases
 
 </details>
 
