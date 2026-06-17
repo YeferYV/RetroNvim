@@ -1,0 +1,47 @@
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging
+# rattler-build build --recipe win32yank.yaml --target-platform linux-64 --output-dir win32yank-channel
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/clean/cache
+# pixi clean cache --build --yes
+
+# https://pixi.prefix.dev/dev/reference/cli/pixi/global/install
+# pixi g install  --path ./win32yank-channel/noarch/win32yank-0.1.1-h4616a5c_0.conda
+
+# https://rattler-build.prefix.dev/latest/getting_started/#authentication
+# rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
+
+# https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
+# rattler-build publish --recipe win32yank.yaml --target-platforme linux-64 --to https://anaconda.org/retronvim
+
+context:
+  version: 0.1.1
+
+package:
+  name: win32yank
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/equalsraf/win32yank/releases/download/v0.1.1/win32yank-x64.zip
+
+build:
+  # This makes the package architecture-independent (noarch)
+  noarch: generic
+
+  script:
+    interpreter: bash
+    content:
+      - mkdir            $PREFIX/bin
+      - cp win32yank.exe $PREFIX/bin
+      - chmod +x         $PREFIX/bin/win32yank.exe
+
+tests:
+  - package_contents:
+      bin:
+        - win32yank*
+
+about:
+  summary: Windows clipboard tool
+  description: |
+    WSL clipboard used by default by neovim
+  homepage: https://github.com/equalsraf/win32yank
+  repository: https://github.com/equalsraf/win32yank
