@@ -1,15 +1,25 @@
-# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
-# rattler-build build --recipe firacode-nerdfont-installer.yaml --target-platform linux-64 --output-dir firacode-channel --build-num=+1
-# rattler-build build --recipe firacode-nerdfont-installer.yaml --target-platform osx-64   --output-dir firacode-channel --build-num=+1
-# rattler-build build --recipe firacode-nerdfont-installer.yaml --target-platform win-64   --output-dir firacode-channel --build-num=+1
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging
+# rattler-build build   --recipe firacode-nerdfont-installer.yaml --target-platform linux-64      --output-dir firacode-channel
+# rattler-build build   --recipe firacode-nerdfont-installer.yaml --target-platform linux-aarch64 --output-dir firacode-channel
+# rattler-build build   --recipe firacode-nerdfont-installer.yaml --target-platform osx-64        --output-dir firacode-channel
+# rattler-build build   --recipe firacode-nerdfont-installer.yaml --target-platform osx-arm64     --output-dir firacode-channel
+# rattler-build build   --recipe firacode-nerdfont-installer.yaml --target-platform win-64        --output-dir firacode-channel
 
-# rm -r ~/.cache/rattler
-# pixi g install      --path ./firacode-channel/linux-64/firacode*                     --force-reinstall
-# pixi g install      --path ./firacode-channel/osx-64/firacode*                       --force-reinstall
-# pixi g install      --path ./firacode-channel/win-64/firacode-3.4.0-h9490d1a_1.conda --force-reinstall
+# https://pixi.prefix.dev/dev/reference/cli/pixi/clean/cache
+# pixi clean cache --build --yes
 
-# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
-# pixi upload anaconda --owner=retronvim firacode*/*/*conda
+# https://pixi.prefix.dev/dev/reference/cli/pixi/global/install
+# pixi g install  --path ./firacode-channel/noarch/firacode-nerdfont-installer-3.4.0-h4616a5c_0.conda
+
+# https://rattler-build.prefix.dev/latest/getting_started/#authentication
+# rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
+
+# https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
+# rattler-build publish --recipe firacode-nerdfont-installer.yaml --target-platform linux-64      --to https://anaconda.org/retronvim
+# rattler-build publish --recipe firacode-nerdfont-installer.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim
+# rattler-build publish --recipe firacode-nerdfont-installer.yaml --target-platform osx-64        --to https://anaconda.org/retronvim
+# rattler-build publish --recipe firacode-nerdfont-installer.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim
+# rattler-build publish --recipe firacode-nerdfont-installer.yaml --target-platform win-64        --to https://anaconda.org/retronvim
 
 context:
   version: 3.4.0
@@ -30,6 +40,8 @@ source:
 build:
   # number: 0 # build version
 
+  # noarch: generic # doesn't expose $PREFIX/bin/firacode-nerdfont-installer.cmd on windows
+
   dynamic_linking:
     # fixes macos builds from linux: failed to find `install_name_tool`
     # https://rattler-build.prefix.dev/latest/build_options/#dynamic-linking-configuration
@@ -38,21 +50,17 @@ build:
   script:
     interpreter: bash
     content:
+      - cp -r bin      $PREFIX
 
-      - if: unix
-        then:
-          - cp -r bin      $PREFIX
-          - cp install.sh  $PREFIX/bin/firacode-nerdfont-installer
-          - chmod +x       $PREFIX/bin/firacode-nerdfont-installer
+      # UNIX
+      - cp install.sh  $PREFIX/bin/firacode-nerdfont-installer
+      - chmod +x       $PREFIX/bin/firacode-nerdfont-installer
 
-      - if: win
-        then:
-          - cp -r bin      $PREFIX
-          - cp install.ps1 $PREFIX/bin/firacode-nerdfont-installer.ps1
-          - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< '@echo off'
-          - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< "set CONDA_PREFIX=%~f0\..\.."
-          - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< "powershell -executionpolicy bypass -c %CONDA_PREFIX%/bin/firacode-nerdfont-installer.ps1"
-
+      # WINDOWS
+      - cp install.ps1 $PREFIX/bin/firacode-nerdfont-installer.ps1
+      - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< '@echo off'
+      - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< "set CONDA_PREFIX=%~f0\..\.."
+      - cat >>         $PREFIX/bin/firacode-nerdfont-installer.cmd <<< "powershell -executionpolicy bypass -c %CONDA_PREFIX%/bin/firacode-nerdfont-installer.ps1"
 
 about:
   summary: Iconic font aggregator, collection, and patcher. 3,600+ icons, 50+ patched fonts
