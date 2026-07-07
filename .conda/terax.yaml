@@ -1,15 +1,24 @@
-# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
-# rattler-build build --recipe terax.yaml --target-platform linux-64 --output-dir terax-channel --build-num=+1 --package-format conda:22
-# rattler-build build --recipe terax.yaml --target-platform osx-64   --output-dir terax-channel --build-num=+1 --package-format conda:22
-# rattler-build build --recipe terax.yaml --target-platform win-64   --output-dir terax-channel --build-num=+1 --package-format conda:22
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging
+# rattler-build build --recipe terax.yaml --target-platform linux-64  --output-dir terax-channel
+# rattler-build build --recipe terax.yaml --target-platform osx-64    --output-dir terax-channel
+# rattler-build build --recipe terax.yaml --target-platform osx-arm64 --output-dir terax-channel
+# rattler-build build --recipe terax.yaml --target-platform win-64    --output-dir terax-channel
 
-# rm -r ~/.cache/rattler
-# pixi g install      --path ./terax-channel/linux-64/terax*                          --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel
-# pixi g install      --path ./terax-channel/osx-64/terax*                            --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel
-# pixi g install      --path ./terax-channel/win-64/terax-0.8.0-h9490d1a_1.conda --force-reinstall -c conda-forge -c $PWD/firacode-channel -c $PWD/kanata-channel -c $PWD/retronvim-channel -c $PWD/msys2-channel
+# https://pixi.prefix.dev/dev/reference/cli/pixi/clean/cache
+# pixi clean cache --build --yes
 
-# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
-# pixi upload anaconda --owner=retronvim terax*/*/*conda
+# https://pixi.prefix.dev/dev/reference/cli/pixi/global/install
+# pixi g install --path ./terax-channel/linux-64/terax*
+# pixi g install --path ./terax-channel/linux-aarch64/terax*
+# pixi g install --path ./terax-channel/osx-64/terax*
+# pixi g install --path ./terax-channel/osx-aarch64/terax*
+# pixi g install --path ./terax-channel/win-64/terax-0.8.0-h9490d1a_0.conda
+
+# https://rattler-build.prefix.dev/latest/getting_started/#authentication
+# rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
+
+# https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anaconda
+# rattler-build upload anaconda --owner retronvim ./terax-channel/*/*conda
 
 context:
   version: 0.8.0
@@ -19,29 +28,29 @@ package:
   version: ${{ version }}
 
 source:
-  - if: linux
+  - if: target_platform == "linux-64"
     then:
-      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_amd64.AppImage
-        file_name: "terax"
+      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_${{ version }}_amd64.AppImage
+      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_${{ version }}_amd64.deb
 
-      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_amd64.deb
-      #   file_name: "terax.deb"
 
-  - if: osx
+  - if: target_platform == "osx-64"
     then:
-      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_x64.dmg
-        file_name: "terax.dmg"
+      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_x64.app.tar.gz
+      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_${{ version }}_x64.dmg
 
-      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_x64.app.tar.gz
-      #   target_location: "."
 
-  - if: win
+  - if: target_platform == "osx-arm64"
     then:
-      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_x64_en-US.msi
-        file_name: "terax.msi"
+      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_${{ version }}_aarch64.app.tar.gz
+      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_${{ version }}_aarch64.dmg
 
-      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/Terax_${{ version }}_x64-setup.exe
-      #   file_name: "terax-setup.exe"
+
+  - if: target_platform == "win-64"
+    then:
+      # - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_${{ version }}_x64-setup.exe
+      - url: https://github.com/crynta/terax-ai/releases/download/v${{ version }}/terax_${{ version }}_x64_en-US.msi
+
 
 build:
   # number: 0 # build version
@@ -61,9 +70,9 @@ build:
 
           ############################################################################################################################
 
-          # 7zz x terax.deb
-          chmod +x terax
-          cp terax $PREFIX/bin
+          7zz x terax*
+          7zz x data.tar
+          cp usr/bin/terax $PREFIX/bin/terax
 
           ############################################################################################################################
 
@@ -72,7 +81,7 @@ build:
 
           ############################################################################################################################
 
-          7zz x terax.dmg
+          7zz x terax*
           cp Terax/Terax.app/Contents/MacOS/terax $PREFIX/bin/terax
 
           ############################################################################################################################
@@ -82,8 +91,7 @@ build:
 
           ############################################################################################################################
 
-          # 7zz x terax-setup.exe
-          7zz x terax.msi
+          7zz x terax*
           cp Path $PREFIX/bin/terax.exe
 
           ############################################################################################################################
@@ -132,11 +140,10 @@ requirements:
   build:
     - 7zip=26.00
 
-  # https://v2.tauri.app/start/prerequisites/#linux
   # run:
   #   - if: linux
   #     then:
-  #       - webkit2gtk4.1=2.48.5
+  #       - webkit2gtk4.1=2.48.5 # https://v2.tauri.app/start/prerequisites/#linux
 
 about:
   summary: Lightweight (7MB) Terminal-first AI-native dev workspace

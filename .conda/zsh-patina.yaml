@@ -1,15 +1,29 @@
-# https://rattler-build.prefix.dev/latest/tutorials/repackaging/
-# rattler-build build --recipe zsh-patina.yaml --target-platform linux-64 --output-dir zsh-patina-channel --build-num=+1
-# rattler-build build --recipe zsh-patina.yaml --target-platform osx-64   --output-dir zsh-patina-channel --build-num=+1
-# rattler-build build --recipe zsh-patina.yaml --target-platform win-64   --output-dir zsh-patina-channel --build-num=+1
+# https://rattler-build.prefix.dev/latest/tutorials/repackaging
+# rattler-build build --recipe zsh-patina.yaml --target-platform linux-64      --output-dir zsh-patina-channel
+# rattler-build build --recipe zsh-patina.yaml --target-platform linux-aarch64 --output-dir zsh-patina-channel
+# rattler-build build --recipe zsh-patina.yaml --target-platform osx-64        --output-dir zsh-patina-channel
+# rattler-build build --recipe zsh-patina.yaml --target-platform osx-arm64     --output-dir zsh-patina-channel
+# rattler-build build --recipe zsh-patina.yaml --target-platform win-64        --output-dir zsh-patina-channel
 
-# rm -r ~/.cache/rattler
-# pixi g install      --path ./zsh-patina-channel/linux-64/zsh-patina*
-# pixi g install      --path ./zsh-patina-channel/osx-64/zsh-patina*
-# pixi g install      --path ./zsh-patina-channel/win-64/zsh-patina-1.8.0-h9490d1a_1.conda
+# https://pixi.prefix.dev/dev/reference/cli/pixi/clean/cache
+# pixi clean cache --build --yes
 
-# https://pixi.prefix.dev/dev/reference/cli/pixi/upload/anaconda/
-# pixi upload anaconda --owner=retronvim zsh-patina*/*/*conda
+# https://pixi.prefix.dev/dev/reference/cli/pixi/global/install
+# pixi g install --path ./zsh-patina-channel/linux-64/zsh-patina*
+# pixi g install --path ./zsh-patina-channel/linux-aarch64/zsh-patina*
+# pixi g install --path ./zsh-patina-channel/osx-64/zsh-patina*
+# pixi g install --path ./zsh-patina-channel/osx-aarch64/zsh-patina*
+# pixi g install --path ./zsh-patina-channel/win-64/zsh-patina-1.8.0-h9490d1a_0.conda
+
+# https://rattler-build.prefix.dev/latest/getting_started/#authentication
+# rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
+
+# https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
+# rattler-build publish --recipe zsh-patina.yaml --target-platform linux-64      --to https://anaconda.org/retronvim
+# rattler-build publish --recipe zsh-patina.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim
+# rattler-build publish --recipe zsh-patina.yaml --target-platform osx-64        --to https://anaconda.org/retronvim
+# rattler-build publish --recipe zsh-patina.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim
+# rattler-build publish --recipe zsh-patina.yaml --target-platform win-64        --to https://anaconda.org/retronvim
 
 context:
   version: 1.8.0
@@ -19,23 +33,25 @@ package:
   version: ${{ version }}
 
 source:
-  - if: linux
+  - if: target_platform == "linux-64"
     then:
       - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-unknown-linux-musl.tar.gz
-        target_directory: "bin"
 
-      # - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-unknown-linux-gnu.tar.gz
-      #   target_directory: "bin"
+  - if: target_platform == "linux-aarch64"
+    then:
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-aarch64-unknown-linux-musl.tar.gz
 
-  - if: osx
+  - if: target_platform == "osx-64"
     then:
       - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-apple-darwin.tar.gz
-        target_directory: "bin"
 
-  - if: win
+  - if: target_platform == "osx-arm64"
+    then:
+      - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-aarch64-apple-darwin.tar.gz
+
+  - if: target_platform == "win-64"
     then:
       - url: https://github.com/michel-kraemer/zsh-patina/releases/download/${{ version }}/zsh-patina-v${{ version }}-x86_64-pc-cygwin.zip
-        target_directory: "bin"
 
 build:
   # number: 0 # build version
@@ -48,7 +64,8 @@ build:
   script:
     interpreter: bash
     content:
-      - cp -r bin $PREFIX
+      - mkdir -p             $PREFIX/bin
+      - cp    -r zsh-patina* $PREFIX/bin
 
 tests:
   - package_contents:
