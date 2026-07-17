@@ -37,8 +37,8 @@ prepend_keymap = [
 	{ on = [ "g", "D" ], run = """ cd ~/Documents                                       """,                  desc = "󱧶 Go ~/Documents" },
 	{ on = [ "g", "h" ], run = """ cd ~                                                 """,                  desc = "󱂵 Go home" },
 	{ on = [ "g", "g" ], run = """ arrow -9999                                          """,                  desc = "󰛃 Go top" },
-	{ on = [ "g", "s" ], run = """ cd $CONDA_PREFIX/opt/retronvim                       """, for = "unix",    desc = " retronvim settings" },
-	{ on = [ "g", "s" ], run = """ cd %CONDA_PREFIX%/opt/retronvim                      """, for = "windows", desc = " retronvim settings" },
+	{ on = [ "g", "s" ], run = """ cd $YAZI_CONFIG_HOME/..                              """, for = "unix",    desc = " retronvim settings" },
+	{ on = [ "g", "s" ], run = """ cd %YAZI_CONFIG_HOME%/..                             """, for = "windows", desc = " retronvim settings" },
 	{ on = [ "g", "r" ], run = """ plugin cd-git-root                                   """,                  desc = " git root" },
 	{ on = [ "i" ],      run = """ shell --block -- bat --paging always --wrap never %s """,                  desc = "Bat open selected" },
 

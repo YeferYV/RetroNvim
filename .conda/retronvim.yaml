@@ -1,23 +1,29 @@
 # https://rattler-build.prefix.dev/latest/tutorials/repackaging
-# rattler-build build   --recipe retronvim.yaml --target-platform linux-64    --output-dir retronvim-channel
-# rattler-build build   --recipe retronvim.yaml --target-platform osx-64      --output-dir retronvim-channel
-# rattler-build build   --recipe retronvim.yaml --target-platform osx-arm64   --output-dir retronvim-channel
-# rattler-build build   --recipe retronvim.yaml --target-platform win-64      --output-dir retronvim-channel
+# rattler-build build   --recipe retronvim.yaml --target-platform linux-64      --output-dir retronvim-channel
+# rattler-build build   --recipe retronvim.yaml --target-platform linux-aarch64 --output-dir retronvim-channel
+# rattler-build build   --recipe retronvim.yaml --target-platform osx-64        --output-dir retronvim-channel
+# rattler-build build   --recipe retronvim.yaml --target-platform osx-arm64     --output-dir retronvim-channel
+# rattler-build build   --recipe retronvim.yaml --target-platform win-64        --output-dir retronvim-channel
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/clean/cache
 # pixi clean cache --build --yes
 
 # https://pixi.prefix.dev/dev/reference/cli/pixi/global/install
-# pixi g install  --path ./retronvim-channel/noarch/retronvim-0.4.9-h4616a5c_0.conda -c conda-forge -c ./firacode-channel -c ./mise-channel -c ./terax-channel -c ./win32-channel -c ./zsh-patina-channel -c ./zsh-channel
+# pixi g install --path ./retronvim-channel/linux-64/*conda      -c conda-forge -c ./firacode-channel -c ./terax-channel -c ./zsh-patina-channel -c ./win32-channel
+# pixi g install --path ./retronvim-channel/linux-aarch64/*conda -c conda-forge -c ./firacode-channel -c ./terax-channel -c ./zsh-patina-channel
+# pixi g install --path ./retronvim-channel/osx-64/*conda        -c conda-forge -c ./firacode-channel -c ./terax-channel -c ./zsh-patina-channel
+# pixi g install --path ./retronvim-channel/osx-aarch64/*conda   -c conda-forge -c ./firacode-channel -c ./terax-channel -c ./zsh-patina-channel
+# pixi g install --path ./retronvim-channel/win-64/*conda        -c conda-forge -c ./firacode-channel -c ./terax-channel -c ./zsh-patina-channel -c ./zsh-channel
 
 # https://rattler-build.prefix.dev/latest/getting_started/#authentication
 # rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
 
 # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
-# rattler-build publish --recipe retronvim.yaml --target-platform linux-64    --to https://anaconda.org/retronvim
-# rattler-build publish --recipe retronvim.yaml --target-platform osx-64      --to https://anaconda.org/retronvim
-# rattler-build publish --recipe retronvim.yaml --target-platform osx-arm64   --to https://anaconda.org/retronvim
-# rattler-build publish --recipe retronvim.yaml --target-platform win-64      --to https://anaconda.org/retronvim
+# rattler-build publish --recipe retronvim.yaml --target-platform linux-64      --to https://anaconda.org/retronvim
+# rattler-build publish --recipe retronvim.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim
+# rattler-build publish --recipe retronvim.yaml --target-platform osx-64        --to https://anaconda.org/retronvim
+# rattler-build publish --recipe retronvim.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim
+# rattler-build publish --recipe retronvim.yaml --target-platform win-64        --to https://anaconda.org/retronvim
 
 context:
   version: 0.4.9
@@ -42,10 +48,11 @@ source:
 build:
   # number: 0 # build version
 
-  dynamic_linking:
-    # fixes macos builds from linux: failed to find `install_name_tool`
-    # https://rattler-build.prefix.dev/latest/build_options/#dynamic-linking-configuration
-    binary_relocation: false
+  # always_include_files:
+  #   - nvim*
+  #
+  # always_copy_files:
+  #   - nvim*
 
   script:
     interpreter: bash
@@ -61,7 +68,7 @@ build:
           cat   >> $PREFIX/bin/git <<< '#!/bin/bash'
           cat   >> $PREFIX/bin/git <<< 'export CONDA_PREFIX=${CONDA_PREFIX:-$(dirname $(dirname $(realpath $0)))}'
           cat   >> $PREFIX/bin/git <<< 'cp --update $CONDA_PREFIX/__clobbers__/git/bin/git $CONDA_PREFIX/bin/git.2.53.0'
-          cat   >> $PREFIX/bin/git <<< 'exec git.2.53.0 "$@"'
+          cat   >> $PREFIX/bin/git <<< 'exec $CONDA_PREFIX/bin/git.2.53.0 "$@"'
           chmod +x $PREFIX/bin/git
 
           ############################################################################################################################
@@ -77,10 +84,11 @@ build:
           cat   >> $PREFIX/bin/nvim <<< '#!/bin/bash'
           cat   >> $PREFIX/bin/nvim <<< 'export CONDA_PREFIX=${CONDA_PREFIX:-$(dirname $(dirname $(realpath $0)))}'
           cat   >> $PREFIX/bin/nvim <<< 'export SHELL=zsh'
-          cat   >> $PREFIX/bin/nvim <<< 'export VIMINIT="lua vim.cmd.source(vim.env.CONDA_PREFIX .. [[/opt/retronvim/nvim/init.lua]])"'
+          cat   >> $PREFIX/bin/nvim <<< 'export RETRONVIM_PREFIX=$CONDA_PREFIX/opt/retronvim'
+          cat   >> $PREFIX/bin/nvim <<< 'export VIMINIT="luafile $CONDA_PREFIX/opt/retronvim/nvim/init.lua"'
           cat   >> $PREFIX/bin/nvim <<< 'export ZDOTDIR="$CONDA_PREFIX/opt/retronvim/zsh"'
           cat   >> $PREFIX/bin/nvim <<< 'cp --update $CONDA_PREFIX/__clobbers__/nvim/bin/nvim $CONDA_PREFIX/bin/nvim.0.12'
-          cat   >> $PREFIX/bin/nvim <<< 'exec nvim.0.12 "$@"'
+          cat   >> $PREFIX/bin/nvim <<< 'exec $CONDA_PREFIX/bin/nvim.0.12 "$@"'
           chmod +x $PREFIX/bin/nvim
 
           ############################################################################################################################
@@ -109,7 +117,7 @@ build:
           cat   >> $PREFIX/bin/zsh <<< '#!/bin/bash'
           cat   >> $PREFIX/bin/zsh <<< 'export CONDA_PREFIX=${CONDA_PREFIX:-$(dirname $(dirname $(realpath $0)))}'
           cat   >> $PREFIX/bin/zsh <<< 'export ZDOTDIR="$CONDA_PREFIX/opt/retronvim/zsh"'
-          cat   >> $PREFIX/bin/zsh <<< 'exec zsh-5.9 "$@"'
+          cat   >> $PREFIX/bin/zsh <<< 'exec $CONDA_PREFIX/bin/zsh-5.9 "$@"'
           chmod +x $PREFIX/bin/zsh
 
           ############################################################################################################################
@@ -130,11 +138,19 @@ build:
 
           ############################################################################################################################
 
+          cat >> $PREFIX/Library/bin/nvim.exe <<< ''
           cat >> $PREFIX/Library/bin/nvim.cmd <<< '@echo off'
-          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set CONDA_PREFIX=%~f0\..\..'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set CONDA_PREFIX=%~f0\..\..\..'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set SHELL=zsh.exe'
-          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set "VIMINIT=lua vim.cmd.source(vim.env.CONDA_PREFIX .. [[/opt/retronvim/nvim/init.lua]])"'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set RETRONVIM_PREFIX=%CONDA_PREFIX%/opt/retronvim'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set "VIMINIT=luafile %CONDA_PREFIX%/opt/retronvim/nvim/init.lua"'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set BAT_THEME=base16'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set FZF_DEFAULT_OPTS=--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window=hidden --bind "?:toggle-preview" --multi'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set LESS=--ignore-case'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set LESSKEYIN=%CONDA_PREFIX%/opt/retronvim/yazi/lesskey'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set LESSHISTFILE=-'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set YAZI_CONFIG_HOME=%CONDA_PREFIX%/opt/retronvim/yazi'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'nvim %*'
 
           ############################################################################################################################
@@ -148,6 +164,10 @@ build:
 
           cat >> $PREFIX/bin/yazi.cmd <<< '@echo off'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set CONDA_PREFIX=%~f0\..\..'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set SHELL=zsh.exe'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set RETRONVIM_PREFIX=%CONDA_PREFIX%/opt/retronvim'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set "VIMINIT=luafile %CONDA_PREFIX%/opt/retronvim/nvim/init.lua"'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set BAT_THEME=base16'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set FZF_DEFAULT_OPTS=--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window=hidden --bind "?:toggle-preview" --multi'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set LESS=--ignore-case'
@@ -175,7 +195,7 @@ build:
       # https://github.com/conda-forge/alacritty-feedstock/blob/main/recipe/menu.json
 
       - |
-        mkdir                               $PREFIX/Menu
+        mkdir -p                            $PREFIX/Menu
         cp $RECIPE_DIR/terax.{png,ico,icns} $PREFIX/Menu
         cat                              >> $PREFIX/Menu/menu.json <<'EOF'
         {
@@ -215,7 +235,7 @@ requirements:
     - bat=0.26.1
     - eza=0.23.4
     - fd-find=10.4.2
-    - firacode-nerdfont-installer=3.4.0
+    - font-fira-code-nerd-font=3.4.0
     - fzf=0.70.0
     - git
     - kanata=1.11.0
@@ -223,28 +243,33 @@ requirements:
     - nvim=0.12.4
     - ripgrep=15.1.0
     - starship=1.24.2
-    - terax
     - yazi=26.5.6
     - zsh-patina=1.8.0
     - zsh=5.9
 
     - if: osx
       then:
-        - mise
+        - terax
         - zerobrew
 
-    - if: win
-      then:
-        - mise-github-release
-
-    - if: linux
+    - if: target_platform == "linux-64"
       then:
         - file=5.47 # not installed inside docker
         - less=692  # not installed inside docker
-        - mise
+        - terax
         - unzip     # required by mason.nvim
         - win32yank # WSL clipboaard
         - zerobrew
+
+    - if: target_platform == "linux-aarch64"
+      then:
+        - file=5.47 # not installed inside docker
+        - less=692  # not installed inside docker
+        - unzip     # required by mason.nvim
+
+    - if: win
+      then:
+        - terax
 
 tests:
   - package_contents:
@@ -259,6 +284,6 @@ tests:
 about:
   summary: minimal lazyvim, terax, yazi, zsh and kanata setup
   description: |
-    terax-terminal preconfigured with lazyvim IDE + yazi builtin plugins + zsh plugins + kanata keyboard layout
+    terax-terminal preconfigured with lazyvim IDE + yazi builtin plugins + zsh builtin plugins + kanata keyboard layout
   homepage: https://github.com/yeferyv/retronvim
   repository: https://github.com/yeferyv/retronvim

@@ -12,7 +12,7 @@
 # pixi g install --path ./terax-channel/linux-aarch64/terax*
 # pixi g install --path ./terax-channel/osx-64/terax*
 # pixi g install --path ./terax-channel/osx-aarch64/terax*
-# pixi g install --path ./terax-channel/win-64/terax-0.8.0-h9490d1a_0.conda
+# pixi g install --path ./terax-channel/win-64/terax-0.8.6-h9490d1a_0.conda
 
 # https://rattler-build.prefix.dev/latest/getting_started/#authentication
 # rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
@@ -21,7 +21,7 @@
 # rattler-build upload anaconda --owner retronvim ./terax-channel/*/*conda
 
 context:
-  version: 0.8.0
+  version: 0.8.6
 
 package:
   name: terax

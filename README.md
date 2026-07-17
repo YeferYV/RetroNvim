@@ -529,7 +529,6 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
   - [`kanata`](https://github.com/jtroo/kanata)
   - [`lazygit`](https://github.com/jesseduffield/lazygit)
   - [`lazyvim`](https://github.com/lazyvim/lazyvim)
-  - [`mise`](https://github.com/jdx/mise)
   - [`neovim`](https://neovim.io)
   - [`pixi`](https://github.com/prefix-dev/pixi)
   - [`ripgrep`](https://github.com/BurntSushi/ripgrep)
@@ -601,7 +600,6 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 - `zerobrew` (preinstalled) for macos and linux
 - `whichkey > +Install Frameworks > install scoop` for windows
 - `pixi` (preinstalled) for macos, linux, windows
-- `mise` (preinstalled) to install binaries from github releases
 
 </details>
 
@@ -642,22 +640,14 @@ open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 - [yeferyv/RetroVim](https://github.com/yeferyv/sixelrice)
   neovim IDE using 01 plugins (with copilot, agents, text-objects, whichkey ...)
 
-- [lazyvim](https://github.com/lazyvim/lazyvim)
-  neovim IDE using 32 plugins (with copilot, agents, text-objects, whichkey ...)
-
 - [binvim](https://github.com/bgunnarsson/binvim/)
   neovim IDE written in rust (with copilot, agents, text-objects, whichkey ...)
+
+- [terax](https://github.com/crynta/terax-ai)
+  agentic terminal + neovim-like IDE
 
 - [lunarkeymap](https://github.com/fathulfahmy/lunarkeymap)
   comes with [vscodevim](https://github.com/vscodevim/vim) extension
   which has some text objects + whichkey with [lunarvim](https://github.com/lunarvim/lunarvim)-like keymaps
-
-- [vspacecode](https://github.com/vspacecode/vspacecode)
-  comes with [vscodevim](https://github.com/vscodevim/vim) extension
-  which has some text objects + whichkey with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
-
-- [leaderKey](https://github.com/JimmyZJX/leaderkey)
-  (a faster whichkey with ripgrep/fzf integration) whichkey
-  with [spacemacs](https://github.com/syl20bnr/spacemacs)-like keymaps
 
 </details>

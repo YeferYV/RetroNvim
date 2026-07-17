@@ -1,9 +1,7 @@
 local vim          = vim --- lsp warnings
-local conda        = vim.env.CONDA_PREFIX
-local data         = vim.fs.normalize(vim.fn.stdpath("data"))
-local mini_path    = conda and (conda .. '/opt/retronvim/nvim/plugins/mini.nvim')
-local lazy_path    = conda and (conda .. '/opt/retronvim/nvim/plugins/lazy.nvim')
-local plugins_path = vim.fn.expand(data .. '/site/pack/core/opt/*', 0, 1)
+local lazy_path    = vim.env.RETRONVIM_PREFIX and (vim.env.RETRONVIM_PREFIX .. '/nvim/plugins/lazy.nvim') or ''
+local mini_path    = vim.env.RETRONVIM_PREFIX and (vim.env.RETRONVIM_PREFIX .. '/nvim/plugins/mini.nvim') or ''
+local plugins_path = vim.fn.expand(vim.fs.normalize(vim.fn.stdpath("data"))  .. '/site/pack/core/opt/*', 0, 1)
 
 if not vim.loop.fs_stat(mini_path) then
   vim.pack.add({ { src = 'https://github.com/nvim-mini/mini.nvim', version = 'v0.18.0' } })
@@ -13,7 +11,7 @@ end
 vim.opt.rtp:append(lazy_path)
 
 require("lazy").setup({
-  root = conda and vim.fs.dirname(lazy_path) or vim.fs.dirname(plugins_path),
+  root = vim.env.RETRONVIM_PREFIX and vim.fs.dirname(lazy_path) or vim.fs.dirname(plugins_path[1]),
   spec = {
     {
       "LazyVim/LazyVim",
@@ -274,8 +272,8 @@ map({ 'i' }, '<a-]>', function() vim.lsp.inline_completion.select({ count = 1 })
 map({ 'i', 'n', 'x' }, '<a-;>', function() require("sidekick").nes_jump_or_apply() end, { desc = ' nes apply' }) --- <m-;> doesn't work with pum
 map({ 'i', 'n', 'x' }, '<a-,>', function() require("sidekick.nes").update() end, { desc = ' nes update' })
 map({ 'i', 'n', 'x' }, "<a-'>", function() require("sidekick.nes").clear() end, { desc = ' nes clear' })
-map({ 'i', 'n', 'x' }, '<leader>cg', "<cmd>Sidekick cli toggle name=gemini<cr>", { desc = '󰫣 Gemini cli' })
-map({ 'i', 'n', 'x' }, '<leader>cG', "<cmd>Sidekick cli prompt<cr>", { desc = '󰫣 Gemini prompt' })
+map({ 'i', 'n', 'x' }, '<leader>lg', "<cmd>Sidekick cli toggle name=opencode<cr>", { desc = '󰵰 opencode cli' })
+map({ 'i', 'n', 'x' }, '<leader>lG', "<cmd>Sidekick cli prompt<cr>", { desc = '󰵰 opencode prompt' })
 map("n", "<leader>e", function() Snacks.explorer({ layout = { layout = { width = 25 } } }) end, { desc = "Explorer" })
 map(
   "n",
