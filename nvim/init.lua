@@ -1,3 +1,7 @@
+--- ╭─────────╮
+--- │ Plugins │
+--- ╰─────────╯
+
 local vim          = vim --- lsp warnings
 local lazy_path    = vim.env.RETRONVIM_PREFIX and (vim.env.RETRONVIM_PREFIX .. '/nvim/plugins/lazy.nvim') or ''
 local mini_path    = vim.env.RETRONVIM_PREFIX and (vim.env.RETRONVIM_PREFIX .. '/nvim/plugins/mini.nvim') or ''
@@ -72,9 +76,9 @@ require("lazy").setup({
   },
 })
 
---- ╭──────╮
---- │ Mini │
---- ╰──────╯
+--- ╭───────────╮
+--- │ Mini.nvim │
+--- ╰───────────╯
 
 --- lazy.nvim erases runtimepath
 vim.opt.rtp:prepend(mini_path)

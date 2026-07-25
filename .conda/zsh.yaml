@@ -24,9 +24,9 @@ source:
 
   - if: win
     then:
-      # # https://packages.msys2.org/packages/filesystem?variant=x86_64
-      # - url: https://mirror.msys2.org/msys/x86_64/filesystem-2026.03.06-1-x86_64.pkg.tar.zst
-      #   file_name: "filesystem.tar.zst"
+      # https://packages.msys2.org/packages/filesystem?variant=x86_64
+      - url: https://mirror.msys2.org/msys/x86_64/filesystem-2026.03.06-1-x86_64.pkg.tar.zst
+        file_name: "filesystem.tar.zst"
 
       # https://packages.msys2.org/packages/msys2-runtime?variant=x86_64
       - url: https://mirror.msys2.org/msys/x86_64/msys2-runtime-3.6.9-2-x86_64.pkg.tar.zst
@@ -83,7 +83,7 @@ build:
 
           mkdir -p $PREFIX/Library
 
-          # tar xvf filesystem.tar.zst       --directory $PREFIX/Library
+          tar xvf filesystem.tar.zst       --directory $PREFIX/Library
           tar xvf msys2-runtime.tar.zst    --directory $PREFIX/Library
           tar xvf zsh.tar.zst              --directory $PREFIX/Library
           tar xvf gdbm.tar.zst             --directory $PREFIX/Library

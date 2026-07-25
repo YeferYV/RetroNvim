@@ -41,9 +41,3 @@
 [submodule "nvim/plugins/which-key.nvim"]
 	path = nvim/plugins/which-key.nvim
 	url = https://github.com/folke/which-key.nvim
-
-
-
-[submodule "zsh/plugins/zsh-autosuggestions"]
-	path = zsh/plugins/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions
