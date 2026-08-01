@@ -467,9 +467,7 @@ _    _    _              _              _    _    _
 - Linux/MacOS:
 
   ```bash
-  curl -L pixi.sh/install.sh | sh
-  source ~/.zshrc
-  pixi global install nodejs retronvim -c retronvim -c conda-forge
+  sh <(curl https://pkgx.sh) pixi global install retronvim -c retronvim -c conda-forge --with pixi
 
   git clone https://github.com/yeferyv/retronvim
   cd retronvim
@@ -480,7 +478,7 @@ _    _    _              _              _    _    _
 - Windows 10/11:
 
   ```powershell
-  winget install prefix-dev.pixi microsoft.visualstudiocode ###### then relaunch terminal
+  winget install prefix-dev.pixi visualstudiocode ###### then relaunch terminal
   pixi global install nodejs retronvim -c retronvim -c conda-forge
 
   git clone https://github.com/yeferyv/retronvim
@@ -501,7 +499,26 @@ _    _    _              _              _    _    _
 - SSH/Bash/Zsh (linux/macos):
 
   ```bash
-  sh <(curl https://pkgx.sh) pixi g install retronvim -c retronvim -c conda-forge --with pixi
+  curl -L pixi.sh/install.sh | sh
+  pixi g install retrovim -c retronvim -c conda-forge
+  ```
+
+- npm + any package manager:
+
+  ```bash
+  # brew   install bat eza font-fira-code-nerd-font fzf git kanata lazygit neovim ripgrep starship yazi zsh zsh-patina 7zip pixi
+  # pixi g install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim   ripgrep starship yazi zsh zsh-patina 7zip      -c retronvim -c conda-forge -e retronvim
+
+  npm install -g retronvim
+  ```
+
+- pip + any package manager:
+
+  ```bash
+  # brew   install bat eza font-fira-code-nerd-font fzf git kanata lazygit neovim ripgrep starship yazi zsh zsh-patina 7zip pixi
+  # pixi g install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim   ripgrep starship yazi zsh zsh-patina 7zip      -c retronvim -c conda-forge -e retronvim
+
+  pip install retronvim
   ```
 
 **Install RetroVim (for vscode-neovim support)**
@@ -513,9 +530,6 @@ _    _    _              _              _    _    _
   code --uninstall-extension cuixiaorui.cvim
   code   --install-extension asvetliakov.vscode-neovim
   ```
-
-**Install from github releases (offline)(portable)**
-open command palette `ctrl+shift+p` then type `Extensions: install from vsix`.
 
 **VSCode Marketplace**
 

@@ -2,6 +2,12 @@
   "name": "retronvim",
   "displayName": "RetroNvim",
   "description": "minimal whichkey, lazyvim, terax, yazi, zsh and kanata setup ",
+  "bin": {
+    "kanata_touchcursor": ".npm/kanata_touchcursor.js",
+    "nvim": ".npm/nvim.js",
+    "yazi": ".npm/yazi.js",
+    "zsh": ".npm/zsh.js"
+  },
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -50,6 +56,7 @@
     "type": "git",
     "url": "https://github.com/YeferYV/RetroNvim"
   },
+  "license": "GPL3",
   "bugs": {
     "url": "https://github.com/YeferYV/RetroNvim/issues"
   },

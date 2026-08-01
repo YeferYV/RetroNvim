@@ -22,63 +22,90 @@ env:
   VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
   OVSX_PAT: ${{ secrets.OVSX_TOKEN }}
   ANACONDA_API_KEY: ${{ secrets.ANACONDA_TOKEN }}
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # write access last 90 days, trusted-publishing should last forever https://www.npmjs.com/package/retrovim/access
+  UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }} # trusted-publishing should last forever https://pypi.org/manage/account/publishing
 
 # https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions
+# GitHub requires `issues: write` permission for label management since labels are shared between issues and pull requests
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   upload-release:
     runs-on: ubuntu-latest
 
     steps:
+      # ==========================================================
+      # 1. create release bot
+      # ==========================================================
       # https://www.youtube.com/watch?v=P0wAXh5UOnM
-      #                                                        ╭───────────────────────────────────────────────────────────────────────────╮
-      # to retrigger remove the github release and tag then -> │ git pull --rebase && git commit --allow-empty --amend && git push --force │
-      #                                                        ╰───────────────────────────────────────────────────────────────────────────╯
+      #                                                      ╭────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+      # to retrigger remove the github release, tag then --> │ git pull --rebase --> lazygit remove github-action commit and ammend your changes --> git push --force │
+      #                                                      ╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           release-type: node
 
+      # ==========================================================
+      # 2. Checkout repo
+      # ==========================================================
       - name: Checkout 🛬
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
 
-      - name: Publish to vscode marketplace and anaconda.org 🚀
+      # ==========================================================
+      # 3. Install dependencies
+      # ==========================================================
+      - name: Install rattler-build, uv and npm 🧰
         if: ${{ steps.release.outputs.release_created }}
         run: |
-
-          ############################################################################################################################################################
-
           git submodule update --init --depth 1
-          rm -rf ./nvim/plugins/*/tests
 
-          curl -L pixi.sh/install.sh | bash
+          curl -L pixi.sh/install.sh | sh
           export PATH="$HOME/.pixi/bin:$PATH"
-          pixi global install rattler-build
+          pixi global install rattler-build uv
+
+      - name: Setup Node auth 🔑
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://registry.npmjs.org'
+
+
+      # ==========================================================
+      # 4. Publish packages
+      # ==========================================================
+      - name: Publish to npm, pypi, anaconda.org and vscode-marketplace 🚀
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          export PATH="$HOME/.pixi/bin:$PATH"
 
           # https://rattler-build.prefix.dev/latest/getting_started/#authentication
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
           rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-64  --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-64    --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-arm64 --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform win-64    --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform linux-64      --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-64        --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform win-64        --to https://anaconda.org/retronvim --build-number=+1
 
-          ############################################################################################################################################################
+          npm publish
+          uv build && uv publish
 
           yes | npx vsce package
           yes | npx vsce publish
           yes | npx ovsx publish
 
-          ############################################################################################################################################################
-
+      # ==========================================================
+      # 5. Upload artifacts to GitHub Release
+      # ==========================================================
       - name: Github release 📦
         if: ${{ steps.release.outputs.release_created }}
         run: |
-          gh release upload ${{ steps.release.outputs.tag_name }} output/noarch/*.conda
+          gh release upload ${{ steps.release.outputs.tag_name }} output/*/*.conda
           gh release upload ${{ steps.release.outputs.tag_name }} *.vsix
 
