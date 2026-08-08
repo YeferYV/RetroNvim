@@ -460,7 +460,7 @@ _    _    _              _              _    _    _
 
 - `terax` on `linux` requires `chsh --shell /bin/zsh` (sets zsh as default shell)
 
-- `terax` requires the setting `Font family: FiraCode Nerd Font` for icons support (`pixi exec --channel retronvim -- firacode-nerdfont-installer` to install firacode font)
+- `terax` requires the setting `Font family: FiraCode Nerd Font` for icons support (`pixi exec --channel retronvim --with font-fira-code-nerd-font -- firacode-nerdfont-installer` to install firacode font)
 
 **Manual Install**
 

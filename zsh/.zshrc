@@ -43,9 +43,7 @@ export ZEROBREW_ROOT="$HOME/.local/share/zerobrew"
 export ZEROBREW_PREFIX="$HOME/.local/share/zerobrew/prefix"
 export PKG_CONFIG_PATH="$ZEROBREW_PREFIX/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 
-export PATH="$HOME/appdata/local/mise/shims:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/share/mise/shims:$PATH"
 export PATH="$HOME/.local/share/npm/bin:$PATH"
 export PATH="/bin:/usr/bin:$PATH" # ~/.local/bin/nvim from retronvim should search first for /bin/nvim binary
 export PATH="$HOME/.pixi/envs/retronvim/bin:$PATH"
@@ -117,7 +115,7 @@ _autosuggest_fetch() {
 # 2. Clear suggestion
 _autosuggest_clear() {
   POSTDISPLAY=""
-  region_highlight=()
+  # region_highlight=() # it also clears zsh-patina syntax highlighting
 }
 
 # 3. Accept suggestion

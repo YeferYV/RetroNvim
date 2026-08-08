@@ -48,14 +48,9 @@ source:
 build:
   # number: 0 # build version
 
-  # always_include_files:
-  #   - nvim*
-  #
-  # always_copy_files:
-  #   - nvim*
-
   script:
     interpreter: bash
+
     content:
       - mkdir -p     $PREFIX/bin $PREFIX/Library/bin
       - cp    -r opt $PREFIX/opt
@@ -83,8 +78,8 @@ build:
 
           cat   >> $PREFIX/bin/nvim <<< '#!/bin/bash'
           cat   >> $PREFIX/bin/nvim <<< 'export CONDA_PREFIX=${CONDA_PREFIX:-$(dirname $(dirname $(realpath $0)))}'
-          cat   >> $PREFIX/bin/nvim <<< 'export SHELL=zsh'
           cat   >> $PREFIX/bin/nvim <<< 'export RETRONVIM_PREFIX=$CONDA_PREFIX/opt/retronvim'
+          cat   >> $PREFIX/bin/nvim <<< 'export SHELL=zsh'
           cat   >> $PREFIX/bin/nvim <<< 'export VIMINIT="luafile $CONDA_PREFIX/opt/retronvim/nvim/init.lua"'
           cat   >> $PREFIX/bin/nvim <<< 'export ZDOTDIR="$CONDA_PREFIX/opt/retronvim/zsh"'
           cat   >> $PREFIX/bin/nvim <<< 'cp --update $CONDA_PREFIX/__clobbers__/nvim/bin/nvim $CONDA_PREFIX/bin/nvim.0.12'
@@ -102,12 +97,12 @@ build:
           ############################################################################################################################
 
           cat   >> $PREFIX/bin/yazi <<< '#!/bin/bash'
-          cat   >> $PREFIX/bin/yazi <<< 'export BAT_THEME="base16"'
           cat   >> $PREFIX/bin/yazi <<< 'export CONDA_PREFIX=${CONDA_PREFIX:-$(dirname $(dirname $(realpath $0)))}'
+          cat   >> $PREFIX/bin/yazi <<< 'export BAT_THEME="base16"'
           cat   >> $PREFIX/bin/yazi <<< 'export FZF_DEFAULT_OPTS='\''--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window=hidden --bind "?:toggle-preview" --multi'\'
           cat   >> $PREFIX/bin/yazi <<< 'export LESS="--ignore-case"'
-          cat   >> $PREFIX/bin/yazi <<< 'export LESSKEYIN="$CONDA_PREFIX/opt/retronvim/yazi/lesskey"'
           cat   >> $PREFIX/bin/yazi <<< 'export LESSHISTFILE="-"'
+          cat   >> $PREFIX/bin/yazi <<< 'export LESSKEYIN="$CONDA_PREFIX/opt/retronvim/yazi/lesskey"'
           cat   >> $PREFIX/bin/yazi <<< 'export YAZI_CONFIG_HOME="$CONDA_PREFIX/opt/retronvim/yazi"'
           cat   >> $PREFIX/bin/yazi <<< 'exec $CONDA_PREFIX/__clobbers__/yazi/bin/yazi "$@"'
           chmod +x $PREFIX/bin/yazi
@@ -127,6 +122,20 @@ build:
 
           ############################################################################################################################
 
+          mkdir -p $PREFIX/etc/conda/activate.d
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set "VIMINIT=luafile %CONDA_PREFIX%/opt/retronvim/nvim/init.lua"'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set BAT_THEME=base16'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set FZF_DEFAULT_OPTS=--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window=hidden --bind "?:toggle-preview" --multi'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set LESS=--ignore-case'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set LESSHISTFILE=-'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set LESSKEYIN=%CONDA_PREFIX%/opt/retronvim/yazi/lesskey'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set RETRONVIM_PREFIX=%CONDA_PREFIX%/opt/retronvim'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set SHELL=zsh'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set YAZI_CONFIG_HOME=%CONDA_PREFIX%/opt/retronvim/yazi'
+          cat   >> $PREFIX/etc/conda/activate.d/retronvim.bat <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
+
+          ############################################################################################################################
+
           cat >> $PREFIX/bin/git.cmd <<< '@echo off'
           cat >> $PREFIX/bin/git.cmd <<< 'git.exe %*'
 
@@ -138,19 +147,18 @@ build:
 
           ############################################################################################################################
 
-          cat >> $PREFIX/Library/bin/nvim.exe <<< ''
           cat >> $PREFIX/Library/bin/nvim.cmd <<< '@echo off'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set CONDA_PREFIX=%~f0\..\..\..'
-          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set SHELL=zsh.exe'
-          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set RETRONVIM_PREFIX=%CONDA_PREFIX%/opt/retronvim'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set "VIMINIT=luafile %CONDA_PREFIX%/opt/retronvim/nvim/init.lua"'
-          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set BAT_THEME=base16'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set FZF_DEFAULT_OPTS=--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window=hidden --bind "?:toggle-preview" --multi'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set LESS=--ignore-case'
-          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set LESSKEYIN=%CONDA_PREFIX%/opt/retronvim/yazi/lesskey'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set LESSHISTFILE=-'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set LESSKEYIN=%CONDA_PREFIX%/opt/retronvim/yazi/lesskey'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set RETRONVIM_PREFIX=%CONDA_PREFIX%/opt/retronvim'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set SHELL=zsh.exe'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set YAZI_CONFIG_HOME=%CONDA_PREFIX%/opt/retronvim/yazi'
+          cat >> $PREFIX/Library/bin/nvim.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/Library/bin/nvim.cmd <<< 'nvim %*'
 
           ############################################################################################################################
@@ -164,16 +172,16 @@ build:
 
           cat >> $PREFIX/bin/yazi.cmd <<< '@echo off'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set CONDA_PREFIX=%~f0\..\..'
-          cat >> $PREFIX/bin/yazi.cmd <<< 'set SHELL=zsh.exe'
-          cat >> $PREFIX/bin/yazi.cmd <<< 'set RETRONVIM_PREFIX=%CONDA_PREFIX%/opt/retronvim'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set "VIMINIT=luafile %CONDA_PREFIX%/opt/retronvim/nvim/init.lua"'
-          cat >> $PREFIX/bin/yazi.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set BAT_THEME=base16'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set FZF_DEFAULT_OPTS=--color "hl:-1:reverse,hl+:-1:reverse" --preview "bat --color=always {}" --preview-window=hidden --bind "?:toggle-preview" --multi'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set LESS=--ignore-case'
-          cat >> $PREFIX/bin/yazi.cmd <<< 'set LESSKEYIN=%CONDA_PREFIX%/opt/retronvim/yazi/lesskey'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set LESSHISTFILE=-'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set LESSKEYIN=%CONDA_PREFIX%/opt/retronvim/yazi/lesskey'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set RETRONVIM_PREFIX=%CONDA_PREFIX%/opt/retronvim'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set SHELL=zsh.exe'
           cat >> $PREFIX/bin/yazi.cmd <<< 'set YAZI_CONFIG_HOME=%CONDA_PREFIX%/opt/retronvim/yazi'
+          cat >> $PREFIX/bin/yazi.cmd <<< 'set ZDOTDIR=%CONDA_PREFIX%/opt/retronvim/zsh'
           cat >> $PREFIX/bin/yazi.cmd <<< 'yazi.exe %*'
 
           ############################################################################################################################
