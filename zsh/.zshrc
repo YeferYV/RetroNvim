@@ -99,8 +99,11 @@ _autosuggest_fetch() {
   POSTDISPLAY=""
   region_highlight=()
 
-  # Skip if buffer is empty OR editing in the middle of the line OR if we are actively in a Ctrl+R search
-  if (( $#BUFFER )) && (( CURSOR == $#BUFFER )) && [[ "$WIDGET" != *isearch* ]]; then
+  # Skip during isearch
+  [[ "$WIDGET" == *isearch* ]] && return
+
+  # Skip if buffer is empty OR editing in the middle of the line
+  if (( $#BUFFER )) && (( CURSOR == $#BUFFER )); then
     # (r) reverse search, (b) escape glob characters in BUFFER
     local suggestion="${history[(r)${(b)BUFFER}*]}"
     if [[ -n "$suggestion" ]]; then
@@ -111,15 +114,14 @@ _autosuggest_fetch() {
   fi
 }
 
-# 2. Hook into the prompt redraw cycle (catches typing, Up-arrow, etc.)
-zle -N zle-line-pre-redraw _autosuggest_fetch
+# 2. Clear suggestion
+_autosuggest_clear() {
+  POSTDISPLAY=""
+  region_highlight=()
+}
 
-# 3. Hook into incremental search updates (catches Ctrl+R buffer changes)
-zle -N zle-isearch-update _autosuggest_fetch
-
-# 4. Accept the suggestion
+# 3. Accept suggestion
 _autosuggest_accept() {
-  # Only accept if cursor is at the end of the line AND there is a suggestion
   if (( CURSOR == $#BUFFER )) && (( $#POSTDISPLAY )); then
     BUFFER+="$POSTDISPLAY"
     CURSOR=$#BUFFER
@@ -136,6 +138,13 @@ zle -N _autosuggest_accept
 # 5. Bind Right Arrow (and Alt+Right) to accept
 bindkey -M viins '\e[C' _autosuggest_accept
 bindkey -M viins '\el'  _autosuggest_accept
+
+# 4. Use add-zle-hook-widget (hooks INTO widgets, doesn't replace them)
+autoload -Uz add-zle-hook-widget
+add-zle-hook-widget line-pre-redraw _autosuggest_fetch
+add-zle-hook-widget isearch-update  _autosuggest_fetch
+add-zle-hook-widget line-finish     _autosuggest_clear
+
 
 # ╭─────────╮
 # │ plugins │
