@@ -14,6 +14,17 @@
 * **zsh:** getting multiples ~/.cache/zcompdump.some-id + hide suggestion after pressing tab ([8cad67f](https://github.com/YeferYV/RetroNvim/commit/8cad67f2d5f59a17fa5d87cec381cf2074e89c3a))
 * **zsh:** OSC 11 and DECRQM sequences leaks on yazi inside terax workaround ([b87df6d](https://github.com/YeferYV/RetroNvim/commit/b87df6d2f0042d5c7c2c5009e9002803582d8d2a))
 
+## [0.4.9](https://github.com/YeferYV/RetroNvim/compare/v0.4.8...v0.4.9) (2026-08-08)
+
+
+### Bug Fixes
+
+* **.conda:** aarch64 support ([e2980f9](https://github.com/YeferYV/RetroNvim/commit/e2980f99f1de3bd00874cc71779332ff95891c72))
+* **mise.yaml:** mise from conda-forge doesn't work on windows ([415d918](https://github.com/YeferYV/RetroNvim/commit/415d91843458c8dfc1eb87141156777b2795bfbb))
+* **retronvim.yaml:** trampoline not generating shim from nvim.cmd ([d7cbb37](https://github.com/YeferYV/RetroNvim/commit/d7cbb37cc223e08d443ffb5c203bb386fd562774))
+* **zsh:** `ctrl+r` conflicts with builtin `zsh-autosuggestions` ([ad52cfc](https://github.com/YeferYV/RetroNvim/commit/ad52cfc9748b840d707a2aba4686c08e8f3bb932))
+* **zsh:** builtin zsh-autosuggestion clear ghost text after pressing enter ([c993f09](https://github.com/YeferYV/RetroNvim/commit/c993f09ec0e43c406138409477103ba0fe275b5c))
+
 ## [0.4.8](https://github.com/YeferYV/RetroNvim/compare/v0.4.7...v0.4.8) (2026-06-15)
 
 
