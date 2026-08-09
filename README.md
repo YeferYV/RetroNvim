@@ -222,44 +222,39 @@ vscode extension with minimal whichkey, lazyvim, terax, yazi, zsh and kanata set
 
 <details open><summary></summary>
 
-|         Key Combination          |    mode     | Description                                           | compatibility |
-| :------------------------------: | :---------: | :---------------------------------------------------- | :-----------: |
-|               `/`                |     `n`     | search (`ctrl+p`/`up`/`ctrl+n`/`down` search history) | vscode/neovim |
-|            `<space>o`            |     `n`     | view file explorer                                    | vscode/neovim |
-|             `ctrl+\`             |   `n`,`i`   | toggle panel (terminal) visibility                    | vscode/neovim |
-|             `escape`             |     `n`     | clear search highlight                                | vscode/neovim |
-|          `shift+escape`          |     `n`     | close any popup window like diff/diagnostic etc       | vscode/neovim |
-|          `shift+space`           |     `n`     | show whichkey menu (Windows, Linux, Mac)              |    vscode     |
-|           `alt+space`            |     `n`     | show whichkey menu (Linux, Mac)                       |    vscode     |
-|             `space`              |     `n`     | show whichkey menu                                    |    neovim     |
-|             `alt+o`              | `n`,`i`,`x` | yazi file manager (selection is open with vscode)     |    vscode     |
-|             `alt+c`              |     `i`     | copy                                                  | vscode/neovim |
-|             `alt+v`              |     `i`     | paste                                                 | vscode/neovim |
-|               `jk`               |     `i`     | enter vim normal mode                                 | vscode/neovim |
-|             `alt+h`              |   `i`,`x`   | enter vim normal mode                                 | vscode/neovim |
-|            `shift+h`             |     `n`     | cursorLeft `10` times                                 | vscode/neovim |
-|            `shift+j`             |     `n`     | cursorDown `10` times                                 | vscode/neovim |
-|            `shift+k`             |     `n`     | cursorUp `10` times                                   | vscode/neovim |
-|            `shift+l`             |     `n`     | cursorRigth `10` times                                | vscode/neovim |
-|             `alt+s`              |     `n`     | go to previous tab                                    |    vscode     |
-|             `alt+f`              |     `n`     | go to next tab                                        |    vscode     |
-|              `left`              |     `n`     | go to previous tab                                    | vscode/neovim |
-|             `right`              |     `n`     | go to next tab                                        | vscode/neovim |
+| Key Combination                  |    mode     | Description                                           | compatibility |
+| :------------------------------- | :---------: | :---------------------------------------------------- | :-----------: |
+| `shift+space`                    |     `n`     | show whichkey menu (Windows, Linux, Mac)              |    vscode     |
+| `alt+space`                      |     `n`     | show whichkey menu (Linux, Mac)                       |    vscode     |
+| `<space>`                        |     `n`     | show whichkey menu                                    |    neovim     |
+| `<space>o`                       |     `n`     | view file explorer                                    | vscode/neovim |
+| `/`                              |     `n`     | search (`ctrl+p`/`up`/`ctrl+n`/`down` search history) | vscode/neovim |
+| `ctrl+\`                         |   `n`,`i`   | toggle panel (terminal) visibility                    | vscode/neovim |
+| `escape`                         |     `n`     | clear search highlight                                | vscode/neovim |
+| `shift+escape`                   |     `n`     | close any popup window like diff/diagnostic etc       | vscode/neovim |
+| `jk`                             |     `i`     | enter vim normal mode                                 | vscode/neovim |
+| `alt+h`                          |   `i`,`x`   | enter vim normal mode                                 | vscode/neovim |
+| `alt+o`                          | `n`,`i`,`x` | yazi file manager (selection is open with vscode)     |    vscode     |
+| `alt+c`                          |     `i`     | copy                                                  | vscode/neovim |
+| `alt+v`                          |     `i`     | paste                                                 | vscode/neovim |
+| `alt+s`                          |     `n`     | go to previous tab                                    |    vscode     |
+| `alt+f`                          |     `n`     | go to next tab                                        |    vscode     |
+| `left`                           |     `n`     | go to previous tab                                    | vscode/neovim |
+| `right`                          |     `n`     | go to next tab                                        | vscode/neovim |
+| `shift+h`                        |     `n`     | cursorLeft `10` times                                 | vscode/neovim |
+| `shift+j`                        |     `n`     | cursorDown `10` times                                 | vscode/neovim |
+| `shift+k`                        |     `n`     | cursorUp `10` times                                   | vscode/neovim |
+| `shift+l`                        |     `n`     | cursorRigth `10` times                                | vscode/neovim |
+| `shift+r`                        |     `n`     | format and save                                       | vscode/neovim |
+| `shift+q`                        |     `n`     | close active tab                                      | vscode/neovim |
 | `ctrl+shift+h` or `ctrl+shift+j` |     `n`     | decrease view size of current window or terminal      | vscode/neovim |
 | `ctrl+shift+l` or `ctrl+shift+k` |     `n`     | increase view size of current window or terminal      | vscode/neovim |
-|           `shift+left`           |     `n`     | resize to left window                                 |    neovim     |
-|           `shift+down`           |     `n`     | resize to down window                                 |    neovim     |
-|            `shift+up`            |     `n`     | resize to up window                                   |    neovim     |
-|          `shift+right`           |     `n`     | resize to right window                                |    neovim     |
-|             `ctrl+h`             |     `n`     | navigate to left window                               | vscode/neovim |
-|             `ctrl+j`             |     `n`     | navigate to down window                               | vscode/neovim |
-|             `ctrl+k`             |     `n`     | navigate to up window                                 | vscode/neovim |
-|             `ctrl+l`             |     `n`     | navigate to right window                              | vscode/neovim |
-|            `shift+q`             |     `n`     | close active tab                                      | vscode/neovim |
-|            `shift+r`             |     `n`     | format and save                                       | vscode/neovim |
-|         `ctrl+alt+left`          | `n`,`i`,`x` | select left word (on multi cursor)                    |    vscode     |
-|         `ctrl+alt+right`         | `n`,`i`,`x` | select right word (on multi cursor)                   |    vscode     |
-|        `<ctr+x><ctrl+o>`         |     `i`     | to expand emmet-ls                                    |    neovim     |
+| `ctrl+h`                         |     `n`     | navigate to left window                               | vscode/neovim |
+| `ctrl+j`                         |     `n`     | navigate to down window                               | vscode/neovim |
+| `ctrl+k`                         |     `n`     | navigate to up window                                 | vscode/neovim |
+| `ctrl+l`                         |     `n`     | navigate to right window                              | vscode/neovim |
+| `ctrl+alt+left`                  | `n`,`i`,`x` | select left word (on multi cursor)                    |    vscode     |
+| `ctrl+alt+right`                 | `n`,`i`,`x` | select right word (on multi cursor)                   |    vscode     |
 
 </details>
 
@@ -267,41 +262,41 @@ vscode extension with minimal whichkey, lazyvim, terax, yazi, zsh and kanata set
 
 <details open><summary></summary>
 
-|  Key Combination   | mode | Description                                                        | compatibility |
-| :----------------: | :--: | :----------------------------------------------------------------- | :-----------: |
-|    `ctrl+space`    | `i`  | toggle suggestion widget                                           |    vscode     |
+| Key Combination    | mode | Description                                                        | compatibility |
+| :----------------- | :--: | :----------------------------------------------------------------- | :-----------: |
+| `ctrl+space`       | `i`  | toggle suggestion widget                                           |    vscode     |
 | `ctrl+shift+space` | `i`  | toggle suggestion details (when inside widget)                     |    vscode     |
 | `ctrl+shift+space` | `i`  | toggle parameter hints (when inside parameters)                    |    vscode     |
-|    `ctrl+space`    | `i`  | mini.completion show                                               |    neovim     |
-|      `ctrl+y`      | `i`  | mini.completion acccept                                            |    neovim     |
-|      `ctrl+e`      | `i`  | mini.completion cancel/hide                                        |    neovim     |
-|      `ctrl+n`      | `i`  | mini.completion select next                                        |    neovim     |
-|      `ctrl+p`      | `i`  | mini.completion select prev                                        |    neovim     |
-|      `ctrl+f`      | `i`  | mini.completion scroll info down                                   |    neovim     |
-|      `ctrl+b`      | `i`  | mini.completion scroll info up                                     |    neovim     |
-|      `ctrl+d`      | `i`  | scroll down (when inside suggestion details)                       |    vscode     |
-|      `ctrl+u`      | `i`  | scroll up (when inside suggestion details)                         |    vscode     |
-|      `ctrl+h`      | `i`  | toggle suggestion focus (when inside widget)                       |    vscode     |
-|      `ctrl+j`      | `i`  | select next suggestion                                             |    vscode     |
-|      `ctrl+k`      | `i`  | select prev suggestion                                             |    vscode     |
-|      `ctrl+l`      | `i`  | accept selected suggestion                                         |    vscode     |
-|      `ctrl+i`      | `i`  | prompt to AI (gemini/windsurf/copilot)                             |    vscode     |
-|      `ctrl+k`      | `i`  | prompt to AI (cursor)                                              |    vscode     |
-|      `ctrl+.`      | `i`  | fix error with AI (windsurf/cursor/copilot)                        |    vscode     |
-|      `alt+]`       | `i`  | show next AI suggestion                                            | vscode/neovim |
-|      `alt+[`       | `i`  | show previous AI suggestion                                        | vscode/neovim |
-|      `alt+j`       | `i`  | AI suggestion accept next word                                     | vscode/neovim |
-|      `alt+k`       | `i`  | AI suggestion accept next line                                     | vscode/neovim |
-|      `alt+l`       | `i`  | accept AI/NES suggestion (TRAE/AMP/gemini/windsurf/cursor/copilot) | vscode/neovim |
-|      `alt+;`       | `i`  | trigger Next-Edit-Suggestion from AI (`alt+l` to accept)           |    vscode     |
-|      `alt+;`       | `i`  | accept Next-Edit-Suggestion from AI                                |    neovim     |
+| `ctrl+space`       | `i`  | mini.completion show                                               |    neovim     |
+| `ctrl+y`           | `i`  | mini.completion acccept                                            |    neovim     |
+| `ctrl+e`           | `i`  | mini.completion cancel/hide                                        |    neovim     |
+| `ctrl+n`           | `i`  | mini.completion select next                                        |    neovim     |
+| `ctrl+p`           | `i`  | mini.completion select prev                                        |    neovim     |
+| `ctrl+f`           | `i`  | mini.completion scroll info down                                   |    neovim     |
+| `ctrl+b`           | `i`  | mini.completion scroll info up                                     |    neovim     |
+| `ctrl+d`           | `i`  | scroll down (when inside suggestion details)                       |    vscode     |
+| `ctrl+u`           | `i`  | scroll up (when inside suggestion details)                         |    vscode     |
+| `ctrl+h`           | `i`  | toggle suggestion focus (when inside widget)                       |    vscode     |
+| `ctrl+j`           | `i`  | select next suggestion                                             |    vscode     |
+| `ctrl+k`           | `i`  | select prev suggestion                                             |    vscode     |
+| `ctrl+l`           | `i`  | accept selected suggestion                                         |    vscode     |
+| `ctrl+i`           | `i`  | prompt to AI (gemini/windsurf/copilot)                             |    vscode     |
+| `ctrl+k`           | `i`  | prompt to AI (cursor)                                              |    vscode     |
+| `ctrl+.`           | `i`  | fix error with AI (windsurf/cursor/copilot)                        |    vscode     |
+| `alt+]`            | `i`  | show next AI suggestion                                            | vscode/neovim |
+| `alt+[`            | `i`  | show previous AI suggestion                                        | vscode/neovim |
+| `alt+j`            | `i`  | AI suggestion accept next word                                     | vscode/neovim |
+| `alt+k`            | `i`  | AI suggestion accept next line                                     | vscode/neovim |
+| `alt+l`            | `i`  | accept AI/NES suggestion (TRAE/AMP/gemini/windsurf/cursor/copilot) | vscode/neovim |
+| `alt+;`            | `i`  | trigger Next-Edit-Suggestion from AI (`alt+l` to accept)           |    vscode     |
+| `alt+;`            | `i`  | accept Next-Edit-Suggestion from AI                                |    neovim     |
 | `escape` / `alt+'` | `i`  | cancel Next-Edit-Suggestion from AI                                | vscode/neovim |
-|       `tab`        | `i`  | go to next snippet stop or next suggestion                         |    vscode     |
-|    `shift+tab`     | `i`  | go to prev snippet stop or prev suggestion                         |    vscode     |
-|      `alt+n`       | `i`  | go to next snippet stop                                            | vscode/neovim |
-|      `alt+p`       | `i`  | go to prev snippet stop                                            | vscode/neovim |
-|      `alt+.`       | `i`  | expand snippet                                                     |    neovim     |
-|      `ctrl+c`      | `i`  | exit snippet session                                               |    neovim     |
+| `tab`              | `i`  | go to next snippet stop or next suggestion                         |    vscode     |
+| `shift+tab`        | `i`  | go to prev snippet stop or prev suggestion                         |    vscode     |
+| `alt+n`            | `i`  | go to next snippet stop                                            | vscode/neovim |
+| `alt+p`            | `i`  | go to prev snippet stop                                            | vscode/neovim |
+| `alt+.`            | `i`  | expand snippet                                                     |    neovim     |
+| `ctrl+c`           | `i`  | exit snippet session                                               |    neovim     |
 
 </details>
 
@@ -311,7 +306,6 @@ vscode extension with minimal whichkey, lazyvim, terax, yazi, zsh and kanata set
 
 | Key Combination    | Description                                 |
 | :----------------- | :------------------------------------------ |
-| `ctrl+\`           | toggle panel (terminal) visibility          |
 | `alt+y`            | send sequence to open yazi                  |
 | `alt+0`            | switch to last tab                          |
 | `alt+1...9`        | switch to tab 1...9                         |
@@ -329,6 +323,7 @@ vscode extension with minimal whichkey, lazyvim, terax, yazi, zsh and kanata set
 | `alt+shift+f`      | move tab forward (vscode move to last tab)  |
 | `alt+c`            | copy                                        |
 | `alt+v`            | paste                                       |
+| `ctrl+\`           | toggle panel (terminal) visibility          |
 | `ctrl+alt+h`       | split horizontal                            |
 | `ctrl+alt+v`       | split vertical                              |
 | `ctrl+shift+left`  | resize window left                          |
@@ -357,26 +352,25 @@ vscode extension with minimal whichkey, lazyvim, terax, yazi, zsh and kanata set
 
 <details open><summary></summary>
 
-|       keymap        | description                                                |
-| :-----------------: | :--------------------------------------------------------- |
-|       `<tab>`       | show (dash/path) options or complete path                  |
-|    `<tab><tab>`     | enter completion menu                                      |
-|    `<esc><esc>`     | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
-|   `shift+escape`    | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
-|    `nvim<enter>`    | open retronvim's neovim IDE (`<space>` to open whichkey)   |
-|     `y<enter>`      | open yazi (changes directory on exit)                      |
+| keymap              | description                                                |
+| :------------------ | :--------------------------------------------------------- |
+| `<tab>`             | show (dash/path) options or complete path                  |
+| `<tab><tab>`        | enter completion menu                                      |
+| `<esc><esc>`        | tmux-copy-mode-like / normal-mode (inside neovim terminal) |
+| `nvim<enter>`       | open retronvim's neovim IDE (`<space>` to open whichkey)   |
+| `y<enter>`          | open yazi (changes directory on exit)                      |
 | `alt+o` or `<esc>o` | open yazi (even while writing commands)                    |
 | `alt+h` or `<esc>`  | enter vim-mode                                             |
-|       `alt+l`       | complete inline/ghost suggestion and enter vim-mode        |
-|       `alt+j`       | prev shell history and enter vim-mode                      |
-|       `alt+k`       | next shell history and enter vim-mode                      |
-|        `Up`         | prev shell history                                         |
-|       `Down`        | next shell history                                         |
-|      `ctrl+r`       | search history with fzf                                    |
-|      `ctrl+l`       | clear screen                                               |
-|    `ctrl+alt+l`     | clear screen (inside neovim terminal or vscode terminal)   |
-|      `ctrl+d`       | exit signal                                                |
-|      `ctrl+c`       | cancel signal                                              |
+| `alt+l`             | complete inline/ghost suggestion                           |
+| `alt+j`             | prev shell history and enter vim-mode                      |
+| `alt+k`             | next shell history and enter vim-mode                      |
+| `Up`                | prev shell history                                         |
+| `Down`              | next shell history                                         |
+| `ctrl+r`            | search history with fzf                                    |
+| `ctrl+l`            | clear screen                                               |
+| `ctrl+alt+l`        | clear screen (inside neovim terminal or vscode terminal)   |
+| `ctrl+d`            | exit signal                                                |
+| `ctrl+c`            | cancel signal                                              |
 
 </details>
 
@@ -414,26 +408,28 @@ _    _    _              _              _    _    _
 | @alt | tap for middle click, hold for LeftAlt                                                    |         `LAlt+l = LAlt+l`          |
 | @spc | tap for space, hold for touchcursor layer, release for qwerty layer                       | `space+jj = DownArrow + DownArrow` |
 |  @;  | tap for semicolon, hold for ctrl                                                          | `;+click = OpenInNewTab (chrome)`  |
+| @bsp | backspace key                                                                             |             `space+s`              |
 | @clr | clear screen on any shell                                                                 |             `space+r`              |
-|  @¿  | unicode ¿                                                                                 |             `space+v`              |
-|  @ñ  | unicode ñ                                                                                 |             `space+b`              |
 | @m🡠  | mouse scrolling left                                                                      |             `space+t`              |
 | @m🡪  | mouse scrolling right                                                                     |             `space+g`              |
 | @m↑  | mouse scrolling up                                                                        |             `space+e`              |
 | @m↓  | mouse scrolling down                                                                      |             `space+d`              |
 | @M↑  | mouse fast scrolling up                                                                   |             `space+q`              |
 | @M↓  | mouse fast scrolling down                                                                 |             `space+a`              |
+| del  | delete key                                                                                |             `space+w`              |
 | spc  | space key                                                                                 |             `space+f`              |
-| bspc | backspace key                                                                             |             `space+s`              |
-| home | home key                                                                                  |             `space+m`              |
-| end  | end key                                                                                   |             `space+,`              |
-| pgup | pageup key                                                                                |             `space+n`              |
-| pgdn | pagedown key                                                                              |             `space+.`              |
 |  @🡠  | left arrow key                                                                            |             `space+h`              |
 |  @↓  | down arrow key                                                                            |             `space+j`              |
 |  @↑  | up arrow key                                                                              |             `space+k`              |
 |  @🡪  | right arrow key                                                                           |             `space+l`              |
+| @yaz | open yazi and cd on exit                                                                  |             `space+;`              |
 | caps | toggles capslock                                                                          |             `space+c`              |
+|  @¿  | unicode ¿                                                                                 |             `space+v`              |
+|  @ñ  | unicode ñ                                                                                 |             `space+b`              |
+| home | home key                                                                                  |             `space+m`              |
+| end  | end key                                                                                   |             `space+,`              |
+| pgup | pageup key                                                                                |             `space+n`              |
+| pgdn | pagedown key                                                                              |             `space+.`              |
 
 </details>
 

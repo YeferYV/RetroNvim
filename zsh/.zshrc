@@ -12,8 +12,7 @@ setopt interactive_comments                                        # allow comme
 zstyle ":completion:*" menu select                                 # <tab><tab> to enter menu completion
 precmd () { printf "\033]0; $(basename ${PWD/~/\~}) \a" }          # tmux/wezterm CWD status/title
 [[ "$OSTYPE" == "cygwin" ]] && export HOME="/c/Users/$USERNAME"    # for git-bash / msys2 home
-[[ "$OSTYPE" == "cygwin" ]] && export DOTEXE=".exe"                # for git-bash / msys2
-[[ -v TERAX_TERMINAL     ]] && export ZDOTDIR=$TERAX_USER_ZDOTDIR  # terax shell integration changes ZDOTDIR
+[[ -v TERAX_USER_ZDOTDIR ]] && export ZDOTDIR=$TERAX_USER_ZDOTDIR  # terax v.8.6 shell integration changes ZDOTDIR
 
 alias  apt="sudo apt -y"
 alias  grep="grep --color=auto"
@@ -34,7 +33,7 @@ export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
 export PAGER="less -R --use-color --color=d+g --color=u+r --color=Pyk --color=Syk"
 export PNPM_HOME="$HOME/.local/share/pnpm" # $(pnpm setup)
 export SAVEHIST=10000
-export SHELL="zsh$DOTEXE" # for nvim terminal if bash is the default shell
+export SHELL="zsh" # for nvim terminal if bash is the default shell
 export STARSHIP_CONFIG="$ZDOTDIR/starship.toml"
 export VIMINIT="lua vim.cmd.source(vim.env.ZDOTDIR .. [[/../nvim/init.lua]])" # luafile theorically is faster then `source` and `dofile`
 export YAZI_CONFIG_HOME="$ZDOTDIR/../yazi"
@@ -43,18 +42,18 @@ export ZEROBREW_ROOT="$HOME/.local/share/zerobrew"
 export ZEROBREW_PREFIX="$HOME/.local/share/zerobrew/prefix"
 export PKG_CONFIG_PATH="$ZEROBREW_PREFIX/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/share/npm/bin:$PATH"
-export PATH="/bin:/usr/bin:$PATH" # ~/.local/bin/nvim from retronvim should search first for /bin/nvim binary
-export PATH="$HOME/.pixi/envs/retronvim/bin:$PATH"
-export PATH="$HOME/.pixi/envs/retronvim/Library/bin:$PATH"
-export PATH="$HOME/.pixi/envs/retronvim/Library/usr/bin:$PATH"
-export PATH="$HOME/.pixi/envs/retrovim/bin:$PATH"
-export PATH="$HOME/.pixi/envs/retrovim/Library/bin:$PATH"
-export PATH="$HOME/.pixi/envs/retrovim/Library/usr/bin:$PATH"
+export PATH="/bin:/usr/bin:$PATH"                              # for ~/.pixi/envs/retronvim/bin/zsh.exe
+export PATH="$HOME/.local/bin:$PATH"                           # uv binaries
+export PATH="$HOME/.local/share/npm/bin:$PATH"                 # npm binaries
+export PATH="$HOME/.pixi/envs/retronvim/bin:$PATH"             # for ~/.pixi/envs/retronvim/bin/zsh
+export PATH="$HOME/.pixi/envs/retronvim/Library/bin:$PATH"     # for ~/.pixi/envs/retronvim/bin/zsh
+export PATH="$HOME/.pixi/envs/retronvim/Library/usr/bin:$PATH" # for ~/.pixi/envs/retronvim/bin/zsh
+export PATH="$HOME/.pixi/envs/retrovim/bin:$PATH"              # for ~/.pixi/envs/retrovim/bin/zsh
+export PATH="$HOME/.pixi/envs/retrovim/Library/bin:$PATH"      # for ~/.pixi/envs/retrovim/bin/zsh
+export PATH="$HOME/.pixi/envs/retrovim/Library/usr/bin:$PATH"  # for ~/.pixi/envs/retrovim/bin/zsh
 export PATH="$HOME/.pixi/bin:$PATH"
-export PATH="$PATH:$PNPM_HOME"     # $(pnpm setup)
-export PATH="$PATH:$PNPM_HOME/bin" # $(pnpm setup)
+export PATH="$PATH:$PNPM_HOME"                            # $(pnpm setup)
+export PATH="$PATH:$PNPM_HOME/bin"                        # $(pnpm setup)
 export PATH="$PATH:$PNPM_HOME/global/5/node_modules/.bin" # $(pnpm approve-builds -g)
 export PATH="$PATH:$ZEROBREW_PREFIX/bin"
 

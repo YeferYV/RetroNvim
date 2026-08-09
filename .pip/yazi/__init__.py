@@ -6,7 +6,6 @@ import subprocess
 
 def main():
     os.environ['RETRONVIM_PREFIX'] = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'data')
-
     os.environ['SHELL'] = 'zsh'
     os.environ['VIMINIT'] = f"lua vim.cmd.source(vim.env.RETRONVIM_PREFIX .. [[/nvim/init.lua]])"
     os.environ['ZDOTDIR'] = os.environ['RETRONVIM_PREFIX'] + '/zsh'
@@ -18,12 +17,11 @@ def main():
     os.environ['LESSHISTFILE'] = '-'
     os.environ['YAZI_CONFIG_HOME'] = os.path.join(os.environ['RETRONVIM_PREFIX'], 'yazi')
 
-    where = 'where' if sys.platform == 'win32' else 'which'
-    dotexe = 'where' if sys.platform == '.exe' else ''
+    where_yazi = ['where', 'yazi.exe'] if sys.platform == 'win32' else ['which', '-a', 'yazi']
+    dotexe = '.exe' if sys.platform == 'win32' else ''
 
-    executables = subprocess.run( [where, 'yazi' + dotexe], capture_output=True, text=True )
-
-    executable = executables.stdout.splitlines()[1] if sys.platform == 'win32' else executables.stdout.splitlines()[0]
+    executables = subprocess.run( where_yazi, capture_output=True, text=True ).stdout.splitlines()
+    executable = [item for item in executables if item != sys.argv[0] + dotexe][0]
 
     subprocess.run([executable] + sys.argv[1:])
 

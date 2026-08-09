@@ -5,8 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const self = fs.realpathSync(process.argv[1]);
-process.env.RETRONVIM_PREFIX = path.dirname(path.dirname(self))
+process.env.RETRONVIM_PREFIX = path.dirname(path.dirname(fs.realpathSync(process.argv[1])))
 
 const where = os.platform() === 'win32' ? 'where' : 'which';
 const dotexe = os.platform() === 'win32' ? '.exe' : '';
@@ -26,11 +25,11 @@ if (os.platform() === 'win32'){
   );
   child.unref();
 } else{
-  execFileSync('sudo', ['--validate'], { stdio: 'inherit' });
 
   const child = spawn(
     'sudo',
     [
+      '--stdin',
       '--preserve-env',
       executable,
       '--cfg',
@@ -38,6 +37,5 @@ if (os.platform() === 'win32'){
     ],
     {stdio: 'inherit', detached: true,}
   );
-  child.unref();
 }
 

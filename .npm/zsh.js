@@ -5,14 +5,13 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const self = fs.realpathSync(process.argv[1]);
-
-process.env.RETRONVIM_PREFIX = path.dirname(path.dirname(self))
+process.env.RETRONVIM_PREFIX = path.dirname(path.dirname(fs.realpathSync(process.argv[1])))
 process.env.ZDOTDIR = path.join(process.env.RETRONVIM_PREFIX, 'zsh');
 
 const where = os.platform() === 'win32' ? 'where' : 'which';
-const dotexe = os.platform() === 'win32' ? '.exe' : '';
+const where_flags = os.platform() === 'win32' ? ['zsh.exe'] : ['-a', 'zsh'];
 
-const executable = execFileSync(where, ['zsh' + dotexe], { encoding: 'utf8' }).trim().split(/\r?\n/)[0];
+const executables = execFileSync(where, where_flags, { encoding: 'utf8' })
+const executable = executables.split(/\r?\n/).filter(item => item !== process.argv[1])[0] // process.argv[1] expands to full path
 
 execFileSync(executable, process.argv.slice(2), { stdio: 'inherit' });

@@ -8,7 +8,7 @@ def main():
     os.environ['RETRONVIM_PREFIX'] = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'data')
 
     where = 'where' if sys.platform == 'win32' else 'which'
-    dotexe = 'where' if sys.platform == '.exe' else ''
+    dotexe = '.exe' if sys.platform == 'win32' else ''
 
     executables = subprocess.run( [where, 'kanata' + dotexe], capture_output=True, text=True )
 
@@ -26,12 +26,11 @@ def main():
             start_new_session=True
         )
     else:
-        subprocess.run(['sudo', '--validate'], check=True)
-
         # Spawn detached child process running kanata
-        subprocess.Popen(
+        subprocess.run(
             [
                 'sudo',
+                '--stdin',
                 '--preserve-env',
                 executable,
                 '--cfg',

@@ -221,6 +221,8 @@ autocmd('LspAttach', {
   end,
 })
 
+vim.o.shell = vim.fn.executable('zsh') == 1 and 'zsh' or vim.env.SHELL --> fixes --> vim.o.shell='C:\\Users\\user\\zsh' --> set by --> export SHELL=zsh
+
 vim.notify = require('mini.notify').make_notify() --- `vim.print = MiniNotify.make_notify()` conflicts with `:=vim.opt.number`
 vim.treesitter.start = function() end             --- nvim.conda on windows doesn't ship parser/lua.dll etc, lsp has their own syntax highlightting
 vim.g.autoformat = false                          --- press R to format

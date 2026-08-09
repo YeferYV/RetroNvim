@@ -17,6 +17,39 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "GPL-3.0" }
 dependencies = []
+classifiers = [
+    "Operating System :: Android",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: Text Editors :: Integrated Development Environments (IDE)",
+    "Topic :: Desktop Environment :: File Managers",
+    "Topic :: Terminals",
+]
+keywords = [
+    "astronvim",
+    "file-manager",
+    "git-bash",
+    "kanata",
+    "keyboard layout",
+    "lazyvim",
+    "LSP",
+    "mini.nvim",
+    "neovim",
+    "nvchad",
+    "retronvim",
+    "terax-ai",
+    "terminal",
+    "termux/proot-distro",
+    "text objects",
+    "vim",
+    "yazi",
+    "zsh"
+]
+
+[project.urls]
+Homepage = "https://github.com/yeferyv/retronvim"
+Repository = "https://github.com/yeferyv/retronvim"
 
 [project.scripts]
 kanata_touchcursor = "kanata_touchcursor:main"

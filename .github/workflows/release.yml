@@ -1,8 +1,3 @@
-# ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-# │ systemctl start docker && act -s VSCE_TOKEN -s GITHUB_TOKEN="$(gh auth token)" -j upload-release --artifact-server-path ./artifacts --action-offline-mode --action-cache-path "$HOME/.cache/act" │
-# ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-
-# https://github.com/nektos/act/issues/2433
 name: Upload_Release
 
 on:
@@ -27,85 +22,111 @@ env:
 
 # https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions
 # GitHub requires `issues: write` permission for label management since labels are shared between issues and pull requests
+# https://github.com/googleapis/release-please-action/issues/1070 <-> release-please failed Resource not accessible by integration
+# https://github.com/cli/cli/issues/9514                          <-> release-please failed Resource not accessible by integration
 permissions:
   contents: write
   pull-requests: write
   issues: write
+  id-token: write # Required for PyPI/npm Trusted Publishing (OIDC)
+  # workflows: write
 
 jobs:
-  upload-release:
+  # https://www.youtube.com/watch?v=P0wAXh5UOnM
+  #                                                      ╭────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+  # to retrigger remove the github release, tag then --> │ git pull --rebase --> lazygit remove github-action commit and ammend your changes --> git push --force │
+  #                                                      ╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  release-please:
     runs-on: ubuntu-latest
-
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      # ==========================================================
-      # 1. create release bot
-      # ==========================================================
-      # https://www.youtube.com/watch?v=P0wAXh5UOnM
-      #                                                      ╭────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-      # to retrigger remove the github release, tag then --> │ git pull --rebase --> lazygit remove github-action commit and ammend your changes --> git push --force │
-      #                                                      ╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           release-type: node
 
-      # ==========================================================
-      # 2. Checkout repo
-      # ==========================================================
-      - name: Checkout 🛬
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v4
+  npm-publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
 
-      # ==========================================================
-      # 3. Install dependencies
-      # ==========================================================
-      - name: Install rattler-build, uv and npm 🧰
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          git submodule update --init --depth 1
-
-          curl -L pixi.sh/install.sh | sh
-          export PATH="$HOME/.pixi/bin:$PATH"
-          pixi global install rattler-build uv
-
-      - name: Setup Node auth 🔑
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Publish to npm 🚀
+        run: npm publish
 
-      # ==========================================================
-      # 4. Publish packages
-      # ==========================================================
-      - name: Publish to npm, pypi, anaconda.org and vscode-marketplace 🚀
-        if: ${{ steps.release.outputs.release_created }}
+  pypi-publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    environment: pip
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: astral-sh/setup-uv@v10.0.1
+
+      - name: Publish to pypi 🚀
+        run: uv build && uv publish
+
+  anaconda-publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    environment: anaconda
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: prefix-dev/rattler-build-action@v0.2.34
+        with:
+          setup-only: true
+
+      - name: Publish to anaconda.org 🚀
         run: |
-          export PATH="$HOME/.pixi/bin:$PATH"
 
           # https://rattler-build.prefix.dev/latest/getting_started/#authentication
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
           rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-64      --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-64        --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform win-64        --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retrovim.yaml --target-platform linux-64      --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retrovim.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retrovim.yaml --target-platform osx-64        --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retrovim.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retrovim.yaml --target-platform win-64        --to https://anaconda.org/retronvim --build-number=+1
 
-          npm publish
-          uv build && uv publish
+      - name: Github conda release 📦
+        run: gh release upload ${{ needs.release-please.outputs.tag_name }} output/*/*.conda
 
-          yes | npx vsce package
-          yes | npx vsce publish
-          yes | npx ovsx publish
+  vscode-marketplace:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    environment: vscode-marketplace
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
 
-      # ==========================================================
-      # 5. Upload artifacts to GitHub Release
-      # ==========================================================
-      - name: Github release 📦
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          gh release upload ${{ steps.release.outputs.tag_name }} output/*/*.conda
-          gh release upload ${{ steps.release.outputs.tag_name }} *.vsix
+      - run: yes | npx vsce package
+
+      - name: Publish to vscode-marketplace 🚀
+        run: yes | npx vsce publish
+
+      - name: Publish to open-vsx 🚀
+        run: yes | npx ovsx publish
+
+      - name: Github vsix release 📦
+        run: gh release upload ${{ needs.release-please.outputs.tag_name }} *.vsix
 
