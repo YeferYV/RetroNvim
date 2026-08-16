@@ -17,6 +17,7 @@
 
 (defcfg
   linux-x11-repeat-delay-rate 300,50
+  movemouse-smooth-diagonals yes
 )
 
 ;; Only one defsrc is allowed.
@@ -63,9 +64,9 @@
 
 (deflayer touchcursor
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-  _    @M↑  del  @m↑  @clr @m🡠  _    _    _    _    _    _    _    _
-  _    @M↓  @bsp @m↓  spc  @m🡪  @🡠   @↓   @↑   @🡪   @yaz _    _
-  _    _    _    _    caps @¿   @ñ   pgup home end  pgdn _    _
+  _    @W↑  del  @w↑  @clr @w🡠  @m🡠  @m↓  @m↑  @m🡪   _    _    _    _
+  _    @W↓  @bsp @w↓  spc  @w🡪  @🡠   @↓   @↑   @🡪   @yaz _    _
+  _    caps @¿   @ñ   mmid mlft mrgt pgup home end  pgdn _    _
   _    _    _              _              _    _    _
 )
 
@@ -128,16 +129,20 @@
   ñ   (unicode ñ)
 
   ;; mouse scrolling <intervale> <distance>
-  m↑ (mwheel-up 50 40)
-  m↓ (mwheel-down 50 40)
+  w↑ (mwheel-up 50 40)
+  w↓ (mwheel-down 50 40)
+  w🡠 (mwheel-left 50 40)
+  w🡪 (mwheel-right 50 40)
 
   ;; mouse scrolling <intervale> <distance>
-  m🡠 (mwheel-left 50 40)
-  m🡪 (mwheel-right 50 40)
+  W↑ (mwheel-up 25 60)
+  W↓ (mwheel-down 25 60)
 
-  ;; mouse scrolling <intervale> <distance>
-  M↑ (mwheel-up 25 60)
-  M↓ (mwheel-down 25 60)
+  ;; mouse acceleration <intervale> <time-distance> <min-distance> <max-distance>
+  m↑ (movemouse-accel-up 10 1000 1 5)
+  m↓ (movemouse-accel-down 10 1000 1 5)
+  m🡠 (movemouse-accel-left 10 1000 1 5)
+  m🡪 (movemouse-accel-right 10 1000 1 5)
 )
 
 ;; The `lrld` action stands for "live reload". This will re-parse everything

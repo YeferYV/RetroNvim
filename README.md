@@ -394,9 +394,9 @@ lctl lmet @alt           @spc           @sft rmet rctl
 
 ```
 _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-_    @M↑  del  @m↑  @clr @m🡠  _    _    _    _    _    _    _    _
-_    @M↓  @bsp @m↓  spc  @m🡪  @🡠   @↓   @↑   @🡪   @yaz _    _
-_    _    _    _    caps @¿   @ñ   pgup home end  pgdn _    _
+_    @W↑  del  @w↑  @clr @w🡠  @m🡠  @m↓  @m↑  @m🡪   _    _    _    _
+_    @W↓  @bsp @w↓  spc  @w🡪  @🡠   @↓   @↑   @🡪   @yaz _    _
+_    caps @¿   @ñ   mmid mlft mrgt pgup home end  pgdn _    _
 _    _    _              _              _    _    _
 ```
 
@@ -410,12 +410,19 @@ _    _    _              _              _    _    _
 |  @;  | tap for semicolon, hold for ctrl                                                          | `;+click = OpenInNewTab (chrome)`  |
 | @bsp | backspace key                                                                             |             `space+s`              |
 | @clr | clear screen on any shell                                                                 |             `space+r`              |
-| @m🡠  | mouse scrolling left                                                                      |             `space+t`              |
-| @m🡪  | mouse scrolling right                                                                     |             `space+g`              |
-| @m↑  | mouse scrolling up                                                                        |             `space+e`              |
-| @m↓  | mouse scrolling down                                                                      |             `space+d`              |
-| @M↑  | mouse fast scrolling up                                                                   |             `space+q`              |
-| @M↓  | mouse fast scrolling down                                                                 |             `space+a`              |
+| @w🡠  | mouse scrolling left                                                                      |             `space+t`              |
+| @w🡪  | mouse scrolling right                                                                     |             `space+g`              |
+| @w↑  | mouse scrolling up                                                                        |             `space+e`              |
+| @w↓  | mouse scrolling down                                                                      |             `space+d`              |
+| @W↑  | mouse fast scrolling up                                                                   |             `space+q`              |
+| @W↓  | mouse fast scrolling down                                                                 |             `space+a`              |
+| @m🡠  | mouse cursor left                                                                         |             `space+y`              |
+| @m↓  | mouse cursor down                                                                         |             `space+u`              |
+| @m↑  | mouse cursor up                                                                           |             `space+i`              |
+| @m🡪  | mouse cursor right                                                                        |             `space+p`              |
+| mmid | mouse middle click                                                                        |             `space+c`              |
+| mlft | mouse left click                                                                          |             `space+v`              |
+| mrgt | mouse right click                                                                         |             `space+b`              |
 | del  | delete key                                                                                |             `space+w`              |
 | spc  | space key                                                                                 |             `space+f`              |
 |  @🡠  | left arrow key                                                                            |             `space+h`              |
