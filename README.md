@@ -509,8 +509,8 @@ _    _    _              _              _    _    _
 - npm + any package manager:
 
   ```bash
-  # brew   install bat eza font-fira-code-nerd-font fzf git kanata lazygit neovim ripgrep starship yazi zsh zsh-patina 7zip pixi
-  # pixi g install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim   ripgrep starship yazi zsh zsh-patina 7zip      -c retronvim -c conda-forge -e retronvim
+  # brew   install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim@0.12 ripgrep starship yazi@26.8.15 zsh zsh-patina 7zip pixi
+  # pixi g install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim=0.12 ripgrep starship yazi=26.8.15 zsh zsh-patina 7zip      -c retronvim -c conda-forge -e retronvim
 
   npm install -g retronvim
   ```
@@ -518,8 +518,8 @@ _    _    _              _              _    _    _
 - pip + any package manager:
 
   ```bash
-  # brew   install bat eza font-fira-code-nerd-font fzf git kanata lazygit neovim ripgrep starship yazi zsh zsh-patina 7zip pixi
-  # pixi g install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim   ripgrep starship yazi zsh zsh-patina 7zip      -c retronvim -c conda-forge -e retronvim
+  # brew   install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim@0.12 ripgrep starship yazi@26.8.15 zsh zsh-patina 7zip pixi
+  # pixi g install bat eza font-fira-code-nerd-font fzf git kanata lazygit nvim=0.12 ripgrep starship yazi=26.8.15 zsh zsh-patina 7zip      -c retronvim -c conda-forge -e retronvim
 
   pip install retronvim
   ```

@@ -254,6 +254,7 @@ map("i", "jk", "<ESC>") --- disabled on visual mode since is slow
 map("i", "kj", "<ESC>") --- disabled on visual mode since is slow
 map("n", "Q", "<cmd>lua vim.cmd.quit()<cr>")
 map("n", "R", "<cmd>lua LazyVim.format({force = true}) MiniTrailspace.trim() vim.cmd.write()<cr>")
+map("x", "p", '"_c<c-r>+<esc>', { desc = "Paste (dot repeat)(register unchanged)" })
 map({ "n", "x" }, "U", "@:", { desc = "repeat `:command`" }) --> :normal A,jkj --> :normal A,j --->  escape char by pression ctrl+v then escape
 map("i", "<Tab>", [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, desc = "next completion when no lsp" })
 map("i", "<S-Tab>", [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true, desc = "prev completion when no lsp" })
