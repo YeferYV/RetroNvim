@@ -11,7 +11,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "retronvim"
-version = "0.4.9"
+version = "0.4.10"
 description = "minimal neovim, yazi, zsh, and kanata setup"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -28,6 +28,7 @@ classifiers = [
 ]
 keywords = [
     "astronvim",
+    "dotfiles",
     "file-manager",
     "git-bash",
     "kanata",

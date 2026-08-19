@@ -89,7 +89,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: prefix-dev/rattler-build-action@v0.2.34
+      - uses: prefix-dev/rattler-build-action@v0.2.39
         with:
           setup-only: true
 
@@ -100,11 +100,11 @@ jobs:
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
           # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
           rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
-          rattler-build publish .conda/retrovim.yaml --target-platform linux-64      --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retrovim.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retrovim.yaml --target-platform osx-64        --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retrovim.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retrovim.yaml --target-platform win-64        --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform linux-64      --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-64        --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim --build-number=+1
+          rattler-build publish .conda/retronvim.yaml --target-platform win-64        --to https://anaconda.org/retronvim --build-number=+1
 
       - name: Github conda release 📦
         run: gh release upload ${{ needs.release-please.outputs.tag_name }} output/*/*.conda

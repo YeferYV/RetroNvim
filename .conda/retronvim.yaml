@@ -26,7 +26,7 @@
 # rattler-build publish --recipe retronvim.yaml --target-platform win-64        --to https://anaconda.org/retronvim
 
 context:
-  version: 0.4.9
+  version: 0.4.10
 
 package:
   name: retronvim
