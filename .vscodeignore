@@ -2,6 +2,8 @@
 .conda/*output/
 .github/workflows/output/**
 .gitignore
+.npm
+.pip
 dist
 nvim/plugins/**
 output

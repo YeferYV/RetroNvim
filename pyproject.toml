@@ -12,7 +12,7 @@ build-backend = "hatchling.build"
 [project]
 name = "retronvim"
 version = "0.4.10"
-description = "minimal neovim, yazi, zsh, and kanata setup"
+description = "minimal lazyvim, yazi, zsh, and kanata setup"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "GPL-3.0" }

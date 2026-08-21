@@ -394,7 +394,7 @@ lctl lmet @alt           @spc           @sft rmet rctl
 
 ```
 _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-_    @W↑  del  @w↑  @clr @w🡠  @m🡠  @m↓  @m↑  @m🡪   _    _    _    _
+_    @W↑  del  @w↑  @clr @w🡠  @m🡠  @m↓  @m↑  @m🡪  _    _    _    _
 _    @W↓  @bsp @w↓  spc  @w🡪  @🡠   @↓   @↑   @🡪   @yaz _    _
 _    caps @¿   @ñ   mmid mlft mrgt pgup home end  pgdn _    _
 _    _    _              _              _    _    _

@@ -59,6 +59,7 @@ require("lazy").setup({
     },
     {
       "neovim/nvim-lspconfig",
+      version = "bff1bd61",
       opts = {
         servers = {
           ['*'] = {

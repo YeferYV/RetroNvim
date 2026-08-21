@@ -56,7 +56,7 @@
     "type": "git",
     "url": "https://github.com/YeferYV/RetroNvim"
   },
-  "license": "GPL3",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/YeferYV/RetroNvim/issues"
   },
