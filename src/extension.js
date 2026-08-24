@@ -1,24 +1,18 @@
-const vscode        = require('vscode');
-const path          = require('path');
-const os            = require('os');
-const fs            = require('fs');
+const vscode = require('vscode');
+const path = require('path');
+const os = require('os');
+const fs = require('fs');
 
 function setPaths(context) {
-  const home            = os.homedir();
-  const dotexe          = os.platform() == "win32" ? '.exe' : ''
-  const initDotLuaPath  = path.join(home, '/.pixi/envs/retronvim/opt/retronvim/nvim/init.lua');
-  const gitPath         = path.join(home, '/.pixi/bin/git' + dotexe);
-  const nvimPath        = path.join(home, '/.pixi/bin/nvim' + dotexe);
-  const pythonPath      = path.join('./.pixi/envs/default/bin/python' + dotexe);
-  const retrovimPath    = path.join(home, '/.pixi/envs/retrovim');
-  const retronvimPath   = path.join(home, '/.pixi/envs/retronvim/opt/retronvim/package.json');
-  const javaPathUnix    = path.join(home, '/.pixi/envs/openjdk/lib/jvm');
+  const home = os.homedir();
+  const dotexe = os.platform() == "win32" ? '.exe' : ''
+  const initDotLuaPath = path.join(home, '/.pixi/envs/retrovim/opt/retrovim/nvim/init.lua');
+  const gitPath = path.join(home, '/.pixi/bin/git' + dotexe);
+  const nvimPath = path.join(home, '/.pixi/bin/nvim' + dotexe);
+  const pythonPath = path.join('./.pixi/envs/default/bin/python' + dotexe);
+  const javaPathUnix = path.join(home, '/.pixi/envs/openjdk/lib/jvm');
   const javaPathWindows = path.join(home, '/.pixi/envs/openjdk/Library/lib/jvm');
-  const javaPath        = os.platform() == "win32" ? javaPathWindows : javaPathUnix;
-  const packageJSON     = fs.existsSync(retronvimPath) && JSON.parse(fs.readFileSync(retronvimPath, 'utf8'))
-
-  // install retronvim.conda and nerdfont
-  context.extension.packageJSON.version == packageJSON?.version || fs.existsSync(retrovimPath) || vscode.commands.executeCommand('retronvim.install_retronvim_conda')
+  const javaPath = os.platform() == "win32" ? javaPathWindows : javaPathUnix;
 
   // Access the configuration for 'vscode-neovim'
   const config = vscode.workspace.getConfiguration();
@@ -26,12 +20,13 @@ function setPaths(context) {
   // config.update("telemetry.telemetryLevel", "off", vscode.ConfigurationTarget.Global)
   // config.update('window.titleBarStyle', "custom", vscode.ConfigurationTarget.Global)
   // config.update("security.workspace.trust.untrustedFiles", "open", vscode.ConfigurationTarget.Global) // open-ovsx.org gets stuck with `under review`
-  // config.update("antigravity.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
-  // config.update("antigravity.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
-  // config.update("extensions.gallery.itemUrl", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
-  // config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
-  // config.update("windsurf.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global)
-  // config.update("windsurf.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global)
+
+  config.update("antigravity.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
+  config.update("antigravity.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
+  config.update("extensions.gallery.itemUrl", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
+  config.update("extensions.gallery.serviceUrl", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global) // vscode marketplace for cursor
+  config.update("windsurf.marketplaceExtensionGalleryServiceURL", "https://marketplace.visualstudio.com/_apis/public/gallery", vscode.ConfigurationTarget.Global)
+  config.update("windsurf.marketplaceGalleryItemURL", "https://marketplace.visualstudio.com/items", vscode.ConfigurationTarget.Global)
 
   config.update("extensions.experimental.affinity", { "asvetliakov.vscode-neovim": 1, "vscodevim.vim": 2 }, vscode.ConfigurationTarget.Global);
   config.update("git.path", gitPath, vscode.ConfigurationTarget.Global)
@@ -59,31 +54,12 @@ function activate(context) {
   // vscode.window.showInformationMessage(context.extensionPath);
   // vscode.window.showInformationMessage(context.extension);
 
-  const colon             = os.platform() == "win32" ? ';' : ':'
-  const curl              = os.platform() == "win32" ? 'irm' : 'curl -L'
-  const dotcmd            = os.platform() == "win32" ? '.cmd' : ''
-  const dotsh             = os.platform() == "win32" ? '.ps1' : '.sh'
-  const sh                = os.platform() == "win32" ? 'iex' : 'sh'
-  const shell             = os.platform() == "win32" ? 'powershell' : process.env.SHELL
-  const home              = os.homedir();
+  const colon = os.platform() == "win32" ? ';' : ':'
+  const home = os.homedir();
   const yazi_choosen_file = path.join(home, '/.yazi')
-  var binPath             = home + '/.pixi/bin'
-  binPath                += colon + home + '/.pixi/envs/retronvim/bin'
-  binPath                += colon + process.env.PATH
-
-  let install_retronvim_conda = vscode.commands.registerCommand("retronvim.install_retronvim_conda", async () => {
-
-    const terminal = vscode.window.createTerminal({
-      name: "Retronvim",
-      shellPath: shell,
-      location: vscode.TerminalLocation.Editor,
-    })
-
-    terminal.sendText(curl + " pixi.sh/install" + dotsh + " | " + sh)
-    terminal.sendText("~/.pixi/bin/pixi global install retronvim=" + context.extension.packageJSON.version + " -c retronvim -c conda-forge" )
-    terminal.sendText("~/.pixi/envs/retronvim/bin/firacode-nerdfont-installer" + dotcmd);
-    await vscode.commands.executeCommand('workbench.action.terminal.focus');
-  })
+  var binPath = home + '/.pixi/bin'
+  binPath += colon + home + '/.pixi/envs/retrovim/bin'
+  binPath += colon + process.env.PATH
 
   let open_yazi = vscode.commands.registerCommand("retronvim.yazi", async () => {
 
@@ -108,12 +84,12 @@ function activate(context) {
     const closeSubscription = vscode.window.onDidCloseTerminal(async (terminal) => {
       if (terminal === yaziTerminal && fs.existsSync(yazi_choosen_file)) {
 
-          const filePaths = fs.readFileSync(yazi_choosen_file, "utf8").trim().split('\n')
+        const filePaths = fs.readFileSync(yazi_choosen_file, "utf8").trim().split('\n')
 
-          for (const filePath of filePaths) {
-            const doc = await vscode.workspace.openTextDocument(filePath);
-            await vscode.window.showTextDocument(doc, { preview: false });
-          }
+        for (const filePath of filePaths) {
+          const doc = await vscode.workspace.openTextDocument(filePath);
+          await vscode.window.showTextDocument(doc, { preview: false });
+        }
       }
       closeSubscription.dispose();
     })
@@ -186,21 +162,85 @@ function activate(context) {
     terminal.show();
   });
 
-  const show_message = vscode.commands.registerCommand( "retronvim.show_message", (args) => {
-      vscode.window.showInformationMessage(args.text);
-    },
-  );
+  const show_message = vscode.commands.registerCommand("retronvim.show_message", (args) => {
+    vscode.window.showInformationMessage(args.text);
+  });
+
+  const cat = vscode.commands.registerCommand('retronvim.cat', () => {
+    // Create and show a new webview
+    const panel = vscode.window.createWebviewPanel(
+      'catCoding', // Identifies the type of the webview. Used internally
+      'Cat Coding', // Title of the panel displayed to the user
+      vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+      { enableScripts: true }
+    );
+
+    // And set its HTML content
+    panel.webview.html = getWebviewContent();
+
+    panel.webview.onDidReceiveMessage(
+      message => {
+        switch (message.command) {
+          case 'alert':
+            vscode.window.showErrorMessage(message.text);
+            return;
+          case 'listDirectory':
+            let workspaceFolder = vscode.workspace.workspaceFolders?.[0].uri.fsPath || os.homedir();
+            let ls = fs.readdirSync(workspaceFolder)
+            panel.webview.postMessage({ command: 'listDirectory', text: ls.join('\n') });
+            return;
+        }
+      },
+      undefined,
+      context.subscriptions
+    )
+  })
 
   context.subscriptions.push(
-    install_retronvim_conda,
     open_yazi,
     open_lazygit,
     terminal_copymode,
     nvim_tab_terminal,
     nvim_panel_terminal,
-    show_message
+    show_message,
+    cat
   );
 
+}
+
+function getWebviewContent() {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Coding</title>
+</head>
+<body>
+  <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
+  <h1 id="files">0</h1>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+    vscode.postMessage({ command: 'alert', text: 'Hello from the webview' });
+    vscode.postMessage({ command: 'listDirectory' })
+
+    const files = document.getElementById('files');
+
+    window.addEventListener('message', event => {
+
+      const message = event.data; // The JSON data our extension sent
+
+      switch (message.command) {
+        case 'listDirectory':
+          files.textContent = message.text;
+          break;
+      }
+    });
+
+  </script>
+</body>
+</html>`;
 }
 
 exports.activate = activate;

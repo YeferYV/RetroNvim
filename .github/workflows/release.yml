@@ -16,9 +16,6 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # setting GH_TOKEN for the entire workflow
   VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
   OVSX_PAT: ${{ secrets.OVSX_TOKEN }}
-  ANACONDA_API_KEY: ${{ secrets.ANACONDA_TOKEN }}
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # write access last 90 days, trusted-publishing should last forever https://www.npmjs.com/package/retrovim/access
-  UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }} # trusted-publishing should last forever https://pypi.org/manage/account/publishing
 
 # https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions
 # GitHub requires `issues: write` permission for label management since labels are shared between issues and pull requests
@@ -46,68 +43,6 @@ jobs:
         id: release
         with:
           release-type: node
-
-  npm-publish:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
-    runs-on: ubuntu-latest
-    environment: npm
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - uses: actions/setup-node@v4
-        with:
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Publish to npm 🚀
-        run: npm publish
-
-  pypi-publish:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
-    runs-on: ubuntu-latest
-    environment: pip
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - uses: astral-sh/setup-uv@v10.0.1
-
-      - name: Publish to pypi 🚀
-        run: uv build && uv publish
-
-  anaconda-publish:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
-    runs-on: ubuntu-latest
-    environment: anaconda
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - uses: prefix-dev/rattler-build-action@v0.2.39
-        with:
-          setup-only: true
-
-      - name: Publish to anaconda.org 🚀
-        run: |
-
-          # https://rattler-build.prefix.dev/latest/getting_started/#authentication
-          # https://rattler-build.prefix.dev/latest/getting_started/#publishing-the-package
-          # https://rattler-build.prefix.dev/latest/getting_started/#publishing-to-anacondaorg
-          rattler-build auth login anaconda.org --conda-token $ANACONDA_API_KEY
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-64      --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform linux-aarch64 --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-64        --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform osx-arm64     --to https://anaconda.org/retronvim --build-number=+1
-          rattler-build publish .conda/retronvim.yaml --target-platform win-64        --to https://anaconda.org/retronvim --build-number=+1
-
-      - name: Github conda release 📦
-        run: gh release upload ${{ needs.release-please.outputs.tag_name }} output/*/*.conda
 
   vscode-marketplace:
     needs: release-please

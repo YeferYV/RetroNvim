@@ -1,13 +1,7 @@
 {
   "name": "retronvim",
   "displayName": "RetroNvim",
-  "description": "minimal whichkey, lazyvim, terax, yazi, zsh and kanata setup ",
-  "bin": {
-    "kanata_touchcursor": ".npm/kanata_touchcursor.js",
-    "nvim": ".npm/nvim.js",
-    "yazi": ".npm/yazi.js",
-    "zsh": ".npm/zsh.js"
-  },
+  "description": "yazi-like file manager + whichkey + terminal keymaps",
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
@@ -21,35 +15,24 @@
   "activationEvents": [
     "*"
   ],
-  "main": "./extension.js",
+  "main": "./src/extension.js",
   "categories": [
     "Keymaps",
     "Themes"
   ],
   "keywords": [
-    "astronvim",
-    "dotfiles",
     "file-manager",
-    "git-bash",
-    "kanata",
-    "keyboard layout",
-    "kmonad",
-    "lazyvim",
+    "LF",
     "LSP",
-    "mini.nvim",
     "neovim",
-    "nvchad",
-    "QMK",
+    "ranger",
+    "suckless",
     "retronvim",
-    "terax-ai",
     "terminal",
-    "termux/proot-distro",
-    "text objects",
-    "touchcursor",
+    "vifm",
     "vim",
     "whichkey",
-    "yazi",
-    "zsh"
+    "yazi"
   ],
   "homepage": "https://marketplace.visualstudio.com/items?itemName=YeferYV.RetroNvim",
   "repository": {
@@ -62,10 +45,6 @@
   },
   "contributes": {
     "commands": [
-      {
-        "command": "retronvim.install_retronvim_conda",
-        "title": "RetroNvim: install retronvim.conda"
-      },
       {
         "command": "retronvim.yazi",
         "title": "RetroNvim: Yazi"
@@ -89,6 +68,10 @@
       {
         "command": "retronvim.show_message",
         "title": "RetroNvim: Show Message"
+      },
+      {
+        "command": "retronvim.cat",
+        "title": "RetroNvim: cat"
       }
     ],
     "themes": [
@@ -272,6 +255,24 @@
             ":w"
           ]
         },
+				{
+					"before": [
+						"j"
+					],
+					"after": [
+						"g",
+						"j"
+					]
+				},
+				{
+					"before": [
+						"k"
+					],
+					"after": [
+						"g",
+						"k"
+					]
+				},
         {
           "before": [
             "J"
@@ -876,14 +877,45 @@
         {
           "key": "I",
           "icon": "cloud-download",
-          "name": "+install frameworks",
+          "name": "+install frameworks using pixi",
           "bindings": [
+            {
+              "key": "<",
+              "icon": "cloud-download",
+              "name": "INSTALL PIXI FOR LINUX/MACOS",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "curl -L pixi.sh/install.sh | sh \n"
+                }
+              ]
+            },
+            {
+              "key": ">",
+              "icon": "cloud-download",
+              "name": "INSTALL PIXI FOR WINDOWS",
+              "commands": [
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
+              ],
+              "args": [
+                null,
+                {
+                  "text": "irm pixi.sh/install.ps1 | iex \n"
+                }
+              ]
+            },
             {
               "key": "a",
               "icon": "code",
               "name": "angular + supabase",
               "commands": [
                 "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -903,6 +935,9 @@
                 },
                 {
                   "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=6dDrcocX7Gg'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=qf8-JzU-4IE'; "
                 },
                 {
                   "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=yJdh1_FbtjU'; "
@@ -1726,6 +1761,7 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -1743,6 +1779,9 @@
                 },
                 {
                   "text": "pixi exec pyfiglet --color=green --font=term -- 'https://github.com/prisma/prisma-examples/tree/latest/orm'; "
+                },
+                {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=N-7uYm1PszM'; "
                 },
                 {
                   "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=5k7ZGhL3pI0'; "
@@ -2019,15 +2058,17 @@
             },
             {
               "key": "R",
-              "icon": "globe",
-              "name": "dokploy and railway (installer link) ",
+              "icon": "cloud-download",
+              "name": "retrovim (nvim + yazi + zsh + kanata)",
               "commands": [
-                "vscode.open",
-                "vscode.open"
+                "workbench.action.createTerminalEditor",
+                "workbench.action.terminal.sendSequence"
               ],
               "args": [
-                "https://dokploy.com",
-                "https://railway.com/dashboard"
+                null,
+                {
+                  "text": "pixi g install retrovim -c retronvim -c conda-forge \n"
+                }
               ]
             },
             {
@@ -2149,6 +2190,7 @@
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
+                "workbench.action.terminal.sendSequence",
                 "workbench.action.createTerminalEditor",
                 "workbench.action.terminal.sendSequence",
                 "workbench.action.terminal.sendSequence",
@@ -2169,6 +2211,9 @@
                   "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=VldVWN2i710'; "
                 },
                 {
+                  "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=noq-ZHTD2Cg'; "
+                },
+                {
                   "text": "pixi exec pyfiglet --color=green --font=term -- 'https://www.youtube.com/watch?v=RhZZ0whiuT8'; "
                 },
                 {
@@ -2184,6 +2229,19 @@
                 {
                   "text": "code --install-extension SMITPATELSP.nuxtjs-snippets-sp --install-extension emranweb.daisyui-snippet \n"
                 }
+              ]
+            },
+            {
+              "key": "w",
+              "icon": "globe",
+              "name": "dokploy and railway (installer link) ",
+              "commands": [
+                "vscode.open",
+                "vscode.open"
+              ],
+              "args": [
+                "https://dokploy.com",
+                "https://railway.com/dashboard"
               ]
             },
             {
@@ -2251,7 +2309,7 @@
                   "text": "code --install-extension lamartire.git-indicators     --install-extension christian-kohler.path-intellisense \n"
                 },
                 {
-                  "text": "code --install-extension AbdulkaderSafi.file-explorer --install-extension miguelsolorio.symbols \n"
+                  "text": "code --install-extension AbdulkaderSafi.file-explorer --install-extension ArtTemiy.FileManager \n"
                 },
                 {
                   "text": "code --install-extension drewxs.tokyo-night-dark      --install-extension DanielPriestley.poimandres-alternate \n"
@@ -2263,7 +2321,7 @@
                   "text": "code --install-extension sourcegraph.amp              --install-extension supermaven.supermaven \n"
                 },
                 {
-                  "text": "code --install-extension usernamehw.errorlens \n"
+                  "text": "code --install-extension usernamehw.errorlens         --install-extension miguelsolorio.symbols \n"
                 }
               ]
             }
@@ -2354,7 +2412,7 @@
                   "profileName": "zsh (retronvim)"
                 },
                 {
-                  "text": "kanata_touchcursor \r"
+                  "text": "pixi exec --channel retronvim --with retrovim -- kanata_touchcursor \r"
                 }
               ]
             }
@@ -3883,59 +3941,33 @@
         "command": "----------------------------------------- suggestion keymaps -----------------------------------------"
       },
       {
-        "key": "ctrl+space",
-        "command": "editor.action.triggerSuggest",
-        "when": "!suggestWidgetVisible && textInputFocus"
+        "key": "enter",
+        "command": "runCommands",
+        "args": {
+          "commands": [
+            "selectNextSuggestion",
+            "acceptSelectedSuggestion"
+          ]
+        },
+        "when": "editorTextFocus && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion"
       },
       {
-        "key": "ctrl+space",
-        "command": "hideSuggestWidget",
-        "when": "suggestWidgetVisible && textInputFocus"
-      },
-      {
-        "key": "ctrl+shift+space",
-        "command": "toggleSuggestionDetails",
-        "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus"
-      },
-      {
-        "key": "ctrl+shift+space",
-        "command": "editor.action.triggerParameterHints",
-        "when": "editorHasSignatureHelpProvider && editorTextFocus"
-      },
-      {
-        "key": "ctrl+shift+space",
-        "command": "closeParameterHints",
-        "when": "editorTextFocus && parameterHintsVisible"
-      },
-      {
-        "key": "ctrl+d",
-        "command": "selectNextPageSuggestion",
-        "when": "suggestWidgetVisible"
-      },
-      {
-        "key": "ctrl+u",
-        "command": "selectPrevPageSuggestion",
-        "when": "suggestWidgetVisible"
-      },
-      {
-        "key": "ctrl+h",
-        "command": "toggleSuggestionFocus",
-        "when": "suggestWidgetVisible && textInputFocus"
-      },
-      {
-        "key": "ctrl+j",
+        "key": "tab",
         "command": "selectNextSuggestion",
-        "when": "editorTextFocus && suggestWidgetVisible"
+        "when": "editorTextFocus && suggestWidgetVisible && !isSnippetMode && !hasNextTabstop"
       },
       {
-        "key": "ctrl+k",
+        "key": "shift+tab",
         "command": "selectPrevSuggestion",
-        "when": "editorTextFocus && suggestWidgetVisible"
+        "when": "editorTextFocus && suggestWidgetVisible && !isSnippetMode && !hasNextTabstop"
       },
       {
-        "key": "ctrl+l",
-        "command": "acceptSelectedSuggestion",
-        "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
+        "key": "tab",
+        "command": "-extension.vim_tab"
+      },
+      {
+        "key": "tab",
+        "command": "-vscode-neovim.send"
       },
       {
         "key": "alt+j",
@@ -4026,7 +4058,7 @@
         "command": "------------------------------------------ terminal keymaps ------------------------------------------"
       },
       {
-        "key": "alt+y",
+        "key": "alt+'",
         "command": "workbench.action.terminal.sendSequence",
         "args": {
           "text": "yazi $PWD --cwd-file=$HOME/.yazi; cd \"$(cat $HOME/.yazi)\" \n"
@@ -4262,35 +4294,6 @@
         "key": "ctrl+shift+f",
         "command": "workbench.action.terminal.focusFind",
         "when": "terminalFocus"
-      },
-      {
-        "key": "enter",
-        "command": "runCommands",
-        "args": {
-          "commands": [
-            "selectNextSuggestion",
-            "acceptSelectedSuggestion"
-          ]
-        },
-        "when": "editorTextFocus && suggestWidgetVisible && !suggestWidgetHasFocusedSuggestion"
-      },
-      {
-        "key": "tab",
-        "command": "selectNextSuggestion",
-        "when": "editorTextFocus && suggestWidgetVisible && !isSnippetMode && !hasNextTabstop"
-      },
-      {
-        "key": "shift+tab",
-        "command": "selectPrevSuggestion",
-        "when": "editorTextFocus && suggestWidgetVisible && !isSnippetMode && !hasNextTabstop"
-      },
-      {
-        "key": "tab",
-        "command": "-extension.vim_tab"
-      },
-      {
-        "key": "tab",
-        "command": "-vscode-neovim.send"
       },
       {
         "key": "ctrl+v",
