@@ -2,13 +2,39 @@
   "name": "retronvim",
   "displayName": "RetroNvim",
   "description": "yazi-like file manager + whichkey + terminal keymaps",
+  "version": "0.4.10",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "watch": "vite build --watch",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "vscode:prepublish": "tsc -b && vite build"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "oxlint": "^1.79.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2"
+  },
   "icon": "assets/retronvim-logo.png",
   "publisher": "YeferYV",
   "author": {
     "name": "YeferYV",
     "url": "https://github.com/YeferYV"
   },
-  "version": "0.4.10",
   "engines": {
     "vscode": "^1.85.0"
   },

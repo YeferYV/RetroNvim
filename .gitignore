@@ -1,6 +1,3 @@
-.conda/*channel
-.conda/*output
 dist
-nvim/plugins/*/tests
-output
+node_modules
 *.vsix

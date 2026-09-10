@@ -54,6 +54,8 @@ jobs:
         with:
           submodules: true
 
+      - run: npm install
+
       - run: yes | npx vsce package
 
       - name: Publish to vscode-marketplace 🚀
