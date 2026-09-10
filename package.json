@@ -13,8 +13,10 @@
     "vscode:prepublish": "tsc -b && vite build"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
@@ -173,7 +175,7 @@
       "terminal.integrated.enableImages": true,
       "terminal.integrated.fontWeight": "500",
       "terminal.integrated.minimumContrastRatio": 1,
-      "terminal.integrated.scrollback": 10000,
+      "terminal.integrated.scrollback": 1e4,
       "terminal.integrated.suggest.enabled": true,
       "terminal.integrated.profiles.osx": {
         "zsh (retronvim)": {
@@ -281,24 +283,24 @@
             ":w"
           ]
         },
-				{
-					"before": [
-						"j"
-					],
-					"after": [
-						"g",
-						"j"
-					]
-				},
-				{
-					"before": [
-						"k"
-					],
-					"after": [
-						"g",
-						"k"
-					]
-				},
+        {
+          "before": [
+            "j"
+          ],
+          "after": [
+            "g",
+            "j"
+          ]
+        },
+        {
+          "before": [
+            "k"
+          ],
+          "after": [
+            "g",
+            "k"
+          ]
+        },
         {
           "before": [
             "J"
