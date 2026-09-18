@@ -2,7 +2,7 @@
 
 <div align="center">
 
-yazi-like file manager + whichkey + terminal keymaps
+yazi-like file manager + whichkey
 
 <!-- <img src="https://github.com/yeferyv/retronvim/blob/main/assets/demo.gif?raw=true"> -->
 
@@ -23,7 +23,7 @@ yazi-like file manager + whichkey + terminal keymaps
 <details open><summary>Table of Contents</summary>
 
 1. Keybindings.json
-   - [vscode file explorer keymaps](#file-explorer-keymaps)
+   - [vscode file tree keymaps](#file-explorer-keymaps)
    - [vscode editor keymaps](#editor-keymaps)
    - [vscode terminal keymaps](#vscode-terminal-keymaps)
 2. Installation
@@ -34,7 +34,7 @@ yazi-like file manager + whichkey + terminal keymaps
 
 ---
 
-## vscode file explorer keymaps
+## vscode file tree keymaps
 
 <details open><summary></summary>
 
@@ -187,7 +187,6 @@ yazi-like file manager + whichkey + terminal keymaps
   - `fastapi`
   - `flask`
   - `go`
-  - `graphql`
   - `kotlin`
   - `kubernetes`
   - `laravel`
@@ -213,7 +212,7 @@ yazi-like file manager + whichkey + terminal keymaps
 - [ ] file navigation with vim keys
 - [ ] file operations with yazi defaults keys
 - [ ] previewer with syntax highlighting and image support
-- [ ] open current file in a file-manager tab then replace file-manager tab with chosen file like retrovim or dir.lua
+- [ ] open current file in a file-manager tab then replace file-manager tab with chosen file like netrw or oil.nvim
 - [ ] bookmarks with whichkey
 - [ ] jump by search in current directory
 - [ ] jump by search of first character
@@ -224,12 +223,21 @@ yazi-like file manager + whichkey + terminal keymaps
 
 <details open><summary></summary>
 
-- [yeferyv/RetroVim](https://github.com/yeferyv/sixelrice)
+- [yeferyv/RetroVim](https://github.com/yeferyv/retrovim)
   neovim IDE using 01 plugins (with copilot, agents, text-objects, whichkey ...) +
   yazi builtin plugins + zsh builtin plugins + kanata keyboard layout
 
 - [vscode file manager](https://github.com/ArtTemiy/VsCodeFileManager)
   midnight-commander for vscode
+
+- [vsnetrw](https://github.com/danprince/vsnetrw)
+  netrw for vscode
+
+- [oil.code](https://github.com/corwinm/oil.code)
+  oil.nvim for vscode
+
+- [telescope-search](https://github.com/TalhaAksoy/Telescope-Search)
+  telescope.nvim for vscode
 
 - [terax](https://github.com/crynta/terax-ai)
   agentic terminal + neovim-like IDE
