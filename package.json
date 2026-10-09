@@ -2,7 +2,7 @@
   "name": "retronvim",
   "displayName": "RetroNvim",
   "description": "yazi-like file manager + whichkey",
-  "version": "0.4.10",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -175,7 +175,7 @@
       "terminal.integrated.enableImages": true,
       "terminal.integrated.fontWeight": "500",
       "terminal.integrated.minimumContrastRatio": 1,
-      "terminal.integrated.scrollback": 1e4,
+      "terminal.integrated.scrollback": 10000,
       "terminal.integrated.suggest.enabled": true,
       "terminal.integrated.profiles.osx": {
         "zsh (retronvim)": {

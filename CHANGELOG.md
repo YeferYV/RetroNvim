@@ -14,6 +14,13 @@
 * **zsh:** getting multiples ~/.cache/zcompdump.some-id + hide suggestion after pressing tab ([8cad67f](https://github.com/YeferYV/RetroNvim/commit/8cad67f2d5f59a17fa5d87cec381cf2074e89c3a))
 * **zsh:** OSC 11 and DECRQM sequences leaks on yazi inside terax workaround ([b87df6d](https://github.com/YeferYV/RetroNvim/commit/b87df6d2f0042d5c7c2c5009e9002803582d8d2a))
 
+## [0.5.0](https://github.com/YeferYV/RetroNvim/compare/v0.4.10...v0.5.0) (2026-10-09)
+
+
+### Features
+
+* **src:** listing directories, first step to migrate to a yazi-like file manager ([746ee0b](https://github.com/YeferYV/RetroNvim/commit/746ee0bdd18d8b86644be88694197317b59b7845))
+
 ## [0.4.10](https://github.com/YeferYV/RetroNvim/compare/v0.4.9...v0.4.10) (2026-08-21)
 
 
